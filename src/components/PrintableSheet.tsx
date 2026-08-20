@@ -1,12 +1,19 @@
-// Printable A4 worksheet. This is the canonical "what gets printed" content.
+// Printable A4 worksheet page. This is the canonical "what gets printed"
+// content.
 //
-// It is rendered in TWO places with identical props so they always agree:
-//   1. Inline, scaled-down preview in the right-hand content window.
-//   2. Inside @react/headless `DocumentPrint` (full A4, for printing).
-// Because it receives an explicit `testId`, the two renderings can be told apart
-// in tests (preview vs print) even though they share markup.
+// It is rendered in TWO on-screen places with identical props so they always
+// agree, plus the hidden print tree:
+//   1. Inline, scaled-down preview in the right-hand canvas (PageStack).
+//   2. Inside the print-review modal (PrintOverlay > PageStack).
+//   3. Inside the screen-hidden `.print-doc` tree that window.print() actually
+//      prints (one <PrintableSheet> per A4 page, see MathsDashboard).
 //
-// All CSS uses explicit px/mm string values (NOT numbers) on purpose: when a
+// The component receives one page's `problems` (problem ids are numbered
+// across the whole document, so a 2-page sheet continues 1..30). When the
+// document has more than one page, `pageLabel` (e.g. "Page 2 of 3") is shown
+// in a small footer — both on screen (as the page badge) and in print.
+//
+// All CSS uses explicit px/mm STRING values (not numbers) on purpose: when a
 // value is static or a function in @presource/react's styledComponent, numbers
 // are converted to rem, which we do not want for print-accurate spacing.
 import React, { Fragment } from 'react';
@@ -16,18 +23,23 @@ import type { Problem } from '../lib/problems';
 export type PrintableSheetProps = {
     // Large heading, e.g. "Year 1 — Addition".
     title: string;
-    // Small line under the title, e.g. "Addition within 20".
+    // Small line under the title, e.g. "Addition — within 20".
     subtitle: string;
-    // The problems to lay out (single sheet, single math type).
+    // The problems to lay out on THIS page (one page of one math type).
     problems: Problem[];
-    // Stable test id for the root element (used to target preview vs print).
+    // Optional footer label — set to "Page i of n" for multi-page documents so
+    // printed pages can be ordered physically. Omitted for single-page sheets.
+    pageLabel?: string;
+    // Stable test id for the root element.
     testId?: string;
 };
 
-// Page root: white A4 sheet that fills the FullA4Page / preview box.
+// Page root: white sheet that fills its A4 frame (794×1123px on screen,
+// 210×297mm in the print tree). Flex column so the footer pins to the page
+// bottom regardless of how much problem content is above it.
 const SheetRoot = styledComponent('div', {
     width: '100%',
-    minHeight: '100%',
+    height: '100%',
     backgroundColor: '#ffffff',
     boxSizing: 'border-box',
     padding: '12mm 12mm 12mm 12mm',
@@ -41,7 +53,8 @@ const SheetTitle = styledComponent('h1', {
     fontSize: '30px',
     fontWeight: 700,
     margin: '0 0 4px 0',
-    lineHeight: 1.1
+    lineHeight: 1.1,
+    letterSpacing: '-0.01em'
 });
 
 const SheetSubtitle = styledComponent('p', {
@@ -103,6 +116,22 @@ const Blank = styledComponent<{ big?: boolean }>('span', {
     margin: '0 5px'
 });
 
+// Footer shown only for multi-page documents: brand line on the left,
+// "Page i of n" on the right, pinned to the page bottom.
+const SheetFooter = styledComponent('div', {
+    marginTop: 'auto',
+    paddingTop: '14px',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'baseline',
+    gap: '16px'
+});
+
+const FooterText = styledComponent('span', {
+    fontSize: '11px',
+    color: '#9ca3af'
+});
+
 // Splits a prompt on "__" and renders each blank as a styled fill-in line, so
 // the printed sheet shows real blanks instead of literal underscores.
 function PromptText({ prompt }: { prompt: string }) {
@@ -119,9 +148,9 @@ function PromptText({ prompt }: { prompt: string }) {
     );
 }
 
-export function PrintableSheet({ title, subtitle, problems, testId }: PrintableSheetProps) {
+export function PrintableSheet({ title, subtitle, problems, pageLabel, testId }: PrintableSheetProps) {
     // Word problems are single-line prose and read better in one column; every
-    // other type fits neatly in two columns. All problems in a sheet share one
+    // other type fits neatly in two columns. All problems on a page share one
     // type, so the first problem tells us which layout to use.
     const single = problems.length > 0 && problems[0].type === 'word';
 
@@ -144,6 +173,14 @@ export function PrintableSheet({ title, subtitle, problems, testId }: PrintableS
                     </ProblemRow>
                 ))}
             </ProblemGrid>
+            {/* Multi-page documents get a page-position footer in print so a
+                class set of copies can be reordered physically. */}
+            {pageLabel && (
+                <SheetFooter>
+                    <FooterText>Maths Sheets</FooterText>
+                    <FooterText>{pageLabel}</FooterText>
+                </SheetFooter>
+            )}
         </SheetRoot>
     );
 }

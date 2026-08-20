@@ -2,6 +2,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { App } from './App';
+// Global stylesheet: viewport lock (no document scrollbars) + print rules
+// (window.print() prints the hidden .print-doc tree, one A4 block per page).
+import './app.css';
 
 // Locate the root DOM node and create a React 18 root
 const root = ReactDOM.createRoot(document.getElementById('root')!);
@@ -10,5 +13,5 @@ const root = ReactDOM.createRoot(document.getElementById('root')!);
 root.render(
     <React.StrictMode>
         <App />
-    </React.StrictMode>,
+    </React.StrictMode>
 );

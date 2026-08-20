@@ -1,0 +1,100 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   @distribution/maths — global stylesheet.
+
+   Two jobs:
+
+   1. VIEWPORT LOCK
+      The previous build sized its root with `100vw`/`100vh` and let a
+      fixed-297mm A4 print overlay stretch the document, which spawned
+      document-level scrollbars (100vw even includes the browser's own
+      scrollbar width, so it always overflows horizontally).
+      Here html/body/#root form a `height: 100%` chain pinned to the viewport,
+      body hides overflow, and every scrollable region (sidebar, canvas, print
+      modal) scrolls INTERNALLY. The document itself can never scroll.
+
+   2. PRINT RULES
+      Printing is a plain window.print() call. Under @media print the app UI
+      (`.app-chrome`) is hidden and the hidden `.print-doc` tree is revealed:
+      one 210mm × 297mm block per worksheet page, each breaking onto its own
+      A4 sheet — so multi-page worksheets print page-for-page with zero JS
+      involved in the actual print job.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+html,
+body,
+#root {
+    height: 100%;
+}
+
+/* dvh tracks dynamic viewports (mobile URL bars) so late viewport changes
+   never re-open a scrollbar; browsers without dvh keep the 100% fallback. */
+#root {
+    height: 100dvh;
+}
+
+body {
+    margin: 0;
+    overflow: hidden; /* all scrolling happens inside app panels, never the document */
+    background: #f4f6fb;
+    color: #0f172a;
+    font-family: 'Inter', system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+/* Hide the scrollbar on decorative scroll strips (the grade-pill rail) while
+   keeping the content keyboard/scroll-wheel accessible. */
+.scrollbar-hidden {
+    scrollbar-width: none;
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+}
+
+/* The printable document exists only for the print media — invisible on screen. */
+.print-doc {
+    display: none;
+}
+
+/* ── Printing ────────────────────────────────────────────────────────────────
+   @page pins the paper to A4 with zero margins; each sheet already carries
+   its own 12mm internal padding (see PrintableSheet). */
+@page {
+    size: A4;
+    margin: 0;
+}
+
+@media print {
+    html,
+    body {
+        height: auto !important;
+        overflow: visible !important;
+        background: #ffffff !important;
+    }
+
+    /* Hide the entire interactive app (header, sidebar, canvas, print modal,
+       zoom controls) so the printed pages are the only output. */
+    .app-chrome {
+        display: none !important;
+    }
+
+    .print-doc {
+        display: block !important;
+    }
+
+    /* One exact A4 block per worksheet page; each continues on a new sheet. */
+    .print-page {
+        width: 210mm;
+        height: 297mm;
+        overflow: hidden;
+        background: #ffffff;
+        break-after: page;
+        page-break-after: always; /* legacy engines */
+    }
+
+    .print-page:last-child {
+        break-after: auto;
+        page-break-after: auto;
+    }
+}
