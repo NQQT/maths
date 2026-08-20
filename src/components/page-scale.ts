@@ -39,8 +39,8 @@ function clampFit(scale: number): number {
     return Math.max(MIN_FIT, Math.min(MAX_FIT, scale));
 }
 
-// Measures the given scroll viewport and returns the pixel scale for the
-// current zoom mode:
+// Measures the given page-field element (the preview canvas's stack wrapper,
+// see PageStack) and returns the pixel scale for the current zoom mode:
 //   - 'fit'  => (viewport width - PAD_X) / A4_W, recomputed live through a
 //               ResizeObserver so window resizes re-fit automatically;
 //   - number => number / 100 (fixed 50/75/100% zoom).

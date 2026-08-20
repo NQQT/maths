@@ -2,10 +2,11 @@
 // for the currently selected grade; for grades without content it shows a
 // "coming soon" placeholder instead.
 //
-// Design: a white rail of icon+label+count list buttons; the active type gets
-// an indigo-tinted fill. On narrow screens (xs) the rail collapses to a
-// horizontal chip strip above the canvas so nothing ever overflows the
-// viewport vertically.
+// Design: a white rail of icon+label list buttons; the active type gets an
+// indigo-tinted fill. From sm up the rail is position:sticky (pins under the
+// sticky header while the window scrolls the continuous page stack — app.css
+// job 1); on narrow screens (xs) it collapses to a horizontal chip strip
+// above the canvas.
 import React from 'react';
 import { styledComponent } from '@presource/react';
 import { MATH_TYPES, type MathTypeId } from '../lib/problems';
@@ -31,6 +32,12 @@ const TYPE_ICONS: Record<MathTypeId, string> = {
     counting: '#'
 };
 
+// Left rail: content-height box (align-self: flex-start — it does NOT stretch
+// to the full page height). From sm up it is position:sticky so it pins under
+// the sticky header while the WINDOW scrolls the continuous page stack
+// (app.css job 1); a viewport-capped maxHeight makes long type lists scroll
+// inside the rail instead of stretching it past the window. xs: the rail
+// collapses to a static horizontal chip strip above the canvas.
 const Sidebar = styledComponent('div', {
     display: 'flex',
     gap: '6px',
@@ -39,13 +46,18 @@ const Sidebar = styledComponent('div', {
     background: '#ffffff',
     overflowY: 'auto',
     // Responsive shape:
-    //   xs — full-width strip above the canvas: row direction, wraps, fixed
-    //        height auto, scrolls horizontally instead of overflowing.
-    //   sm+ — vertical 264px rail for the full viewport height.
+    //   xs — full-width static strip above the canvas: row direction, wraps,
+    //        scrolls horizontally instead of overflowing.
+    //   sm+ — sticky 264px rail that hugs its content and pins under the
+    //         64px sticky header while the window scrolls.
     flexDirection: () => ({ xs: 'row', sm: 'column' }),
     flexWrap: () => ({ xs: 'wrap', sm: 'nowrap' }),
     width: () => ({ xs: '100%', sm: '264px' }),
-    height: () => ({ xs: 'auto', sm: '100%' }),
+    alignSelf: 'flex-start',
+    position: () => ({ xs: 'static', sm: 'sticky' }),
+    top: () => ({ xs: '0px', sm: '64px' }),
+    maxHeight: () => ({ xs: 'none', sm: 'calc(100vh - 80px)' }),
+    zIndex: 10,
     flexShrink: 0,
     overflowX: () => ({ xs: 'auto', sm: 'hidden' }),
     borderRight: () => ({ xs: 'none', sm: '1px solid #e4e9f2' }),

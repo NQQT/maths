@@ -81,12 +81,23 @@ const Rule = styledComponent('hr', {
 
 // Two-column grid for compact sheets; single column for long word problems.
 // `single` is a custom prop read by the function value for gridTemplateColumns.
+//
+// FILLING THE WHOLE PAGE: SheetRoot is a flex column on a fixed A4 height, so
+// `flex: 1` grows this grid to exactly the space left below the title/metaline
+// (and above the footer). `gridAutoRows: 1fr` divides that space into EVEN
+// rows and `alignItems: center` vertically centres each question in its row —
+// so no matter how many problems a type generates, the LAST question row
+// always lands at the bottom of the page: there is never a blank band between
+// the questions and the page foot (screen preview and print share this layout).
 const ProblemGrid = styledComponent<{ single: boolean }>('div', {
     display: 'grid',
     gridTemplateColumns: ({ single }) => (single ? '1fr' : '1fr 1fr'),
     columnGap: '28px',
     rowGap: '16px',
-    alignItems: 'start'
+    alignItems: 'center',
+    flex: 1,
+    minHeight: '0',
+    gridAutoRows: '1fr'
 });
 
 const ProblemRow = styledComponent('div', {

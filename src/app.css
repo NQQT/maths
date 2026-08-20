@@ -3,14 +3,18 @@
 
    Two jobs:
 
-   1. VIEWPORT LOCK
-      The previous build sized its root with `100vw`/`100vh` and let a
-      fixed-297mm A4 print overlay stretch the document, which spawned
-      document-level scrollbars (100vw even includes the browser's own
-      scrollbar width, so it always overflows horizontally).
-Here html/body/#root form a `height: 100%` chain pinned to the viewport,
-       body hides overflow, and every scrollable region (sidebar, canvas)
-       scrolls INTERNALLY. The document itself can never scroll.
+   1. CONTINUOUS DOCUMENT FLOW
+      The app is a normal, vertically-growing web page: nothing in the
+      html/body/#root chain locks height or clips overflow, so when the
+      worksheet pages make the document taller than the window the BROWSER'S
+      own vertical scrollbar appears and the whole page scrolls as one
+      continuous document — exactly like the browser's native print preview,
+      where A4 sheets flow down the page and the window scrolls them. The
+      preview canvas no longer keeps an internal scroll area; its page stack
+      simply extends the document (see Canvas/StackViewport in
+      MathsDashboard.tsx / PageStack.tsx). The header, toolbar and math-type
+      rail are position:sticky so they stay reachable while scrolling, and
+      the zoom dock is position:fixed.
 
    2. PRINT RULES
       Printing is a plain window.print() call. Under @media print the app UI
@@ -20,21 +24,11 @@ Here html/body/#root form a `height: 100%` chain pinned to the viewport,
       involved in the actual print job.
    ───────────────────────────────────────────────────────────────────────────── */
 
-html,
-body,
-#root {
-    height: 100%;
-}
-
-/* dvh tracks dynamic viewports (mobile URL bars) so late viewport changes
-   never re-open a scrollbar; browsers without dvh keep the 100% fallback. */
-#root {
-    height: 100dvh;
-}
-
 body {
     margin: 0;
-    overflow: hidden; /* all scrolling happens inside app panels, never the document */
+    /* No `height: 100%` / `overflow: hidden` here: the document is allowed to
+       grow vertically and the window-level vertical scrollbar handles
+       scrolling (job 1). */
     background: #f4f6fb;
     color: #0f172a;
     font-family: 'Inter', system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -42,8 +36,19 @@ body {
     text-rendering: optimizeLegibility;
 }
 
-/* Hide the scrollbar on decorative scroll strips (the grade-pill rail) while
-   keeping the content keyboard/scroll-wheel accessible. */
+/* The app fills at least the viewport when the document is short (a single
+   small sheet). dvh tracks dynamic viewports (mobile URL bars); browsers
+   without dvh keep the 100vh fallback line above it. Longer documents grow
+   #root and with it the whole window — the browser shows its vertical
+   scrollbar for the overflow. */
+#root {
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+
+/* Hide the scrollbar on decorative scroll strips (the grade-pill rail, the
+   math-type rail) while keeping the content keyboard/scroll-wheel
+   accessible. */
 .scrollbar-hidden {
     scrollbar-width: none;
 }
@@ -73,20 +78,19 @@ body {
         background: #ffffff !important;
     }
 
-    /* CRITICAL: un-clip the app shell for printing. On screen the app root is
-       height:100% + overflow:hidden so the page can never scroll — but left
-       as-is during print, that box clips the paginated .print-doc to exactly
-       one A4 page of height, so multi-page documents only ever showed a
-       single page in the browser's print dialog. Height/overflow must fall
-       back to auto/visible so all pages flow and paginate. */
+    /* Defensive un-clip of the app shell for printing: on screen the shell is
+       already a non-clipping, content-height document (job 1), but if a
+       future screen rule reintroduces height/overflow locking, these
+       overrides keep the .print-doc tree flowing onto one physical sheet per
+       worksheet page instead of being clipped to the viewport. */
     #root,
     .app-root {
         height: auto !important;
         overflow: visible !important;
     }
 
-/* Hide the entire interactive app (header, sidebar, canvas, zoom
-        controls) so the printed pages are the only output. */
+    /* Hide the entire interactive app (header, sidebar, canvas, zoom
+       controls) so the printed pages are the only output. */
     .app-chrome {
         display: none !important;
     }

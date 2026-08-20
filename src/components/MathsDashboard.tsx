@@ -4,23 +4,32 @@
 //   | (∑) Maths Sheets                       [P][1][2]…[12] (top-right)|
 //   +----------------+-------------------------------------------------+
 //   |  MATH TYPE     |  toolbar card: title/subtitle · Pages [− n +]   |
-//   |  (left rail)   |               ...  [Randomize] [Print]        |
-//   |  - Addition    |  dot-grid canvas: zoomable stack of A4 pages    |
-//   |  - Subtraction |  (fit/50/75/100%, one page per A4 sheet)        |
-//   |  - …           |  [+ Fit 50% 75% 100%] (floating, bottom-right)  |
+//   |  (left rail,   |               ...  [Randomize] [Print]        |
+//   |   sticky)      |  dot-grid canvas: CONTINUOUS vertical stack of  |
+//   |  - Addition    |  A4 pages — the whole window scrolls them (the |
+//   |  - Subtraction |  browser's vertical scrollbar, like the native  |
+//   |  - …           |  print preview); one page per A4 sheet          |
+//   |                |  [+] zoom dock (floating, fixed bottom-right)  |
 //   +----------------+-------------------------------------------------+
+//
+// SCROLLING: the app is a normal, continuously-growing document — there is no
+// viewport lock and no internal scroll area around the pages (app.css job 1).
+// When the stacks of A4 sheets make the page taller than the window, the
+// browser's own vertical scrollbar scrolls the WHOLE window, so the preview
+// flows down continuously exactly like the browser's native print preview.
+// The grade header, the toolbar card and the math-type rail are
+// position:sticky (they stay pinned while scrolling), and the zoom dock is
+// position:fixed, so every control stays reachable at any scroll position.
 //
 // PRINTING: the normal content view (A4 page stack + toolbar with the Pages
 // stepper) IS the print preview — there is no separate in-app review screen.
 // The toolbar "Print" button fires the browser's NATIVE print dialog
 // immediately via a plain window.print():
-//   1. Under @media print (app.css) the app shell is un-clipped
-//      (height:100% + overflow:hidden relaxed) and hidden, and the
-//      screen-hidden .print-doc tree is revealed — one exact A4 block per
-//      worksheet page, each breaking onto its own physical sheet. A 5-page
-//      worksheet therefore shows as (and prints as) 5 pages in the native
-//      dialog (the shell un-clipping is what makes the browser paginate all
-//      of them instead of one).
+//   1. Under @media print (app.css) the interactive app shell (`.app-chrome`)
+//      is hidden and the screen-hidden .print-doc tree is revealed — one exact
+//      A4 block per worksheet page, each breaking onto its own physical
+//      sheet. A 5-page worksheet therefore shows as (and prints as) 5 pages
+//      in the native dialog.
 //   2. While the dialog is open the document title is set to the worksheet
 //      title (e.g. "Year 1 — Addition") so a PDF saved from it gets a
 //      meaningful file name; the previous title is restored afterwards.
@@ -51,31 +60,36 @@ const MIN_PAGES = 1;
 // App shell
 // ──────────────────────────────────────────────────────────────
 
-// Full-viewport app root. 100% of body (body is the height:100% + dvh +
-// overflow:hidden chain from app.css) — never 100vw/100vh, so the layout can
-// not outgrow the viewport in either axis. The `app-root` class exists so the
-// @media print rules in app.css can un-clip (height/overflow) exactly this
-// box when printing multi-page documents.
+// App root: a normal document box that grows with its content. app.css keeps
+// #root at min-height:100dvh so short documents still paint the full
+// viewport; taller ones (many A4 pages) grow the window and the browser's
+// vertical scrollbar scrolls them (no height/overflow locking anywhere —
+// app.css job 1). The `app-root` class exists so the @media print rules in
+// app.css can target exactly this box (defensive un-clip on print).
 const AppRoot = styledComponent('div', {
     position: 'relative',
     width: '100%',
-    height: '100%',
-    overflow: 'hidden',
+    height: 'auto',
+    overflow: 'visible',
     background: '#f4f6fb',
     color: '#0f172a'
 });
 
 // White top bar: brand mark + title on the left, grade rail on the right.
-// sm+: fixed 64px (flex-shrink:0) so the body below gets the exact remainder
-// of the viewport. xs: auto height so the wrapping grade rail can never
-// overflow the bar (the rail scrolls on sm+ instead of wrapping).
+// position:sticky so it stays pinned while the window scrolls the page stack
+// (continuous document flow — see app.css); z-index keeps it above the
+// scrolling content and the sticky toolbar below it. sm+: fixed 64px (this is
+// also the `top` offset the sticky toolbar/rail use); xs: auto height so the
+// wrapping grade rail can never overflow the bar (the rail scrolls on sm+).
 const HeaderBar = styledComponent('div', {
+    position: 'sticky',
+    top: 0,
+    zIndex: 30,
     display: 'flex',
     alignItems: 'center',
     gap: '12px',
     height: () => ({ xs: 'auto', sm: '64px' }),
     padding: () => ({ xs: '10px 20px', sm: '0 20px' }),
-    flexShrink: 0,
     boxSizing: 'border-box',
     background: '#ffffff',
     borderBottom: '1px solid #e4e9f2'
@@ -111,16 +125,18 @@ const HeaderSpacer = styledComponent('div', {
 });
 
 // Body: math-type rail (left) + main column (right). Stacks vertically on xs
-// (rail becomes a chip strip above the canvas); row layout from sm up.
+// (rail becomes a chip strip above the canvas); row layout from sm up. Height
+// is fully content-driven (continuous document flow — the main column's page
+// stack may be taller than the window, growing the document; app.css job 1).
 const Body = styledComponent('div', {
     display: 'flex',
     flexDirection: () => ({ xs: 'column', sm: 'row' }),
-    flex: 1,
-    minHeight: 0,
     minWidth: 0
 });
 
-// Right-hand column: toolbar card, then the canvas that fills the rest.
+// Right-hand column: toolbar card, then the canvas. Content-height driven —
+// the page stack extends the document (continuous flow, app.css job 1); the
+// column simply takes whatever height the stack needs.
 const Main = styledComponent('div', {
     display: 'flex',
     flexDirection: 'column',
@@ -128,7 +144,6 @@ const Main = styledComponent('div', {
     padding: '16px',
     boxSizing: 'border-box',
     flex: 1,
-    minHeight: 0,
     minWidth: 0
 });
 
@@ -136,12 +151,19 @@ const Main = styledComponent('div', {
 // Toolbar
 // ──────────────────────────────────────────────────────────────
 
+// Toolbar card. position:sticky under the pinned header (sm+, where the
+// header is exactly 64px) so the Pages stepper / Randomize / Print stay
+// reachable while the window scrolls long page stacks; xs keeps it static
+// (the wrapping xs header has no fixed height to pin against).
 const ToolbarCard = styledComponent('div', {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
     gap: '12px',
     flexWrap: 'wrap',
+    position: () => ({ xs: 'static', sm: 'sticky' }),
+    top: '64px',
+    zIndex: 20,
     padding: '10px 14px',
     flexShrink: 0,
     boxSizing: 'border-box',
@@ -277,32 +299,39 @@ const PrimaryButton = styledComponent<{ dimmed: boolean }>('button', {
 });
 
 // ──────────────────────────────────────────────────────────────
-// Canvas (preview) 
+// Canvas (preview)
 // ──────────────────────────────────────────────────────────────
 
-// Position-relative wrapper so the floating zoom dock pins to the canvas even
-// while the page stack scrolls. The stack itself (PageStack) fills it.
+// The preview canvas is NOT a fixed-height, internally scrolling viewport any
+// more: its height is driven by the page stack's content, which extends the
+// whole document. The window's own vertical scrollbar (app.css job 1) scrolls
+// the A4 stack continuously — like the browser's native print preview — so
+// `overflow` is left visible and there is no internal scroll region.
 const Canvas = styledComponent('div', {
     position: 'relative',
-    display: 'flex',
-    flex: 1,
-    minHeight: 0,
+    width: '100%',
+    boxSizing: 'border-box',
     borderRadius: '12px',
     border: '1px solid #e4e9f2',
-    overflow: 'hidden',
     background: '#eef1f7'
 });
 
+// The zoom dock is pinned to the WINDOW (position:fixed), not to the canvas:
+// with continuous document scrolling a canvas-anchored dock would scroll away
+// off-screen after a few pages, but a fixed dock stays reachable at any
+// scroll position.
 const ZoomDock = styledComponent('div', {
-    position: 'absolute',
+    position: 'fixed',
     right: '14px',
     bottom: '14px',
-    zIndex: 5
+    zIndex: 50
 });
 
+// Empty state reserves real space with min-height (the canvas no longer has a
+// fixed height to distribute) so the placeholder is comfortably visible.
 const EmptyState = styledComponent('div', {
-    position: 'relative',
-    flex: 1,
+    width: '100%',
+    minHeight: '50vh',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',

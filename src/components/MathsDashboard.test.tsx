@@ -8,8 +8,8 @@
 //     the page stepper + Randomize make document size fully user-driven);
 //   - page-count STEPPER (toolbar, −/n/+) is an unbounded number: type or
 //     increment to 3, 4, 12... pages — generated A4 sheets are numbered
-//     continuously (Year 1 addition: page 2 starts "10 + 7 =", page 3 starts
-//     "12 + 4 =" — values pinned in src/lib/problems.test.ts);
+//     continuously (Year 1 addition: page 2 starts "12 + 2 =", page 3 starts
+//     "17 + 2 =" — values pinned in src/lib/problems.test.ts);
 //   - "Randomize" re-rolls the seed in place: same page count, new problems
 //     (pinned refresh=1/refresh=2 streams below);
 //   - zoom control switches the preview between Fit / 50% / 75% / 100%;
@@ -190,11 +190,12 @@ describe('MathsDashboard — page count (unbounded −/n/+ stepper)', () => {
         expect(screen.getByTestId('sheet-preview-page3')).toBeDefined();
         expect(screen.queryByTestId('sheet-preview-page4')).toBeNull();
 
-        // Page 1 keeps the original first row; pages 2 and 3 continue the
-        // exact deterministic stream pinned in problems.test.ts.
+        // Page 1 keeps the original first rows; pages 2 and 3 continue the
+        // exact deterministic stream pinned in problems.test.ts (the page is
+        // now 24 rows, so page 2 starts at id 25 and page 3 at id 49).
         expect(text(screen.getByTestId('sheet-preview-page1'))).toContain('1.10 + 9 =');
-        expect(text(screen.getByTestId('sheet-preview-page2'))).toContain('16.10 + 7 =');
-        expect(text(screen.getByTestId('sheet-preview-page3'))).toContain('31.12 + 4 =');
+        expect(text(screen.getByTestId('sheet-preview-page2'))).toContain('25.12 + 2 =');
+        expect(text(screen.getByTestId('sheet-preview-page3'))).toContain('49.17 + 2 =');
         // Multi-page documents label every page (badge on screen, footer in print).
         expect(preview.textContent).toContain('Page 1 of 3');
         expect(preview.textContent).toContain('Page 3 of 3');
@@ -331,8 +332,8 @@ describe('MathsDashboard — print flow (native dialog, preview IS the preview)'
         const printPages = document.querySelectorAll('.print-page');
         expect(printPages.length).toBe(5);
         // Each block carries its worksheet page; page 2 is the pinned
-        // continuation row ("10 + 7 =" first).
-        expect(printPages[1].textContent).toContain('10 + 7 =');
+        // continuation row ("12 + 2 =" first, id 25 at the 24-per-page count).
+        expect(printPages[1].textContent).toContain('12 + 2 =');
         expect(printPages[1].textContent).toContain('Page 2 of 5');
         // The on-screen preview (the print preview) shows the same 5 pages.
         expect(screen.getByTestId('sheet-preview-page5')).toBeDefined();

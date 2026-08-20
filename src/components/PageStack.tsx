@@ -1,4 +1,4 @@
-// Scrollable stack of A4 pages rendered at the requested zoom. Lives in the
+// Continuous stack of A4 pages rendered at the requested zoom. Lives in the
 // dashboard's preview canvas, which doubles as the print preview: the A4
 // blocks shown here are exactly what the hidden .print-doc tree (app.css)
 // feeds the browser-native print dialog, so screen and print can never
@@ -9,10 +9,11 @@
 // transform keeps the layout identical to the printed page (no reflow at small
 // sizes), which is why the on-screen preview matches window.print() output.
 //
-// The component owns the scroll viewport (measured by usePageScale for the
-// 'fit' zoom). Its parent must be a flex container — in the dashboard that is
-// the canvas, in the modal the overlay column — so `flex: 1; min-height: 0`
-// sizes the viewport to whatever space is left.
+// The stack is NOT a scroll container: its pages flow continuously and the
+// WINDOW scrollbar (app.css job 1) scrolls the whole document, exactly like
+// the browser's native print preview. The outer field box still provides the
+// dot-grid backdrop and is what usePageScale measures (its width = the
+// canvas width) for the 'fit' zoom.
 import React, { useRef } from 'react';
 import { styledComponent } from '@presource/react';
 import { A4_H, A4_W, usePageScale, type ZoomMode } from './page-scale';
@@ -34,22 +35,24 @@ export type PageStackProps = {
     pages: PageSpec[];
     // 'fit' or a fixed percentage zoom (50/75/100).
     zoom: ZoomMode;
-    // Test id for the scroll viewport root (e.g. "sheet-preview").
+    // Test id for the page field root (e.g. "sheet-preview").
     testId?: string;
     // Per-page test id prefix; page i+1 gets `${pageTestId}${i+1}`.
     pageTestId?: string;
 };
 
-// Scroll viewport: fills the flex slot left by its parent and scrolls in both
-// directions. Cast to ForwardRefExoticComponent so the measured ref can be
+// The page field: a plain, content-height wrapper (no overflow — pages
+// extend the document and the window scrollbar scrolls them, app.css job 1).
+// Cast to ForwardRefExoticComponent so the ref used by usePageScale can be
 // passed through (Emotion forwards refs at runtime; @presource/react's typed
 // React.FC surface does not expose `ref`).
 const StackViewport = styledComponent('div', {
-    flex: 1,
-    minHeight: 0,
-    minWidth: 0,
-    overflow: 'auto',
+    width: '100%',
+    boxSizing: 'border-box',
     position: 'relative',
+    // Match the canvas frame's corners (the canvas no longer clips its
+    // content with overflow:hidden, so the grid background must round itself).
+    borderRadius: 'inherit',
     // Pale slate with a subtle dot grid (PDF-viewer vibe).
     background: '#eef1f7',
     backgroundImage: 'radial-gradient(circle, #d9dfe9 1px, transparent 1px)',
@@ -117,7 +120,7 @@ const PageBadge = styledComponent('div', {
 });
 
 export function PageStack({ title, subtitle, pages, zoom, testId, pageTestId }: PageStackProps) {
-    // Ref to the scroll viewport — measured live for the 'fit' zoom.
+    // Ref to the page field — measured live (its width) for the 'fit' zoom.
     const viewportRef = useRef<HTMLDivElement>(null);
     const scale = usePageScale(viewportRef, zoom);
 

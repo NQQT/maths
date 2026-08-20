@@ -2,7 +2,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { App } from './App';
-// Global stylesheet: viewport lock (no document scrollbars) + print rules
+// Global stylesheet: continuous document flow (window-level vertical
+// scrollbar scrolls the A4 preview, like native print) + print rules
 // (window.print() prints the hidden .print-doc tree, one A4 block per page).
 import './app.css';
 
