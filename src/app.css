@@ -8,9 +8,9 @@
       fixed-297mm A4 print overlay stretch the document, which spawned
       document-level scrollbars (100vw even includes the browser's own
       scrollbar width, so it always overflows horizontally).
-      Here html/body/#root form a `height: 100%` chain pinned to the viewport,
-      body hides overflow, and every scrollable region (sidebar, canvas, print
-      modal) scrolls INTERNALLY. The document itself can never scroll.
+Here html/body/#root form a `height: 100%` chain pinned to the viewport,
+       body hides overflow, and every scrollable region (sidebar, canvas)
+       scrolls INTERNALLY. The document itself can never scroll.
 
    2. PRINT RULES
       Printing is a plain window.print() call. Under @media print the app UI
@@ -73,8 +73,20 @@ body {
         background: #ffffff !important;
     }
 
-    /* Hide the entire interactive app (header, sidebar, canvas, print modal,
-       zoom controls) so the printed pages are the only output. */
+    /* CRITICAL: un-clip the app shell for printing. On screen the app root is
+       height:100% + overflow:hidden so the page can never scroll — but left
+       as-is during print, that box clips the paginated .print-doc to exactly
+       one A4 page of height, so multi-page documents only ever showed a
+       single page in the browser's print dialog. Height/overflow must fall
+       back to auto/visible so all pages flow and paginate. */
+    #root,
+    .app-root {
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+/* Hide the entire interactive app (header, sidebar, canvas, zoom
+        controls) so the printed pages are the only output. */
     .app-chrome {
         display: none !important;
     }

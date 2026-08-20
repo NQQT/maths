@@ -1,12 +1,15 @@
 // Printable A4 worksheet page. This is the canonical "what gets printed"
 // content.
 //
-// It is rendered in TWO on-screen places with identical props so they always
-// agree, plus the hidden print tree:
-//   1. Inline, scaled-down preview in the right-hand canvas (PageStack).
-//   2. Inside the print-review modal (PrintOverlay > PageStack).
-//   3. Inside the screen-hidden `.print-doc` tree that window.print() actually
-//      prints (one <PrintableSheet> per A4 page, see MathsDashboard).
+// It is rendered in TWO on-screen-identical places plus the hidden print
+// tree:
+//   1. Inline, scaled-down preview in the right-hand canvas (PageStack) —
+//      this view doubles as the print preview (toolbar Print goes straight
+//      to the browser-native dialog).
+//   2. Inside the screen-hidden `.print-doc` tree that window.print()
+//      actually prints (one <PrintableSheet> per A4 page, see
+//      MathsDashboard), which is what makes the native dialog list every
+//      page (a 5-page document => 5 pages in the dialog).
 //
 // The component receives one page's `problems` (problem ids are numbered
 // across the whole document, so a 2-page sheet continues 1..30). When the

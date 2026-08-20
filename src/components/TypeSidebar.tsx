@@ -8,7 +8,7 @@
 // viewport vertically.
 import React from 'react';
 import { styledComponent } from '@presource/react';
-import { MATH_TYPES, SHEET_COUNTS, type MathTypeId } from '../lib/problems';
+import { MATH_TYPES, type MathTypeId } from '../lib/problems';
 import type { GradeConfig } from '../lib/grades';
 
 export type TypeSidebarProps = {
@@ -23,6 +23,7 @@ export type TypeSidebarProps = {
 const TYPE_ICONS: Record<MathTypeId, string> = {
     addition: '+',
     subtraction: '−',
+    mult: '×',
     missing: '?',
     comparison: '≟',
     skip: '»',
@@ -105,18 +106,12 @@ const TypeLabel = styledComponent('span', {
     textOverflow: 'ellipsis'
 });
 
-// Problems-per-page badge (e.g. "15"); the label tells teachers how many
-// questions a full page of this type will carry.
-const TypeCount = styledComponent('span', {
-    fontSize: '12px',
-    color: '#94a3b8',
-    background: '#f1f5f9',
-    borderRadius: '999px',
-    padding: '2px 8px',
-    fontWeight: 600,
-    flexShrink: 0,
-    whiteSpace: 'nowrap'
-});
+// NOTE: the rail used to show a per-type "questions per page" count badge here
+// (SHEET_COUNTS, still used internally by generateDocument in problems.ts).
+// It was removed from the UI: with the unbounded Pages stepper and the
+// "Randomize" action, a selection can regenerate any number of pages, so a
+// fixed per-type number next to each rail item communicated nothing a teacher
+// could act on.
 
 // Shown when a grade has no content implemented yet.
 const Notice = styledComponent('div', {
@@ -163,9 +158,6 @@ export function TypeSidebar({ grade, value, onChange }: TypeSidebarProps) {
                         {TYPE_ICONS[t.id]}
                     </TypeIcon>
                     <TypeLabel>{t.label}</TypeLabel>
-                    <TypeCount aria-hidden="true" title="questions per page">
-                        {SHEET_COUNTS[t.id]}
-                    </TypeCount>
                 </TypeButton>
             ))}
         </Sidebar>

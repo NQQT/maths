@@ -1,6 +1,8 @@
-// Scrollable stack of A4 pages rendered at the requested zoom. Shared by the
-// inline preview canvas (MathsDashboard) and the print-review modal
-// (PrintOverlay) so both show pixel-identical pages.
+// Scrollable stack of A4 pages rendered at the requested zoom. Lives in the
+// dashboard's preview canvas, which doubles as the print preview: the A4
+// blocks shown here are exactly what the hidden .print-doc tree (app.css)
+// feeds the browser-native print dialog, so screen and print can never
+// disagree.
 //
 // Each page is a fixed A4-sized box (794×1123px, see page-scale.ts) that is
 // scaled with `transform: scale(...)` and clipped to the scaled footprint.
@@ -32,8 +34,6 @@ export type PageStackProps = {
     pages: PageSpec[];
     // 'fit' or a fixed percentage zoom (50/75/100).
     zoom: ZoomMode;
-    // Dark backdrop (print modal) vs light dot-grid canvas (inline preview).
-    dark?: boolean;
     // Test id for the scroll viewport root (e.g. "sheet-preview").
     testId?: string;
     // Per-page test id prefix; page i+1 gets `${pageTestId}${i+1}`.
@@ -44,22 +44,19 @@ export type PageStackProps = {
 // directions. Cast to ForwardRefExoticComponent so the measured ref can be
 // passed through (Emotion forwards refs at runtime; @presource/react's typed
 // React.FC surface does not expose `ref`).
-const StackViewport = styledComponent<{ dark: boolean }>('div', {
+const StackViewport = styledComponent('div', {
     flex: 1,
     minHeight: 0,
     minWidth: 0,
     overflow: 'auto',
     position: 'relative',
-    // Light tone: pale slate with a subtle dot grid (PDF-viewer vibe).
-    // Dark tone: near-black navy behind the modal's white pages.
-    background: ({ dark }) => (dark ? '#0b1220' : '#eef1f7'),
-    backgroundImage: ({ dark }) =>
-        dark ? 'none' : 'radial-gradient(circle, #d9dfe9 1px, transparent 1px)',
-    backgroundSize: ({ dark }) => (dark ? '0' : '22px 22px')
+    // Pale slate with a subtle dot grid (PDF-viewer vibe).
+    background: '#eef1f7',
+    backgroundImage: 'radial-gradient(circle, #d9dfe9 1px, transparent 1px)',
+    backgroundSize: '22px 22px'
 }) as unknown as React.ForwardRefExoticComponent<
     React.RefAttributes<HTMLDivElement> &
         React.HTMLAttributes<HTMLElement> & {
-            dark?: boolean;
             children?: React.ReactNode;
             [breakpoint: string]: any;
         }
@@ -83,16 +80,15 @@ const Stack = styledComponent('div', {
 // Scaled page shell: its box is exactly the SCALED A4 footprint so flex
 // layout (gaps, centering) sees the right size; the full-size sheet lives
 // inside, scaled and top-left anchored.
-const PageShell = styledComponent<{ scale: number; dark: boolean }>('div', {
+const PageShell = styledComponent<{ scale: number }>('div', {
     position: 'relative',
     flexShrink: 0,
     width: ({ scale }) => `${A4_W * scale}px`,
     height: ({ scale }) => `${A4_H * scale}px`,
     background: '#ffffff',
     overflow: 'hidden',
-    borderRadius: ({ dark }) => (dark ? '6px' : '10px'),
-    boxShadow: ({ dark }) =>
-        dark ? '0 16px 48px rgba(2,6,23,0.65)' : '0 10px 30px rgba(15,23,42,0.14)'
+    borderRadius: '10px',
+    boxShadow: '0 10px 30px rgba(15,23,42,0.14)'
 });
 
 // Full-size A4 box scaled down inside the shell (anchored top-left so the
@@ -120,27 +116,18 @@ const PageBadge = styledComponent('div', {
     fontWeight: 600
 });
 
-export function PageStack({
-    title,
-    subtitle,
-    pages,
-    zoom,
-    dark = false,
-    testId,
-    pageTestId
-}: PageStackProps) {
+export function PageStack({ title, subtitle, pages, zoom, testId, pageTestId }: PageStackProps) {
     // Ref to the scroll viewport — measured live for the 'fit' zoom.
     const viewportRef = useRef<HTMLDivElement>(null);
     const scale = usePageScale(viewportRef, zoom);
 
     return (
-        <StackViewport ref={viewportRef} dark={dark} data-testid={testId}>
+        <StackViewport ref={viewportRef} data-testid={testId}>
             <Stack>
                 {pages.map((page, i) => (
                     <PageShell
                         key={i}
                         scale={scale}
-                        dark={dark}
                         data-testid={pageTestId ? `${pageTestId}${i + 1}` : undefined}
                     >
                         {/* Full A4 sheet, scaled to fit the shell above. */}

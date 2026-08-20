@@ -1,6 +1,7 @@
 // A4 page geometry + zoom logic shared by the inline preview (PageStack in
-// MathsDashboard) and the print modal (PrintOverlay). Keeping both here means
-// on-screen pages and printed pages can never disagree about page size.
+// MathsDashboard) and the hidden print tree (MathsDashboard > .print-doc).
+// Keeping both here means on-screen pages and printed pages can never
+// disagree about page size.
 import { useLayoutEffect, useState, type RefObject } from 'react';
 
 // A4 in CSS pixels at 96dpi (210mm / 297mm ≈ 794 / 1123 px). On screen pages
