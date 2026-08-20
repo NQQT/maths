@@ -21,6 +21,7 @@ export type TypeSidebarProps = {
 };
 
 // One compact glyph per sheet type, shown in the button's icon chip.
+// Extension types (doubles..money) added with the curriculum worksheets.
 const TYPE_ICONS: Record<MathTypeId, string> = {
     addition: '+',
     subtraction: '−',
@@ -29,7 +30,17 @@ const TYPE_ICONS: Record<MathTypeId, string> = {
     comparison: '≟',
     skip: '»',
     word: '¶',
-    counting: '#'
+    counting: '#',
+    doubles: '=',
+    bonds: '∨',
+    patterns: '↻',
+    shapes: '△',
+    time: '◷',
+    measure: '↔',
+    placevalue: '⊞',
+    data: '▥',
+    division: '÷',
+    money: '$'
 };
 
 // Left rail: content-height box (align-self: flex-start — it does NOT stretch

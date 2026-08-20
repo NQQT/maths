@@ -21,7 +21,7 @@
 // are converted to rem, which we do not want for print-accurate spacing.
 import React, { Fragment } from 'react';
 import { styledComponent } from '@presource/react';
-import type { Problem } from '../lib/problems';
+import { SINGLE_COLUMN_TYPES, type Problem } from '../lib/problems';
 
 export type PrintableSheetProps = {
     // Large heading, e.g. "Year 1 — Addition".
@@ -163,10 +163,12 @@ function PromptText({ prompt }: { prompt: string }) {
 }
 
 export function PrintableSheet({ title, subtitle, problems, pageLabel, testId }: PrintableSheetProps) {
-    // Word problems are single-line prose and read better in one column; every
-    // other type fits neatly in two columns. All problems on a page share one
-    // type, so the first problem tells us which layout to use.
-    const single = problems.length > 0 && problems[0].type === 'word';
+    // Word problems are single-line prose and read better in one column; the
+    // extension types in SINGLE_COLUMN_TYPES (measure/division/money) mix
+    // short items with worded ones that wrap, so they also take the full page
+    // width. Every problem on a page shares one type, so the first problem
+    // tells us which layout to use.
+    const single = problems.length > 0 && SINGLE_COLUMN_TYPES.includes(problems[0].type);
 
     return (
         <SheetRoot data-testid={testId}>
