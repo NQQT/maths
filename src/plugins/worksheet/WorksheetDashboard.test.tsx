@@ -1,15 +1,19 @@
-// Integration tests for the maths dashboard.
+// Integration tests for the worksheet PLUGIN, mounted in the dashboard host.
+//
+// This test file lives INSIDE the plugin directory (isolation contract): it
+// tests the plugin end-to-end through the real dashboard host, exactly as a
+// teacher uses it. If this plugin is deleted, this test goes with it.
 //
 // Verifies the layout and its behaviour:
-//   - grade selector (top-right) switches grade and, for unimplemented grades,
-//     shows the "coming soon" placeholder + empty canvas state;
-//   - math-type rail (left) switches the generated sheet; it shows icon +
-//     label only — NO per-type "questions per page" count badges (removed:
-//     the page stepper + Randomize make document size fully user-driven);
+//   - grade selector (top-right, plugin header slot) switches grade and, for
+//     unimplemented grades, shows the "coming soon" placeholder + empty
+//     canvas state;
+//   - the unified plugin rail (left) switches the generated sheet; it shows
+//     icon + label only — NO per-type "questions per page" count badges;
 //   - page-count STEPPER (toolbar, −/n/+) is an unbounded number: type or
 //     increment to 3, 4, 12... pages — generated A4 sheets are numbered
 //     continuously (Year 1 addition: page 2 starts "12 + 2 =", page 3 starts
-//     "17 + 2 =" — values pinned in src/lib/problems.test.ts);
+//     "17 + 2 =" — values pinned in generators.test.ts);
 //   - "Randomize" re-rolls the seed in place: same page count, new problems
 //     (pinned refresh=1/refresh=2 streams below);
 //   - zoom control switches the preview between Fit / 50% / 75% / 100%;
@@ -17,16 +21,17 @@
 //     window.print(), no in-app review screen — the preview canvas IS the
 //     print preview). The screen-hidden .print-doc tree is what the dialog
 //     paginates: exactly one A4 block per worksheet page, so a 5-page
-//     worksheet is 5 pages in the dialog (the @media print rules in
-//     app.css un-clip the shell so every page flows onto its own sheet).
+//     worksheet is 5 pages in the dialog.
 //
 // All expected sheet contents match the deterministic generator outputs
-// pinned in src/lib/problems.test.ts.
+// pinned in generators.test.ts.
 
 import React from 'react';
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { MathsDashboard } from './MathsDashboard';
+// The plugin is tested through the REAL host — plugins never ship their own
+// private host, they mount into the shared dashboard.
+import { MathsDashboard } from '../../components/MathsDashboard';
 
 // Each test renders a fresh dashboard (initially on Year 1 + Addition, 1 page).
 beforeEach(() => {
@@ -338,6 +343,29 @@ describe('MathsDashboard — print flow (native dialog, preview IS the preview)'
         // The on-screen preview (the print preview) shows the same 5 pages.
         expect(screen.getByTestId('sheet-preview-page5')).toBeDefined();
         expect(screen.queryByTestId('sheet-preview-page6')).toBeNull();
+    });
+
+    it('the print tree lives OUTSIDE .app-chrome (print media hides the shell)', () => {
+        // CRITICAL placement pin: @media print hides .app-chrome WHOLESALE, so
+        // the .print-doc tree MUST be a sibling/descendant-outside of that
+        // shell — if a refactor ever moves it back inside the interactive
+        // chrome, printing would emit NOTHING (blank pages). The host mounts
+        // the active plugin's print surface exactly there.
+        const printDoc = document.querySelector('.print-doc');
+        expect(printDoc).not.toBeNull();
+        let cursor: Element | null = printDoc;
+        let insideChrome = false;
+        while (cursor) {
+            if (cursor.classList?.contains('app-chrome')) {
+                insideChrome = true;
+                break;
+            }
+            cursor = cursor.parentElement;
+        }
+        expect(insideChrome).toBe(false);
+        // (Screen invisibility (.print-doc { display: none }) comes from
+        // app.css, which the jsdom test environment does not load — the
+        // placement pin above is what guards the print flow end-to-end.)
     });
 
     it('the print tree follows the page stepper (1 page => 1 A4 block)', () => {

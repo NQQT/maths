@@ -18,7 +18,7 @@ import React, { useRef } from 'react';
 import { styledComponent } from '@presource/react';
 import { A4_H, A4_W, usePageScale, type ZoomMode } from './page-scale';
 import { PrintableSheet } from './PrintableSheet';
-import type { Problem } from '../lib/problems';
+import type { Problem } from './generators';
 
 export type PageSpec = {
     // The problems printed on this page (ids run across the whole document).

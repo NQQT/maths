@@ -1,7 +1,10 @@
 /* ─────────────────────────────────────────────────────────────────────────────
    @distribution/maths — global stylesheet.
 
-   Two jobs:
+   The app is a PLUGIN HOST (see src/plugins/): the dashboard chrome renders
+   header/rail/toolbar/canvas slots, and each exercise is a self-contained
+   plugin that fills them (src/plugins/index.ts is the registration list).
+   This stylesheet only carries the two cross-cutting concerns:
 
    1. CONTINUOUS DOCUMENT FLOW
       The app is a normal, vertically-growing web page: nothing in the
@@ -10,18 +13,17 @@
       own vertical scrollbar appears and the whole page scrolls as one
       continuous document — exactly like the browser's native print preview,
       where A4 sheets flow down the page and the window scrolls them. The
-      preview canvas no longer keeps an internal scroll area; its page stack
-      simply extends the document (see Canvas/StackViewport in
-      MathsDashboard.tsx / PageStack.tsx). The header, toolbar and math-type
-      rail are position:sticky so they stay reachable while scrolling, and
-      the zoom dock is position:fixed.
+      header, toolbar and math-type rail are position:sticky so they stay
+      reachable while scrolling, and the zoom dock is position:fixed.
 
    2. PRINT RULES
-      Printing is a plain window.print() call. Under @media print the app UI
-      (`.app-chrome`) is hidden and the hidden `.print-doc` tree is revealed:
-      one 210mm × 297mm block per worksheet page, each breaking onto its own
-      A4 sheet — so multi-page worksheets print page-for-page with zero JS
-      involved in the actual print job.
+      Printing is a plain window.print() call (fired by a plugin's toolbar).
+      Under @media print the app UI (`.app-chrome`) is hidden and the active
+      plugin's hidden `.print-doc` tree is revealed — the host mounts that
+      tree OUTSIDE .app-chrome for exactly this reason: one 210mm × 297mm
+      block per worksheet page, each breaking onto its own A4 sheet, so
+      multi-page worksheets print page-for-page with zero JS involved in the
+      actual print job.
    ───────────────────────────────────────────────────────────────────────────── */
 
 body {

@@ -1,71 +1,58 @@
-// The maths worksheet dashboard. Composition (top-to-bottom, left-to-right):
+// ─────────────────────────────────────────────────────────────────────────────
+// The maths dashboard — a THIN PLUGIN HOST.
+//
+// The dashboard no longer contains any exercise logic. It is pure chrome:
+//   - the app shell (header bar, body layout, sticky positioning, canvas);
+//   - the shared toolbar card FRAME and rail FRAME;
+//   - mounting points for plugins (header / sidebar list / toolbar / page),
+//     fed from the plugin list in ../plugins (see plugins/index.ts).
+//
+// Every exercise/worksheet lives in a self-contained plugin under
+// src/plugins/<id>/ that contributes to these slots via the DashboardPlugin
+// contract (plugins/types.ts). Deleting a plugin removes its feature without
+// affecting this host or other plugins.
+//
+// Layout (top-to-bottom, left-to-right) — unchanged from the original:
 //
 //   +------------------------------------------------------------------+
-//   | (∑) Maths Sheets                       [P][1][2]…[12] (top-right)|
+//   | (∑) Maths Sheets                       [plugin header slot]      |
 //   +----------------+-------------------------------------------------+
-//   |  MATH TYPE     |  toolbar card: title/subtitle · Pages [− n +]   |
-//   |  (left rail,   |               ...  [Randomize] [Print]        |
-//   |   sticky)      |  dot-grid canvas: CONTINUOUS vertical stack of  |
-//   |  - Addition    |  A4 pages — the whole window scrolls them (the |
-//   |  - Subtraction |  browser's vertical scrollbar, like the native  |
-//   |  - …           |  print preview); one page per A4 sheet          |
-//   |                |  [+] zoom dock (floating, fixed bottom-right)  |
+//   |  PLUGIN LIST    |  toolbar card: [plugin toolbar slot]           |
+//   |  (left rail,    |  canvas: [plugin page slot]                    |
+//   |   sticky)       |  (continuous A4 stack / plugin empty state)     |
+//   |                 |  [+] zoom dock (plugin-owned, fixed)           |
 //   +----------------+-------------------------------------------------+
 //
-// SCROLLING: the app is a normal, continuously-growing document — there is no
-// viewport lock and no internal scroll area around the pages (app.css job 1).
-// When the stacks of A4 sheets make the page taller than the window, the
-// browser's own vertical scrollbar scrolls the WHOLE window, so the preview
-// flows down continuously exactly like the browser's native print preview.
-// The grade header, the toolbar card and the math-type rail are
-// position:sticky (they stay pinned while scrolling), and the zoom dock is
-// position:fixed, so every control stays reachable at any scroll position.
+// SCROLLING: the app is a normal, continuously-growing document (app.css
+// job 1) — the window's own scrollbar scrolls long page stacks, the header
+// / toolbar / rail are position:sticky and the zoom dock is position:fixed.
 //
-// PRINTING: the normal content view (A4 page stack + toolbar with the Pages
-// stepper) IS the print preview — there is no separate in-app review screen.
-// The toolbar "Print" button fires the browser's NATIVE print dialog
-// immediately via a plain window.print():
-//   1. Under @media print (app.css) the interactive app shell (`.app-chrome`)
-//      is hidden and the screen-hidden .print-doc tree is revealed — one exact
-//      A4 block per worksheet page, each breaking onto its own physical
-//      sheet. A 5-page worksheet therefore shows as (and prints as) 5 pages
-//      in the native dialog.
-//   2. While the dialog is open the document title is set to the worksheet
-//      title (e.g. "Year 1 — Addition") so a PDF saved from it gets a
-//      meaningful file name; the previous title is restored afterwards.
-//
-// Multi-page worksheets: the document (grade, type, seed, page count) is
-// generated ONCE per selection via generateDocument and the same page list
-// feeds both the preview stack and the hidden print tree — so the two always
-// agree. The page count is an unbounded stepper (− n +): there is no fixed
-// toggle limit, teachers can generate as many A4 sheets as they like.
-// "Randomize" re-rolls the seed and regenerates every page in place.
-import React, { useMemo } from 'react';
-import { useStateHook, styledComponent } from '@presource/react';
-import { getGradeConfig } from '../lib/grades';
-import { generateDocument, MATH_TYPES, scopeLabel, type MathTypeId } from '../lib/problems';
-import { seedFrom } from '../lib/rng';
-import { GradeSelector } from './GradeSelector';
-import { TypeSidebar } from './TypeSidebar';
-import { PageStack, type PageSpec } from './PageStack';
-import { ZoomControl } from './ZoomControl';
-import { PrintableSheet } from './PrintableSheet';
-import type { ZoomMode } from './page-scale';
+// PRINTING: the normal content view IS the print preview — a plugin's Print
+// button fires the browser-NATIVE print dialog (window.print()); under
+// @media print (app.css) this shell (.app-chrome) is hidden and the plugin's
+// hidden .print-doc tree is revealed.
+// ─────────────────────────────────────────────────────────────────────────────
 
-// Minimum page count; there is intentionally NO maximum — the stepper can be
-// incremented as far as the user wants ("infinite" page generation).
-const MIN_PAGES = 1;
+import React from 'react';
+import { styledComponent } from '@presource/react';
+import { PLUGINS } from '../plugins';
+import {
+    DashboardContextProvider,
+    usePluginRegistry,
+    PluginHeaderHost,
+    PluginSidebarHost,
+    PluginToolbarHost,
+    PluginPageHost,
+    PluginPrintHost
+} from '../plugins';
 
 // ──────────────────────────────────────────────────────────────
-// App shell
+// App shell (unchanged chrome from the pre-plugin MathsDashboard)
 // ──────────────────────────────────────────────────────────────
 
-// App root: a normal document box that grows with its content. app.css keeps
-// #root at min-height:100dvh so short documents still paint the full
-// viewport; taller ones (many A4 pages) grow the window and the browser's
-// vertical scrollbar scrolls them (no height/overflow locking anywhere —
-// app.css job 1). The `app-root` class exists so the @media print rules in
-// app.css can target exactly this box (defensive un-clip on print).
+// App root: a normal document box that grows with its content (see app.css).
+// The `app-root` class exists so the @media print rules in app.css can target
+// exactly this box (defensive un-clip on print).
 const AppRoot = styledComponent('div', {
     position: 'relative',
     width: '100%',
@@ -75,12 +62,8 @@ const AppRoot = styledComponent('div', {
     color: '#0f172a'
 });
 
-// White top bar: brand mark + title on the left, grade rail on the right.
-// position:sticky so it stays pinned while the window scrolls the page stack
-// (continuous document flow — see app.css); z-index keeps it above the
-// scrolling content and the sticky toolbar below it. sm+: fixed 64px (this is
-// also the `top` offset the sticky toolbar/rail use); xs: auto height so the
-// wrapping grade rail can never overflow the bar (the rail scrolls on sm+).
+// White top bar: brand mark + title on the left, plugin header slot on the
+// right (the worksheet plugin renders the grade pills there).
 const HeaderBar = styledComponent('div', {
     position: 'sticky',
     top: 0,
@@ -124,19 +107,15 @@ const HeaderSpacer = styledComponent('div', {
     minWidth: 0
 });
 
-// Body: math-type rail (left) + main column (right). Stacks vertically on xs
-// (rail becomes a chip strip above the canvas); row layout from sm up. Height
-// is fully content-driven (continuous document flow — the main column's page
-// stack may be taller than the window, growing the document; app.css job 1).
+// Body: plugin list rail (left) + main column (right). Stacks vertically on xs
+// (rail becomes a chip strip above the canvas); row layout from sm up.
 const Body = styledComponent('div', {
     display: 'flex',
     flexDirection: () => ({ xs: 'column', sm: 'row' }),
     minWidth: 0
 });
 
-// Right-hand column: toolbar card, then the canvas. Content-height driven —
-// the page stack extends the document (continuous flow, app.css job 1); the
-// column simply takes whatever height the stack needs.
+// Right-hand column: toolbar card, then the canvas. Content-height driven.
 const Main = styledComponent('div', {
     display: 'flex',
     flexDirection: 'column',
@@ -147,14 +126,9 @@ const Main = styledComponent('div', {
     minWidth: 0
 });
 
-// ──────────────────────────────────────────────────────────────
-// Toolbar
-// ──────────────────────────────────────────────────────────────
-
-// Toolbar card. position:sticky under the pinned header (sm+, where the
-// header is exactly 64px) so the Pages stepper / Randomize / Print stay
-// reachable while the window scrolls long page stacks; xs keeps it static
-// (the wrapping xs header has no fixed height to pin against).
+// Toolbar card frame. position:sticky under the pinned header (sm+, where the
+// header is exactly 64px) so plugin toolbar controls stay reachable while the
+// window scrolls long page stacks; xs keeps it static.
 const ToolbarCard = styledComponent('div', {
     display: 'flex',
     alignItems: 'center',
@@ -173,140 +147,47 @@ const ToolbarCard = styledComponent('div', {
     boxShadow: '0 1px 2px rgba(15,23,42,0.04)'
 });
 
-const ToolbarId = styledComponent('div', {
+// Left rail frame: the plugin list. From sm up it is position:sticky so it
+// pins under the sticky header while the WINDOW scrolls the continuous page
+// stack; a viewport-capped maxHeight makes long lists scroll inside the rail.
+// xs: collapses to a static horizontal chip strip above the canvas.
+const Sidebar = styledComponent('div', {
     display: 'flex',
-    flexDirection: 'column',
-    gap: '2px',
-    minWidth: 0
+    gap: '6px',
+    padding: '16px',
+    boxSizing: 'border-box',
+    background: '#ffffff',
+    overflowY: 'auto',
+    flexDirection: () => ({ xs: 'row', sm: 'column' }),
+    flexWrap: () => ({ xs: 'wrap', sm: 'nowrap' }),
+    width: () => ({ xs: '100%', sm: '264px' }),
+    alignSelf: 'flex-start',
+    position: () => ({ xs: 'static', sm: 'sticky' }),
+    top: () => ({ xs: '0px', sm: '64px' }),
+    maxHeight: () => ({ xs: 'none', sm: 'calc(100vh - 80px)' }),
+    zIndex: 10,
+    flexShrink: 0,
+    overflowX: () => ({ xs: 'auto', sm: 'hidden' }),
+    borderRight: () => ({ xs: 'none', sm: '1px solid #e4e9f2' }),
+    borderBottom: () => ({ xs: '1px solid #e4e9f2', sm: 'none' })
 });
 
-const ToolbarTitle = styledComponent('div', {
-    fontSize: '15px',
-    fontWeight: 700,
-    color: '#0f172a',
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis'
-});
-
-const ToolbarSub = styledComponent('div', {
-    fontSize: '12px',
-    color: '#64748b',
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis'
-});
-
-const ToolbarControls = styledComponent('div', {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '10px',
-    flexWrap: 'wrap'
-});
-
-const PagesLabel = styledComponent('span', {
+const SidebarHeading = styledComponent('h2', {
+    // On xs the heading rides inline above the chip row (width 100% forces the
+    // wrap); on sm+ it is the first column item.
+    width: () => ({ xs: '100%', sm: 'auto' }),
     fontSize: '11px',
     fontWeight: 700,
     textTransform: 'uppercase',
-    letterSpacing: '0.07em',
-    color: '#94a3b8'
-});
-
-// − / + stepper: the page count is a NUMBER that increments (no fixed 1..N
-// toggle set, no upper cap — see MIN_PAGES). Same visual language as
-// ZoomControl: a pill holding the two arrows and the value between them.
-const PageStepper = styledComponent('div', {
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: '2px',
-    padding: '3px',
-    borderRadius: '10px',
-    background: '#eef1f7',
-    border: '1px solid #e4e9f2',
+    letterSpacing: '0.08em',
+    color: '#94a3b8',
+    margin: '0 0 6px 0',
     flexShrink: 0
 });
 
-// `dimmed` is a styledComponent custom prop (HTMLAttributes has no `disabled`),
-// mirrored onto aria-disabled + a guarded onClick below.
-const PageStepButton = styledComponent<{ dimmed: boolean; atMin: boolean }>('button', {
-    width: '28px',
-    height: '28px',
-    border: 'none',
-    borderRadius: '8px',
-    fontSize: '15px',
-    fontWeight: 700,
-    lineHeight: 1,
-    flexShrink: 0,
-    cursor: ({ dimmed, atMin }) => (dimmed || atMin ? 'default' : 'pointer'),
-    background: 'transparent',
-    color: ({ dimmed }) => (dimmed ? '#cbd5e1' : '#334155'),
-    opacity: ({ dimmed, atMin }) => (dimmed || atMin ? 0.5 : 1)
-});
-
-// The page count, editable by typing. `type="number"` gives native spinners +
-// validation; the handler below parses the value back into state.
-//
-// styledComponent's typed surface is HTMLAttributes<HTMLElement>, which has no
-// `type`/input-event props, so (per the TwoColumnDashboard pattern in
-// @react/headless) we cast to the InputHTMLAttributes surface for this element.
-const PageInput = styledComponent('input', {
-    width: '48px',
-    height: '28px',
-    border: 'none',
-    borderRadius: '8px',
-    background: '#ffffff',
-    color: '#0f172a',
-    fontSize: '13px',
-    fontWeight: 700,
-    textAlign: 'center',
-    boxSizing: 'border-box',
-    padding: '0 4px',
-    outline: 'none',
-    boxShadow: '0 1px 2px rgba(15,23,42,0.12)'
-}) as unknown as React.ForwardRefExoticComponent<
-    React.InputHTMLAttributes<HTMLInputElement> & {
-        theme?: any;
-        [breakpoint: string]: any;
-    }
->;
-
-const GhostButton = styledComponent<{ dimmed: boolean }>('button', {
-    padding: '7px 14px',
-    borderRadius: '9px',
-    border: '1px solid #e4e9f2',
-    background: '#ffffff',
-    color: '#334155',
-    fontSize: '13px',
-    fontWeight: 600,
-    cursor: ({ dimmed }) => (dimmed ? 'default' : 'pointer'),
-    flexShrink: 0,
-    opacity: ({ dimmed }) => (dimmed ? 0.55 : 1),
-    transition: 'background 0.12s ease, border-color 0.12s ease'
-});
-
-const PrimaryButton = styledComponent<{ dimmed: boolean }>('button', {
-    padding: '7px 18px',
-    borderRadius: '9px',
-    border: 'none',
-    background: '#4f46e5',
-    color: '#ffffff',
-    fontSize: '13px',
-    fontWeight: 700,
-    cursor: ({ dimmed }) => (dimmed ? 'default' : 'pointer'),
-    flexShrink: 0,
-    boxShadow: ({ dimmed }) => (dimmed ? 'none' : '0 2px 8px rgba(79,70,229,0.35)'),
-    opacity: ({ dimmed }) => (dimmed ? 0.55 : 1)
-});
-
-// ──────────────────────────────────────────────────────────────
-// Canvas (preview)
-// ──────────────────────────────────────────────────────────────
-
-// The preview canvas is NOT a fixed-height, internally scrolling viewport any
-// more: its height is driven by the page stack's content, which extends the
-// whole document. The window's own vertical scrollbar (app.css job 1) scrolls
-// the A4 stack continuously — like the browser's native print preview — so
-// `overflow` is left visible and there is no internal scroll region.
+// The canvas frame: a plain, content-height wrapper (no overflow — plugin
+// pages extend the document and the window scrollbar scrolls them, app.css
+// job 1).
 const Canvas = styledComponent('div', {
     position: 'relative',
     width: '100%',
@@ -316,20 +197,10 @@ const Canvas = styledComponent('div', {
     background: '#eef1f7'
 });
 
-// The zoom dock is pinned to the WINDOW (position:fixed), not to the canvas:
-// with continuous document scrolling a canvas-anchored dock would scroll away
-// off-screen after a few pages, but a fixed dock stays reachable at any
-// scroll position.
-const ZoomDock = styledComponent('div', {
-    position: 'fixed',
-    right: '14px',
-    bottom: '14px',
-    zIndex: 50
-});
-
-// Empty state reserves real space with min-height (the canvas no longer has a
-// fixed height to distribute) so the placeholder is comfortably visible.
-const EmptyState = styledComponent('div', {
+// Host-level empty state: shown when NO plugin is registered at all (all
+// plugins deleted). Distinct from a plugin's own empty state, which renders
+// inside the canvas when the plugin's selection has no content.
+const HostEmptyState = styledComponent('div', {
     width: '100%',
     minHeight: '50vh',
     display: 'flex',
@@ -339,7 +210,7 @@ const EmptyState = styledComponent('div', {
     boxSizing: 'border-box'
 });
 
-const EmptyCard = styledComponent('div', {
+const HostEmptyCard = styledComponent('div', {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -352,260 +223,111 @@ const EmptyCard = styledComponent('div', {
     textAlign: 'center'
 });
 
-const EmptyIcon = styledComponent('div', {
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '48px',
-    height: '48px',
-    borderRadius: '14px',
-    background: '#eef2ff',
-    color: '#4f46e5',
-    fontSize: '24px',
-    marginBottom: '6px'
-});
+// ──────────────────────────────────────────────────────────────
+// Host body — subscribes to the store INSIDE the provider
+// ──────────────────────────────────────────────────────────────
 
-const EmptyTitle = styledComponent('div', {
-    fontSize: '16px',
-    fontWeight: 700,
-    color: '#0f172a'
-});
-
-const EmptyHint = styledComponent('div', {
-    fontSize: '13px',
-    color: '#64748b'
-});
-
-// Resolve the human label for a math type id (falls back to the id itself).
-function labelFor(type: MathTypeId): string {
-    return MATH_TYPES.find((t) => t.id === type)?.label ?? type;
+// The dashboard body must render INSIDE DashboardContextProvider to use the
+// store hooks, so the outer component is a two-part shell: provider here,
+// body (a child component) below.
+export function MathsDashboard() {
+    return (
+        <DashboardContextProvider>
+            <MathsDashboardBody />
+        </DashboardContextProvider>
+    );
 }
 
-export function MathsDashboard() {
-    // Accessor-state per the @presource/react state-hook contract:
-    // read with `x()`, write with `x(value)`.
-    const gradeId = useStateHook(1); // start on the target grade (Year 1)
-    const typeId = useStateHook<MathTypeId>('addition');
-    const pageCount = useStateHook(1); // A4 sheets to generate (>= MIN_PAGES, unbounded)
-    const zoom = useStateHook<ZoomMode>('fit'); // preview zoom (preview IS the print preview)
-    const refresh = useStateHook(0); // bump = "Randomize" => new seed
-
-    const grade = getGradeConfig(gradeId());
-    // If the previously selected type isn't offered by the new grade, fall back
-    // to the first offered type so no invalid selection can linger.
-    const activeType: MathTypeId = grade.available.includes(typeId())
-        ? typeId()
-        : (grade.available[0] ?? 'addition');
-
-    // Stable seed from the current selection + refresh counter. Deterministic,
-    // so the same inputs always yield the same document.
-    const seed = seedFrom([grade.id, activeType, refresh()]);
-
-    // Generate the document (ALL pages) exactly once per selection and reuse
-    // the same page list for the preview stack and the hidden print tree.
-    // Empty document => "not implemented", rendered as a
-    // placeholder in the canvas.
-    const sheet = useMemo(
-        () => generateDocument(grade, activeType, seed, pageCount()),
-        [grade, activeType, seed, pageCount()]
-    );
-
-    // Page list annotated with "Page i of n" labels (multi-page only). One
-    // PageSpec object is consumed by every rendering surface.
-    const total = sheet.pages.length;
-    const pageSpecs: PageSpec[] = sheet.pages.map((problems, i) => ({
-        problems,
-        pageLabel: total > 1 ? `Page ${i + 1} of ${total}` : undefined
-    }));
-
-    const hasProblems = total > 0;
-
-    const title = `${grade.label} — ${labelFor(activeType)}`;
-    const subtitle = `${labelFor(activeType)} — ${scopeLabel(grade, activeType)}`;
-
-    // "Randomize": re-roll the seed. The document is regenerated IN PLACE —
-    // the page count is preserved, so it can randomly become as many pages as
-    // the stepper currently says (1..n), not "one new sheet".
-    const randomize = () => refresh(refresh() + 1);
-
-    // Print: open the browser-NATIVE print dialog immediately from the normal
-    // content view (the preview stack is the print preview — no in-app review
-    // screen in between). The hidden .print-doc tree is what the browser
-    // paginates: one A4 block per page, so a 5-page document is 5 pages in
-    // the dialog (see the @media print rules in app.css). While the dialog is
-    // open the tab is retitled to the worksheet title, so a PDF saved from it
-    // is named after the sheet; window.print() blocks until the dialog
-    // closes, which is when the previous title is restored.
-    const doPrint = () => {
-        if (!hasProblems) return;
-        const previous = document.title;
-        document.title = title;
-        window.print(); // native print dialog
-        document.title = previous;
-    };
-
-    // Stepper handlers: decrement never drops below MIN_PAGES; increment has
-    // no upper bound, so the page count can keep growing.
-    const decreasePages = () => {
-        if (hasProblems) pageCount(Math.max(MIN_PAGES, pageCount() - 1));
-    };
-    const increasePages = () => {
-        if (hasProblems) pageCount(pageCount() + 1);
-    };
-    // Typing a new page count: empty input is tolerated (cleared while
-    // editing) and invalid text snaps back to MIN_PAGES on the next change.
-    const onPagesInput = (raw: string) => {
-        if (!hasProblems) return;
-        if (raw === '') return;
-        const n = Number.parseInt(raw, 10);
-        if (!Number.isNaN(n)) pageCount(Math.max(MIN_PAGES, n));
-        else pageCount(MIN_PAGES);
-    };
-    // If the field was left empty / invalid on blur, normalise to MIN_PAGES.
-    const onPagesBlur = () => {
-        if (hasProblems && pageCount() < MIN_PAGES) pageCount(MIN_PAGES);
-    };
+// The actual host chrome. All exercise content comes from the plugin slots.
+function MathsDashboardBody() {
+    // Registry hook: mounts every plugin's store slice, reconciles the
+    // selection (falling back to the first plugin when the selection is stale
+    // or empty) and hands back the ordered plugin list.
+    const { plugins, activePlugin } = usePluginRegistry(PLUGINS);
 
     return (
         <AppRoot className="app-root">
             {/* Everything inside .app-chrome is hidden when printing — the
-                @media print rules in app.css swap it for .print-doc. */}
+                @media print rules in app.css swap it for .print-doc (which
+                plugins render inside their page component). */}
             <div className="app-chrome">
                 <HeaderBar>
                     <BrandMark aria-hidden="true">∑</BrandMark>
                     <AppTitle>Maths Sheets</AppTitle>
                     <HeaderSpacer />
-                    <GradeSelector
-                        value={gradeId()}
-                        onChange={(id) => {
-                            gradeId(id);
-                        }}
-                    />
+                    {/* Plugin header slot (grade pills for the worksheet
+                        plugin; every registered plugin could contribute). */}
+                    <PluginHeaderHost plugins={plugins} />
                 </HeaderBar>
 
                 <Body>
-                    <TypeSidebar grade={grade} value={activeType} onChange={(id) => typeId(id)} />
+                    <Sidebar className="scrollbar-hidden">
+                        <SidebarHeading>Math Type</SidebarHeading>
+                        {/* Plugin list: every plugin's entries in registration
+                            order, wrapped in the shared rail button chrome. */}
+                        {plugins.length > 0 ? (
+                            <PluginSidebarHost plugins={plugins} />
+                        ) : (
+                            // No plugins installed at all — host-level empty
+                            // rail notice (only reachable when PLUGINS is []).
+                            <SidebarNotice />
+                        )}
+                    </Sidebar>
 
                     <Main>
-                        {/* Toolbar: title + page-count picker + actions. */}
+                        {/* Toolbar card frame with the ACTIVE plugin's toolbar
+                            slot inside. */}
                         <ToolbarCard>
-                            <ToolbarId>
-                                {/* data-testid lets tests target the toolbar title specifically, since the
-                                    same title string also appears on every A4 preview. */}
-                                <ToolbarTitle data-testid="toolbar-title">{title}</ToolbarTitle>
-                                {hasProblems && <ToolbarSub>{subtitle}</ToolbarSub>}
-                            </ToolbarId>
-                            <ToolbarControls>
-                                <PagesLabel>Pages</PagesLabel>
-                                {/* Unbounded −/n/+ stepper: page count is a number that
-                                    increments, not a fixed set of toggle options. */}
-                                <PageStepper role="group" aria-label="Number of pages" data-testid="page-stepper">
-                                    <PageStepButton
-                                        aria-label="Decrease pages"
-                                        dimmed={!hasProblems}
-                                        atMin={pageCount() <= MIN_PAGES}
-                                        aria-disabled={!hasProblems || pageCount() <= MIN_PAGES || undefined}
-                                        onClick={decreasePages}
-                                    >
-                                        &minus;
-                                    </PageStepButton>
-                                    <PageInput
-                                        type="number"
-                                        min={MIN_PAGES}
-                                        value={pageCount()}
-                                        aria-label="Page count"
-                                        data-testid="page-count"
-                                        onChange={(e) => onPagesInput(e.target.value)}
-                                        onBlur={onPagesBlur}
-                                    />
-                                    <PageStepButton
-                                        aria-label="Increase pages"
-                                        dimmed={!hasProblems}
-                                        atMin={false}
-                                        aria-disabled={!hasProblems || undefined}
-                                        onClick={increasePages}
-                                    >
-                                        +
-                                    </PageStepButton>
-                                </PageStepper>
-                                <GhostButton
-                                    dimmed={!hasProblems}
-                                    aria-disabled={!hasProblems || undefined}
-                                    data-testid="toolbar-randomize"
-                                    onClick={() => {
-                                        if (hasProblems) randomize();
-                                    }}
-                                >
-                                    Randomize
-                                </GhostButton>
-                                <PrimaryButton
-                                    dimmed={!hasProblems}
-                                    aria-disabled={!hasProblems || undefined}
-                                    data-testid="toolbar-print"
-                                    onClick={doPrint}
-                                >
-                                    Print
-                                </PrimaryButton>
-                            </ToolbarControls>
+                            <PluginToolbarHost plugins={plugins} />
                         </ToolbarCard>
 
-                        {/* Canvas / content area: the preview canvas. This view
-                            doubles as the print preview — toolbar Print opens the
-                            browser-native print dialog over it (window.print), it
-                            never swaps to a separate in-app review screen. */}
+                        {/* Canvas / content area: the ACTIVE plugin's page
+                            slot. This view doubles as the print preview — a
+                            plugin's Print button opens the browser-native
+                            dialog over it. */}
                         <Canvas>
-                            {!hasProblems ? (
-                                <EmptyState data-testid="empty-state">
-                                    <EmptyCard>
-                                        <EmptyIcon aria-hidden="true">∑</EmptyIcon>
-                                        <EmptyTitle>No worksheets for this selection yet</EmptyTitle>
-                                        <EmptyHint>Choose Prep, Year 1 or Year 2 to generate a printable sheet.</EmptyHint>
-                                    </EmptyCard>
-                                </EmptyState>
+                            {activePlugin ? (
+                                <PluginPageHost plugins={plugins} />
                             ) : (
-                                <PageStack
-                                    title={title}
-                                    subtitle={subtitle}
-                                    pages={pageSpecs}
-                                    zoom={zoom()}
-                                    testId="sheet-preview"
-                                    pageTestId="sheet-preview-page"
-                                />
-                            )}
-                            {/* The floating zoom dock belongs to the preview canvas
-                                (its pages are what the native print dialog will
-                                show), so it stays up whenever a sheet exists. */}
-                            {hasProblems && (
-                                <ZoomDock>
-                                    <ZoomControl
-                                        label="Preview zoom"
-                                        value={zoom()}
-                                        onChange={(m) => zoom(m)}
-                                    />
-                                </ZoomDock>
+                                <HostEmptyState data-testid="host-empty-state">
+                                    <HostEmptyCard>
+                                        <div style={{ fontSize: '24px' }}>∑</div>
+                                        <strong>No exercises installed</strong>
+                                    </HostEmptyCard>
+                                </HostEmptyState>
                             )}
                         </Canvas>
                     </Main>
                 </Body>
-
-                </div>
-
-            {/* Screen-hidden print tree: the ONLY thing window.print() emits
-                (@media print hides .app-chrome, reveals this). One exact A4
-                block per worksheet page — a 3-page document prints as 3
-                physical sheets, each page breaking via app.css .print-page. */}
-            <div className="print-doc" aria-hidden="true">
-                {sheet.pages.map((problems, i) => (
-                    <div className="print-page" key={i}>
-                        <PrintableSheet
-                            title={title}
-                            subtitle={subtitle}
-                            problems={problems}
-                            pageLabel={total > 1 ? `Page ${i + 1} of ${total}` : undefined}
-                        />
-                    </div>
-                ))}
             </div>
+
+            {/* Screen-hidden print tree of the ACTIVE plugin, mounted as a
+                SIBLING of .app-chrome: print media hides the shell wholesale
+                and reveals .print-doc (app.css), so this is exactly what
+                window.print() emits — one A4 block per worksheet page. */}
+            <PluginPrintHost plugins={plugins} />
         </AppRoot>
+    );
+}
+
+// Rail notice for the (rare) zero-plugin state — mirrors the host empty card.
+const SidebarNoticeCard = styledComponent('div', {
+    padding: '14px',
+    background: '#f8fafc',
+    border: '1px solid #e4e9f2',
+    borderRadius: '12px',
+    color: '#475569',
+    fontSize: '14px',
+    lineHeight: 1.5,
+    width: () => ({ xs: '100%', sm: 'auto' })
+});
+
+function SidebarNotice() {
+    return (
+        <SidebarNoticeCard>
+            <strong>No exercises installed.</strong>
+            <br />
+            Add a plugin in src/plugins/index.ts to see worksheets here.
+        </SidebarNoticeCard>
     );
 }

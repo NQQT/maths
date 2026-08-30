@@ -21,7 +21,7 @@
 // are converted to rem, which we do not want for print-accurate spacing.
 import React, { Fragment } from 'react';
 import { styledComponent } from '@presource/react';
-import { SINGLE_COLUMN_TYPES, type Problem } from '../lib/problems';
+import { SINGLE_COLUMN_TYPES, type Problem } from './generators';
 
 export type PrintableSheetProps = {
     // Large heading, e.g. "Year 1 — Addition".
