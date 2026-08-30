@@ -14,6 +14,12 @@
 // plugins/index.ts removes the worksheet without affecting this framework or
 // any other plugin.
 //
+// LOADING ORDER: the dashboard renders FIRST (this shell + the first plugin
+// — the default worksheet — in the very first paint); the remaining plugins
+// are then loaded ONE BY ONE after mount by usePluginLoader
+// (framework/loader.ts). PLUGINS holds the factories UNINVOKED — nothing is
+// constructed at module load time any more.
+//
 // Layout (top-to-bottom, left-to-right) — unchanged from the original:
 //
 //   +------------------------------------------------------------------+
@@ -39,7 +45,9 @@ import React from 'react';
 import { styledComponent } from '@presource/react';
 import { PLUGINS } from '../plugins';
 import {
+    DASHBOARD_FRAMEWORK,
     DashboardContextProvider,
+    usePluginLoader,
     usePluginRegistry,
     GradeSelector,
     PluginHeaderHost,
@@ -244,10 +252,22 @@ export function MathsDashboard() {
 // The actual framework chrome. All worksheet content comes from the plugin
 // slots.
 function MathsDashboardBody() {
-    // Registry hook: mounts every plugin's store slice, reconciles the
-    // selection (falling back to the first plugin when the selection is stale
-    // or empty) and hands back the ordered plugin list.
-    const { plugins, activePlugin } = usePluginRegistry(PLUGINS);
+    // PLUGIN LOADING ORDER — the dashboard loads FIRST, its plugins SECOND.
+    // PLUGINS holds the factories UNINVOKED; usePluginLoader renders this
+    // shell with the FIRST plugin (the default worksheet) immediately, then
+    // loads the remaining plugins ONE BY ONE after mount (framework/
+    // loader.ts) — previously every plugin was constructed at module load
+    // time, before the dashboard ever rendered.
+    const { plugins: loadedPlugins, done: pluginsDone } = usePluginLoader(
+        PLUGINS,
+        DASHBOARD_FRAMEWORK
+    );
+
+    // Registry hook: mounts each LOADED plugin's store slice (diff-based, so
+    // the growing list never resets the selection), reconciles the selection
+    // (falling back to the first plugin when the selection is stale or empty)
+    // and hands back the ordered plugin list.
+    const { plugins, activePlugin } = usePluginRegistry(loadedPlugins);
 
     return (
         <AppRoot className="app-root">
@@ -271,17 +291,28 @@ function MathsDashboardBody() {
                 <Body>
                     <Sidebar className="scrollbar-hidden">
                         <SidebarHeading>Math Type</SidebarHeading>
-                        {/* Plugin list: every visible plugin's entries in
-                            registration order, wrapped in the shared rail
-                            button chrome. Grade gating is plugin-declared
-                            (isOffered) — the framework just renders the list. */}
+                        {/* Plugin list: every loaded VISIBLE plugin's entries
+                            in registration order, wrapped in the shared rail
+                            button chrome. Plugins arrive ONE BY ONE (see
+                            usePluginLoader) — the rail grows as each lands.
+                            Grade gating is plugin-declared (isOffered) — the
+                            framework just renders the list. */}
                         {plugins.length > 0 ? (
-                            <PluginSidebarHost plugins={plugins} />
-                        ) : (
-                            // No plugins installed at all — framework-level
-                            // empty rail notice (only reachable when PLUGINS
-                            // is []).
+                            <>
+                                <PluginSidebarHost plugins={plugins} />
+                                {/* Progressive loading: factories still
+                                    pending — hint under the loaded entries. */}
+                                {!pluginsDone && <SidebarLoading>Loading…</SidebarLoading>}
+                            </>
+                        ) : pluginsDone ? (
+                            // Loading finished with ZERO plugins installed —
+                            // framework-level empty rail notice (only
+                            // reachable when PLUGINS is []).
                             <SidebarNotice />
+                        ) : (
+                            // Zero factories loaded SO FAR (defensive — the
+                            // first factory loads with the first render).
+                            <SidebarLoading>Loading…</SidebarLoading>
                         )}
                     </Sidebar>
 
@@ -343,3 +374,17 @@ function SidebarNotice() {
         </SidebarNoticeCard>
     );
 }
+
+// Progressive-load hint: shown at the bottom of the rail while the remaining
+// plugin factories are still being loaded one by one (framework/loader.ts).
+// Mirrors the heading's small-caps style so it reads as rail chrome.
+const SidebarLoading = styledComponent('div', {
+    fontSize: '11px',
+    fontWeight: 700,
+    textTransform: 'uppercase',
+    letterSpacing: '0.08em',
+    color: '#94a3b8',
+    padding: '6px 2px',
+    flexShrink: 0,
+    width: () => ({ xs: '100%', sm: 'auto' })
+});

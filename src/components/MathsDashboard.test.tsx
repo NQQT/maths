@@ -26,6 +26,13 @@
 //
 // All expected sheet contents match the deterministic generator outputs
 // pinned in the per-plugin test files.
+//
+// PLUGIN LOADING ORDER: the dashboard renders FIRST (shell + the first
+// plugin, Addition, in the initial paint); the remaining plugins are then
+// loaded ONE BY ONE after mount (framework/loader.ts). Tests that touch a
+// non-default rail entry therefore AWAIT that entry (findByRole) before
+// clicking it; `allVisiblePluginsLoaded()` below awaits the last Year-1
+// entry when an assertion needs the FULL rail.
 
 import React from 'react';
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
@@ -67,8 +74,24 @@ function text(el: Element | null | undefined) {
     return el?.textContent ?? '';
 }
 
+// Await the LAST Year-1 rail entry ("Data & Tally"). Plugins are loaded ONE
+// BY ONE after the dashboard renders (framework/loader.ts) in registration
+// order, so once this entry is in the rail every plugin that is visible on
+// Year 1 has been loaded — rail/canvas assertions below are then
+// deterministic. (Later factories — division, money — are Year-2-only and
+// hidden on Year 1, so their load state never affects these assertions.)
+function allVisiblePluginsLoaded() {
+    // Generous timeout: the loads are chained macrotasks (one per plugin), so
+    // a cold test run under load can take longer than waitFor's 1s default.
+    return screen.findByRole('button', { name: 'Data & Tally' }, { timeout: 5000 });
+}
+
 describe('MathsDashboard — layout', () => {
-    it('renders the app title and year-1 addition preview by default', () => {
+    it('renders the app title and year-1 addition preview by default', async () => {
+        // Wait for the progressive plugin load to finish before judging the
+        // full rail (the first plugin — Addition — is available immediately;
+        // the rest stream in one by one).
+        await allVisiblePluginsLoaded();
         // App title in the header.
         expect(screen.getByText('Maths Sheets')).toBeDefined();
         // Grade selector present (P + 1..12 = 13 radios; 1 is selected by default).
@@ -87,7 +110,9 @@ describe('MathsDashboard — layout', () => {
         expect(text(screen.getByTestId('sheet-preview-page1'))).toContain('1.10 + 9 =');
     });
 
-    it('the type rail lists icon + label only (no per-type count badges)', () => {
+    it('the type rail lists icon + label only (no per-type count badges)', async () => {
+        // Full rail first (progressive one-by-one plugin loading).
+        await allVisiblePluginsLoaded();
         // The old rail showed a "questions per page" number per type
         // (SHEET_COUNTS). With the unbounded Pages stepper and Randomize, a
         // selection can regenerate any number of pages, so those badges were
@@ -106,12 +131,14 @@ describe('MathsDashboard — layout', () => {
 });
 
 describe('MathsDashboard — math type selection (left)', () => {
-    it('switches the sheet when a different math type is chosen', () => {
+    it('switches the sheet when a different math type is chosen', async () => {
         // Start on Addition.
         expect(text(screen.getByTestId('sheet-preview-page1'))).toContain('1.10 + 9 =');
 
-        // Pick Subtraction.
-        fireEvent.click(screen.getByRole('button', { name: 'Subtraction' }));
+        // Pick Subtraction (awaited — plugins load one by one after mount).
+        fireEvent.click(
+            await screen.findByRole('button', { name: 'Subtraction' }, { timeout: 5000 })
+        );
 
         // Preview now reflects the (Year 1, Subtraction) sheet; first row "6 - 4 =".
         expect(text(screen.getByTestId('sheet-preview-page1'))).toContain('1.6 - 4 =');
@@ -119,21 +146,30 @@ describe('MathsDashboard — math type selection (left)', () => {
         expect(screen.getByTestId('toolbar-title').textContent).toBe('Year 1 — Subtraction');
     });
 
-    it('Word Problems switches the sheet to prose questions', () => {
-        fireEvent.click(screen.getByRole('button', { name: 'Word Problems' }));
+    it('Word Problems switches the sheet to prose questions', async () => {
+        // Awaited — plugins load one by one after the dashboard renders.
+        fireEvent.click(
+            await screen.findByRole('button', { name: 'Word Problems' }, { timeout: 5000 })
+        );
         const pageText = text(screen.getByTestId('sheet-preview-page1'));
         // Year 1 word, problem 1 (see WordProblemsWorksheet.test.ts).
         expect(pageText).toContain('Sam had 11 cookies');
     });
 
-    it('Grade 2 offers the Multiplication (times tables) worksheet', () => {
+    it('Grade 2 offers the Multiplication (times tables) worksheet', async () => {
         fireEvent.click(gradeRadio('2'));
-        // Year 2 rail includes Multiplication.
-        expect(screen.getByRole('button', { name: 'Multiplication' })).toBeDefined();
+        // Year 2 rail includes Multiplication (awaited — plugins load one by
+        // one after the dashboard renders; the factory loads regardless of
+        // grade, the gate only controls visibility).
+        const multiplication = await screen.findByRole(
+            'button',
+            { name: 'Multiplication' },
+            { timeout: 5000 }
+        );
 
         // Pick it; the sheet matches the pinned Grade 2 times-tables stream
         // (first row "5 × 10 =").
-        fireEvent.click(screen.getByRole('button', { name: 'Multiplication' }));
+        fireEvent.click(multiplication);
         expect(screen.getByTestId('toolbar-title').textContent).toBe('Year 2 — Multiplication');
         expect(text(screen.getByTestId('sheet-preview-page1'))).toContain('1.5 × 10 =');
     });

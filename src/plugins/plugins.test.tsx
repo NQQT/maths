@@ -18,8 +18,10 @@
 //      snaps back to the first remaining plugin.
 //   5. THE REAL WORKSHEETS: the 18 per-type plugins (AdditionWorksheet,
 //      SubtractionWorksheet, ...) load through the same pipeline the
-//      framework uses (the PLUGINS list), share the dashboard session, and
-//      their rail entries are grade-gated (Year 1 hides Multiplication).
+//      framework uses (the PLUGINS factory list, loaded one by one by
+//      usePluginLoader after the dashboard renders), share the dashboard
+//      session, and their rail entries are grade-gated (Year 1 hides
+//      Multiplication).
 //
 // The fixtures are throwaway plugins defined inline here — by design, adding
 // a plugin is just "a function that satisfies DashboardPlugin".
@@ -271,9 +273,10 @@ describe('plugin deletion — the dashboard survives and falls back', () => {
 });
 
 // ── The real worksheet plugins ───────────────────────────────────────────────
-// One plugin per worksheet type, all loaded through the same pipeline the
-// framework uses: PLUGINS[i] is a DashboardPlugin produced by calling the
-// plugin's factory function with DASHBOARD_FRAMEWORK.
+// One plugin per worksheet type. PLUGINS stores UNINVOKED factories (the
+// dashboard loads them one by one AFTER it has rendered — framework/
+// loader.ts), so this suite builds the list the same way the loader does: by
+// calling each factory with DASHBOARD_FRAMEWORK.
 
 const EXPECTED_WORKSHEET_IDS = [
     'addition',
@@ -296,18 +299,27 @@ const EXPECTED_WORKSHEET_IDS = [
     'money'
 ];
 
+// The plugin list, built through the same pipeline usePluginLoader uses.
+const WORKSHEETS: DashboardPlugin[] = PLUGINS.map((load) => load(DASHBOARD_FRAMEWORK));
+
 describe('the real worksheet plugins — register through the same pipeline', () => {
     it('is the installed plugin list: one plugin per worksheet type, in catalogue order', () => {
-        expect(PLUGINS.map((p) => p.id)).toEqual(EXPECTED_WORKSHEET_IDS);
+        // PLUGINS is the ordered list of UNINVOKED factories...
+        expect(PLUGINS).toHaveLength(EXPECTED_WORKSHEET_IDS.length);
+        for (const load of PLUGINS) {
+            expect(typeof load).toBe('function');
+        }
+        // ...which produce the plugins in catalogue order when loaded.
+        expect(WORKSHEETS.map((p) => p.id)).toEqual(EXPECTED_WORKSHEET_IDS);
         // Every worksheet declares exactly ONE rail entry — its own label.
-        for (const plugin of PLUGINS) {
+        for (const plugin of WORKSHEETS) {
             expect(plugin.entries).toHaveLength(1);
             expect(plugin.entries[0].id).toBe(plugin.id);
         }
     });
 
     it('mounts with the shared dashboard session and previews Addition by default', () => {
-        mountHost(PLUGINS);
+        mountHost(WORKSHEETS);
 
         // The framework session starts on Year 1, 1 page, fit zoom.
         expect(probeStore!.session).toEqual({ gradeId: 1, pageCount: 1, zoom: 'fit', refresh: 0 });
@@ -318,7 +330,7 @@ describe('the real worksheet plugins — register through the same pipeline', ()
     });
 
     it('grade-gates the rail: Year 1 hides Multiplication, Year 2 shows it', () => {
-        mountHost(PLUGINS);
+        mountHost(WORKSHEETS);
 
         // Year 1: Multiplication is NOT listed (times tables start at Y2).
         expect(screen.queryByRole('button', { name: 'Multiplication' })).toBeNull();
@@ -345,7 +357,7 @@ describe('the real worksheet plugins — register through the same pipeline', ()
     });
 
     it('worksheet plugins share the dashboard session (page count persists across worksheets)', () => {
-        mountHost(PLUGINS);
+        mountHost(WORKSHEETS);
 
         // Set 3 pages while Addition is active, then switch to Subtraction:
         // the page count lives in the framework session, not in either plugin.

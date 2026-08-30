@@ -3,10 +3,18 @@
 //
 // Every worksheet is a PLUGIN: a factory FUNCTION (AdditionWorksheet,
 // SubtractionWorksheet, MissingNumberWorksheet, CompareWorksheet, ...) that
-// the dashboard LOADS by calling it with the framework's configurations +
-// layouts (DASHBOARD_FRAMEWORK). Within each function the plugin describes its
-// sidebar label and what happens when its label is clicked (its worksheet
+// the dashboard loads by calling it with the framework's configurations +
+// layouts (DASHBOARD_FRAMEWORK). Within each function the plugin describes
+// its sidebar label and what happens when its label is clicked (its worksheet
 // shows in the content area).
+//
+// LOADING ORDER — the dashboard loads FIRST, the plugins SECOND: the
+// factories below are stored UNINVOKED (a PluginFactory, not a
+// DashboardPlugin). The dashboard renders its shell + the first plugin
+// immediately, then loads the remaining factories ONE BY ONE after mount —
+// see framework/loader.ts (usePluginLoader). Previously every factory was
+// invoked right here at module load time, which constructed all 18 plugins
+// before the dashboard ever rendered.
 //
 // This is the ONLY file that changes when adding or removing a worksheet
 // (besides the plugin's own file, which is fully self-contained):
@@ -19,13 +27,14 @@
 //                         framework falls back to the remaining plugins
 //                         automatically.
 //
-// The array ORDER is the UI order: plugins appear in the left rail in this
-// sequence (grade-gated), and the first plugin's entry is the default
-// selection. The order mirrors the curriculum catalogue (Addition first,
+// The array ORDER is the UI order AND the loading order: plugins appear in
+// the left rail in this sequence (grade-gated), the first plugin's entry is
+// the default selection AND the first plugin loaded with the dashboard's
+// first render. The order mirrors the curriculum catalogue (Addition first,
 // Coins & Money last).
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { DASHBOARD_FRAMEWORK, type DashboardPlugin } from '../framework';
+import type { PluginFactory } from '../framework';
 import { AdditionWorksheet } from './AdditionWorksheet';
 import { SubtractionWorksheet } from './SubtractionWorksheet';
 import { MultiplicationWorksheet } from './MultiplicationWorksheet';
@@ -45,26 +54,28 @@ import { DataWorksheet } from './DataWorksheet';
 import { DivisionWorksheet } from './DivisionWorksheet';
 import { MoneyWorksheet } from './MoneyWorksheet';
 
-// All installed worksheet plugins, in display order. The dashboard loads each
-// by calling its factory function with its framework bundle — the plugin then
-// contributes its sidebar entry, toolbar, page and print surfaces.
-export const PLUGINS: DashboardPlugin[] = [
-    AdditionWorksheet(DASHBOARD_FRAMEWORK),
-    SubtractionWorksheet(DASHBOARD_FRAMEWORK),
-    MultiplicationWorksheet(DASHBOARD_FRAMEWORK),
-    MissingNumberWorksheet(DASHBOARD_FRAMEWORK),
-    CompareWorksheet(DASHBOARD_FRAMEWORK),
-    SkipCountingWorksheet(DASHBOARD_FRAMEWORK),
-    WordProblemsWorksheet(DASHBOARD_FRAMEWORK),
-    CountingWorksheet(DASHBOARD_FRAMEWORK),
-    DoublesWorksheet(DASHBOARD_FRAMEWORK),
-    NumberBondsWorksheet(DASHBOARD_FRAMEWORK),
-    PatternsWorksheet(DASHBOARD_FRAMEWORK),
-    ShapesWorksheet(DASHBOARD_FRAMEWORK),
-    TimeWorksheet(DASHBOARD_FRAMEWORK),
-    MeasurementWorksheet(DASHBOARD_FRAMEWORK),
-    PlaceValueWorksheet(DASHBOARD_FRAMEWORK),
-    DataWorksheet(DASHBOARD_FRAMEWORK),
-    DivisionWorksheet(DASHBOARD_FRAMEWORK),
-    MoneyWorksheet(DASHBOARD_FRAMEWORK)
+// All installed worksheet plugins, in display/loading order. UNINVOKED
+// factories — the dashboard loads each one by calling it with its framework
+// bundle, one by one after the dashboard has rendered (framework/loader.ts);
+// each loaded plugin then contributes its sidebar entry, toolbar, page and
+// print surfaces.
+export const PLUGINS: PluginFactory[] = [
+    AdditionWorksheet,
+    SubtractionWorksheet,
+    MultiplicationWorksheet,
+    MissingNumberWorksheet,
+    CompareWorksheet,
+    SkipCountingWorksheet,
+    WordProblemsWorksheet,
+    CountingWorksheet,
+    DoublesWorksheet,
+    NumberBondsWorksheet,
+    PatternsWorksheet,
+    ShapesWorksheet,
+    TimeWorksheet,
+    MeasurementWorksheet,
+    PlaceValueWorksheet,
+    DataWorksheet,
+    DivisionWorksheet,
+    MoneyWorksheet
 ];

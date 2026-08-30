@@ -3,12 +3,18 @@
 //
 // REGISTRATION FLOW (the heart of the plugin architecture):
 //
-//   1. `plugins/index.ts` exports the ordered plugin list (one worksheet
-//      plugin per math type, loaded through the framework's configuration).
-//      Add a worksheet by creating its plugin file and adding one line there;
-//      delete the file + its line to remove it — nothing else changes.
-//   2. The framework host (MathsDashboard) calls `usePluginRegistry(plugins)`:
-//        - mounts every plugin's scoped store slice (ensurePluginSlice);
+//   1. `plugins/index.ts` exports the ordered list of UNINVOKED plugin
+//      factories (one worksheet plugin per math type). Add a worksheet by
+//      creating its plugin file and adding one line there; delete the file +
+//      its line to remove it — nothing else changes.
+//   1b. `usePluginLoader` (loader.ts) runs FIRST in the dashboard host: the
+//      dashboard renders, then the factories are invoked one by one (the
+//      first with the first render, the rest after mount).
+//   2. The framework host (MathsDashboard) then calls
+//      `usePluginRegistry(loadedPlugins)`:
+//        - mounts every LOADED plugin's scoped store slice
+//          (ensurePluginSlice — diff-based, so a growing list never resets
+//          live state; see the effect below);
 //        - resolves the ACTIVE plugin with fallback: if the selection is
 //          empty or stale (deleted plugin), the first registered plugin's
 //          first entry is selected — the dashboard never crashes;
@@ -27,9 +33,9 @@
 // page still renders the right thing on the very first frame.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { useEffect, useLayoutEffect, useMemo } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { useDashboardStore, ensurePluginSlice, forgetPlugin, selectEntry, type DashboardStoreStructure } from './store';
-import type { DashboardPlugin, PluginRuntimeContext } from './types';
+import type { DashboardPlugin, PluginId, PluginRuntimeContext } from './types';
 
 // ── Host registry hook ────────────────────────────────────────────────────────
 // Mounts every plugin's store slice and returns the ordered list plus the
@@ -37,15 +43,38 @@ import type { DashboardPlugin, PluginRuntimeContext } from './types';
 export function usePluginRegistry(plugins: DashboardPlugin[]) {
     const store = useDashboardStore();
 
-    // Mount all slices (idempotent) and wipe them on teardown. The plugin
-    // array is a module constant in production; in tests/stories the identity
-    // may change per render — ensurePluginSlice tolerates re-runs.
+    // Slice mounting, DIFF-BASED so a GROWING plugin list is safe. The list
+    // fed here grows one entry at a time (usePluginLoader loads plugins one
+    // by one AFTER the dashboard has rendered), so this effect re-runs once
+    // per newly loaded plugin. The old all-or-nothing cleanup (forget ALL on
+    // every list change) would wipe the ACTIVE plugin's slice on every load
+    // and reset the user's selection to the first plugin mid-load. Instead:
+    //   - ensure every currently listed plugin's slice (idempotent);
+    //   - forget ONLY plugins that LEFT the list (deleted mid-session);
+    //   - a separate unmount-only effect wipes every slice this mount
+    //     created when the HOST goes away (state does not survive unmount).
+    const mountedRef = useRef<PluginId[]>([]);
     useEffect(() => {
+        const ids = plugins.map((p) => p.id);
         plugins.forEach((p) => ensurePluginSlice(store, p.id, p.initialStore ?? {}));
-        return () => {
-            plugins.forEach((p) => forgetPlugin(store, p.id));
-        };
+        mountedRef.current
+            .filter((id) => !ids.includes(id))
+            .forEach((id) => forgetPlugin(store, id));
+        mountedRef.current = ids;
     }, [plugins, store]);
+
+    // Unmount-only wipe: on host teardown every slice this mount created is
+    // forgotten so the store returns to pristine state (each provider mount
+    // starts clean — see store.tsx). Runs once per mount, NOT per list
+    // change, precisely so appending a newly loaded plugin above never
+    // touches live slices.
+    useEffect(() => {
+        const mounted = mountedRef;
+        return () => {
+            mounted.current.forEach((id) => forgetPlugin(store, id));
+            mounted.current = [];
+        };
+    }, [store]);
 
     // Reconcile the selection: nothing selected yet, or the selected plugin
     // is no longer registered (deleted mid-session / stale test state) →

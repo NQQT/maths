@@ -16,6 +16,10 @@ MathsDashboard (host)
       └── print slot    ← active plugin's .print-doc tree (outside .app-chrome)
 ```
 
+### Plugin loading order
+
+`PLUGINS` (`src/plugins/index.ts`) stores the plugin factories **uninvoked**. The dashboard renders first (shell + the first plugin — the default worksheet — in the initial paint), then loads the remaining plugins **one by one** after mount (`usePluginLoader`, `src/framework/loader.ts`), yielding to the browser between loads so the rail grows a plugin per frame. Nothing is constructed at module load time.
+
 ### Adding a plugin
 
 1. Create `src/plugins/<id>/` containing a `DashboardPlugin` object (see `src/plugins/worksheet/` for the reference implementation and `src/plugins/types.ts` for the contract).
