@@ -1,0 +1,18 @@
+1|13|Count the tallies: ||||/ ||||/ | | | — how many in all?
+2|3|In a column graph, each square is 1 vote. Mia's bar is 12 squares tall and Tom's bar is 9 squares tall. How many more votes did Mia get?
+3|3|In a column graph, each square is 1 vote. Leo's bar is 17 squares tall and Max's bar is 14 squares tall. How many more votes did Leo get?
+4|8|In a picture graph, 1 star = 2 apples. How many apples do ★★★★ show?
+5|1|In a picture graph, 1 star = 1 flower. How many flowers do ★ show?
+6|35|Count the tallies: ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ — how many in all?
+7|39|Count the tallies: ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ | | | | — how many in all?
+8|35|Count the tallies: ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ — how many in all?
+9|34|Count the tallies: ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ | | | | — how many in all?
+10|3|In a picture graph, 1 star = 1 toy. How many toys do ★★★ show?
+11|3|In a picture graph, 1 star = 1 cookie. How many cookies do ★★★ show?
+12|27|Count the tallies: ||||/ ||||/ ||||/ ||||/ ||||/ | | — how many in all?
+13|12|In a picture graph, 1 star = 3 balloons. How many balloons do ★★★★ show?
+14|1|In a column graph, each square is 1 vote. Rae's bar is 2 squares tall and Max's bar is 1 square tall. How many more votes did Rae get?
+15|6|In a column graph, each square is 1 vote. Tom's bar is 8 squares tall and Sam's bar is 2 squares tall. How many more votes did Tom get?
+16|23|Count the tallies: ||||/ ||||/ ||||/ ||||/ | | | — how many in all?
+17|7|Count the tallies: ||||/ | | — how many in all?
+18|7|In a column graph, each square is 1 vote. Leo's bar is 17 squares tall and Zoe's bar is 10 squares tall. How many more votes did Leo get?

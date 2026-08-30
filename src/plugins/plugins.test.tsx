@@ -1,29 +1,32 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Plugin architecture tests — the isolation guarantees the refactor is about.
+// Plugin architecture tests — the isolation guarantees the framework is about.
 //
 // These tests prove the plugin contract end-to-end:
 //
 //   1. COMPOSITION: two plugins register side by side; their entries merge
 //      into ONE rail in registration order; selecting an entry activates
-//      that plugin's page only (host swaps, siblings stay isolated).
+//      that plugin's page only (framework swaps, siblings stay isolated).
 //   2. STATE ISOLATION: mutating one plugin's slice never re-renders or
 //      corrupts another plugin's slice; slices are namespaced by plugin id.
+//      The framework SESSION (grade/pages/zoom/refresh) is separate shared
+//      state that belongs to the framework, not to any plugin.
 //   3. DELETION LEAVES NO TRACE: unregistering a plugin wipes its slice from
 //      the store (active selection included); the remaining plugin and the
-//      host keep working untouched — deleting a plugin's directory + list
+//      framework keep working untouched — deleting a plugin's file + list
 //      line is safe by construction.
 //   4. SELECTION FALLBACK: a stale selection pointing at a deleted plugin
 //      snaps back to the first remaining plugin.
-//   5. THE REAL PLUGIN: the worksheet plugin registers through the same
-//      pipeline the host uses (PLUGINS list), mounts with its initial store,
-//      and its entries are grade-gated (Year 1 hides Multiplication).
+//   5. THE REAL WORKSHEETS: the 18 per-type plugins (AdditionWorksheet,
+//      SubtractionWorksheet, ...) load through the same pipeline the
+//      framework uses (the PLUGINS list), share the dashboard session, and
+//      their rail entries are grade-gated (Year 1 hides Multiplication).
 //
 // The fixtures are throwaway plugins defined inline here — by design, adding
-// a plugin is just "an object that satisfies DashboardPlugin".
+// a plugin is just "a function that satisfies DashboardPlugin".
 // ─────────────────────────────────────────────────────────────────────────────
 
 import React from 'react';
-import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, cleanup, act } from '@testing-library/react';
 import { describe, it, expect, afterEach } from 'vitest';
 import {
     DashboardContextProvider,
@@ -37,11 +40,12 @@ import {
     forgetPlugin,
     selectEntry,
     definePlugin,
+    DASHBOARD_FRAMEWORK,
     type DashboardPlugin,
     type DashboardStoreStructure
-} from './index';
+} from '../framework';
 import { PLUGINS } from './index';
-import { worksheetPlugin, WORKSHEET_PLUGIN_ID, worksheetInitialStore } from './worksheet/plugin';
+import { AdditionWorksheet } from './AdditionWorksheet';
 
 afterEach(() => {
     cleanup();
@@ -63,7 +67,8 @@ function TestHost({ plugins }: { plugins: DashboardPlugin[] }) {
         <div>
             {/* Captures the live store for direct assertions below. */}
             <StoreProbe />
-            {/* Header slot (the worksheet plugin's grade pills live here). */}
+            {/* Header slot (worksheet plugins declare none; the framework's
+                own grade selector lives in the real host). */}
             <PluginHeaderHost plugins={mounted} />
             <div data-testid="rail-slot">
                 <PluginSidebarHost plugins={mounted} />
@@ -177,6 +182,25 @@ describe('plugin state isolation — slices are namespaced and independent', () 
         expect(screen.getByTestId('alpha-bump').textContent).toBe('alpha toolbar (3)');
     });
 
+    it('the dashboard session is framework-level state, separate from plugin slices', () => {
+        mountHost([]);
+
+        const store = probeStore!;
+
+        // The framework session starts with the maths configuration defaults.
+        expect(store.session).toEqual({ gradeId: 1, pageCount: 1, zoom: 'fit', refresh: 0 });
+
+        // Session mutations never touch plugin slices...
+        store.session.gradeId = 2;
+        store.session.pageCount = 3;
+        expect(store.plugins).toEqual({});
+
+        // ...and plugin slices never touch the session.
+        ensurePluginSlice(store, 'alpha', { counter: 0 });
+        store.plugins.alpha.counter = 7;
+        expect(store.session).toEqual({ gradeId: 2, pageCount: 3, zoom: 'fit', refresh: 0 });
+    });
+
     it('store helpers namespace slices by plugin id and delete cleanly', () => {
         mountHost([]);
 
@@ -246,54 +270,107 @@ describe('plugin deletion — the dashboard survives and falls back', () => {
     });
 });
 
-describe('the real worksheet plugin — registers through the same pipeline', () => {
-    it('is the installed plugin list and mounts with its initial store', () => {
-        // The production PLUGINS list contains exactly the worksheet plugin.
-        expect(PLUGINS.map((p) => p.id)).toEqual([WORKSHEET_PLUGIN_ID]);
+// ── The real worksheet plugins ───────────────────────────────────────────────
+// One plugin per worksheet type, all loaded through the same pipeline the
+// framework uses: PLUGINS[i] is a DashboardPlugin produced by calling the
+// plugin's factory function with DASHBOARD_FRAMEWORK.
 
+const EXPECTED_WORKSHEET_IDS = [
+    'addition',
+    'subtraction',
+    'mult',
+    'missing',
+    'comparison',
+    'skip',
+    'word',
+    'counting',
+    'doubles',
+    'bonds',
+    'patterns',
+    'shapes',
+    'time',
+    'measure',
+    'placevalue',
+    'data',
+    'division',
+    'money'
+];
+
+describe('the real worksheet plugins — register through the same pipeline', () => {
+    it('is the installed plugin list: one plugin per worksheet type, in catalogue order', () => {
+        expect(PLUGINS.map((p) => p.id)).toEqual(EXPECTED_WORKSHEET_IDS);
+        // Every worksheet declares exactly ONE rail entry — its own label.
+        for (const plugin of PLUGINS) {
+            expect(plugin.entries).toHaveLength(1);
+            expect(plugin.entries[0].id).toBe(plugin.id);
+        }
+    });
+
+    it('mounts with the shared dashboard session and previews Addition by default', () => {
         mountHost(PLUGINS);
 
-        // Initial store mounted: grade 1, 1 page, fit zoom, refresh 0.
-        expect(probeStore!.plugins[WORKSHEET_PLUGIN_ID]).toEqual(worksheetInitialStore);
+        // The framework session starts on Year 1, 1 page, fit zoom.
+        expect(probeStore!.session).toEqual({ gradeId: 1, pageCount: 1, zoom: 'fit', refresh: 0 });
 
-        // Default selection: first catalogue entry (addition) — its page
-        // renders the Year 1 addition preview (pinned first row "10 + 9 =").
+        // Default selection: the first plugin (Addition) — its page renders
+        // the Year 1 addition preview (pinned first row "10 + 9 =").
         expect(screen.getByTestId('sheet-preview-page1').textContent).toContain('1.10 + 9 =');
     });
 
-    it('filterEntries hides Year-2-only types on Year 1 and shows them on Year 2', () => {
+    it('grade-gates the rail: Year 1 hides Multiplication, Year 2 shows it', () => {
         mountHost(PLUGINS);
 
         // Year 1: Multiplication is NOT listed (times tables start at Y2).
         expect(screen.queryByRole('button', { name: 'Multiplication' })).toBeNull();
         expect(screen.getByRole('button', { name: 'Addition' })).toBeDefined();
 
-        // The grade pills are the plugin's HEADER slot; switching to Year 2
-        // re-runs filterEntries and Multiplication appears.
-        fireEvent.click(screen.getByRole('radio', { name: '2' }));
+        // The framework's grade selector writes store.session.gradeId; the
+        // same write path re-runs every plugin's isOffered gate. (The store
+        // mutation is wrapped in act() so React flushes the re-render before
+        // the assertion — exactly what the real GradeSelector's click does.)
+        act(() => {
+            probeStore!.session.gradeId = 2;
+        });
         expect(screen.getByRole('button', { name: 'Multiplication' })).toBeDefined();
 
-        // Switching back to Year 1 hides it again — and the rail selection
-        // snaps back to a visible entry (Year 2 Mult selected → hidden on Y1).
-        fireEvent.click(screen.getByRole('radio', { name: '1' }));
+        // Select Multiplication, then drop back to Year 1: its entry hides
+        // and the rail selection snaps to a visible worksheet (Addition), so
+        // the reconciled selection still renders a valid page.
+        fireEvent.click(screen.getByRole('button', { name: 'Multiplication' }));
+        act(() => {
+            probeStore!.session.gradeId = 1;
+        });
         expect(screen.queryByRole('button', { name: 'Multiplication' })).toBeNull();
-        // The reconciled selection still renders a valid page.
         expect(screen.getByTestId('sheet-preview-page1')).toBeDefined();
+    });
+
+    it('worksheet plugins share the dashboard session (page count persists across worksheets)', () => {
+        mountHost(PLUGINS);
+
+        // Set 3 pages while Addition is active, then switch to Subtraction:
+        // the page count lives in the framework session, not in either plugin.
+        fireEvent.change(screen.getByTestId('page-count'), { target: { value: '3' } });
+        fireEvent.click(screen.getByRole('button', { name: 'Subtraction' }));
+        expect((screen.getByTestId('page-count') as HTMLInputElement).value).toBe('3');
+        expect(screen.getByTestId('sheet-preview-page3')).toBeDefined();
     });
 });
 
-// The worksheet plugin object itself satisfies the full contract shape (the
-// host pipeline above exercises it; this pins the declarative surface).
-describe('worksheet plugin object — declarative contract', () => {
-    it('declares one entry per math type with icon glyphs', () => {
-        // MATH_TYPES order (generators.ts) = entry order; 18 types total.
-        expect(worksheetPlugin.entries).toHaveLength(18);
-        expect(worksheetPlugin.entries[0]).toEqual({
-            id: 'addition',
-            label: 'Addition',
-            icon: '+',
-            ariaLabel: 'Addition'
-        });
-        expect(worksheetPlugin.entries.map((e) => e.id)).toContain('money');
+// The AdditionWorksheet factory itself satisfies the full contract shape (the
+// framework pipeline above exercises it; this pins the declarative surface).
+describe('worksheet plugin factory — declarative contract', () => {
+    it('AdditionWorksheet takes the framework and describes its own rail entry', () => {
+        const plugin = AdditionWorksheet(DASHBOARD_FRAMEWORK);
+        expect(plugin.id).toBe('addition');
+        expect(plugin.name).toBe('Addition Worksheet');
+        expect(plugin.entries).toEqual([
+            { id: 'addition', label: 'Addition', icon: '+', ariaLabel: 'Addition' }
+        ]);
+        // Its content surfaces are wired (toolbar/page/print) and it is
+        // offered on Year 1 (the framework's default grade).
+        expect(plugin.toolbar).toBeDefined();
+        expect(plugin.page).toBeDefined();
+        expect(plugin.print).toBeDefined();
+        expect(plugin.isOffered).toBeDefined();
     });
 });

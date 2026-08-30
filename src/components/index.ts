@@ -1,9 +1,8 @@
 // Barrel export for the dashboard HOST components.
 //
-// The host is now a thin plugin shell (MathsDashboard); every exercise UI has
-// moved into self-contained plugins under src/plugins/<id>/ (see
-// plugins/index.ts). The old per-exercise components (GradeSelector,
-// TypeSidebar, PageStack, PrintableSheet, ZoomControl, page-scale) now live
-// inside the worksheet plugin and are exported from
-// plugins/worksheet/plugin.ts for that plugin's own tests only.
+// The host is a thin framework shell (MathsDashboard). Every worksheet lives
+// in a self-contained plugin under src/plugins/<Name>Worksheet.ts (see
+// plugins/index.ts — the single registration point). The framework pieces the
+// plugins consume (store, grade catalogue, A4 layouts, worksheet recipe) ship
+// from src/framework.
 export * from './MathsDashboard';

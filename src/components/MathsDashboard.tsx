@@ -1,21 +1,23 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// The maths dashboard — a THIN PLUGIN HOST.
+// The maths dashboard — a THIN framework HOST.
 //
-// The dashboard no longer contains any exercise logic. It is pure chrome:
+// The dashboard is the FRAMEWORK: it contains no exercise logic. It owns:
 //   - the app shell (header bar, body layout, sticky positioning, canvas);
-//   - the shared toolbar card FRAME and rail FRAME;
-//   - mounting points for plugins (header / sidebar list / toolbar / page),
-//     fed from the plugin list in ../plugins (see plugins/index.ts).
+//   - the framework components: the Title, the grade selector (shared
+//     dashboard configuration), the toolbar card FRAME and rail FRAME;
+//   - mounting points for the worksheet plugins (header / sidebar list /
+//     toolbar / page), fed from the plugin list in ../plugins.
 //
-// Every exercise/worksheet lives in a self-contained plugin under
-// src/plugins/<id>/ that contributes to these slots via the DashboardPlugin
-// contract (plugins/types.ts). Deleting a plugin removes its feature without
-// affecting this host or other plugins.
+// Every worksheet is a self-contained plugin under src/plugins/<Name>Worksheet.ts —
+// a factory function the dashboard LOADS with its configurations + layouts
+// (DASHBOARD_FRAMEWORK). Deleting a plugin's file and its line in
+// plugins/index.ts removes the worksheet without affecting this framework or
+// any other plugin.
 //
 // Layout (top-to-bottom, left-to-right) — unchanged from the original:
 //
 //   +------------------------------------------------------------------+
-//   | (∑) Maths Sheets                       [plugin header slot]      |
+//   | (∑) Maths Sheets            [grade selector] [plugin header slot]|
 //   +----------------+-------------------------------------------------+
 //   |  PLUGIN LIST    |  toolbar card: [plugin toolbar slot]           |
 //   |  (left rail,    |  canvas: [plugin page slot]                    |
@@ -27,10 +29,10 @@
 // job 1) — the window's own scrollbar scrolls long page stacks, the header
 // / toolbar / rail are position:sticky and the zoom dock is position:fixed.
 //
-// PRINTING: the normal content view IS the print preview — a plugin's Print
-// button fires the browser-NATIVE print dialog (window.print()); under
-// @media print (app.css) this shell (.app-chrome) is hidden and the plugin's
-// hidden .print-doc tree is revealed.
+// PRINTING: the normal content view IS the print preview — a worksheet's
+// Print button fires the browser-NATIVE print dialog (window.print()); under
+// @media print (app.css) this shell (.app-chrome) is hidden and the active
+// plugin's hidden .print-doc tree is revealed.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import React from 'react';
@@ -39,15 +41,16 @@ import { PLUGINS } from '../plugins';
 import {
     DashboardContextProvider,
     usePluginRegistry,
+    GradeSelector,
     PluginHeaderHost,
     PluginSidebarHost,
     PluginToolbarHost,
     PluginPageHost,
     PluginPrintHost
-} from '../plugins';
+} from '../framework';
 
 // ──────────────────────────────────────────────────────────────
-// App shell (unchanged chrome from the pre-plugin MathsDashboard)
+// Framework shell (unchanged chrome from the original dashboard)
 // ──────────────────────────────────────────────────────────────
 
 // App root: a normal document box that grows with its content (see app.css).
@@ -62,8 +65,8 @@ const AppRoot = styledComponent('div', {
     color: '#0f172a'
 });
 
-// White top bar: brand mark + title on the left, plugin header slot on the
-// right (the worksheet plugin renders the grade pills there).
+// White top bar: brand mark + title on the left; the framework grade selector
+// (shared configuration) and the active plugin's optional header on the right.
 const HeaderBar = styledComponent('div', {
     position: 'sticky',
     top: 0,
@@ -127,7 +130,7 @@ const Main = styledComponent('div', {
 });
 
 // Toolbar card frame. position:sticky under the pinned header (sm+, where the
-// header is exactly 64px) so plugin toolbar controls stay reachable while the
+// header is exactly 64px) so worksheet controls stay reachable while the
 // window scrolls long page stacks; xs keeps it static.
 const ToolbarCard = styledComponent('div', {
     display: 'flex',
@@ -197,7 +200,7 @@ const Canvas = styledComponent('div', {
     background: '#eef1f7'
 });
 
-// Host-level empty state: shown when NO plugin is registered at all (all
+// Framework-level empty state: shown when NO plugin is registered at all (all
 // plugins deleted). Distinct from a plugin's own empty state, which renders
 // inside the canvas when the plugin's selection has no content.
 const HostEmptyState = styledComponent('div', {
@@ -224,7 +227,7 @@ const HostEmptyCard = styledComponent('div', {
 });
 
 // ──────────────────────────────────────────────────────────────
-// Host body — subscribes to the store INSIDE the provider
+// Framework body — subscribes to the store INSIDE the provider
 // ──────────────────────────────────────────────────────────────
 
 // The dashboard body must render INSIDE DashboardContextProvider to use the
@@ -238,7 +241,8 @@ export function MathsDashboard() {
     );
 }
 
-// The actual host chrome. All exercise content comes from the plugin slots.
+// The actual framework chrome. All worksheet content comes from the plugin
+// slots.
 function MathsDashboardBody() {
     // Registry hook: mounts every plugin's store slice, reconciles the
     // selection (falling back to the first plugin when the selection is stale
@@ -249,27 +253,34 @@ function MathsDashboardBody() {
         <AppRoot className="app-root">
             {/* Everything inside .app-chrome is hidden when printing — the
                 @media print rules in app.css swap it for .print-doc (which
-                plugins render inside their page component). */}
+                the active plugin renders outside this shell). */}
             <div className="app-chrome">
                 <HeaderBar>
                     <BrandMark aria-hidden="true">∑</BrandMark>
                     <AppTitle>Maths Sheets</AppTitle>
                     <HeaderSpacer />
-                    {/* Plugin header slot (grade pills for the worksheet
-                        plugin; every registered plugin could contribute). */}
+                    {/* Framework grade selector: shared dashboard configuration
+                        that re-gates every plugin's rail entry and re-caps
+                        every plugin's generator. */}
+                    <GradeSelector />
+                    {/* Plugin header slot (unused by the worksheet plugins;
+                        any plugin may still contribute header UI here). */}
                     <PluginHeaderHost plugins={plugins} />
                 </HeaderBar>
 
                 <Body>
                     <Sidebar className="scrollbar-hidden">
                         <SidebarHeading>Math Type</SidebarHeading>
-                        {/* Plugin list: every plugin's entries in registration
-                            order, wrapped in the shared rail button chrome. */}
+                        {/* Plugin list: every visible plugin's entries in
+                            registration order, wrapped in the shared rail
+                            button chrome. Grade gating is plugin-declared
+                            (isOffered) — the framework just renders the list. */}
                         {plugins.length > 0 ? (
                             <PluginSidebarHost plugins={plugins} />
                         ) : (
-                            // No plugins installed at all — host-level empty
-                            // rail notice (only reachable when PLUGINS is []).
+                            // No plugins installed at all — framework-level
+                            // empty rail notice (only reachable when PLUGINS
+                            // is []).
                             <SidebarNotice />
                         )}
                     </Sidebar>
@@ -283,7 +294,7 @@ function MathsDashboardBody() {
 
                         {/* Canvas / content area: the ACTIVE plugin's page
                             slot. This view doubles as the print preview — a
-                            plugin's Print button opens the browser-native
+                            worksheet's Print button opens the browser-native
                             dialog over it. */}
                         <Canvas>
                             {activePlugin ? (
@@ -310,7 +321,8 @@ function MathsDashboardBody() {
     );
 }
 
-// Rail notice for the (rare) zero-plugin state — mirrors the host empty card.
+// Rail notice for the (rare) zero-plugin state — mirrors the framework empty
+// card.
 const SidebarNoticeCard = styledComponent('div', {
     padding: '14px',
     background: '#f8fafc',
@@ -327,7 +339,7 @@ function SidebarNotice() {
         <SidebarNoticeCard>
             <strong>No exercises installed.</strong>
             <br />
-            Add a plugin in src/plugins/index.ts to see worksheets here.
+            Add a worksheet plugin in src/plugins/index.ts to see worksheets here.
         </SidebarNoticeCard>
     );
 }
