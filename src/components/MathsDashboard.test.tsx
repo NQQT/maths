@@ -189,13 +189,33 @@ describe('MathsDashboard — grade selection (top-right)', () => {
         expect(text(screen.getByTestId('sheet-preview-page1'))).toContain('1.2 + 7 =');
     });
 
-    it('shows a coming-soon placeholder for an unimplemented grade (Year 3)', () => {
-        fireEvent.click(gradeRadio('3'));
+    it('shows a coming-soon placeholder for an unimplemented grade (Year 7)', () => {
+        // Grades 0..6 are implemented (0..2 full catalogue, 3..6 the addition
+        // ladder); Year 7 is the first grade with no content at all.
+        fireEvent.click(gradeRadio('7'));
         // The canvas empty state announces the grade is not implemented yet.
         expect(screen.getByText(/coming soon/i)).toBeDefined();
         // Right canvas shows the empty state instead of a preview.
         expect(screen.getByTestId('empty-state')).toBeDefined();
         expect(screen.queryByTestId('sheet-preview')).toBeNull();
+    });
+
+    it('grades 3..6 offer the arithmetic ladder (Year 3 within 1000)', () => {
+        // The ladder grades list exactly two rail entries — Addition and
+        // Subtraction — and the canvas renders the progressively harder
+        // sheets straight away.
+        fireEvent.click(gradeRadio('3'));
+        expect(screen.getByRole('button', { name: 'Addition' })).toBeDefined();
+        expect(screen.getByRole('button', { name: 'Subtraction' })).toBeDefined();
+        expect(screen.queryByRole('button', { name: 'Multiplication' })).toBeNull();
+        // Year 3 addition first row is "53 + 942 =" (within 1000).
+        expect(text(screen.getByTestId('sheet-preview-page1'))).toContain('1.53 + 942 =');
+        expect(screen.getByTestId('toolbar-title').textContent).toBe('Year 3 — Addition');
+        // Picking Subtraction swaps to its Year 3 sheet (first row pinned in
+        // SubtractionWorksheet.test.ts).
+        fireEvent.click(screen.getByRole('button', { name: 'Subtraction' }));
+        expect(text(screen.getByTestId('sheet-preview-page1'))).toContain('1.990 - 175 =');
+        expect(screen.getByTestId('toolbar-title').textContent).toBe('Year 3 — Subtraction');
     });
 });
 
@@ -417,8 +437,8 @@ describe('MathsDashboard — print flow (native dialog, preview IS the preview)'
     });
 
     it('printing is blocked (button disabled) when no sheet is available', () => {
-        // Year 3 is unimplemented => empty document => dimmed toolbar actions.
-        fireEvent.click(gradeRadio('3'));
+        // Year 7 is unimplemented => empty document => dimmed toolbar actions.
+        fireEvent.click(gradeRadio('7'));
         const printSpy = vi.fn();
         window.print = printSpy;
 

@@ -9,6 +9,16 @@
 //     the generator below — shows in the content area via the framework's
 //     standard worksheet recipe (dashboard.createWorksheet).
 //
+// DIFFICULTY LADDER (grade 0..6), driven entirely by the grade catalogue
+// (framework/grades.ts — arithmeticLadderGrade, shared with the Addition
+// plugin):
+//   Prep (0)  within 10        | Year 4  within 10 000,   up to 2 subtrahends
+//   Year 1    within 20        | Year 5  within 100 000,  up to 2 subtrahends
+//   Year 2    within 100       | Year 6  within 1 000 000, up to 3 subtrahends
+//   Year 3    within 1 000     |
+// Grade 7 and above do not offer subtraction at all (their `available` list
+// in grades.ts is empty — the ladder is finished by Year 6).
+//
 // Fully self-contained: deleting this file and its line in plugins/index.ts
 // removes the Subtraction worksheet without affecting the framework or any
 // other plugin.
@@ -16,15 +26,52 @@
 
 import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem, Rng, WorksheetSpec } from '../framework';
 
-// Subtraction within opCap. b is chosen strictly below a so every answer is a
-// positive whole number (no negative results, no trivial "x - x = 0").
+// Difficulty is read from two caps:
+//   - caps.opCap     — the "within N" ceiling for the minuend;
+//   - caps.addendCap — the ladder's shared term cap: addition uses up to
+//                      addendCap addends, so subtraction uses up to
+//                      (addendCap - 1) subtrahends (2 => classic a - b pairs,
+//                      3 => a - b - c from Year 4, 4 => a - b - c - d in Y6).
 function generateSubtraction(rng: Rng, caps: Caps, count: number): RawProblem[] {
     const out: RawProblem[] = [];
-    const aMax = Math.max(2, caps.opCap);
+    // Max subtrahends for this grade: the pair grades (addendCap 2) stay
+    // single-subtraction; 0/undefined (unimplemented grades) behaves the same.
+    const maxSubtrahends = Math.max(1, (caps.addendCap || 2) - 1);
     for (let i = 0; i < count; i++) {
-        const a = rng.int(2, aMax);
-        const b = rng.int(0, a - 1); // b < a  =>  a - b >= 1
-        out.push({ prompt: `${a} - ${b} = __`, answer: `${a - b}` });
+        // Roll THIS question's subtrahend count — but only when the grade
+        // allows more than one. Grades 0..2 (addendCap 2) take no extra RNG
+        // draw, so the legacy pair stream (and the pinned Prep/Y1/Y2 sheets)
+        // is preserved byte-for-byte.
+        const s = maxSubtrahends > 1 ? rng.int(1, maxSubtrahends) : 1;
+        if (s === 1) {
+            // PAIRS — the original within-opCap recipe: b is chosen strictly
+            // below a so every answer is a positive whole number (no negative
+            // results, no trivial "x - x = 0").
+            const aMax = Math.max(2, caps.opCap);
+            const a = rng.int(2, aMax);
+            const b = rng.int(0, a - 1); // b < a  =>  a - b >= 1
+            out.push({ prompt: `${a} - ${b} = __`, answer: `${a - b}` });
+        } else {
+            // MULTI-SUBTRAHEND — the minuend is drawn first, large enough
+            // that every subtrahend can be >= 1 AND the final answer >= 1
+            // (so no negatives and no trivial "x - x = 0"). Each subtrahend
+            // then reserves 1 for every still-to-come subtrahend plus 1 for
+            // the final answer.
+            const a = rng.int(s + 1, Math.max(2, caps.opCap));
+            let remaining = a;
+            const parts: number[] = [];
+            for (let j = 0; j < s; j++) {
+                const left = s - j - 1; // subtrahends still to place after this one
+                const v = rng.int(1, Math.max(1, remaining - left - 1));
+                parts.push(v);
+                remaining -= v;
+            }
+            out.push({
+                prompt: `${a} - ${parts.join(' - ')} = __`,
+                // What is left after every subtraction IS the answer.
+                answer: `${remaining}`
+            });
+        }
     }
     return out;
 }
@@ -36,7 +83,12 @@ export const subtractionSpec: WorksheetSpec = {
     icon: '−',
     perPage: 24,
     offered: (grade: GradeConfig) => grade.available.includes('subtraction'),
-    scope: (grade: GradeConfig) => `within ${grade.caps.opCap}`,
+    // "within 20" for the pair grades; the multi-subtrahend grades (Year 4+)
+    // advertise the second difficulty axis as well.
+    scope: (grade: GradeConfig) =>
+        grade.caps.addendCap > 2
+            ? `within ${grade.caps.opCap} (up to ${grade.caps.addendCap - 1} subtrahends)`
+            : `within ${grade.caps.opCap}`,
     generate: generateSubtraction
 };
 

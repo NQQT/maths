@@ -16,12 +16,53 @@ describe('grade catalogue', () => {
     it('lists grades 0..12 with Prep / Year N labels', () => {
         const labels = getGradeConfig(0).label + '|' + getGradeConfig(12).label;
         expect(labels).toBe('Prep|Year 12');
+        // Grades 0..6 have real content (0..2 full catalogue, 3..6 the
+        // addition ladder); grade 7 and above are not implemented yet.
         expect(g0.implemented).toBe(true);
         expect(g1.implemented).toBe(true);
         expect(g2.implemented).toBe(true);
-        // Grade 3 and above are not implemented yet.
-        expect(getGradeConfig(3).implemented).toBe(false);
+        expect(getGradeConfig(3).implemented).toBe(true);
+        expect(getGradeConfig(6).implemented).toBe(true);
+        expect(getGradeConfig(7).implemented).toBe(false);
         expect(getGradeConfig(12).implemented).toBe(false);
+    });
+
+    it('grades 3..6 form the arithmetic ladder (only +/-, one digit per year)', () => {
+        // Only Addition + Subtraction are offered from Year 3 to Year 6 —
+        // every other type (and these two themselves from Year 7) is
+        // finished/absent.
+        for (const id of [3, 4, 5, 6]) {
+            const grade = getGradeConfig(id);
+            expect(grade.available).toEqual(['addition', 'subtraction']);
+        }
+        // The operand cap scales exactly one digit per year...
+        expect(getGradeConfig(3).caps.opCap).toBe(1000);
+        expect(getGradeConfig(4).caps.opCap).toBe(10000);
+        expect(getGradeConfig(5).caps.opCap).toBe(100000);
+        expect(getGradeConfig(6).caps.opCap).toBe(1000000);
+        // ...while multi-addend questions phase in: pairs through Y3,
+        // 3 addends from Y4, 4 addends in Y6.
+        expect(getGradeConfig(3).caps.addendCap).toBe(2);
+        expect(getGradeConfig(4).caps.addendCap).toBe(3);
+        expect(getGradeConfig(5).caps.addendCap).toBe(3);
+        expect(getGradeConfig(6).caps.addendCap).toBe(4);
+        // All other generators are capped out for these grades.
+        for (const id of [3, 4, 5, 6]) {
+            const caps = getGradeConfig(id).caps;
+            expect(caps.numCap).toBe(0);
+            expect(caps.multCap).toBe(0);
+            expect(caps.coinCap).toBe(0);
+            expect(caps.shapeSet).toEqual([]);
+        }
+    });
+
+    it('grade 7 and above offer nothing (addition ends at Year 6)', () => {
+        for (const id of [7, 8, 9, 10, 11, 12]) {
+            const grade = getGradeConfig(id);
+            expect(grade.implemented).toBe(false);
+            expect(grade.available).toEqual([]);
+            expect(grade.caps.opCap).toBe(0);
+        }
     });
 
     it('Prep offers the four foundation worksheets only', () => {

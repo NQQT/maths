@@ -9,6 +9,16 @@
 //     the generator below — shows in the content area via the framework's
 //     standard worksheet recipe (dashboard.createWorksheet).
 //
+// DIFFICULTY LADDER (grade 0..6), driven entirely by the grade catalogue
+// (framework/grades.ts — arithmeticLadderGrade, shared with the Subtraction
+// plugin):
+//   Prep (0)  within 10        | Year 4  within 10 000,   up to 3 addends
+//   Year 1    within 20        | Year 5  within 100 000,  up to 3 addends
+//   Year 2    within 100       | Year 6  within 1 000 000, up to 4 addends
+//   Year 3    within 1 000     |
+// Grade 7 and above do not offer addition at all (their `available` list in
+// grades.ts is empty — the ladder is finished by Year 6).
+//
 // Fully self-contained: deleting this file and its line in plugins/index.ts
 // removes the Addition worksheet without affecting the framework or any other
 // plugin.
@@ -16,16 +26,48 @@
 
 import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem, Rng, WorksheetSpec } from '../framework';
 
-// Addition within opCap. a is never the full cap and b >= 1 whenever possible,
-// so we avoid the trivial "x + 0" and guarantee a + b <= opCap.
+// Difficulty is read from two caps:
+//   - caps.opCap      — the "within N" ceiling the sum may reach;
+//   - caps.addendCap  — max addends per question (2 = classic pairs; 3/4 =
+//                       multi-addend column addition, from Year 4 upwards).
 function generateAddition(rng: Rng, caps: Caps, count: number): RawProblem[] {
     const out: RawProblem[] = [];
-    const aMax = Math.max(1, caps.opCap - 1);
+    // Normalise the addend cap: 0/undefined (unimplemented grades) behaves
+    // like classic pairs, and the ladder never goes below 2 addends.
+    const maxAddends = Math.max(2, caps.addendCap || 2);
     for (let i = 0; i < count; i++) {
-        const a = rng.int(1, aMax);
-        const bMax = caps.opCap - a; // >= 1 because a <= opCap-1
-        const b = bMax >= 1 ? rng.int(1, bMax) : 0;
-        out.push({ prompt: `${a} + ${b} = __`, answer: `${a + b}` });
+        // Roll THIS question's addend count — but only when the grade allows
+        // more than pairs. Grades 0..2 (addendCap 2) take no extra RNG draw,
+        // so the legacy pair stream (and the pinned Prep/Y1/Y2 sheets) is
+        // preserved byte-for-byte.
+        const k = maxAddends > 2 ? rng.int(2, maxAddends) : 2;
+        if (k === 2) {
+            // PAIRS — the original within-opCap recipe: a is never the full
+            // cap and b >= 1 whenever possible, so we avoid the trivial
+            // "x + 0" and guarantee a + b <= opCap.
+            const aMax = Math.max(1, caps.opCap - 1);
+            const a = rng.int(1, aMax);
+            const bMax = caps.opCap - a; // >= 1 because a <= opCap-1
+            const b = bMax >= 1 ? rng.int(1, bMax) : 0;
+            out.push({ prompt: `${a} + ${b} = __`, answer: `${a + b}` });
+        } else {
+            // MULTI-ADDEND — draw the question's TOTAL first (anywhere within
+            // the cap, at least k so every addend can be >= 1), then split it
+            // into k addends. Each draw reserves 1 for every still-to-come
+            // addend, so no addend can be 0; the last addend takes whatever
+            // remains. Mirrors the pair path, where the sum also lands
+            // anywhere within the cap rather than always at it.
+            const target = rng.int(k, caps.opCap);
+            let remaining = target;
+            const parts: number[] = [];
+            for (let j = 0; j < k; j++) {
+                const left = k - j - 1; // addends still to place after this one
+                const v = left === 0 ? remaining : rng.int(1, Math.max(1, remaining - left));
+                parts.push(v);
+                remaining -= v;
+            }
+            out.push({ prompt: `${parts.join(' + ')} = __`, answer: `${target}` });
+        }
     }
     return out;
 }
@@ -37,7 +79,12 @@ export const additionSpec: WorksheetSpec = {
     icon: '+',
     perPage: 24,
     offered: (grade: GradeConfig) => grade.available.includes('addition'),
-    scope: (grade: GradeConfig) => `within ${grade.caps.opCap}`,
+    // "within 20" for the pair grades; the multi-addend grades (Year 4+)
+    // advertise the second difficulty axis as well.
+    scope: (grade: GradeConfig) =>
+        grade.caps.addendCap > 2
+            ? `within ${grade.caps.opCap} (up to ${grade.caps.addendCap} addends)`
+            : `within ${grade.caps.opCap}`,
     generate: generateAddition
 };
 

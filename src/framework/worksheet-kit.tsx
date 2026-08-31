@@ -223,7 +223,7 @@ function createPage(spec: WorksheetSpec) {
         const hasProblems = total > 0;
         const zoom: ZoomMode = session.zoom ?? 'fit';
 
-        // The "coming soon" notice for unimplemented grades (3..12) vs the
+        // The "coming soon" notice for unimplemented grades (7..12) vs the
         // generic empty state — both are framework-level concerns.
         const unimplemented = !grade.implemented;
 
@@ -238,7 +238,7 @@ function createPage(spec: WorksheetSpec) {
                                     ? `${grade.label} worksheets are coming soon`
                                     : 'No worksheets for this selection yet'}
                             </EmptyTitle>
-                            <EmptyHint>Choose Prep, Year 1 or Year 2 to generate a printable sheet.</EmptyHint>
+                            <EmptyHint>Choose a grade up to Year 6 to generate a printable sheet.</EmptyHint>
                         </EmptyCard>
                     </EmptyState>
                 ) : (
