@@ -22,6 +22,7 @@
 import React, { Fragment } from 'react';
 import { styledComponent } from '@presource/react';
 import type { Problem } from './document';
+import type { ClockFigure } from './types';
 
 export type PrintableSheetProps = {
     // Large heading, e.g. "Year 1 — Addition".
@@ -123,7 +124,20 @@ const ProblemText = styledComponent('span', {
     whiteSpace: 'pre-wrap'
 });
 
-// A fill-in blank. Big blanks (name/date) are wider; question blanks are short.
+// Full-width fill-in line printed BELOW a prompt flagged `answerLine` — the
+// student writes the answer on its own line (e.g. "7:45 is the same time in
+// words:" with the writing space underneath), not squeezed inline. Extra
+// height above the rule leaves real pen-on-paper room.
+const AnswerLine = styledComponent('span', {
+    display: 'block',
+    height: '1.2em',
+    marginTop: '12px',
+    borderBottom: '2px solid #1a1a1a'
+});
+
+// A fill-in blank. Big blanks (name/date lines, and problems flagged
+// `wideBlanks` — e.g. handwritten "quarter past 11" answers) are wide;
+// default question blanks are short.
 const Blank = styledComponent<{ big?: boolean }>('span', {
     display: 'inline-block',
     minWidth: ({ big }) => (big ? '140px' : '38px'),
@@ -149,16 +163,128 @@ const FooterText = styledComponent('span', {
     color: '#9ca3af'
 });
 
+// ── Analog clock figure (optional problem.clock) ─────────────────────────────
+// When a problem carries a `clock` figure (types.ts ClockFigure) a small SVG
+// analog clock is printed before the prompt text: hands drawn for reading
+// items, a BLANK face for "draw the hands" items. Pure geometry — hand angles
+// are measured clockwise from 12 o'clock, so a hand tip sits at
+// (cx + r·sin θ, cy − r·cos θ) with θ = (fraction of the dial) × 360°.
+const ClockBox = styledComponent('span', {
+    display: 'inline-block',
+    width: '100px',
+    height: '100px',
+    flexShrink: 0,
+    alignSelf: 'center'
+});
+
+function ClockFace({ clock }: { clock: ClockFigure }) {
+    // 64-unit viewBox scaled up to a 100px box: all geometry below is defined
+    // in the 64-unit space (centre 32) and scales with the svg size, keeping
+    // the numbers, ticks and hands crisp at any print size.
+    const c = 32;
+    const SIZE = 100;
+    const showHands = clock.hands !== false;
+    // Hour hand moves 30° per hour PLUS 0.5° per minute (so a half-past hand
+    // points halfway between two numbers); minute hand moves 6° per minute.
+    const hourDeg = (clock.hour % 12) * 30 + clock.minute * 0.5;
+    const minuteDeg = clock.minute * 6;
+    // Endpoint of a hand/tick `len` px from the centre at `deg` from 12.
+    const point = (deg: number, len: number) => {
+        const rad = (deg * Math.PI) / 180;
+        return { x: c + len * Math.sin(rad), y: c - len * Math.cos(rad) };
+    };
+    return (
+        <ClockBox>
+            <svg
+                width={SIZE}
+                height={SIZE}
+                viewBox="0 0 64 64"
+                role="img"
+                aria-label={
+                    showHands
+                        ? `clock showing ${clock.hour}:${String(clock.minute).padStart(2, '0')}`
+                        : 'blank clock face'
+                }
+            >
+                {/* Rim */}
+                <circle cx={c} cy={c} r="30" fill="#ffffff" stroke="#1a1a1a" strokeWidth="2" />
+                {/* Hour ticks: 12 short marks on the rim */}
+                {[...Array(12)].map((_, i) => {
+                    const a = point(i * 30, 28);
+                    const b = point(i * 30, 25);
+                    return (
+                        <line
+                            key={`tick-${i}`}
+                            x1={a.x}
+                            y1={a.y}
+                            x2={b.x}
+                            y2={b.y}
+                            stroke="#1a1a1a"
+                            strokeWidth="1.5"
+                        />
+                    );
+                })}
+                {/* Hour numbers 1-12 on an inner ring */}
+                {[...Array(12)].map((_, i) => {
+                    const n = i + 1;
+                    const p = point(n * 30, 20);
+                    return (
+                        <text
+                            key={`num-${n}`}
+                            x={p.x}
+                            y={p.y}
+                            fontSize="9"
+                            fontWeight="700"
+                            textAnchor="middle"
+                            dominantBaseline="central"
+                            fill="#1a1a1a"
+                        >
+                            {n}
+                        </text>
+                    );
+                })}
+                {/* Hands + centre pin — omitted entirely on blank (draw-it)
+                    faces so the student draws both hands themselves. */}
+                {showHands && (
+                    <>
+                        <line
+                            x1={c}
+                            y1={c}
+                            x2={point(hourDeg, 13).x}
+                            y2={point(hourDeg, 13).y}
+                            stroke="#1a1a1a"
+                            strokeWidth="3.5"
+                            strokeLinecap="round"
+                        />
+                        <line
+                            x1={c}
+                            y1={c}
+                            x2={point(minuteDeg, 22).x}
+                            y2={point(minuteDeg, 22).y}
+                            stroke="#1a1a1a"
+                            strokeWidth="2.5"
+                            strokeLinecap="round"
+                        />
+                        <circle cx={c} cy={c} r="2" fill="#1a1a1a" />
+                    </>
+                )}
+            </svg>
+        </ClockBox>
+    );
+}
+
 // Splits a prompt on "__" and renders each blank as a styled fill-in line, so
-// the printed sheet shows real blanks instead of literal underscores.
-function PromptText({ prompt }: { prompt: string }) {
+// the printed sheet shows real blanks instead of literal underscores. Problems
+// flagged `wideBlanks` (handwritten answers too long for the short line — e.g.
+// the clock sheets' "quarter past 11") get the wide name/date-sized blanks.
+function PromptText({ prompt, wide }: { prompt: string; wide: boolean }) {
     const parts = prompt.split('__');
     return (
         <>
             {parts.map((part, i) => (
                 <Fragment key={i}>
                     {part}
-                    {i < parts.length - 1 && <Blank />}
+                    {i < parts.length - 1 && <Blank big={wide} />}
                 </Fragment>
             ))}
         </>
@@ -179,8 +305,14 @@ export function PrintableSheet({ title, subtitle, problems, pageLabel, single, t
                 {problems.map((p) => (
                     <ProblemRow key={p.id}>
                         <ProblemIndex>{p.id}.</ProblemIndex>
+                        {/* Optional analog-clock figure printed before the
+                            question text (reading / draw-the-hands items). */}
+                        {p.clock && <ClockFace clock={p.clock} />}
                         <ProblemText>
-                            <PromptText prompt={p.prompt} />
+                            <PromptText prompt={p.prompt} wide={p.wideBlanks ?? false} />
+                            {/* Bottom writing space for answerLine prompts
+                                (their prompts carry no inline "__" blanks). */}
+                            {p.answerLine && <AnswerLine />}
                         </ProblemText>
                     </ProblemRow>
                 ))}

@@ -137,6 +137,21 @@ export type DashboardPlugin = {
 };
 
 // ── Worksheet problem data ───────────────────────────────────────────────────
+// An optional analog-clock FIGURE a problem can carry: the framework's sheet
+// renderer (PrintableSheet) prints a small SVG clock face before the prompt
+// text when it is present. It powers both reading items ("what time does the
+// clock show?" — hands drawn) and drawing items ("draw the hands to show half
+// past 10" — `hands: false` prints a BLANK face the student draws on).
+export type ClockFigure = {
+    // Hour the SHORT hand points at (1-12).
+    hour: number;
+    // Minute the LONG hand points at (0-59).
+    minute: number;
+    // false = print the face WITHOUT hands (draw-them-yourself items).
+    // Omitted / true = hands drawn at the hour:minute position (default).
+    hands?: boolean;
+};
+
 // A problem as a plugin's generator produces it (before the framework assigns
 // ids and the type tag while chunking pages).
 export type RawProblem = {
@@ -144,6 +159,16 @@ export type RawProblem = {
     prompt: string;
     // The model answer. May be several values separated by commas.
     answer: string;
+    // Optional analog-clock figure rendered before the prompt (see above).
+    clock?: ClockFigure;
+    // true = the prompt's "__" blanks print as WIDE fill-in lines (the
+    // name/date size), for handwritten answers that do not fit the default
+    // short blank — e.g. the clock sheets' "quarter past 11" word answers.
+    wideBlanks?: boolean;
+    // true = the prompt prints with a FULL-WIDTH fill-in line BELOW it (the
+    // answer is written on its own line at the bottom) instead of inline "__"
+    // blanks — for prompts like "7:45 is the same time in words:".
+    answerLine?: boolean;
 };
 
 // ── Worksheet spec ───────────────────────────────────────────────────────────

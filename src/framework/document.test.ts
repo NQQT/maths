@@ -88,4 +88,32 @@ describe('buildDocument — multi-page worksheets', () => {
         const b = generateSheet(fakeSpec, g1, 777);
         expect(a).toEqual(b);
     });
+
+    it('carries an optional clock figure through id stamping and chunking', () => {
+        // Problems may attach a ClockFigure (analog clock drawn by the sheet
+        // renderer); the chunker must spread it through verbatim — including
+        // the hands: false blank-face variant.
+        const clockSpec: WorksheetSpec = {
+            ...fakeSpec,
+            id: 'clocky',
+            generate: (_rng, _caps, count) =>
+                Array.from({ length: count }, (_, i) => ({
+                    prompt: 'What time is shown?__',
+                    answer: `${i} o'clock`,
+                    clock: i % 2 === 0 ? { hour: i + 1, minute: 30 } : { hour: 3, minute: 0, hands: false }
+                }))
+        };
+        const doc = generateDocument(clockSpec, g1, 42, 2);
+        expect(doc.pages[0][0]).toEqual({
+            id: 1,
+            type: 'clocky',
+            prompt: 'What time is shown?__',
+            answer: "0 o'clock",
+            clock: { hour: 1, minute: 30 }
+        });
+        // Page-2 item keeps BOTH the continuous id and its figure (item 25 =
+        // i 24, even => drawn-hands variant { hour: 25, minute: 30 }).
+        expect(doc.pages[1][0].clock).toEqual({ hour: 25, minute: 30 });
+        expect(doc.pages[1][0].id).toBe(25);
+    });
 });

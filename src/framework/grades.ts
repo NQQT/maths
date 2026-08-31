@@ -233,10 +233,11 @@ const CONFIGS: GradeConfig[] = [
         // Year 2 adds times tables (mult, operands to 10 = products to 100),
         // division by equal sharing (bound by multCap), Australian coins &
         // money (V8 Y2: 5/10/20/50c coins + notes, amounts to about $1+),
-        // clock time to the hour & half-past (V8 ACMMG170), cm measurement up
-        // to a metre, bonds to 10 & 20, doubles to 20, patterns with 3s & 4s
-        // steps, hexagons & extra 3-D shapes, tens & ones to 99, and bigger
-        // data counts.
+        // clock time to the hour & half-past (V8 ACMMG170) plus the dedicated
+        // clock-faces sheet (reading + drawing hands, quarter past/to),
+        // cm measurement up to a metre, bonds to 10 & 20, doubles to 20,
+        // patterns with 3s & 4s steps, hexagons & extra 3-D shapes, tens &
+        // ones to 99, and bigger data counts.
         available: [
             'counting',
             'comparison',
@@ -251,6 +252,7 @@ const CONFIGS: GradeConfig[] = [
             'patterns',
             'shapes',
             'time',
+            'clock',
             'measure',
             'placevalue',
             'data',

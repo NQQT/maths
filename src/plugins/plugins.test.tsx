@@ -16,7 +16,7 @@
 //      line is safe by construction.
 //   4. SELECTION FALLBACK: a stale selection pointing at a deleted plugin
 //      snaps back to the first remaining plugin.
-//   5. THE REAL WORKSHEETS: the 18 per-type plugins (AdditionWorksheet,
+//   5. THE REAL WORKSHEETS: the 19 per-type plugins (AdditionWorksheet,
 //      SubtractionWorksheet, ...) load through the same pipeline the
 //      framework uses (the PLUGINS factory list, loaded one by one by
 //      usePluginLoader after the dashboard renders), share the dashboard
@@ -292,6 +292,7 @@ const EXPECTED_WORKSHEET_IDS = [
     'patterns',
     'shapes',
     'time',
+    'clock',
     'measure',
     'placevalue',
     'data',
@@ -365,6 +366,30 @@ describe('the real worksheet plugins — register through the same pipeline', ()
         fireEvent.click(screen.getByRole('button', { name: 'Subtraction' }));
         expect((screen.getByTestId('page-count') as HTMLInputElement).value).toBe('3');
         expect(screen.getByTestId('sheet-preview-page3')).toBeDefined();
+    });
+
+    it('Clock Faces renders an SVG analog clock per clock item on the preview (Year 2)', () => {
+        mountHost(WORKSHEETS);
+
+        // The Clock Faces entry is Year-2-only (clockCap gate) — hidden on the
+        // default Year 1, visible after switching.
+        expect(screen.queryByRole('button', { name: 'Clock Faces' })).toBeNull();
+        act(() => {
+            probeStore!.session.gradeId = 2;
+        });
+        fireEvent.click(screen.getByRole('button', { name: 'Clock Faces' }));
+
+        // The pinned Year 2 sheet has 10 problems, 4 of which carry a clock
+        // figure (3 reading + 1 drawing; the 6 conversions are pure text).
+        // Every face carries 12 tick <line>s; hands add 2 more (hour hand
+        // strokeWidth 3.5) — so exactly 3 drawn faces + 1 blank draw face.
+        const page = screen.getByTestId('sheet-preview-page1');
+        const svgs = Array.from(page.querySelectorAll('svg'));
+        expect(svgs).toHaveLength(4);
+        const hasHourHand = (svg: Element) =>
+            Array.from(svg.querySelectorAll('line')).some((l) => l.getAttribute('stroke-width') === '3.5');
+        expect(svgs.filter((svg) => !hasHourHand(svg))).toHaveLength(1);
+        expect(svgs.filter(hasHourHand)).toHaveLength(3);
     });
 });
 

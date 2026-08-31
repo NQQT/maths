@@ -48,6 +48,7 @@ import { NumberBondsWorksheet } from './NumberBondsWorksheet';
 import { PatternsWorksheet } from './PatternsWorksheet';
 import { ShapesWorksheet } from './ShapesWorksheet';
 import { TimeWorksheet } from './TimeWorksheet';
+import { ClockWorksheet } from './ClockWorksheet';
 import { MeasurementWorksheet } from './MeasurementWorksheet';
 import { PlaceValueWorksheet } from './PlaceValueWorksheet';
 import { DataWorksheet } from './DataWorksheet';
@@ -73,6 +74,7 @@ export const PLUGINS: PluginFactory[] = [
     PatternsWorksheet,
     ShapesWorksheet,
     TimeWorksheet,
+    ClockWorksheet,
     MeasurementWorksheet,
     PlaceValueWorksheet,
     DataWorksheet,

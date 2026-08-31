@@ -93,13 +93,15 @@ describe('grade catalogue', () => {
         );
     });
 
-    it('grade 2 adds times tables, division and Australian coins (18 types total)', () => {
+    it('grade 2 adds times tables, division and Australian coins (19 types total)', () => {
         // Year 2 is the first grade with times tables AND the only grade with
         // division / coins & money (V8-aligned money: coins to about $1).
+        // It is also the only grade with clock faces (reading + drawing hands).
         expect([...g2.available].sort()).toEqual(
             [
                 'addition',
                 'bonds',
+                'clock',
                 'comparison',
                 'counting',
                 'data',
