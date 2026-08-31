@@ -21,7 +21,7 @@
         "@react/headless": "*",
         "@presource/core": "*",
         "@presource/react": "*",
-        "@mui/material": "^5.18.0",
+        "@mui/material": "^9.4.0",
         "@emotion/react": "^11.11.0",
         "@emotion/styled": "^11.11.0"
     },
