@@ -66,15 +66,39 @@ const SheetTitle = styledComponent('h1', {
 
 const SheetSubtitle = styledComponent('p', {
     fontSize: '15px',
-    margin: '0 0 14px 0',
+    margin: '0',
     color: '#4b5563'
 });
 
-// Name / Date line a teacher's class would fill in.
-const MetaLine = styledComponent('p', {
+// Header row: title + subtitle on the LEFT, the Name/Date fill-ins pinned to
+// the TOP RIGHT (moved off their own left-aligned line under the subtitle).
+const HeaderRow = styledComponent('div', {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    gap: '24px',
+    margin: '0 0 14px 0'
+});
+
+// Left half of the header row: the sheet heading stack.
+const HeaderId = styledComponent('div', {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '4px',
+    minWidth: 0
+});
+
+// Right half of the header row: Name / Date stacked and right-aligned so a
+// teacher's class can fill them in at the top corner of the sheet.
+const MetaStack = styledComponent('div', {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    gap: '10px',
+    flexShrink: 0,
     fontSize: '16px',
-    margin: '0 0 12px 0',
-    color: '#374151'
+    color: '#374151',
+    paddingTop: '2px'
 });
 
 const Rule = styledComponent('hr', {
@@ -294,12 +318,21 @@ function PromptText({ prompt, wide }: { prompt: string; wide: boolean }) {
 export function PrintableSheet({ title, subtitle, problems, pageLabel, single, testId }: PrintableSheetProps) {
     return (
         <SheetRoot data-testid={testId}>
-            <SheetTitle>{title}</SheetTitle>
-            <SheetSubtitle>{subtitle}</SheetSubtitle>
-            <MetaLine>
-                Name: <Blank big />
-                Date: <Blank big />
-            </MetaLine>
+            {/* Header: title/subtitle left, Name/Date top right. */}
+            <HeaderRow>
+                <HeaderId>
+                    <SheetTitle>{title}</SheetTitle>
+                    <SheetSubtitle>{subtitle}</SheetSubtitle>
+                </HeaderId>
+                <MetaStack>
+                    <div>
+                        Name: <Blank big />
+                    </div>
+                    <div>
+                        Date: <Blank big />
+                    </div>
+                </MetaStack>
+            </HeaderRow>
             <Rule />
             <ProblemGrid single={single ?? false}>
                 {problems.map((p) => (
