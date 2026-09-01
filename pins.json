@@ -4398,312 +4398,312 @@
  "mult:2": {
   "page1": [
    {
-    "prompt": "5 × 10 = __",
-    "answer": "50",
+    "prompt": "5 × __ = 50",
+    "answer": "10",
     "id": 1,
     "type": "mult"
    },
    {
-    "prompt": "9 × 7 = __",
-    "answer": "63",
+    "prompt": "7 × __ = 63",
+    "answer": "9",
     "id": 2,
     "type": "mult"
    },
    {
-    "prompt": "9 × 9 = __",
-    "answer": "81",
+    "prompt": "__ × 7 = 42",
+    "answer": "6",
     "id": 3,
     "type": "mult"
    },
    {
-    "prompt": "6 × 7 = __",
-    "answer": "42",
+    "prompt": "__ × 9 = 9",
+    "answer": "1",
     "id": 4,
     "type": "mult"
    },
    {
-    "prompt": "6 × 1 = __",
-    "answer": "6",
+    "prompt": "__ × 4 = 12",
+    "answer": "3",
     "id": 5,
     "type": "mult"
    },
    {
-    "prompt": "9 × 5 = __",
-    "answer": "45",
+    "prompt": "__ × 9 = 45",
+    "answer": "5",
     "id": 6,
     "type": "mult"
    },
    {
-    "prompt": "3 × 4 = __",
-    "answer": "12",
+    "prompt": "10 × __ = 100",
+    "answer": "10",
     "id": 7,
     "type": "mult"
    },
    {
-    "prompt": "5 × 5 = __",
-    "answer": "25",
+    "prompt": "__ × 2 = 6",
+    "answer": "3",
     "id": 8,
-    "type": "mult"
-   },
-   {
-    "prompt": "10 × 10 = __",
-    "answer": "100",
-    "id": 9,
-    "type": "mult"
-   },
-   {
-    "prompt": "10 × 3 = __",
-    "answer": "30",
-    "id": 10,
-    "type": "mult"
-   },
-   {
-    "prompt": "2 × 4 = __",
-    "answer": "8",
-    "id": 11,
     "type": "mult"
    },
    {
     "prompt": "10 × 6 = __",
     "answer": "60",
-    "id": 12,
-    "type": "mult"
-   },
-   {
-    "prompt": "2 × 5 = __",
-    "answer": "10",
-    "id": 13,
-    "type": "mult"
-   },
-   {
-    "prompt": "8 × 2 = __",
-    "answer": "16",
-    "id": 14,
-    "type": "mult"
-   },
-   {
-    "prompt": "1 × 3 = __",
-    "answer": "3",
-    "id": 15,
-    "type": "mult"
-   },
-   {
-    "prompt": "9 × 2 = __",
-    "answer": "18",
-    "id": 16,
-    "type": "mult"
-   },
-   {
-    "prompt": "3 × 9 = __",
-    "answer": "27",
-    "id": 17,
-    "type": "mult"
-   },
-   {
-    "prompt": "7 × 4 = __",
-    "answer": "28",
-    "id": 18,
-    "type": "mult"
-   },
-   {
-    "prompt": "6 × 6 = __",
-    "answer": "36",
-    "id": 19,
-    "type": "mult"
-   },
-   {
-    "prompt": "5 × 9 = __",
-    "answer": "45",
-    "id": 20,
-    "type": "mult"
-   },
-   {
-    "prompt": "5 × 3 = __",
-    "answer": "15",
-    "id": 21,
+    "id": 9,
     "type": "mult"
    },
    {
     "prompt": "5 × 8 = __",
     "answer": "40",
-    "id": 22,
+    "id": 10,
+    "type": "mult"
+   },
+   {
+    "prompt": "1 × __ = 3",
+    "answer": "3",
+    "id": 11,
+    "type": "mult"
+   },
+   {
+    "prompt": "2 × __ = 6",
+    "answer": "3",
+    "id": 12,
+    "type": "mult"
+   },
+   {
+    "prompt": "9 × __ = 18",
+    "answer": "2",
+    "id": 13,
+    "type": "mult"
+   },
+   {
+    "prompt": "__ × 6 = 24",
+    "answer": "4",
+    "id": 14,
+    "type": "mult"
+   },
+   {
+    "prompt": "3 × __ = 15",
+    "answer": "5",
+    "id": 15,
     "type": "mult"
    },
    {
     "prompt": "2 × 9 = __",
     "answer": "18",
+    "id": 16,
+    "type": "mult"
+   },
+   {
+    "prompt": "10 × 7 = __",
+    "answer": "70",
+    "id": 17,
+    "type": "mult"
+   },
+   {
+    "prompt": "3 × __ = 9",
+    "answer": "3",
+    "id": 18,
+    "type": "mult"
+   },
+   {
+    "prompt": "9 × __ = 81",
+    "answer": "9",
+    "id": 19,
+    "type": "mult"
+   },
+   {
+    "prompt": "__ × 3 = 18",
+    "answer": "6",
+    "id": 20,
+    "type": "mult"
+   },
+   {
+    "prompt": "9 × __ = 27",
+    "answer": "3",
+    "id": 21,
+    "type": "mult"
+   },
+   {
+    "prompt": "2 × 5 = __",
+    "answer": "10",
+    "id": 22,
+    "type": "mult"
+   },
+   {
+    "prompt": "4 × 8 = __",
+    "answer": "32",
     "id": 23,
     "type": "mult"
    },
    {
-    "prompt": "2 × 10 = __",
-    "answer": "20",
+    "prompt": "4 × __ = 20",
+    "answer": "5",
     "id": 24,
     "type": "mult"
    }
   ],
   "page2head": [
    {
-    "prompt": "7 × 2 = __",
-    "answer": "14",
+    "prompt": "__ × 6 = 48",
+    "answer": "8",
     "id": 25,
     "type": "mult"
    },
    {
-    "prompt": "3 × 3 = __",
+    "prompt": "__ × 5 = 45",
     "answer": "9",
     "id": 26,
     "type": "mult"
    },
    {
-    "prompt": "8 × 9 = __",
-    "answer": "72",
+    "prompt": "__ × 1 = 6",
+    "answer": "6",
     "id": 27,
     "type": "mult"
    }
   ],
   "page2": [
    {
-    "prompt": "7 × 2 = __",
-    "answer": "14",
+    "prompt": "__ × 6 = 48",
+    "answer": "8",
     "id": 25,
     "type": "mult"
    },
    {
-    "prompt": "3 × 3 = __",
+    "prompt": "__ × 5 = 45",
     "answer": "9",
     "id": 26,
     "type": "mult"
    },
    {
-    "prompt": "8 × 9 = __",
-    "answer": "72",
+    "prompt": "__ × 1 = 6",
+    "answer": "6",
     "id": 27,
     "type": "mult"
    },
    {
-    "prompt": "9 × 8 = __",
-    "answer": "72",
+    "prompt": "10 × __ = 90",
+    "answer": "9",
     "id": 28,
     "type": "mult"
    },
    {
-    "prompt": "1 × 9 = __",
-    "answer": "9",
+    "prompt": "__ × 5 = 5",
+    "answer": "1",
     "id": 29,
     "type": "mult"
    },
    {
-    "prompt": "7 × 6 = __",
-    "answer": "42",
+    "prompt": "3 × 2 = __",
+    "answer": "6",
     "id": 30,
     "type": "mult"
    },
    {
-    "prompt": "3 × 5 = __",
-    "answer": "15",
+    "prompt": "3 × __ = 18",
+    "answer": "6",
     "id": 31,
     "type": "mult"
    },
    {
-    "prompt": "9 × 3 = __",
-    "answer": "27",
+    "prompt": "__ × 2 = 4",
+    "answer": "2",
     "id": 32,
     "type": "mult"
    },
    {
-    "prompt": "5 × 1 = __",
+    "prompt": "9 × __ = 45",
     "answer": "5",
     "id": 33,
     "type": "mult"
    },
    {
-    "prompt": "4 × 8 = __",
-    "answer": "32",
+    "prompt": "1 × __ = 2",
+    "answer": "2",
     "id": 34,
     "type": "mult"
    },
    {
-    "prompt": "1 × 4 = __",
-    "answer": "4",
-    "id": 35,
-    "type": "mult"
-   },
-   {
-    "prompt": "8 × 6 = __",
-    "answer": "48",
-    "id": 36,
-    "type": "mult"
-   },
-   {
-    "prompt": "6 × 9 = __",
-    "answer": "54",
-    "id": 37,
-    "type": "mult"
-   },
-   {
-    "prompt": "5 × 7 = __",
-    "answer": "35",
-    "id": 38,
-    "type": "mult"
-   },
-   {
-    "prompt": "4 × 10 = __",
-    "answer": "40",
-    "id": 39,
-    "type": "mult"
-   },
-   {
-    "prompt": "1 × 5 = __",
-    "answer": "5",
-    "id": 40,
-    "type": "mult"
-   },
-   {
-    "prompt": "6 × 3 = __",
-    "answer": "18",
-    "id": 41,
-    "type": "mult"
-   },
-   {
-    "prompt": "2 × 3 = __",
+    "prompt": "4 × __ = 24",
     "answer": "6",
-    "id": 42,
-    "type": "mult"
-   },
-   {
-    "prompt": "3 × 6 = __",
-    "answer": "18",
-    "id": 43,
-    "type": "mult"
-   },
-   {
-    "prompt": "2 × 7 = __",
-    "answer": "14",
-    "id": 44,
-    "type": "mult"
-   },
-   {
-    "prompt": "9 × 1 = __",
-    "answer": "9",
-    "id": 45,
-    "type": "mult"
-   },
-   {
-    "prompt": "4 × 6 = __",
-    "answer": "24",
-    "id": 46,
-    "type": "mult"
-   },
-   {
-    "prompt": "10 × 5 = __",
-    "answer": "50",
-    "id": 47,
+    "id": 35,
     "type": "mult"
    },
    {
     "prompt": "6 × 4 = __",
     "answer": "24",
+    "id": 36,
+    "type": "mult"
+   },
+   {
+    "prompt": "__ × 7 = 56",
+    "answer": "8",
+    "id": 37,
+    "type": "mult"
+   },
+   {
+    "prompt": "__ × 5 = 15",
+    "answer": "3",
+    "id": 38,
+    "type": "mult"
+   },
+   {
+    "prompt": "10 × __ = 70",
+    "answer": "7",
+    "id": 39,
+    "type": "mult"
+   },
+   {
+    "prompt": "2 × __ = 8",
+    "answer": "4",
+    "id": 40,
+    "type": "mult"
+   },
+   {
+    "prompt": "1 × __ = 1",
+    "answer": "1",
+    "id": 41,
+    "type": "mult"
+   },
+   {
+    "prompt": "__ × 4 = 16",
+    "answer": "4",
+    "id": 42,
+    "type": "mult"
+   },
+   {
+    "prompt": "6 × 9 = __",
+    "answer": "54",
+    "id": 43,
+    "type": "mult"
+   },
+   {
+    "prompt": "1 × __ = 6",
+    "answer": "6",
+    "id": 44,
+    "type": "mult"
+   },
+   {
+    "prompt": "__ × 10 = 90",
+    "answer": "9",
+    "id": 45,
+    "type": "mult"
+   },
+   {
+    "prompt": "5 × __ = 5",
+    "answer": "1",
+    "id": 46,
+    "type": "mult"
+   },
+   {
+    "prompt": "__ × 4 = 36",
+    "answer": "9",
+    "id": 47,
+    "type": "mult"
+   },
+   {
+    "prompt": "7 × 9 = __",
+    "answer": "63",
     "id": 48,
     "type": "mult"
    }
@@ -6818,20 +6818,20 @@
  "counting:0": {
   "page1": [
    {
-    "prompt": "3, 4, 5, __",
-    "answer": "6",
+    "prompt": "6, 5, 4, __",
+    "answer": "3",
     "id": 1,
     "type": "counting"
    },
    {
-    "prompt": "8, 7, 6, __",
-    "answer": "5",
+    "prompt": "5, __, 7",
+    "answer": "6",
     "id": 2,
     "type": "counting"
    },
    {
-    "prompt": "__, 5, 6",
-    "answer": "4",
+    "prompt": "4, 5, 6, __",
+    "answer": "7",
     "id": 3,
     "type": "counting"
    },
@@ -6842,8 +6842,8 @@
     "type": "counting"
    },
    {
-    "prompt": "__, 2, 3",
-    "answer": "1",
+    "prompt": "1, 2, 3, __",
+    "answer": "4",
     "id": 5,
     "type": "counting"
    },
@@ -6854,204 +6854,204 @@
     "type": "counting"
    },
    {
-    "prompt": "5, 6, __",
-    "answer": "7",
+    "prompt": "__, 6, 7",
+    "answer": "5",
     "id": 7,
     "type": "counting"
    },
    {
-    "prompt": "7, 6, 5, __",
-    "answer": "4",
+    "prompt": "8, __, 10",
+    "answer": "9",
     "id": 8,
     "type": "counting"
    },
    {
-    "prompt": "5, 6, 7, __",
-    "answer": "8",
+    "prompt": "6, __, 8",
+    "answer": "7",
     "id": 9,
     "type": "counting"
    },
    {
-    "prompt": "7, 8, 9, __",
-    "answer": "10",
+    "prompt": "5, 4, 3, __",
+    "answer": "2",
     "id": 10,
     "type": "counting"
    },
    {
-    "prompt": "6, 7, 8, __",
-    "answer": "9",
+    "prompt": "Which is smaller: 9 or 1?",
+    "answer": "1",
     "id": 11,
     "type": "counting"
    },
    {
-    "prompt": "2, 3, 4, __",
-    "answer": "5",
+    "prompt": "Which is smaller: 4 or 10?",
+    "answer": "4",
     "id": 12,
     "type": "counting"
    },
    {
-    "prompt": "9, 8, 7, __",
+    "prompt": "Which is bigger: 6 or 4?",
     "answer": "6",
     "id": 13,
     "type": "counting"
    },
    {
-    "prompt": "6, 5, 4, __",
-    "answer": "3",
+    "prompt": "__, 2, 3",
+    "answer": "1",
     "id": 14,
     "type": "counting"
    },
    {
-    "prompt": "10, 9, 8, __",
-    "answer": "7",
+    "prompt": "4, __, 6",
+    "answer": "5",
     "id": 15,
     "type": "counting"
    },
    {
-    "prompt": "__, 4, 5",
-    "answer": "3",
-    "id": 16,
-    "type": "counting"
-   },
-   {
-    "prompt": "__, 6, 7",
+    "prompt": "2, 3, 4, __",
     "answer": "5",
-    "id": 17,
+    "id": 16,
     "type": "counting"
    },
    {
     "prompt": "4, 5, __",
     "answer": "6",
+    "id": 17,
+    "type": "counting"
+   },
+   {
+    "prompt": "__, 8, 9",
+    "answer": "7",
     "id": 18,
     "type": "counting"
    }
   ],
   "page2head": [
    {
-    "prompt": "3, 2, 1, __",
-    "answer": "0",
+    "prompt": "Which is bigger: 4 or 10?",
+    "answer": "10",
     "id": 19,
     "type": "counting"
    },
    {
-    "prompt": "4, 5, 6, __",
+    "prompt": "Which is smaller: 10 or 7?",
     "answer": "7",
     "id": 20,
     "type": "counting"
    },
    {
-    "prompt": "__, 1, 2",
-    "answer": "0",
+    "prompt": "0, 1, 2, __",
+    "answer": "3",
     "id": 21,
     "type": "counting"
    }
   ],
   "page2": [
    {
-    "prompt": "3, 2, 1, __",
-    "answer": "0",
+    "prompt": "Which is bigger: 4 or 10?",
+    "answer": "10",
     "id": 19,
     "type": "counting"
    },
    {
-    "prompt": "4, 5, 6, __",
+    "prompt": "Which is smaller: 10 or 7?",
     "answer": "7",
     "id": 20,
     "type": "counting"
    },
    {
-    "prompt": "__, 1, 2",
-    "answer": "0",
+    "prompt": "0, 1, 2, __",
+    "answer": "3",
     "id": 21,
     "type": "counting"
    },
    {
-    "prompt": "1, 2, __",
-    "answer": "3",
+    "prompt": "6, 7, 8, __",
+    "answer": "9",
     "id": 22,
     "type": "counting"
    },
    {
-    "prompt": "__, 8, 9",
-    "answer": "7",
+    "prompt": "3, 2, 1, __",
+    "answer": "0",
     "id": 23,
     "type": "counting"
    },
    {
-    "prompt": "0, 1, 2, __",
-    "answer": "3",
+    "prompt": "5, 6, __",
+    "answer": "7",
     "id": 24,
-    "type": "counting"
-   },
-   {
-    "prompt": "3, 4, __",
-    "answer": "5",
-    "id": 25,
-    "type": "counting"
-   },
-   {
-    "prompt": "0, 1, __",
-    "answer": "2",
-    "id": 26,
-    "type": "counting"
-   },
-   {
-    "prompt": "1, 2, 3, __",
-    "answer": "4",
-    "id": 27,
-    "type": "counting"
-   },
-   {
-    "prompt": "6, 7, __",
-    "answer": "8",
-    "id": 28,
-    "type": "counting"
-   },
-   {
-    "prompt": "5, 4, 3, __",
-    "answer": "2",
-    "id": 29,
-    "type": "counting"
-   },
-   {
-    "prompt": "2, 3, __",
-    "answer": "4",
-    "id": 30,
-    "type": "counting"
-   },
-   {
-    "prompt": "__, 3, 4",
-    "answer": "2",
-    "id": 31,
-    "type": "counting"
-   },
-   {
-    "prompt": "__, 7, 8",
-    "answer": "6",
-    "id": 32,
     "type": "counting"
    },
    {
     "prompt": "__, 9, 10",
     "answer": "8",
-    "id": 33,
-    "type": "counting"
-   },
-   {
-    "prompt": "4, 3, 2, __",
-    "answer": "1",
-    "id": 34,
-    "type": "counting"
-   },
-   {
-    "prompt": "__, 7, 8",
-    "answer": "6",
-    "id": 35,
+    "id": 25,
     "type": "counting"
    },
    {
     "prompt": "3, 4, __",
     "answer": "5",
+    "id": 26,
+    "type": "counting"
+   },
+   {
+    "prompt": "7, 6, 5, __",
+    "answer": "4",
+    "id": 27,
+    "type": "counting"
+   },
+   {
+    "prompt": "__, 1, 2",
+    "answer": "0",
+    "id": 28,
+    "type": "counting"
+   },
+   {
+    "prompt": "Which is bigger: 0 or 6?",
+    "answer": "6",
+    "id": 29,
+    "type": "counting"
+   },
+   {
+    "prompt": "Which is smaller: 5 or 10?",
+    "answer": "5",
+    "id": 30,
+    "type": "counting"
+   },
+   {
+    "prompt": "6, 7, __",
+    "answer": "8",
+    "id": 31,
+    "type": "counting"
+   },
+   {
+    "prompt": "0, 1, __",
+    "answer": "2",
+    "id": 32,
+    "type": "counting"
+   },
+   {
+    "prompt": "Which is bigger: 3 or 0?",
+    "answer": "3",
+    "id": 33,
+    "type": "counting"
+   },
+   {
+    "prompt": "3, 4, 5, __",
+    "answer": "6",
+    "id": 34,
+    "type": "counting"
+   },
+   {
+    "prompt": "10, 9, 8, __",
+    "answer": "7",
+    "id": 35,
+    "type": "counting"
+   },
+   {
+    "prompt": "9, 8, 7, __",
+    "answer": "6",
     "id": 36,
     "type": "counting"
    }
@@ -7060,8 +7060,8 @@
  "counting:1": {
   "page1": [
    {
-    "prompt": "14, 15, 16, __",
-    "answer": "17",
+    "prompt": "17, 16, 15, __",
+    "answer": "14",
     "id": 1,
     "type": "counting"
    },
@@ -7078,204 +7078,204 @@
     "type": "counting"
    },
    {
-    "prompt": "11, 10, 9, __",
+    "prompt": "Which is smaller: 10 or 8?",
     "answer": "8",
     "id": 4,
     "type": "counting"
    },
    {
-    "prompt": "__, 15, 16",
-    "answer": "14",
+    "prompt": "Which is smaller: 20 or 4?",
+    "answer": "4",
     "id": 5,
-    "type": "counting"
-   },
-   {
-    "prompt": "20, 19, 18, __",
-    "answer": "17",
-    "id": 6,
     "type": "counting"
    },
    {
     "prompt": "14, 15, __",
     "answer": "16",
+    "id": 6,
+    "type": "counting"
+   },
+   {
+    "prompt": "__, 17, 18",
+    "answer": "16",
     "id": 7,
     "type": "counting"
    },
    {
-    "prompt": "16, 17, __",
-    "answer": "18",
+    "prompt": "15, __, 17",
+    "answer": "16",
     "id": 8,
     "type": "counting"
    },
    {
-    "prompt": "8, 9, 10, __",
-    "answer": "11",
+    "prompt": "8, __, 10",
+    "answer": "9",
     "id": 9,
     "type": "counting"
    },
    {
-    "prompt": "0, 1, 2, __",
-    "answer": "3",
+    "prompt": "18, __, 20",
+    "answer": "19",
     "id": 10,
     "type": "counting"
    },
    {
-    "prompt": "2, 3, 4, __",
-    "answer": "5",
+    "prompt": "0, __, 2",
+    "answer": "1",
     "id": 11,
-    "type": "counting"
-   },
-   {
-    "prompt": "5, 6, __",
-    "answer": "7",
-    "id": 12,
-    "type": "counting"
-   },
-   {
-    "prompt": "19, 18, 17, __",
-    "answer": "16",
-    "id": 13,
-    "type": "counting"
-   },
-   {
-    "prompt": "3, 2, 1, __",
-    "answer": "0",
-    "id": 14,
-    "type": "counting"
-   },
-   {
-    "prompt": "__, 16, 17",
-    "answer": "15",
-    "id": 15,
-    "type": "counting"
-   },
-   {
-    "prompt": "15, 14, 13, __",
-    "answer": "12",
-    "id": 16,
     "type": "counting"
    },
    {
     "prompt": "5, 4, 3, __",
     "answer": "2",
+    "id": 12,
+    "type": "counting"
+   },
+   {
+    "prompt": "5, 6, __",
+    "answer": "7",
+    "id": 13,
+    "type": "counting"
+   },
+   {
+    "prompt": "Which is bigger: 19 or 20?",
+    "answer": "20",
+    "id": 14,
+    "type": "counting"
+   },
+   {
+    "prompt": "14, 15, 16, __",
+    "answer": "17",
+    "id": 15,
+    "type": "counting"
+   },
+   {
+    "prompt": "13, __, 15",
+    "answer": "14",
+    "id": 16,
+    "type": "counting"
+   },
+   {
+    "prompt": "2, __, 4",
+    "answer": "3",
     "id": 17,
     "type": "counting"
    },
    {
-    "prompt": "17, 16, 15, __",
-    "answer": "14",
+    "prompt": "Which is smaller: 17 or 6?",
+    "answer": "6",
     "id": 18,
     "type": "counting"
    }
   ],
   "page2head": [
    {
-    "prompt": "__, 14, 15",
-    "answer": "13",
+    "prompt": "Which is bigger: 0 or 20?",
+    "answer": "20",
     "id": 19,
     "type": "counting"
    },
    {
-    "prompt": "10, 9, 8, __",
-    "answer": "7",
+    "prompt": "13, 12, 11, __",
+    "answer": "10",
     "id": 20,
     "type": "counting"
    },
    {
-    "prompt": "10, 11, 12, __",
-    "answer": "13",
+    "prompt": "Which is smaller: 2 or 7?",
+    "answer": "2",
     "id": 21,
     "type": "counting"
    }
   ],
   "page2": [
    {
-    "prompt": "__, 14, 15",
-    "answer": "13",
+    "prompt": "Which is bigger: 0 or 20?",
+    "answer": "20",
     "id": 19,
     "type": "counting"
    },
    {
-    "prompt": "10, 9, 8, __",
-    "answer": "7",
+    "prompt": "13, 12, 11, __",
+    "answer": "10",
     "id": 20,
     "type": "counting"
    },
    {
-    "prompt": "10, 11, 12, __",
-    "answer": "13",
+    "prompt": "Which is smaller: 2 or 7?",
+    "answer": "2",
     "id": 21,
     "type": "counting"
    },
    {
-    "prompt": "4, 3, 2, __",
-    "answer": "1",
+    "prompt": "3, __, 5",
+    "answer": "4",
     "id": 22,
     "type": "counting"
    },
    {
-    "prompt": "3, 4, 5, __",
+    "prompt": "__, 7, 8",
     "answer": "6",
     "id": 23,
     "type": "counting"
    },
    {
-    "prompt": "6, 7, __",
-    "answer": "8",
+    "prompt": "1, __, 3",
+    "answer": "2",
     "id": 24,
     "type": "counting"
    },
    {
-    "prompt": "1, 2, 3, __",
-    "answer": "4",
+    "prompt": "6, 7, 8, __",
+    "answer": "9",
     "id": 25,
     "type": "counting"
    },
    {
-    "prompt": "__, 8, 9",
-    "answer": "7",
+    "prompt": "4, __, 6",
+    "answer": "5",
     "id": 26,
     "type": "counting"
    },
    {
-    "prompt": "7, 6, 5, __",
-    "answer": "4",
+    "prompt": "__, 10, 11",
+    "answer": "9",
     "id": 27,
     "type": "counting"
    },
    {
-    "prompt": "9, 10, __",
+    "prompt": "__, 12, 13",
     "answer": "11",
     "id": 28,
     "type": "counting"
    },
    {
-    "prompt": "11, 12, __",
-    "answer": "13",
+    "prompt": "12, 11, 10, __",
+    "answer": "9",
     "id": 29,
     "type": "counting"
    },
    {
-    "prompt": "9, 10, 11, __",
-    "answer": "12",
+    "prompt": "4, 5, 6, __",
+    "answer": "7",
     "id": 30,
-    "type": "counting"
-   },
-   {
-    "prompt": "__, 5, 6",
-    "answer": "4",
-    "id": 31,
     "type": "counting"
    },
    {
     "prompt": "18, 19, __",
     "answer": "20",
-    "id": 32,
+    "id": 31,
     "type": "counting"
    },
    {
     "prompt": "10, 11, __",
     "answer": "12",
+    "id": 32,
+    "type": "counting"
+   },
+   {
+    "prompt": "6, 7, __",
+    "answer": "8",
     "id": 33,
     "type": "counting"
    },
@@ -7286,14 +7286,14 @@
     "type": "counting"
    },
    {
-    "prompt": "__, 9, 10",
-    "answer": "8",
+    "prompt": "3, 2, 1, __",
+    "answer": "0",
     "id": 35,
     "type": "counting"
    },
    {
-    "prompt": "__, 7, 8",
-    "answer": "6",
+    "prompt": "Which is bigger: 9 or 7?",
+    "answer": "9",
     "id": 36,
     "type": "counting"
    }
@@ -7302,240 +7302,240 @@
  "counting:2": {
   "page1": [
    {
-    "prompt": "3, 2, 1, __",
-    "answer": "0",
+    "prompt": "0, __, 2",
+    "answer": "1",
     "id": 1,
     "type": "counting"
    },
    {
-    "prompt": "81, 80, 79, __",
-    "answer": "78",
+    "prompt": "79, __, 81",
+    "answer": "80",
     "id": 2,
     "type": "counting"
    },
    {
-    "prompt": "60, 59, 58, __",
-    "answer": "57",
+    "prompt": "Which is smaller: 59 or 27?",
+    "answer": "27",
     "id": 3,
     "type": "counting"
    },
    {
-    "prompt": "__, 82, 83",
-    "answer": "81",
+    "prompt": "97, __, 99",
+    "answer": "98",
     "id": 4,
-    "type": "counting"
-   },
-   {
-    "prompt": "96, 97, 98, __",
-    "answer": "99",
-    "id": 5,
     "type": "counting"
    },
    {
     "prompt": "0, 1, __",
     "answer": "2",
-    "id": 6,
+    "id": 5,
     "type": "counting"
    },
    {
     "prompt": "__, 36, 37",
     "answer": "35",
+    "id": 6,
+    "type": "counting"
+   },
+   {
+    "prompt": "__, 23, 24",
+    "answer": "22",
     "id": 7,
     "type": "counting"
    },
    {
-    "prompt": "22, 23, __",
-    "answer": "24",
+    "prompt": "78, __, 80",
+    "answer": "79",
     "id": 8,
     "type": "counting"
    },
    {
-    "prompt": "77, 78, 79, __",
-    "answer": "80",
+    "prompt": "50, 49, 48, __",
+    "answer": "47",
     "id": 9,
     "type": "counting"
    },
    {
-    "prompt": "47, 48, 49, __",
-    "answer": "50",
-    "id": 10,
-    "type": "counting"
-   },
-   {
-    "prompt": "10, 9, 8, __",
+    "prompt": "Which is smaller: 7 or 75?",
     "answer": "7",
-    "id": 11,
-    "type": "counting"
-   },
-   {
-    "prompt": "93, 94, 95, __",
-    "answer": "96",
-    "id": 12,
+    "id": 10,
     "type": "counting"
    },
    {
     "prompt": "1, 2, __",
     "answer": "3",
-    "id": 13,
+    "id": 11,
     "type": "counting"
    },
    {
-    "prompt": "19, 18, 17, __",
-    "answer": "16",
-    "id": 14,
+    "prompt": "16, __, 18",
+    "answer": "17",
+    "id": 12,
     "type": "counting"
    },
    {
     "prompt": "83, 84, __",
     "answer": "85",
+    "id": 13,
+    "type": "counting"
+   },
+   {
+    "prompt": "__, 13, 14",
+    "answer": "12",
+    "id": 14,
+    "type": "counting"
+   },
+   {
+    "prompt": "Which is bigger: 57 or 42?",
+    "answer": "57",
     "id": 15,
     "type": "counting"
    },
    {
-    "prompt": "12, 13, __",
-    "answer": "14",
+    "prompt": "70, 71, __",
+    "answer": "72",
     "id": 16,
     "type": "counting"
    },
    {
-    "prompt": "59, 58, 57, __",
-    "answer": "56",
+    "prompt": "Which is smaller: 1 or 14?",
+    "answer": "1",
     "id": 17,
     "type": "counting"
    },
    {
-    "prompt": "__, 49, 50",
-    "answer": "48",
+    "prompt": "26, 25, 24, __",
+    "answer": "23",
     "id": 18,
     "type": "counting"
    }
   ],
   "page2head": [
    {
-    "prompt": "70, 71, __",
-    "answer": "72",
+    "prompt": "82, 83, 84, __",
+    "answer": "85",
     "id": 19,
     "type": "counting"
    },
    {
-    "prompt": "4, 3, 2, __",
-    "answer": "1",
+    "prompt": "__, 18, 19",
+    "answer": "17",
     "id": 20,
     "type": "counting"
    },
    {
-    "prompt": "91, 92, __",
-    "answer": "93",
+    "prompt": "Which is bigger: 53 or 63?",
+    "answer": "63",
     "id": 21,
     "type": "counting"
    }
   ],
   "page2": [
    {
-    "prompt": "70, 71, __",
-    "answer": "72",
+    "prompt": "82, 83, 84, __",
+    "answer": "85",
     "id": 19,
-    "type": "counting"
-   },
-   {
-    "prompt": "4, 3, 2, __",
-    "answer": "1",
-    "id": 20,
-    "type": "counting"
-   },
-   {
-    "prompt": "91, 92, __",
-    "answer": "93",
-    "id": 21,
-    "type": "counting"
-   },
-   {
-    "prompt": "23, 24, 25, __",
-    "answer": "26",
-    "id": 22,
-    "type": "counting"
-   },
-   {
-    "prompt": "__, 84, 85",
-    "answer": "83",
-    "id": 23,
     "type": "counting"
    },
    {
     "prompt": "__, 18, 19",
     "answer": "17",
-    "id": 24,
+    "id": 20,
     "type": "counting"
    },
    {
-    "prompt": "54, 53, 52, __",
-    "answer": "51",
-    "id": 25,
-    "type": "counting"
-   },
-   {
-    "prompt": "42, 43, 44, __",
-    "answer": "45",
-    "id": 26,
+    "prompt": "Which is bigger: 53 or 63?",
+    "answer": "63",
+    "id": 21,
     "type": "counting"
    },
    {
     "prompt": "79, 80, __",
     "answer": "81",
-    "id": 27,
+    "id": 22,
     "type": "counting"
    },
    {
     "prompt": "__, 2, 3",
     "answer": "1",
-    "id": 28,
+    "id": 23,
     "type": "counting"
    },
    {
-    "prompt": "__, 38, 39",
-    "answer": "37",
-    "id": 29,
+    "prompt": "36, 37, 38, __",
+    "answer": "39",
+    "id": 24,
     "type": "counting"
    },
    {
     "prompt": "20, 21, __",
     "answer": "22",
+    "id": 25,
+    "type": "counting"
+   },
+   {
+    "prompt": "13, __, 15",
+    "answer": "14",
+    "id": 26,
+    "type": "counting"
+   },
+   {
+    "prompt": "Which is bigger: 64 or 65?",
+    "answer": "65",
+    "id": 27,
+    "type": "counting"
+   },
+   {
+    "prompt": "__, 37, 38",
+    "answer": "36",
+    "id": 28,
+    "type": "counting"
+   },
+   {
+    "prompt": "Which is smaller: 67 or 91?",
+    "answer": "67",
+    "id": 29,
+    "type": "counting"
+   },
+   {
+    "prompt": "49, 48, 47, __",
+    "answer": "46",
     "id": 30,
     "type": "counting"
    },
    {
-    "prompt": "16, 15, 14, __",
-    "answer": "13",
+    "prompt": "21, 20, 19, __",
+    "answer": "18",
     "id": 31,
     "type": "counting"
    },
    {
-    "prompt": "65, 64, 63, __",
-    "answer": "62",
+    "prompt": "67, 66, 65, __",
+    "answer": "64",
     "id": 32,
     "type": "counting"
    },
    {
-    "prompt": "39, 40, 41, __",
-    "answer": "42",
+    "prompt": "67, 68, 69, __",
+    "answer": "70",
     "id": 33,
     "type": "counting"
    },
    {
-    "prompt": "36, 37, __",
-    "answer": "38",
+    "prompt": "3, 4, __",
+    "answer": "5",
     "id": 34,
     "type": "counting"
    },
    {
-    "prompt": "68, 67, 66, __",
-    "answer": "65",
+    "prompt": "28, 29, 30, __",
+    "answer": "31",
     "id": 35,
     "type": "counting"
    },
    {
-    "prompt": "87, 86, 85, __",
-    "answer": "84",
+    "prompt": "Which is smaller: 59 or 96?",
+    "answer": "59",
     "id": 36,
     "type": "counting"
    }
@@ -7544,38 +7544,38 @@
  "doubles:1": {
   "page1": [
    {
-    "prompt": "4 + 5 = __",
-    "answer": "9",
+    "prompt": "What is double 5?",
+    "answer": "10",
     "id": 1,
     "type": "doubles"
    },
    {
-    "prompt": "What is double 6?",
-    "answer": "12",
-    "id": 2,
-    "type": "doubles"
-   },
-   {
-    "prompt": "7 + 8 = __",
-    "answer": "15",
-    "id": 3,
-    "type": "doubles"
-   },
-   {
-    "prompt": "What is double 3?",
+    "prompt": "5 + __ = 11",
     "answer": "6",
-    "id": 4,
-    "type": "doubles"
-   },
-   {
-    "prompt": "6 + 6 = __",
-    "answer": "12",
-    "id": 5,
+    "id": 2,
     "type": "doubles"
    },
    {
     "prompt": "What is double 8?",
     "answer": "16",
+    "id": 3,
+    "type": "doubles"
+   },
+   {
+    "prompt": "What is half of 6?",
+    "answer": "3",
+    "id": 4,
+    "type": "doubles"
+   },
+   {
+    "prompt": "5 + 6 = __",
+    "answer": "11",
+    "id": 5,
+    "type": "doubles"
+   },
+   {
+    "prompt": "7 + __ = 15",
+    "answer": "8",
     "id": 6,
     "type": "doubles"
    },
@@ -7592,264 +7592,264 @@
     "type": "doubles"
    },
    {
-    "prompt": "What is double 4?",
-    "answer": "8",
+    "prompt": "4 + __ = 9",
+    "answer": "5",
     "id": 9,
-    "type": "doubles"
-   },
-   {
-    "prompt": "What is double 5?",
-    "answer": "10",
-    "id": 10,
     "type": "doubles"
    },
    {
     "prompt": "3 + 3 = __",
     "answer": "6",
+    "id": 10,
+    "type": "doubles"
+   },
+   {
+    "prompt": "8 + __ = 17",
+    "answer": "9",
     "id": 11,
-    "type": "doubles"
-   },
-   {
-    "prompt": "What is double 9?",
-    "answer": "18",
-    "id": 12,
-    "type": "doubles"
-   },
-   {
-    "prompt": "10 + 10 = __",
-    "answer": "20",
-    "id": 13,
-    "type": "doubles"
-   },
-   {
-    "prompt": "What is double 2?",
-    "answer": "4",
-    "id": 14,
-    "type": "doubles"
-   },
-   {
-    "prompt": "What is double 7?",
-    "answer": "14",
-    "id": 15,
-    "type": "doubles"
-   },
-   {
-    "prompt": "5 + 5 = __",
-    "answer": "10",
-    "id": 16,
     "type": "doubles"
    },
    {
     "prompt": "2 + 3 = __",
     "answer": "5",
-    "id": 17,
-    "type": "doubles"
-   },
-   {
-    "prompt": "3 + 4 = __",
-    "answer": "7",
-    "id": 18,
-    "type": "doubles"
-   },
-   {
-    "prompt": "7 + 7 = __",
-    "answer": "14",
-    "id": 19,
+    "id": 12,
     "type": "doubles"
    },
    {
     "prompt": "9 + 10 = __",
     "answer": "19",
+    "id": 13,
+    "type": "doubles"
+   },
+   {
+    "prompt": "What is half of 16?",
+    "answer": "8",
+    "id": 14,
+    "type": "doubles"
+   },
+   {
+    "prompt": "2 + __ = 5",
+    "answer": "3",
+    "id": 15,
+    "type": "doubles"
+   },
+   {
+    "prompt": "10 + 10 = __",
+    "answer": "20",
+    "id": 16,
+    "type": "doubles"
+   },
+   {
+    "prompt": "What is half of 14?",
+    "answer": "7",
+    "id": 17,
+    "type": "doubles"
+   },
+   {
+    "prompt": "4 + 5 = __",
+    "answer": "9",
+    "id": 18,
+    "type": "doubles"
+   },
+   {
+    "prompt": "What is double 2?",
+    "answer": "4",
+    "id": 19,
+    "type": "doubles"
+   },
+   {
+    "prompt": "What is half of 18?",
+    "answer": "9",
     "id": 20,
     "type": "doubles"
    },
    {
-    "prompt": "1 + 2 = __",
-    "answer": "3",
+    "prompt": "What is half of 8?",
+    "answer": "4",
     "id": 21,
     "type": "doubles"
    },
    {
-    "prompt": "9 + 9 = __",
-    "answer": "18",
+    "prompt": "7 + 8 = __",
+    "answer": "15",
     "id": 22,
     "type": "doubles"
    },
    {
-    "prompt": "8 + 8 = __",
-    "answer": "16",
+    "prompt": "6 + __ = 13",
+    "answer": "7",
     "id": 23,
     "type": "doubles"
    },
    {
-    "prompt": "What is double 1?",
-    "answer": "2",
+    "prompt": "What is double 10?",
+    "answer": "20",
     "id": 24,
     "type": "doubles"
    }
   ],
   "page2head": [
    {
-    "prompt": "1 + 1 = __",
-    "answer": "2",
+    "prompt": "6 + 7 = __",
+    "answer": "13",
     "id": 25,
     "type": "doubles"
    },
    {
-    "prompt": "5 + 6 = __",
-    "answer": "11",
+    "prompt": "What is half of 10?",
+    "answer": "5",
     "id": 26,
     "type": "doubles"
    },
    {
-    "prompt": "What is double 10?",
-    "answer": "20",
+    "prompt": "What is half of 2?",
+    "answer": "1",
     "id": 27,
     "type": "doubles"
    }
   ],
   "page2": [
    {
-    "prompt": "1 + 1 = __",
-    "answer": "2",
+    "prompt": "6 + 7 = __",
+    "answer": "13",
     "id": 25,
     "type": "doubles"
    },
    {
-    "prompt": "5 + 6 = __",
-    "answer": "11",
+    "prompt": "What is half of 10?",
+    "answer": "5",
     "id": 26,
     "type": "doubles"
    },
    {
-    "prompt": "What is double 10?",
-    "answer": "20",
+    "prompt": "What is half of 2?",
+    "answer": "1",
     "id": 27,
     "type": "doubles"
    },
    {
-    "prompt": "6 + 7 = __",
-    "answer": "13",
+    "prompt": "9 + 9 = __",
+    "answer": "18",
     "id": 28,
     "type": "doubles"
    },
    {
-    "prompt": "8 + 9 = __",
-    "answer": "17",
-    "id": 29,
-    "type": "doubles"
-   },
-   {
-    "prompt": "9 + 9 = __",
-    "answer": "18",
-    "id": 30,
-    "type": "doubles"
-   },
-   {
-    "prompt": "9 + 9 = __",
-    "answer": "18",
-    "id": 31,
-    "type": "doubles"
-   },
-   {
-    "prompt": "5 + 6 = __",
-    "answer": "11",
-    "id": 32,
-    "type": "doubles"
-   },
-   {
-    "prompt": "1 + 1 = __",
-    "answer": "2",
-    "id": 33,
-    "type": "doubles"
-   },
-   {
-    "prompt": "What is double 5?",
-    "answer": "10",
-    "id": 34,
-    "type": "doubles"
-   },
-   {
-    "prompt": "5 + 6 = __",
-    "answer": "11",
-    "id": 35,
-    "type": "doubles"
-   },
-   {
-    "prompt": "2 + 2 = __",
+    "prompt": "3 + __ = 7",
     "answer": "4",
-    "id": 36,
-    "type": "doubles"
-   },
-   {
-    "prompt": "4 + 4 = __",
-    "answer": "8",
-    "id": 37,
-    "type": "doubles"
-   },
-   {
-    "prompt": "7 + 7 = __",
-    "answer": "14",
-    "id": 38,
-    "type": "doubles"
-   },
-   {
-    "prompt": "What is double 5?",
-    "answer": "10",
-    "id": 39,
-    "type": "doubles"
-   },
-   {
-    "prompt": "7 + 8 = __",
-    "answer": "15",
-    "id": 40,
-    "type": "doubles"
-   },
-   {
-    "prompt": "8 + 8 = __",
-    "answer": "16",
-    "id": 41,
-    "type": "doubles"
-   },
-   {
-    "prompt": "8 + 9 = __",
-    "answer": "17",
-    "id": 42,
-    "type": "doubles"
-   },
-   {
-    "prompt": "4 + 4 = __",
-    "answer": "8",
-    "id": 43,
+    "id": 29,
     "type": "doubles"
    },
    {
     "prompt": "What is double 4?",
     "answer": "8",
+    "id": 30,
+    "type": "doubles"
+   },
+   {
+    "prompt": "What is half of 4?",
+    "answer": "2",
+    "id": 31,
+    "type": "doubles"
+   },
+   {
+    "prompt": "7 + 7 = __",
+    "answer": "14",
+    "id": 32,
+    "type": "doubles"
+   },
+   {
+    "prompt": "What is double 1?",
+    "answer": "2",
+    "id": 33,
+    "type": "doubles"
+   },
+   {
+    "prompt": "6 + 6 = __",
+    "answer": "12",
+    "id": 34,
+    "type": "doubles"
+   },
+   {
+    "prompt": "1 + __ = 3",
+    "answer": "2",
+    "id": 35,
+    "type": "doubles"
+   },
+   {
+    "prompt": "What is half of 12?",
+    "answer": "6",
+    "id": 36,
+    "type": "doubles"
+   },
+   {
+    "prompt": "3 + 4 = __",
+    "answer": "7",
+    "id": 37,
+    "type": "doubles"
+   },
+   {
+    "prompt": "What is double 7?",
+    "answer": "14",
+    "id": 38,
+    "type": "doubles"
+   },
+   {
+    "prompt": "5 + 5 = __",
+    "answer": "10",
+    "id": 39,
+    "type": "doubles"
+   },
+   {
+    "prompt": "1 + 1 = __",
+    "answer": "2",
+    "id": 40,
+    "type": "doubles"
+   },
+   {
+    "prompt": "8 + 9 = __",
+    "answer": "17",
+    "id": 41,
+    "type": "doubles"
+   },
+   {
+    "prompt": "What is double 6?",
+    "answer": "12",
+    "id": 42,
+    "type": "doubles"
+   },
+   {
+    "prompt": "9 + __ = 19",
+    "answer": "10",
+    "id": 43,
+    "type": "doubles"
+   },
+   {
+    "prompt": "What is half of 20?",
+    "answer": "10",
     "id": 44,
     "type": "doubles"
    },
    {
-    "prompt": "6 + 7 = __",
-    "answer": "13",
+    "prompt": "1 + 2 = __",
+    "answer": "3",
     "id": 45,
     "type": "doubles"
    },
    {
-    "prompt": "9 + 9 = __",
-    "answer": "18",
+    "prompt": "What is double 3?",
+    "answer": "6",
     "id": 46,
     "type": "doubles"
    },
    {
-    "prompt": "6 + 7 = __",
-    "answer": "13",
+    "prompt": "What is double 9?",
+    "answer": "18",
     "id": 47,
     "type": "doubles"
    },
    {
-    "prompt": "What is double 5?",
-    "answer": "10",
+    "prompt": "8 + 8 = __",
+    "answer": "16",
     "id": 48,
     "type": "doubles"
    }
@@ -7858,8 +7858,8 @@
  "doubles:2": {
   "page1": [
    {
-    "prompt": "13 + 13 = __",
-    "answer": "26",
+    "prompt": "13 + 14 = __",
+    "answer": "27",
     "id": 1,
     "type": "doubles"
    },
@@ -7870,38 +7870,38 @@
     "type": "doubles"
    },
    {
-    "prompt": "What is double 16?",
-    "answer": "32",
+    "prompt": "15 + __ = 31",
+    "answer": "16",
     "id": 3,
     "type": "doubles"
    },
    {
-    "prompt": "4 + 5 = __",
-    "answer": "9",
+    "prompt": "What is double 4?",
+    "answer": "8",
     "id": 4,
     "type": "doubles"
    },
    {
-    "prompt": "8 + 9 = __",
-    "answer": "17",
+    "prompt": "What is double 8?",
+    "answer": "16",
     "id": 5,
     "type": "doubles"
    },
    {
-    "prompt": "What is double 11?",
-    "answer": "22",
+    "prompt": "What is half of 22?",
+    "answer": "11",
     "id": 6,
     "type": "doubles"
    },
    {
-    "prompt": "18 + 19 = __",
-    "answer": "37",
+    "prompt": "What is half of 38?",
+    "answer": "19",
     "id": 7,
     "type": "doubles"
    },
    {
-    "prompt": "What is double 2?",
-    "answer": "4",
+    "prompt": "2 + __ = 5",
+    "answer": "3",
     "id": 8,
     "type": "doubles"
    },
@@ -7912,258 +7912,258 @@
     "type": "doubles"
    },
    {
-    "prompt": "What is double 18?",
-    "answer": "36",
+    "prompt": "What is half of 32?",
+    "answer": "16",
     "id": 10,
+    "type": "doubles"
+   },
+   {
+    "prompt": "17 + __ = 35",
+    "answer": "18",
+    "id": 11,
     "type": "doubles"
    },
    {
     "prompt": "8 + 8 = __",
     "answer": "16",
-    "id": 11,
-    "type": "doubles"
-   },
-   {
-    "prompt": "16 + 17 = __",
-    "answer": "33",
     "id": 12,
     "type": "doubles"
    },
    {
-    "prompt": "What is double 10?",
-    "answer": "20",
+    "prompt": "What is double 17?",
+    "answer": "34",
     "id": 13,
     "type": "doubles"
    },
    {
-    "prompt": "1 + 2 = __",
-    "answer": "3",
+    "prompt": "13 + 13 = __",
+    "answer": "26",
     "id": 14,
     "type": "doubles"
    },
    {
-    "prompt": "5 + 6 = __",
-    "answer": "11",
+    "prompt": "9 + __ = 19",
+    "answer": "10",
     "id": 15,
+    "type": "doubles"
+   },
+   {
+    "prompt": "What is double 1?",
+    "answer": "2",
+    "id": 16,
+    "type": "doubles"
+   },
+   {
+    "prompt": "What is double 5?",
+    "answer": "10",
+    "id": 17,
     "type": "doubles"
    },
    {
     "prompt": "3 + 3 = __",
     "answer": "6",
-    "id": 16,
-    "type": "doubles"
-   },
-   {
-    "prompt": "6 + 6 = __",
-    "answer": "12",
-    "id": 17,
-    "type": "doubles"
-   },
-   {
-    "prompt": "2 + 3 = __",
-    "answer": "5",
     "id": 18,
+    "type": "doubles"
+   },
+   {
+    "prompt": "11 + __ = 23",
+    "answer": "12",
+    "id": 19,
+    "type": "doubles"
+   },
+   {
+    "prompt": "6 + 7 = __",
+    "answer": "13",
+    "id": 20,
+    "type": "doubles"
+   },
+   {
+    "prompt": "What is double 2?",
+    "answer": "4",
+    "id": 21,
     "type": "doubles"
    },
    {
     "prompt": "16 + 16 = __",
     "answer": "32",
-    "id": 19,
-    "type": "doubles"
-   },
-   {
-    "prompt": "What is double 3?",
-    "answer": "6",
-    "id": 20,
-    "type": "doubles"
-   },
-   {
-    "prompt": "What is double 14?",
-    "answer": "28",
-    "id": 21,
-    "type": "doubles"
-   },
-   {
-    "prompt": "4 + 4 = __",
-    "answer": "8",
     "id": 22,
     "type": "doubles"
    },
    {
-    "prompt": "11 + 12 = __",
-    "answer": "23",
+    "prompt": "3 + __ = 7",
+    "answer": "4",
     "id": 23,
     "type": "doubles"
    },
    {
-    "prompt": "17 + 17 = __",
-    "answer": "34",
+    "prompt": "What is half of 28?",
+    "answer": "14",
     "id": 24,
     "type": "doubles"
    }
   ],
   "page2head": [
    {
-    "prompt": "13 + 14 = __",
-    "answer": "27",
+    "prompt": "4 + 4 = __",
+    "answer": "8",
     "id": 25,
     "type": "doubles"
    },
    {
-    "prompt": "14 + 15 = __",
-    "answer": "29",
+    "prompt": "What is half of 34?",
+    "answer": "17",
     "id": 26,
     "type": "doubles"
    },
    {
-    "prompt": "14 + 14 = __",
-    "answer": "28",
+    "prompt": "12 + 13 = __",
+    "answer": "25",
     "id": 27,
     "type": "doubles"
    }
   ],
   "page2": [
    {
-    "prompt": "13 + 14 = __",
-    "answer": "27",
+    "prompt": "4 + 4 = __",
+    "answer": "8",
     "id": 25,
     "type": "doubles"
    },
    {
-    "prompt": "14 + 15 = __",
-    "answer": "29",
+    "prompt": "What is half of 34?",
+    "answer": "17",
     "id": 26,
-    "type": "doubles"
-   },
-   {
-    "prompt": "14 + 14 = __",
-    "answer": "28",
-    "id": 27,
-    "type": "doubles"
-   },
-   {
-    "prompt": "7 + 7 = __",
-    "answer": "14",
-    "id": 28,
-    "type": "doubles"
-   },
-   {
-    "prompt": "15 + 15 = __",
-    "answer": "30",
-    "id": 29,
     "type": "doubles"
    },
    {
     "prompt": "12 + 13 = __",
     "answer": "25",
-    "id": 30,
+    "id": 27,
     "type": "doubles"
    },
    {
-    "prompt": "What is double 20?",
-    "answer": "40",
-    "id": 31,
-    "type": "doubles"
-   },
-   {
-    "prompt": "2 + 2 = __",
-    "answer": "4",
-    "id": 32,
-    "type": "doubles"
-   },
-   {
-    "prompt": "3 + 4 = __",
-    "answer": "7",
-    "id": 33,
-    "type": "doubles"
-   },
-   {
-    "prompt": "9 + 10 = __",
-    "answer": "19",
-    "id": 34,
-    "type": "doubles"
-   },
-   {
-    "prompt": "What is double 8?",
-    "answer": "16",
-    "id": 35,
-    "type": "doubles"
-   },
-   {
-    "prompt": "9 + 9 = __",
-    "answer": "18",
-    "id": 36,
-    "type": "doubles"
-   },
-   {
-    "prompt": "12 + 12 = __",
-    "answer": "24",
-    "id": 37,
-    "type": "doubles"
-   },
-   {
-    "prompt": "What is double 9?",
-    "answer": "18",
-    "id": 38,
-    "type": "doubles"
-   },
-   {
-    "prompt": "18 + 18 = __",
-    "answer": "36",
-    "id": 39,
-    "type": "doubles"
-   },
-   {
-    "prompt": "1 + 1 = __",
-    "answer": "2",
-    "id": 40,
-    "type": "doubles"
-   },
-   {
-    "prompt": "19 + 20 = __",
-    "answer": "39",
-    "id": 41,
-    "type": "doubles"
-   },
-   {
-    "prompt": "What is double 1?",
-    "answer": "2",
-    "id": 42,
-    "type": "doubles"
-   },
-   {
-    "prompt": "19 + 19 = __",
-    "answer": "38",
-    "id": 43,
-    "type": "doubles"
-   },
-   {
-    "prompt": "20 + 20 = __",
-    "answer": "40",
-    "id": 44,
-    "type": "doubles"
-   },
-   {
-    "prompt": "7 + 8 = __",
-    "answer": "15",
-    "id": 45,
-    "type": "doubles"
-   },
-   {
-    "prompt": "10 + 10 = __",
-    "answer": "20",
-    "id": 46,
+    "prompt": "17 + 18 = __",
+    "answer": "35",
+    "id": 28,
     "type": "doubles"
    },
    {
     "prompt": "What is double 13?",
     "answer": "26",
+    "id": 29,
+    "type": "doubles"
+   },
+   {
+    "prompt": "What is double 14?",
+    "answer": "28",
+    "id": 30,
+    "type": "doubles"
+   },
+   {
+    "prompt": "14 + 14 = __",
+    "answer": "28",
+    "id": 31,
+    "type": "doubles"
+   },
+   {
+    "prompt": "6 + 6 = __",
+    "answer": "12",
+    "id": 32,
+    "type": "doubles"
+   },
+   {
+    "prompt": "7 + 7 = __",
+    "answer": "14",
+    "id": 33,
+    "type": "doubles"
+   },
+   {
+    "prompt": "15 + 16 = __",
+    "answer": "31",
+    "id": 34,
+    "type": "doubles"
+   },
+   {
+    "prompt": "15 + 15 = __",
+    "answer": "30",
+    "id": 35,
+    "type": "doubles"
+   },
+   {
+    "prompt": "What is half of 26?",
+    "answer": "13",
+    "id": 36,
+    "type": "doubles"
+   },
+   {
+    "prompt": "19 + __ = 39",
+    "answer": "20",
+    "id": 37,
+    "type": "doubles"
+   },
+   {
+    "prompt": "14 + 15 = __",
+    "answer": "29",
+    "id": 38,
+    "type": "doubles"
+   },
+   {
+    "prompt": "2 + 2 = __",
+    "answer": "4",
+    "id": 39,
+    "type": "doubles"
+   },
+   {
+    "prompt": "What is double 3?",
+    "answer": "6",
+    "id": 40,
+    "type": "doubles"
+   },
+   {
+    "prompt": "What is half of 18?",
+    "answer": "9",
+    "id": 41,
+    "type": "doubles"
+   },
+   {
+    "prompt": "10 + __ = 21",
+    "answer": "11",
+    "id": 42,
+    "type": "doubles"
+   },
+   {
+    "prompt": "What is half of 36?",
+    "answer": "18",
+    "id": 43,
+    "type": "doubles"
+   },
+   {
+    "prompt": "17 + 17 = __",
+    "answer": "34",
+    "id": 44,
+    "type": "doubles"
+   },
+   {
+    "prompt": "7 + __ = 15",
+    "answer": "8",
+    "id": 45,
+    "type": "doubles"
+   },
+   {
+    "prompt": "8 + 9 = __",
+    "answer": "17",
+    "id": 46,
+    "type": "doubles"
+   },
+   {
+    "prompt": "11 + 12 = __",
+    "answer": "23",
     "id": 47,
     "type": "doubles"
    },
    {
-    "prompt": "What is double 12?",
-    "answer": "24",
+    "prompt": "1 + 2 = __",
+    "answer": "3",
     "id": 48,
     "type": "doubles"
    }
@@ -8178,13 +8178,13 @@
     "type": "bonds"
    },
    {
-    "prompt": "__ and 1 make 10",
+    "prompt": "10 - 1 = __",
     "answer": "9",
     "id": 2,
     "type": "bonds"
    },
    {
-    "prompt": "__ + 2 = 10",
+    "prompt": "__ and 2 make 10",
     "answer": "8",
     "id": 3,
     "type": "bonds"
@@ -8208,7 +8208,7 @@
     "type": "bonds"
    },
    {
-    "prompt": "__ + 7 = 10",
+    "prompt": "__ and 7 make 10",
     "answer": "3",
     "id": 7,
     "type": "bonds"
@@ -8226,240 +8226,240 @@
     "type": "bonds"
    },
    {
-    "prompt": "1 + __ = 10",
-    "answer": "9",
+    "prompt": "__ + 3 = 10",
+    "answer": "7",
     "id": 10,
     "type": "bonds"
    },
    {
-    "prompt": "__ + 3 = 10",
-    "answer": "7",
+    "prompt": "10 - 7 = __",
+    "answer": "3",
     "id": 11,
     "type": "bonds"
    },
    {
-    "prompt": "3 + __ = 10",
-    "answer": "7",
-    "id": 12,
-    "type": "bonds"
-   },
-   {
-    "prompt": "__ and 7 make 10",
-    "answer": "3",
-    "id": 13,
-    "type": "bonds"
-   },
-   {
-    "prompt": "2 + __ = 10",
+    "prompt": "__ + 2 = 10",
     "answer": "8",
-    "id": 14,
-    "type": "bonds"
-   },
-   {
-    "prompt": "__ + 8 = 10",
-    "answer": "2",
-    "id": 15,
-    "type": "bonds"
-   },
-   {
-    "prompt": "5 + __ = 10",
-    "answer": "5",
-    "id": 16,
-    "type": "bonds"
-   },
-   {
-    "prompt": "7 + __ = 10",
-    "answer": "3",
-    "id": 17,
+    "id": 12,
     "type": "bonds"
    },
    {
     "prompt": "__ and 8 make 10",
     "answer": "2",
+    "id": 13,
+    "type": "bonds"
+   },
+   {
+    "prompt": "__ + 5 = 10",
+    "answer": "5",
+    "id": 14,
+    "type": "bonds"
+   },
+   {
+    "prompt": "3 + __ = 10",
+    "answer": "7",
+    "id": 15,
+    "type": "bonds"
+   },
+   {
+    "prompt": "1 + __ = 10",
+    "answer": "9",
+    "id": 16,
+    "type": "bonds"
+   },
+   {
+    "prompt": "__ and 3 make 10",
+    "answer": "7",
+    "id": 17,
+    "type": "bonds"
+   },
+   {
+    "prompt": "__ + 8 = 10",
+    "answer": "2",
     "id": 18,
+    "type": "bonds"
+   },
+   {
+    "prompt": "__ + 7 = 10",
+    "answer": "3",
+    "id": 19,
+    "type": "bonds"
+   },
+   {
+    "prompt": "10 - 8 = __",
+    "answer": "2",
+    "id": 20,
+    "type": "bonds"
+   },
+   {
+    "prompt": "7 + __ = 10",
+    "answer": "3",
+    "id": 21,
     "type": "bonds"
    },
    {
     "prompt": "__ + 6 = 10",
     "answer": "4",
-    "id": 19,
-    "type": "bonds"
-   },
-   {
-    "prompt": "__ and 2 make 10",
-    "answer": "8",
-    "id": 20,
-    "type": "bonds"
-   },
-   {
-    "prompt": "__ and 9 make 10",
-    "answer": "1",
-    "id": 21,
-    "type": "bonds"
-   },
-   {
-    "prompt": "__ and 4 make 10",
-    "answer": "6",
     "id": 22,
     "type": "bonds"
    },
    {
-    "prompt": "__ and 6 make 10",
-    "answer": "4",
+    "prompt": "10 - 2 = __",
+    "answer": "8",
     "id": 23,
     "type": "bonds"
    },
    {
-    "prompt": "8 + __ = 10",
-    "answer": "2",
+    "prompt": "5 + __ = 10",
+    "answer": "5",
     "id": 24,
     "type": "bonds"
    }
   ],
   "page2head": [
    {
-    "prompt": "__ + 5 = 10",
-    "answer": "5",
+    "prompt": "10 - 9 = __",
+    "answer": "1",
     "id": 25,
     "type": "bonds"
    },
    {
-    "prompt": "__ + 9 = 10",
-    "answer": "1",
+    "prompt": "10 - 5 = __",
+    "answer": "5",
     "id": 26,
     "type": "bonds"
    },
    {
-    "prompt": "__ and 3 make 10",
-    "answer": "7",
+    "prompt": "10 - 4 = __",
+    "answer": "6",
     "id": 27,
     "type": "bonds"
    }
   ],
   "page2": [
    {
-    "prompt": "__ + 5 = 10",
-    "answer": "5",
+    "prompt": "10 - 9 = __",
+    "answer": "1",
     "id": 25,
+    "type": "bonds"
+   },
+   {
+    "prompt": "10 - 5 = __",
+    "answer": "5",
+    "id": 26,
+    "type": "bonds"
+   },
+   {
+    "prompt": "10 - 4 = __",
+    "answer": "6",
+    "id": 27,
     "type": "bonds"
    },
    {
     "prompt": "__ + 9 = 10",
     "answer": "1",
-    "id": 26,
-    "type": "bonds"
-   },
-   {
-    "prompt": "__ and 3 make 10",
-    "answer": "7",
-    "id": 27,
-    "type": "bonds"
-   },
-   {
-    "prompt": "3 + __ = 10",
-    "answer": "7",
     "id": 28,
     "type": "bonds"
    },
    {
-    "prompt": "__ and 8 make 10",
-    "answer": "2",
+    "prompt": "__ and 1 make 10",
+    "answer": "9",
     "id": 29,
     "type": "bonds"
    },
    {
-    "prompt": "2 + __ = 10",
-    "answer": "8",
+    "prompt": "10 - 6 = __",
+    "answer": "4",
     "id": 30,
     "type": "bonds"
    },
    {
-    "prompt": "4 + __ = 10",
+    "prompt": "__ and 4 make 10",
     "answer": "6",
     "id": 31,
     "type": "bonds"
    },
    {
-    "prompt": "__ + 1 = 10",
-    "answer": "9",
+    "prompt": "2 + __ = 10",
+    "answer": "8",
     "id": 32,
     "type": "bonds"
    },
    {
-    "prompt": "__ and 1 make 10",
-    "answer": "9",
+    "prompt": "__ and 6 make 10",
+    "answer": "4",
     "id": 33,
     "type": "bonds"
    },
    {
-    "prompt": "__ + 8 = 10",
+    "prompt": "8 + __ = 10",
     "answer": "2",
     "id": 34,
     "type": "bonds"
    },
    {
-    "prompt": "8 + __ = 10",
-    "answer": "2",
+    "prompt": "10 - 3 = __",
+    "answer": "7",
     "id": 35,
     "type": "bonds"
    },
    {
-    "prompt": "4 + __ = 10",
-    "answer": "6",
+    "prompt": "__ and 9 make 10",
+    "answer": "1",
     "id": 36,
     "type": "bonds"
    },
    {
-    "prompt": "__ + 6 = 10",
-    "answer": "4",
+    "prompt": "__ + 3 = 10",
+    "answer": "7",
     "id": 37,
     "type": "bonds"
    },
    {
-    "prompt": "8 + __ = 10",
+    "prompt": "__ and 8 make 10",
     "answer": "2",
     "id": 38,
     "type": "bonds"
    },
    {
-    "prompt": "8 + __ = 10",
-    "answer": "2",
+    "prompt": "2 + __ = 10",
+    "answer": "8",
     "id": 39,
     "type": "bonds"
    },
    {
-    "prompt": "__ + 7 = 10",
-    "answer": "3",
+    "prompt": "__ + 4 = 10",
+    "answer": "6",
     "id": 40,
     "type": "bonds"
    },
    {
-    "prompt": "__ + 6 = 10",
-    "answer": "4",
-    "id": 41,
-    "type": "bonds"
-   },
-   {
-    "prompt": "1 + __ = 10",
+    "prompt": "__ + 1 = 10",
     "answer": "9",
-    "id": 42,
-    "type": "bonds"
-   },
-   {
-    "prompt": "__ + 7 = 10",
-    "answer": "3",
-    "id": 43,
-    "type": "bonds"
-   },
-   {
-    "prompt": "__ and 5 make 10",
-    "answer": "5",
-    "id": 44,
+    "id": 41,
     "type": "bonds"
    },
    {
     "prompt": "__ and 1 make 10",
     "answer": "9",
+    "id": 42,
+    "type": "bonds"
+   },
+   {
+    "prompt": "__ + 8 = 10",
+    "answer": "2",
+    "id": 43,
+    "type": "bonds"
+   },
+   {
+    "prompt": "8 + __ = 10",
+    "answer": "2",
+    "id": 44,
+    "type": "bonds"
+   },
+   {
+    "prompt": "4 + __ = 10",
+    "answer": "6",
     "id": 45,
     "type": "bonds"
    },
@@ -8470,8 +8470,8 @@
     "type": "bonds"
    },
    {
-    "prompt": "2 + __ = 10",
-    "answer": "8",
+    "prompt": "__ + 8 = 10",
+    "answer": "2",
     "id": 47,
     "type": "bonds"
    },
@@ -8486,7 +8486,7 @@
  "bonds:2": {
   "page1": [
    {
-    "prompt": "__ and 4 make 20",
+    "prompt": "20 - 4 = __",
     "answer": "16",
     "id": 1,
     "type": "bonds"
@@ -8498,13 +8498,13 @@
     "type": "bonds"
    },
    {
-    "prompt": "__ and 2 make 20",
+    "prompt": "20 - 2 = __",
     "answer": "18",
     "id": 3,
     "type": "bonds"
    },
    {
-    "prompt": "__ + 13 = 20",
+    "prompt": "__ and 13 make 20",
     "answer": "7",
     "id": 4,
     "type": "bonds"
@@ -8516,282 +8516,282 @@
     "type": "bonds"
    },
    {
-    "prompt": "__ and 13 make 20",
+    "prompt": "__ and 3 make 10",
     "answer": "7",
     "id": 6,
     "type": "bonds"
    },
    {
-    "prompt": "__ and 3 make 10",
-    "answer": "7",
+    "prompt": "__ + 8 = 10",
+    "answer": "2",
     "id": 7,
     "type": "bonds"
    },
    {
-    "prompt": "__ + 8 = 10",
-    "answer": "2",
+    "prompt": "__ and 7 make 10",
+    "answer": "3",
     "id": 8,
     "type": "bonds"
    },
    {
-    "prompt": "__ + 7 = 10",
-    "answer": "3",
-    "id": 9,
-    "type": "bonds"
-   },
-   {
-    "prompt": "__ + 1 = 20",
+    "prompt": "__ and 1 make 20",
     "answer": "19",
-    "id": 10,
+    "id": 9,
     "type": "bonds"
    },
    {
     "prompt": "__ + 9 = 10",
     "answer": "1",
-    "id": 11,
+    "id": 10,
     "type": "bonds"
    },
    {
     "prompt": "6 + __ = 10",
     "answer": "4",
-    "id": 12,
+    "id": 11,
     "type": "bonds"
    },
    {
-    "prompt": "__ + 4 = 10",
+    "prompt": "__ and 4 make 10",
     "answer": "6",
-    "id": 13,
+    "id": 12,
     "type": "bonds"
    },
    {
     "prompt": "3 + __ = 20",
     "answer": "17",
+    "id": 13,
+    "type": "bonds"
+   },
+   {
+    "prompt": "20 - 8 = __",
+    "answer": "12",
     "id": 14,
     "type": "bonds"
    },
    {
-    "prompt": "__ and 8 make 20",
-    "answer": "12",
+    "prompt": "__ and 1 make 10",
+    "answer": "9",
     "id": 15,
     "type": "bonds"
    },
    {
-    "prompt": "__ + 1 = 10",
-    "answer": "9",
+    "prompt": "__ and 5 make 10",
+    "answer": "5",
     "id": 16,
     "type": "bonds"
    },
    {
-    "prompt": "__ + 5 = 10",
-    "answer": "5",
-    "id": 17,
-    "type": "bonds"
-   },
-   {
-    "prompt": "__ + 18 = 20",
+    "prompt": "__ and 18 make 20",
     "answer": "2",
-    "id": 18,
+    "id": 17,
     "type": "bonds"
    },
    {
     "prompt": "__ + 14 = 20",
     "answer": "6",
-    "id": 19,
+    "id": 18,
     "type": "bonds"
    },
    {
     "prompt": "1 + __ = 10",
     "answer": "9",
-    "id": 20,
-    "type": "bonds"
-   },
-   {
-    "prompt": "3 + __ = 10",
-    "answer": "7",
-    "id": 21,
+    "id": 19,
     "type": "bonds"
    },
    {
     "prompt": "__ + 3 = 10",
     "answer": "7",
-    "id": 22,
+    "id": 20,
     "type": "bonds"
    },
    {
     "prompt": "__ + 11 = 20",
     "answer": "9",
+    "id": 21,
+    "type": "bonds"
+   },
+   {
+    "prompt": "20 - 7 = __",
+    "answer": "13",
+    "id": 22,
+    "type": "bonds"
+   },
+   {
+    "prompt": "__ and 17 make 20",
+    "answer": "3",
     "id": 23,
     "type": "bonds"
    },
    {
-    "prompt": "__ and 7 make 20",
-    "answer": "13",
+    "prompt": "16 + __ = 20",
+    "answer": "4",
     "id": 24,
     "type": "bonds"
    }
   ],
   "page2head": [
    {
-    "prompt": "__ + 17 = 20",
-    "answer": "3",
+    "prompt": "__ + 5 = 10",
+    "answer": "5",
     "id": 25,
     "type": "bonds"
    },
    {
-    "prompt": "16 + __ = 20",
-    "answer": "4",
+    "prompt": "__ + 6 = 20",
+    "answer": "14",
     "id": 26,
     "type": "bonds"
    },
    {
-    "prompt": "5 + __ = 10",
-    "answer": "5",
+    "prompt": "__ + 16 = 20",
+    "answer": "4",
     "id": 27,
     "type": "bonds"
    }
   ],
   "page2": [
    {
-    "prompt": "__ + 17 = 20",
-    "answer": "3",
+    "prompt": "__ + 5 = 10",
+    "answer": "5",
     "id": 25,
     "type": "bonds"
    },
    {
-    "prompt": "16 + __ = 20",
-    "answer": "4",
+    "prompt": "__ + 6 = 20",
+    "answer": "14",
     "id": 26,
     "type": "bonds"
    },
    {
-    "prompt": "5 + __ = 10",
-    "answer": "5",
+    "prompt": "__ + 16 = 20",
+    "answer": "4",
     "id": 27,
     "type": "bonds"
    },
    {
-    "prompt": "6 + __ = 20",
-    "answer": "14",
-    "id": 28,
-    "type": "bonds"
-   },
-   {
-    "prompt": "4 + __ = 20",
+    "prompt": "__ + 4 = 20",
     "answer": "16",
-    "id": 29,
+    "id": 28,
     "type": "bonds"
    },
    {
     "prompt": "__ + 12 = 20",
     "answer": "8",
+    "id": 29,
+    "type": "bonds"
+   },
+   {
+    "prompt": "20 - 6 = __",
+    "answer": "14",
     "id": 30,
     "type": "bonds"
    },
    {
-    "prompt": "__ and 6 make 20",
-    "answer": "14",
+    "prompt": "20 - 14 = __",
+    "answer": "6",
     "id": 31,
     "type": "bonds"
    },
    {
-    "prompt": "__ and 14 make 20",
-    "answer": "6",
-    "id": 32,
-    "type": "bonds"
-   },
-   {
-    "prompt": "__ and 17 make 20",
+    "prompt": "20 - 17 = __",
     "answer": "3",
-    "id": 33,
+    "id": 32,
     "type": "bonds"
    },
    {
     "prompt": "14 + __ = 20",
     "answer": "6",
-    "id": 34,
+    "id": 33,
     "type": "bonds"
    },
    {
-    "prompt": "__ and 1 make 20",
+    "prompt": "20 - 1 = __",
     "answer": "19",
-    "id": 35,
+    "id": 34,
     "type": "bonds"
    },
    {
     "prompt": "18 + __ = 20",
     "answer": "2",
+    "id": 35,
+    "type": "bonds"
+   },
+   {
+    "prompt": "10 - 7 = __",
+    "answer": "3",
     "id": 36,
     "type": "bonds"
    },
    {
-    "prompt": "__ and 7 make 10",
-    "answer": "3",
+    "prompt": "__ + 1 = 10",
+    "answer": "9",
     "id": 37,
     "type": "bonds"
    },
    {
-    "prompt": "__ and 9 make 10",
+    "prompt": "10 - 9 = __",
     "answer": "1",
     "id": 38,
     "type": "bonds"
    },
    {
-    "prompt": "__ and 4 make 10",
+    "prompt": "10 - 4 = __",
     "answer": "6",
     "id": 39,
     "type": "bonds"
    },
    {
-    "prompt": "__ and 19 make 20",
+    "prompt": "20 - 19 = __",
     "answer": "1",
     "id": 40,
     "type": "bonds"
    },
    {
-    "prompt": "1 + __ = 20",
+    "prompt": "__ + 1 = 20",
     "answer": "19",
     "id": 41,
     "type": "bonds"
    },
    {
-    "prompt": "2 + __ = 10",
+    "prompt": "__ + 2 = 10",
     "answer": "8",
     "id": 42,
     "type": "bonds"
    },
    {
-    "prompt": "8 + __ = 20",
-    "answer": "12",
+    "prompt": "20 - 13 = __",
+    "answer": "7",
     "id": 43,
     "type": "bonds"
    },
    {
-    "prompt": "4 + __ = 10",
-    "answer": "6",
+    "prompt": "__ and 8 make 10",
+    "answer": "2",
     "id": 44,
     "type": "bonds"
    },
    {
-    "prompt": "15 + __ = 20",
-    "answer": "5",
+    "prompt": "__ + 19 = 20",
+    "answer": "1",
     "id": 45,
     "type": "bonds"
    },
    {
-    "prompt": "__ + 2 = 10",
+    "prompt": "2 + __ = 10",
     "answer": "8",
     "id": 46,
     "type": "bonds"
    },
    {
-    "prompt": "__ and 5 make 20",
-    "answer": "15",
+    "prompt": "8 + __ = 20",
+    "answer": "12",
     "id": 47,
     "type": "bonds"
    },
    {
-    "prompt": "__ and 3 make 20",
-    "answer": "17",
+    "prompt": "4 + __ = 10",
+    "answer": "6",
     "id": 48,
     "type": "bonds"
    }
@@ -9672,216 +9672,216 @@
  "time:1": {
   "page1": [
    {
-    "prompt": "If today is Tuesday, how many days is it until Sunday?",
-    "answer": "5",
+    "prompt": "What month comes after May?",
+    "answer": "June",
     "id": 1,
     "type": "time"
    },
    {
-    "prompt": "What day comes after Wednesday?",
-    "answer": "Thursday",
+    "prompt": "If today is Wednesday, what day was yesterday?",
+    "answer": "Tuesday",
     "id": 2,
     "type": "time"
    },
    {
-    "prompt": "What season comes after autumn?",
-    "answer": "winter",
+    "prompt": "How many months are in a year?",
+    "answer": "12",
     "id": 3,
-    "type": "time"
-   },
-   {
-    "prompt": "What day comes before Tuesday?",
-    "answer": "Monday",
-    "id": 4,
-    "type": "time"
-   },
-   {
-    "prompt": "If today is Monday, what day was yesterday?",
-    "answer": "Sunday",
-    "id": 5,
-    "type": "time"
-   },
-   {
-    "prompt": "If today is Sunday, what day was yesterday?",
-    "answer": "Saturday",
-    "id": 6,
-    "type": "time"
-   },
-   {
-    "prompt": "If today is Monday, how many days is it until Saturday?",
-    "answer": "5",
-    "id": 7,
-    "type": "time"
-   },
-   {
-    "prompt": "If today is Tuesday, how many days is it until Saturday?",
-    "answer": "4",
-    "id": 8,
-    "type": "time"
-   },
-   {
-    "prompt": "If today is Tuesday, how many days is it until Friday?",
-    "answer": "3",
-    "id": 9,
-    "type": "time"
-   },
-   {
-    "prompt": "What day comes before Saturday?",
-    "answer": "Friday",
-    "id": 10,
-    "type": "time"
-   },
-   {
-    "prompt": "If today is Friday, what day was yesterday?",
-    "answer": "Thursday",
-    "id": 11,
-    "type": "time"
-   },
-   {
-    "prompt": "If today is Friday, how many days is it until Saturday?",
-    "answer": "1",
-    "id": 12,
-    "type": "time"
-   },
-   {
-    "prompt": "If today is Thursday, what day was yesterday?",
-    "answer": "Wednesday",
-    "id": 13,
     "type": "time"
    },
    {
     "prompt": "What day comes after Tuesday?",
     "answer": "Wednesday",
-    "id": 14,
+    "id": 4,
+    "type": "time"
+   },
+   {
+    "prompt": "What month comes before November?",
+    "answer": "October",
+    "id": 5,
+    "type": "time"
+   },
+   {
+    "prompt": "If today is Monday, what day was yesterday?",
+    "answer": "Sunday",
+    "id": 6,
+    "type": "time"
+   },
+   {
+    "prompt": "If today is Sunday, what day was yesterday?",
+    "answer": "Saturday",
+    "id": 7,
     "type": "time"
    },
    {
     "prompt": "If today is Saturday, what day is tomorrow?",
     "answer": "Sunday",
-    "id": 15,
+    "id": 8,
+    "type": "time"
+   },
+   {
+    "prompt": "What month comes after June?",
+    "answer": "July",
+    "id": 9,
     "type": "time"
    },
    {
     "prompt": "What day comes before Friday?",
     "answer": "Thursday",
+    "id": 10,
+    "type": "time"
+   },
+   {
+    "prompt": "What month comes before October?",
+    "answer": "September",
+    "id": 11,
+    "type": "time"
+   },
+   {
+    "prompt": "If today is Tuesday, how many days is it until Saturday?",
+    "answer": "4",
+    "id": 12,
+    "type": "time"
+   },
+   {
+    "prompt": "What month comes after December?",
+    "answer": "January",
+    "id": 13,
+    "type": "time"
+   },
+   {
+    "prompt": "If today is Thursday, what day is tomorrow?",
+    "answer": "Friday",
+    "id": 14,
+    "type": "time"
+   },
+   {
+    "prompt": "If today is Tuesday, what day is tomorrow?",
+    "answer": "Wednesday",
+    "id": 15,
+    "type": "time"
+   },
+   {
+    "prompt": "What day comes after Sunday?",
+    "answer": "Monday",
     "id": 16,
     "type": "time"
    }
   ],
   "page2head": [
    {
-    "prompt": "What season comes after spring?",
-    "answer": "summer",
+    "prompt": "How many days are in a week?",
+    "answer": "7",
     "id": 17,
     "type": "time"
    },
    {
-    "prompt": "What month comes after May?",
-    "answer": "June",
+    "prompt": "What season comes after autumn?",
+    "answer": "winter",
     "id": 18,
     "type": "time"
    },
    {
-    "prompt": "How many months are in a year?",
-    "answer": "12",
+    "prompt": "If today is Wednesday, how many days is it until Friday?",
+    "answer": "2",
     "id": 19,
     "type": "time"
    }
   ],
   "page2": [
    {
-    "prompt": "What season comes after spring?",
-    "answer": "summer",
+    "prompt": "How many days are in a week?",
+    "answer": "7",
     "id": 17,
     "type": "time"
    },
    {
-    "prompt": "What month comes after May?",
-    "answer": "June",
+    "prompt": "What season comes after autumn?",
+    "answer": "winter",
     "id": 18,
     "type": "time"
    },
    {
-    "prompt": "How many months are in a year?",
-    "answer": "12",
+    "prompt": "If today is Wednesday, how many days is it until Friday?",
+    "answer": "2",
     "id": 19,
-    "type": "time"
-   },
-   {
-    "prompt": "What day comes before Sunday?",
-    "answer": "Saturday",
-    "id": 20,
-    "type": "time"
-   },
-   {
-    "prompt": "What day comes after Thursday?",
-    "answer": "Friday",
-    "id": 21,
     "type": "time"
    },
    {
     "prompt": "What day comes before Monday?",
     "answer": "Sunday",
+    "id": 20,
+    "type": "time"
+   },
+   {
+    "prompt": "What season comes after spring?",
+    "answer": "summer",
+    "id": 21,
+    "type": "time"
+   },
+   {
+    "prompt": "What month comes after January?",
+    "answer": "February",
     "id": 22,
     "type": "time"
    },
    {
-    "prompt": "How many days are in a week?",
-    "answer": "7",
+    "prompt": "What month comes after September?",
+    "answer": "October",
     "id": 23,
-    "type": "time"
-   },
-   {
-    "prompt": "What month comes after November?",
-    "answer": "December",
-    "id": 24,
     "type": "time"
    },
    {
     "prompt": "What season comes after summer?",
     "answer": "autumn",
-    "id": 25,
-    "type": "time"
-   },
-   {
-    "prompt": "If today is Wednesday, what day was yesterday?",
-    "answer": "Tuesday",
-    "id": 26,
-    "type": "time"
-   },
-   {
-    "prompt": "What day comes before Thursday?",
-    "answer": "Wednesday",
-    "id": 27,
-    "type": "time"
-   },
-   {
-    "prompt": "If today is Sunday, what day is tomorrow?",
-    "answer": "Monday",
-    "id": 28,
-    "type": "time"
-   },
-   {
-    "prompt": "What month comes after June?",
-    "answer": "July",
-    "id": 29,
-    "type": "time"
-   },
-   {
-    "prompt": "What season comes after winter?",
-    "answer": "spring",
-    "id": 30,
-    "type": "time"
-   },
-   {
-    "prompt": "If today is Tuesday, what day is tomorrow?",
-    "answer": "Wednesday",
-    "id": 31,
+    "id": 24,
     "type": "time"
    },
    {
     "prompt": "How many days are in a year?",
     "answer": "365",
+    "id": 25,
+    "type": "time"
+   },
+   {
+    "prompt": "What day comes before Saturday?",
+    "answer": "Friday",
+    "id": 26,
+    "type": "time"
+   },
+   {
+    "prompt": "What day comes after Monday?",
+    "answer": "Tuesday",
+    "id": 27,
+    "type": "time"
+   },
+   {
+    "prompt": "If today is Monday, how many days is it until Saturday?",
+    "answer": "5",
+    "id": 28,
+    "type": "time"
+   },
+   {
+    "prompt": "What month comes after August?",
+    "answer": "September",
+    "id": 29,
+    "type": "time"
+   },
+   {
+    "prompt": "If today is Friday, what day is tomorrow?",
+    "answer": "Saturday",
+    "id": 30,
+    "type": "time"
+   },
+   {
+    "prompt": "What day comes before Wednesday?",
+    "answer": "Tuesday",
+    "id": 31,
+    "type": "time"
+   },
+   {
+    "prompt": "What day comes before Thursday?",
+    "answer": "Wednesday",
     "id": 32,
     "type": "time"
    }
@@ -9890,8 +9890,8 @@
  "time:2": {
   "page1": [
    {
-    "prompt": "How many days are in a year?",
-    "answer": "365",
+    "prompt": "What season comes after summer?",
+    "answer": "autumn",
     "id": 1,
     "type": "time"
    },
@@ -9902,8 +9902,8 @@
     "type": "time"
    },
    {
-    "prompt": "What day comes after Sunday?",
-    "answer": "Monday",
+    "prompt": "What day comes before Sunday?",
+    "answer": "Saturday",
     "id": 3,
     "type": "time"
    },
@@ -9914,192 +9914,192 @@
     "type": "time"
    },
    {
-    "prompt": "If today is Monday, how many days is it until Wednesday?",
-    "answer": "2",
-    "id": 5,
-    "type": "time"
-   },
-   {
-    "prompt": "It is half past 11 now. What time is it one hour later?",
-    "answer": "half past 12",
-    "id": 6,
-    "type": "time"
-   },
-   {
     "prompt": "What month comes after January?",
     "answer": "February",
-    "id": 7,
+    "id": 5,
     "type": "time"
    },
    {
     "prompt": "If today is Monday, what day was yesterday?",
     "answer": "Sunday",
-    "id": 8,
+    "id": 6,
     "type": "time"
    },
    {
     "prompt": "If today is Saturday, what day is tomorrow?",
     "answer": "Sunday",
+    "id": 7,
+    "type": "time"
+   },
+   {
+    "prompt": "It is half past 11 now. What time is it one hour later?",
+    "answer": "half past 12",
+    "id": 8,
+    "type": "time"
+   },
+   {
+    "prompt": "What month comes after July?",
+    "answer": "August",
     "id": 9,
     "type": "time"
    },
    {
-    "prompt": "What day comes before Friday?",
+    "prompt": "If today is Friday, what day was yesterday?",
     "answer": "Thursday",
     "id": 10,
     "type": "time"
    },
    {
-    "prompt": "If today is Thursday, what day was yesterday?",
-    "answer": "Wednesday",
+    "prompt": "If today is Thursday, what day is tomorrow?",
+    "answer": "Friday",
     "id": 11,
     "type": "time"
    },
    {
-    "prompt": "It is half past 2 now. What time is it one hour later?",
-    "answer": "half past 3",
+    "prompt": "If today is Tuesday, what day was yesterday?",
+    "answer": "Monday",
     "id": 12,
     "type": "time"
    },
    {
-    "prompt": "It is half past 8 now. What time is it one hour later?",
-    "answer": "half past 9",
+    "prompt": "If today is Sunday, what day is tomorrow?",
+    "answer": "Monday",
     "id": 13,
     "type": "time"
    },
    {
-    "prompt": "What day comes before Tuesday?",
-    "answer": "Monday",
+    "prompt": "What month comes before August?",
+    "answer": "July",
     "id": 14,
     "type": "time"
    },
    {
-    "prompt": "If today is Tuesday, how many days is it until Friday?",
-    "answer": "3",
+    "prompt": "What season comes after spring?",
+    "answer": "summer",
     "id": 15,
     "type": "time"
    },
    {
-    "prompt": "How many months are in a year?",
-    "answer": "12",
+    "prompt": "What day comes after Friday?",
+    "answer": "Saturday",
     "id": 16,
     "type": "time"
    }
   ],
   "page2head": [
    {
-    "prompt": "What day comes after Monday?",
-    "answer": "Tuesday",
+    "prompt": "How many days are in a year?",
+    "answer": "365",
     "id": 17,
     "type": "time"
    },
    {
-    "prompt": "If today is Friday, what day is tomorrow?",
-    "answer": "Saturday",
+    "prompt": "It is 1 o'clock now. What time is it 2 hours later?",
+    "answer": "3 o'clock",
     "id": 18,
     "type": "time"
    },
    {
-    "prompt": "It is half past 7 now. What time is it one hour later?",
-    "answer": "half past 8",
+    "prompt": "It is half past 4 now. What time is it one hour later?",
+    "answer": "half past 5",
     "id": 19,
     "type": "time"
    }
   ],
   "page2": [
    {
-    "prompt": "What day comes after Monday?",
-    "answer": "Tuesday",
+    "prompt": "How many days are in a year?",
+    "answer": "365",
     "id": 17,
     "type": "time"
    },
    {
-    "prompt": "If today is Friday, what day is tomorrow?",
-    "answer": "Saturday",
+    "prompt": "It is 1 o'clock now. What time is it 2 hours later?",
+    "answer": "3 o'clock",
     "id": 18,
-    "type": "time"
-   },
-   {
-    "prompt": "It is half past 7 now. What time is it one hour later?",
-    "answer": "half past 8",
-    "id": 19,
-    "type": "time"
-   },
-   {
-    "prompt": "How many days are in a week?",
-    "answer": "7",
-    "id": 20,
-    "type": "time"
-   },
-   {
-    "prompt": "If today is Sunday, what day was yesterday?",
-    "answer": "Saturday",
-    "id": 21,
-    "type": "time"
-   },
-   {
-    "prompt": "What day comes before Wednesday?",
-    "answer": "Tuesday",
-    "id": 22,
-    "type": "time"
-   },
-   {
-    "prompt": "What month comes after July?",
-    "answer": "August",
-    "id": 23,
-    "type": "time"
-   },
-   {
-    "prompt": "If today is Monday, what day is tomorrow?",
-    "answer": "Tuesday",
-    "id": 24,
-    "type": "time"
-   },
-   {
-    "prompt": "What month comes after August?",
-    "answer": "September",
-    "id": 25,
-    "type": "time"
-   },
-   {
-    "prompt": "What day comes after Saturday?",
-    "answer": "Sunday",
-    "id": 26,
-    "type": "time"
-   },
-   {
-    "prompt": "If today is Friday, what day was yesterday?",
-    "answer": "Thursday",
-    "id": 27,
-    "type": "time"
-   },
-   {
-    "prompt": "What season comes after summer?",
-    "answer": "autumn",
-    "id": 28,
     "type": "time"
    },
    {
     "prompt": "It is half past 4 now. What time is it one hour later?",
     "answer": "half past 5",
+    "id": 19,
+    "type": "time"
+   },
+   {
+    "prompt": "It is half past 7 now. What time is it one hour later?",
+    "answer": "half past 8",
+    "id": 20,
+    "type": "time"
+   },
+   {
+    "prompt": "How many months are in a year?",
+    "answer": "12",
+    "id": 21,
+    "type": "time"
+   },
+   {
+    "prompt": "If today is Thursday, what day was yesterday?",
+    "answer": "Wednesday",
+    "id": 22,
+    "type": "time"
+   },
+   {
+    "prompt": "If today is Monday, how many days is it until Thursday?",
+    "answer": "3",
+    "id": 23,
+    "type": "time"
+   },
+   {
+    "prompt": "What season comes after autumn?",
+    "answer": "winter",
+    "id": 24,
+    "type": "time"
+   },
+   {
+    "prompt": "What season comes after winter?",
+    "answer": "spring",
+    "id": 25,
+    "type": "time"
+   },
+   {
+    "prompt": "What month comes after November?",
+    "answer": "December",
+    "id": 26,
+    "type": "time"
+   },
+   {
+    "prompt": "What day comes before Thursday?",
+    "answer": "Wednesday",
+    "id": 27,
+    "type": "time"
+   },
+   {
+    "prompt": "What month comes before February?",
+    "answer": "January",
+    "id": 28,
+    "type": "time"
+   },
+   {
+    "prompt": "It is half past 2 now. What time is it one hour later?",
+    "answer": "half past 3",
     "id": 29,
+    "type": "time"
+   },
+   {
+    "prompt": "What day comes after Sunday?",
+    "answer": "Monday",
+    "id": 30,
     "type": "time"
    },
    {
     "prompt": "It is half past 10 now. What time is it one hour later?",
     "answer": "half past 11",
-    "id": 30,
-    "type": "time"
-   },
-   {
-    "prompt": "What season comes after spring?",
-    "answer": "summer",
     "id": 31,
     "type": "time"
    },
    {
-    "prompt": "It is half past 1 now. What time is it one hour later?",
-    "answer": "half past 2",
+    "prompt": "What day comes after Saturday?",
+    "answer": "Sunday",
     "id": 32,
     "type": "time"
    }
@@ -10641,50 +10641,50 @@
  "placevalue:1": {
   "page1": [
    {
-    "prompt": "What number is 1 ten and 9 ones?",
-    "answer": "19",
+    "prompt": "How many tens are in 14?",
+    "answer": "1",
     "id": 1,
     "type": "placevalue"
    },
    {
-    "prompt": "How many ones are in 10?",
-    "answer": "0",
+    "prompt": "20 is __ tens and __ ones",
+    "answer": "2 tens and 0 ones",
     "id": 2,
     "type": "placevalue"
    },
    {
-    "prompt": "How many tens are in 10?",
-    "answer": "1",
+    "prompt": "How many tens and ones make 18?",
+    "answer": "1 ten and 8 ones",
     "id": 3,
     "type": "placevalue"
    },
    {
-    "prompt": "How many ones are in 18?",
-    "answer": "8",
+    "prompt": "How many tens and ones make 19?",
+    "answer": "1 ten and 9 ones",
     "id": 4,
     "type": "placevalue"
    },
    {
-    "prompt": "How many ones are in 14?",
-    "answer": "4",
+    "prompt": "What is the tens digit of 19?",
+    "answer": "1",
     "id": 5,
     "type": "placevalue"
    },
    {
-    "prompt": "How many tens are in 14?",
+    "prompt": "How many tens are in 17?",
     "answer": "1",
     "id": 6,
     "type": "placevalue"
    },
    {
-    "prompt": "How many tens are in 15?",
+    "prompt": "How many tens are in 16?",
     "answer": "1",
     "id": 7,
     "type": "placevalue"
    },
    {
-    "prompt": "What number is 2 tens and 0 ones?",
-    "answer": "20",
+    "prompt": "16 is __ tens and __ ones",
+    "answer": "1 tens and 6 ones",
     "id": 8,
     "type": "placevalue"
    },
@@ -10695,14 +10695,14 @@
     "type": "placevalue"
    },
    {
-    "prompt": "How many tens are in 12?",
-    "answer": "1",
+    "prompt": "How many ones are in 17?",
+    "answer": "7",
     "id": 10,
     "type": "placevalue"
    },
    {
-    "prompt": "How many tens and ones make 18?",
-    "answer": "1 ten and 8 ones",
+    "prompt": "What number is 1 ten and 7 ones?",
+    "answer": "17",
     "id": 11,
     "type": "placevalue"
    },
@@ -10713,143 +10713,143 @@
     "type": "placevalue"
    },
    {
-    "prompt": "How many tens and ones make 14?",
-    "answer": "1 ten and 4 ones",
+    "prompt": "What number is 1 ten and 5 ones?",
+    "answer": "15",
     "id": 13,
-    "type": "placevalue"
-   },
-   {
-    "prompt": "How many tens and ones make 15?",
-    "answer": "1 ten and 5 ones",
-    "id": 14,
     "type": "placevalue"
    },
    {
     "prompt": "How many tens and ones make 13?",
     "answer": "1 ten and 3 ones",
+    "id": 14,
+    "type": "placevalue"
+   },
+   {
+    "prompt": "What number is 2 tens and 0 ones?",
+    "answer": "20",
     "id": 15,
     "type": "placevalue"
    },
    {
-    "prompt": "How many tens and ones make 17?",
-    "answer": "1 ten and 7 ones",
+    "prompt": "What is the tens digit of 11?",
+    "answer": "1",
     "id": 16,
     "type": "placevalue"
    }
   ],
   "page2head": [
    {
-    "prompt": "How many tens are in 18?",
-    "answer": "1",
+    "prompt": "How many tens and ones make 14?",
+    "answer": "1 ten and 4 ones",
     "id": 17,
     "type": "placevalue"
    },
    {
-    "prompt": "What number is 1 ten and 0 ones?",
-    "answer": "10",
+    "prompt": "What number is 1 ten and 6 ones?",
+    "answer": "16",
     "id": 18,
     "type": "placevalue"
    },
    {
-    "prompt": "What number is 1 ten and 2 ones?",
-    "answer": "12",
+    "prompt": "How many ones are in 11?",
+    "answer": "1",
     "id": 19,
     "type": "placevalue"
    }
   ],
   "page2": [
    {
-    "prompt": "How many tens are in 18?",
-    "answer": "1",
+    "prompt": "How many tens and ones make 14?",
+    "answer": "1 ten and 4 ones",
     "id": 17,
     "type": "placevalue"
    },
    {
-    "prompt": "What number is 1 ten and 0 ones?",
-    "answer": "10",
+    "prompt": "What number is 1 ten and 6 ones?",
+    "answer": "16",
     "id": 18,
-    "type": "placevalue"
-   },
-   {
-    "prompt": "What number is 1 ten and 2 ones?",
-    "answer": "12",
-    "id": 19,
-    "type": "placevalue"
-   },
-   {
-    "prompt": "How many tens are in 17?",
-    "answer": "1",
-    "id": 20,
-    "type": "placevalue"
-   },
-   {
-    "prompt": "How many tens and ones make 10?",
-    "answer": "1 ten and 0 ones",
-    "id": 21,
-    "type": "placevalue"
-   },
-   {
-    "prompt": "How many ones are in 12?",
-    "answer": "2",
-    "id": 22,
-    "type": "placevalue"
-   },
-   {
-    "prompt": "What number is 1 ten and 4 ones?",
-    "answer": "14",
-    "id": 23,
-    "type": "placevalue"
-   },
-   {
-    "prompt": "How many tens are in 16?",
-    "answer": "1",
-    "id": 24,
-    "type": "placevalue"
-   },
-   {
-    "prompt": "How many tens are in 19?",
-    "answer": "1",
-    "id": 25,
-    "type": "placevalue"
-   },
-   {
-    "prompt": "How many tens and ones make 20?",
-    "answer": "2 tens and 0 ones",
-    "id": 26,
     "type": "placevalue"
    },
    {
     "prompt": "How many ones are in 11?",
     "answer": "1",
-    "id": 27,
+    "id": 19,
     "type": "placevalue"
    },
    {
-    "prompt": "How many ones are in 13?",
-    "answer": "3",
-    "id": 28,
+    "prompt": "What number is 1 ten and 1 one?",
+    "answer": "11",
+    "id": 20,
     "type": "placevalue"
    },
    {
-    "prompt": "How many tens and ones make 11?",
-    "answer": "1 ten and 1 one",
-    "id": 29,
+    "prompt": "How many tens are in 18?",
+    "answer": "1",
+    "id": 21,
     "type": "placevalue"
    },
    {
-    "prompt": "How many ones are in 15?",
-    "answer": "5",
-    "id": 30,
+    "prompt": "13 is __ tens and __ ones",
+    "answer": "1 tens and 3 ones",
+    "id": 22,
+    "type": "placevalue"
+   },
+   {
+    "prompt": "10 is __ tens and __ ones",
+    "answer": "1 tens and 0 ones",
+    "id": 23,
+    "type": "placevalue"
+   },
+   {
+    "prompt": "How many tens and ones make 20?",
+    "answer": "2 tens and 0 ones",
+    "id": 24,
+    "type": "placevalue"
+   },
+   {
+    "prompt": "15 is __ tens and __ ones",
+    "answer": "1 tens and 5 ones",
+    "id": 25,
     "type": "placevalue"
    },
    {
     "prompt": "How many ones are in 20?",
     "answer": "0",
+    "id": 26,
+    "type": "placevalue"
+   },
+   {
+    "prompt": "What is the tens digit of 17?",
+    "answer": "1",
+    "id": 27,
+    "type": "placevalue"
+   },
+   {
+    "prompt": "How many tens and ones make 17?",
+    "answer": "1 ten and 7 ones",
+    "id": 28,
+    "type": "placevalue"
+   },
+   {
+    "prompt": "How many ones are in 13?",
+    "answer": "3",
+    "id": 29,
+    "type": "placevalue"
+   },
+   {
+    "prompt": "How many tens are in 12?",
+    "answer": "1",
+    "id": 30,
+    "type": "placevalue"
+   },
+   {
+    "prompt": "How many tens are in 13?",
+    "answer": "1",
     "id": 31,
     "type": "placevalue"
    },
    {
-    "prompt": "How many tens are in 11?",
+    "prompt": "What is the tens digit of 16?",
     "answer": "1",
     "id": 32,
     "type": "placevalue"
@@ -10865,31 +10865,31 @@
     "type": "placevalue"
    },
    {
-    "prompt": "How many ones are in 38?",
-    "answer": "8",
+    "prompt": "38 is __ tens and __ ones",
+    "answer": "3 tens and 8 ones",
     "id": 2,
     "type": "placevalue"
    },
    {
-    "prompt": "How many tens and ones make 69?",
-    "answer": "6 tens and 9 ones",
+    "prompt": "What number is 6 tens and 3 ones?",
+    "answer": "63",
     "id": 3,
     "type": "placevalue"
    },
    {
-    "prompt": "How many tens and ones make 73?",
-    "answer": "7 tens and 3 ones",
+    "prompt": "What is the tens digit of 51?",
+    "answer": "5",
     "id": 4,
     "type": "placevalue"
    },
    {
-    "prompt": "What number is 9 tens and 8 ones?",
-    "answer": "98",
+    "prompt": "85 is __ tens and __ ones",
+    "answer": "8 tens and 5 ones",
     "id": 5,
     "type": "placevalue"
    },
    {
-    "prompt": "How many tens are in 61?",
+    "prompt": "What is the tens digit of 61?",
     "answer": "6",
     "id": 6,
     "type": "placevalue"
@@ -10901,174 +10901,174 @@
     "type": "placevalue"
    },
    {
-    "prompt": "What number is 1 ten and 6 ones?",
-    "answer": "16",
+    "prompt": "How many ones are in 10?",
+    "answer": "0",
     "id": 8,
     "type": "placevalue"
    },
    {
-    "prompt": "What number is 7 tens and 6 ones?",
-    "answer": "76",
+    "prompt": "How many ones are in 43?",
+    "answer": "3",
     "id": 9,
     "type": "placevalue"
    },
    {
-    "prompt": "How many tens are in 16?",
-    "answer": "1",
+    "prompt": "What is the tens digit of 67?",
+    "answer": "6",
     "id": 10,
     "type": "placevalue"
    },
    {
-    "prompt": "How many tens are in 92?",
-    "answer": "9",
+    "prompt": "What is the tens digit of 16?",
+    "answer": "1",
     "id": 11,
     "type": "placevalue"
    },
    {
-    "prompt": "What number is 2 tens and 0 ones?",
-    "answer": "20",
+    "prompt": "What is the tens digit of 92?",
+    "answer": "9",
     "id": 12,
     "type": "placevalue"
    },
    {
-    "prompt": "How many tens and ones make 42?",
-    "answer": "4 tens and 2 ones",
+    "prompt": "How many tens are in 22?",
+    "answer": "2",
     "id": 13,
     "type": "placevalue"
    },
    {
-    "prompt": "What number is 1 ten and 1 one?",
-    "answer": "11",
+    "prompt": "How many tens and ones make 35?",
+    "answer": "3 tens and 5 ones",
     "id": 14,
     "type": "placevalue"
    },
    {
-    "prompt": "How many ones are in 48?",
-    "answer": "8",
+    "prompt": "How many tens are in 49?",
+    "answer": "4",
     "id": 15,
     "type": "placevalue"
    },
    {
-    "prompt": "How many tens and ones make 76?",
-    "answer": "7 tens and 6 ones",
+    "prompt": "How many tens and ones make 27?",
+    "answer": "2 tens and 7 ones",
     "id": 16,
     "type": "placevalue"
    }
   ],
   "page2head": [
    {
-    "prompt": "How many tens and ones make 25?",
-    "answer": "2 tens and 5 ones",
+    "prompt": "48 is __ tens and __ ones",
+    "answer": "4 tens and 8 ones",
     "id": 17,
     "type": "placevalue"
    },
    {
-    "prompt": "What number is 6 tens and 8 ones?",
-    "answer": "68",
+    "prompt": "What number is 7 tens and 2 ones?",
+    "answer": "72",
     "id": 18,
     "type": "placevalue"
    },
    {
-    "prompt": "How many tens and ones make 15?",
-    "answer": "1 ten and 5 ones",
+    "prompt": "What number is 5 tens and 6 ones?",
+    "answer": "56",
     "id": 19,
     "type": "placevalue"
    }
   ],
   "page2": [
    {
-    "prompt": "How many tens and ones make 25?",
-    "answer": "2 tens and 5 ones",
+    "prompt": "48 is __ tens and __ ones",
+    "answer": "4 tens and 8 ones",
     "id": 17,
     "type": "placevalue"
    },
    {
-    "prompt": "What number is 6 tens and 8 ones?",
-    "answer": "68",
+    "prompt": "What number is 7 tens and 2 ones?",
+    "answer": "72",
     "id": 18,
+    "type": "placevalue"
+   },
+   {
+    "prompt": "What number is 5 tens and 6 ones?",
+    "answer": "56",
+    "id": 19,
+    "type": "placevalue"
+   },
+   {
+    "prompt": "What is the tens digit of 23?",
+    "answer": "2",
+    "id": 20,
+    "type": "placevalue"
+   },
+   {
+    "prompt": "How many tens and ones make 44?",
+    "answer": "4 tens and 4 ones",
+    "id": 21,
+    "type": "placevalue"
+   },
+   {
+    "prompt": "How many tens and ones make 52?",
+    "answer": "5 tens and 2 ones",
+    "id": 22,
     "type": "placevalue"
    },
    {
     "prompt": "How many tens and ones make 15?",
     "answer": "1 ten and 5 ones",
-    "id": 19,
-    "type": "placevalue"
-   },
-   {
-    "prompt": "What number is 2 tens and 4 ones?",
-    "answer": "24",
-    "id": 20,
-    "type": "placevalue"
-   },
-   {
-    "prompt": "What number is 6 tens and 7 ones?",
-    "answer": "67",
-    "id": 21,
-    "type": "placevalue"
-   },
-   {
-    "prompt": "How many ones are in 67?",
-    "answer": "7",
-    "id": 22,
-    "type": "placevalue"
-   },
-   {
-    "prompt": "How many tens are in 46?",
-    "answer": "4",
     "id": 23,
     "type": "placevalue"
    },
    {
-    "prompt": "How many tens are in 94?",
-    "answer": "9",
+    "prompt": "How many ones are in 68?",
+    "answer": "8",
     "id": 24,
     "type": "placevalue"
    },
    {
-    "prompt": "What number is 5 tens and 3 ones?",
-    "answer": "53",
+    "prompt": "What is the tens digit of 91?",
+    "answer": "9",
     "id": 25,
     "type": "placevalue"
    },
    {
-    "prompt": "How many tens are in 39?",
-    "answer": "3",
+    "prompt": "How many ones are in 69?",
+    "answer": "9",
     "id": 26,
     "type": "placevalue"
    },
    {
-    "prompt": "What number is 2 tens and 8 ones?",
-    "answer": "28",
+    "prompt": "How many tens are in 67?",
+    "answer": "6",
     "id": 27,
     "type": "placevalue"
    },
    {
-    "prompt": "How many tens and ones make 74?",
-    "answer": "7 tens and 4 ones",
+    "prompt": "46 is __ tens and __ ones",
+    "answer": "4 tens and 6 ones",
     "id": 28,
     "type": "placevalue"
    },
    {
-    "prompt": "How many tens are in 17?",
-    "answer": "1",
+    "prompt": "How many ones are in 40?",
+    "answer": "0",
     "id": 29,
     "type": "placevalue"
    },
    {
-    "prompt": "How many tens and ones make 58?",
-    "answer": "5 tens and 8 ones",
+    "prompt": "How many ones are in 39?",
+    "answer": "9",
     "id": 30,
     "type": "placevalue"
    },
    {
-    "prompt": "How many tens and ones make 68?",
-    "answer": "6 tens and 8 ones",
+    "prompt": "32 is __ tens and __ ones",
+    "answer": "3 tens and 2 ones",
     "id": 31,
     "type": "placevalue"
    },
    {
-    "prompt": "How many ones are in 51?",
-    "answer": "1",
+    "prompt": "What is the tens digit of 69?",
+    "answer": "6",
     "id": 32,
     "type": "placevalue"
    }
@@ -11731,168 +11731,168 @@
  "money:2": {
   "page1": [
    {
-    "prompt": "You have one $1 note and one fifty-cent coin. How much money is there in all?",
-    "answer": "$1.50",
+    "prompt": "How many five-cent coins are the same as one ten-cent coin?",
+    "answer": "2",
     "id": 1,
     "type": "money"
    },
    {
-    "prompt": "How many five-cent coins make 15c?",
-    "answer": "3",
+    "prompt": "How many five-cent coins are the same as one fifty-cent coin?",
+    "answer": "10",
     "id": 2,
-    "type": "money"
-   },
-   {
-    "prompt": "You have one $1 note and one five-cent coin. How much money is there in all?",
-    "answer": "$1.05",
-    "id": 3,
     "type": "money"
    },
    {
     "prompt": "What coins make 60c?",
     "answer": "50c + 10c",
+    "id": 3,
+    "type": "money"
+   },
+   {
+    "prompt": "How many five-cent coins are the same as one twenty-cent coin?",
+    "answer": "4",
     "id": 4,
     "type": "money"
    },
    {
-    "prompt": "How many ten-cent coins make 20c?",
-    "answer": "2",
+    "prompt": "What coins make 25c?",
+    "answer": "20c + 5c",
     "id": 5,
     "type": "money"
    },
    {
-    "prompt": "A jar holds 8 five-cent coins. How much money is in the jar?",
-    "answer": "40c",
+    "prompt": "How many twenty-cent coins make 40c?",
+    "answer": "2",
     "id": 6,
     "type": "money"
    },
    {
-    "prompt": "What coins make 45c?",
-    "answer": "20c + 20c + 5c",
+    "prompt": "How many twenty-cent coins make 20c?",
+    "answer": "1",
     "id": 7,
     "type": "money"
    },
    {
-    "prompt": "You have one $2 note and one twenty-cent coin. How much money is there in all?",
-    "answer": "$2.20",
+    "prompt": "You have one $1 note and one ten-cent coin. How much money is there in all?",
+    "answer": "$1.10",
     "id": 8,
     "type": "money"
    },
    {
-    "prompt": "How many ten-cent coins make 30c?",
-    "answer": "3",
+    "prompt": "How many ten-cent coins are the same as one twenty-cent coin?",
+    "answer": "2",
     "id": 9,
     "type": "money"
    },
    {
-    "prompt": "What coins make 15c?",
-    "answer": "10c + 5c",
+    "prompt": "You have one $5 note and one ten-cent coin. How much money is there in all?",
+    "answer": "$5.10",
     "id": 10,
     "type": "money"
    },
    {
-    "prompt": "A jar holds 8 ten-cent coins. How much money is in the jar?",
-    "answer": "80c",
+    "prompt": "How many ten-cent coins make 10c?",
+    "answer": "1",
     "id": 11,
     "type": "money"
    },
    {
-    "prompt": "What coins make 35c?",
-    "answer": "20c + 10c + 5c",
+    "prompt": "How many ten-cent coins make 40c?",
+    "answer": "4",
     "id": 12,
     "type": "money"
    }
   ],
   "page2head": [
    {
-    "prompt": "You have one $5 note and one ten-cent coin. How much money is there in all?",
-    "answer": "$5.10",
+    "prompt": "A jar holds 8 ten-cent coins. How much money is in the jar?",
+    "answer": "80c",
     "id": 13,
     "type": "money"
    },
    {
-    "prompt": "What coins make 5c?",
-    "answer": "5c",
+    "prompt": "You have one $2 note and one fifty-cent coin. How much money is there in all?",
+    "answer": "$2.50",
     "id": 14,
     "type": "money"
    },
    {
-    "prompt": "You have one $1 note and one ten-cent coin. How much money is there in all?",
-    "answer": "$1.10",
+    "prompt": "What coins make 10c?",
+    "answer": "10c",
     "id": 15,
     "type": "money"
    }
   ],
   "page2": [
    {
-    "prompt": "You have one $5 note and one ten-cent coin. How much money is there in all?",
-    "answer": "$5.10",
+    "prompt": "A jar holds 8 ten-cent coins. How much money is in the jar?",
+    "answer": "80c",
     "id": 13,
+    "type": "money"
+   },
+   {
+    "prompt": "You have one $2 note and one fifty-cent coin. How much money is there in all?",
+    "answer": "$2.50",
+    "id": 14,
+    "type": "money"
+   },
+   {
+    "prompt": "What coins make 10c?",
+    "answer": "10c",
+    "id": 15,
     "type": "money"
    },
    {
     "prompt": "What coins make 5c?",
     "answer": "5c",
-    "id": 14,
-    "type": "money"
-   },
-   {
-    "prompt": "You have one $1 note and one ten-cent coin. How much money is there in all?",
-    "answer": "$1.10",
-    "id": 15,
+    "id": 16,
     "type": "money"
    },
    {
     "prompt": "A jar holds 1 fifty-cent coins. How much money is in the jar?",
     "answer": "50c",
-    "id": 16,
-    "type": "money"
-   },
-   {
-    "prompt": "What coins make 65c?",
-    "answer": "50c + 10c + 5c",
     "id": 17,
     "type": "money"
    },
    {
-    "prompt": "What coins make 85c?",
-    "answer": "50c + 20c + 10c + 5c",
+    "prompt": "How many twenty-cent coins make 80c?",
+    "answer": "4",
     "id": 18,
     "type": "money"
    },
    {
-    "prompt": "A jar holds 3 twenty-cent coins. How much money is in the jar?",
-    "answer": "60c",
+    "prompt": "What coins make 55c?",
+    "answer": "50c + 5c",
     "id": 19,
     "type": "money"
    },
    {
-    "prompt": "A jar holds 4 five-cent coins. How much money is in the jar?",
-    "answer": "20c",
+    "prompt": "A jar holds 2 twenty-cent coins. How much money is in the jar?",
+    "answer": "40c",
     "id": 20,
     "type": "money"
    },
    {
-    "prompt": "A jar holds 5 ten-cent coins. How much money is in the jar?",
-    "answer": "50c",
+    "prompt": "You have one $2 note and one twenty-cent coin. How much money is there in all?",
+    "answer": "$2.20",
     "id": 21,
     "type": "money"
    },
    {
-    "prompt": "What coins make 50c?",
-    "answer": "50c",
+    "prompt": "A jar holds 6 ten-cent coins. How much money is in the jar?",
+    "answer": "60c",
     "id": 22,
+    "type": "money"
+   },
+   {
+    "prompt": "How many ten-cent coins are the same as one fifty-cent coin?",
+    "answer": "5",
+    "id": 23,
     "type": "money"
    },
    {
     "prompt": "What coins make 90c?",
     "answer": "50c + 20c + 20c",
-    "id": 23,
-    "type": "money"
-   },
-   {
-    "prompt": "How many fifty-cent coins make $1.00?",
-    "answer": "2",
     "id": 24,
     "type": "money"
    }

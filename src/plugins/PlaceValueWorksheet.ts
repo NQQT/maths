@@ -19,12 +19,21 @@ import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem
 import { sampleUnique } from '../framework';
 
 // Place value (V9 AC9M1N02/AC9M2N02 partitions into tens & ones; Y1 range is
-// at most 20, Y2 up to pvCap=99). Four forms: decompose a number, compose a
-// number from tens/ones, "how many tens in N", "how many ones in N".
+// at most 20, Y2 up to pvCap=99). SIX forms over the (N, tens, ones) fact
+// space — the number range is small, so the form variants are what keep a
+// long document fresh:
+//   0. decompose:   "How many tens and ones make N?"
+//   1. compose:     "What number is t tens and o ones?"
+//   2. tens ask:    "How many tens are in N?"
+//   3. ones ask:    "How many ones are in N?"
+//   4. digit ask:   "What is the tens digit of N?"   (the DIGIT, not the
+//                   quantity — a distinct Y2 skill)
+//   5. edit ask:    "N is __ tens and __ ones" (both blanks; Y2 two-digit
+//                   partition written as one line — the answer lists both)
 //
 // NON-REPEATING SAMPLING: the whole question passes through sampleUnique
-// keyed on the printed prompt, so a document holds each distinct question
-// line once before the space cycles.
+// keyed on the printed prompt, so each number prints once per FORM before
+// the space cycles.
 function generatePlaceValue(rng: Rng, caps: Caps, count: number): RawProblem[] {
     const cap = Math.max(10, caps.pvCap);
     // "1 ten" / "1 one" (singular) vs "4 tens" / "5 ones".
@@ -33,14 +42,14 @@ function generatePlaceValue(rng: Rng, caps: Caps, count: number): RawProblem[] {
     return sampleUnique(
         count,
         () => {
-            const r = rng.next();
-            if (r < 0.35) {
+            const form = rng.int(0, 5);
+            if (form === 0) {
                 // Decompose: N = t tens and o ones.
                 const n = rng.int(10, cap);
                 const t = Math.floor(n / 10);
                 return { prompt: `How many tens and ones make ${n}?`, answer: `${t} ${words(t)} and ${n % 10} ${onesWord(n % 10)}` };
             }
-            if (r < 0.6) {
+            if (form === 1) {
                 // Compose: "what number is t tens and o ones?" The ones must be a
                 // DIGIT (0..9) and the total must stay within the cap, so at the
                 // top tens row only trailing zeros are allowed.
@@ -48,14 +57,25 @@ function generatePlaceValue(rng: Rng, caps: Caps, count: number): RawProblem[] {
                 const o = rng.int(0, Math.min(9, cap - t * 10));
                 return { prompt: `What number is ${t} ${words(t)} and ${o} ${onesWord(o)}?`, answer: `${t * 10 + o}` };
             }
-            if (r < 0.8) {
-                // Tens digit of N.
+            if (form === 2) {
+                // Tens quantity of N.
                 const n = rng.int(10, cap);
                 return { prompt: `How many tens are in ${n}?`, answer: `${Math.floor(n / 10)}` };
             }
-            // Ones digit of N (legitimately 0 for round tens like 20).
+            if (form === 3) {
+                // Ones quantity of N (legitimately 0 for round tens like 20).
+                const n = rng.int(10, cap);
+                return { prompt: `How many ones are in ${n}?`, answer: `${n % 10}` };
+            }
+            if (form === 4) {
+                // Tens DIGIT of N (the digit, not the quantity).
+                const n = rng.int(10, cap);
+                return { prompt: `What is the tens digit of ${n}?`, answer: `${Math.floor(n / 10)}` };
+            }
+            // Both-blanks partition: the answer names both parts.
             const n = rng.int(10, cap);
-            return { prompt: `How many ones are in ${n}?`, answer: `${n % 10}` };
+            const t = Math.floor(n / 10);
+            return { prompt: `${n} is __ tens and __ ones`, answer: `${t} tens and ${n % 10} ones` };
         },
         (p) => p.prompt
     );

@@ -18,14 +18,20 @@
 import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem, Rng, WorksheetSpec } from '../framework';
 import { sampleUnique } from '../framework';
 
-// Multiplication / times tables: `a × b = __` with both operands in
-// [1, multCap]. Grade 2 introduces times tables (to 10), so with its cap
-// every product stays <= multCap * multCap (100) — right-sized for the grade.
+// Multiplication / times tables, THREE procedural forms over the same fact
+// space (a × b with both operands in [1, multCap]):
+//   0. product unknown:      "7 × 8 = __"        (the classic recall form)
+//   1. first factor unknown: "__ × 8 = 56"       (missing-factor, V9
+//      AC9M2N05 relational thinking)
+//   2. second factor unknown: "7 × __ = 56"
+// Grade 2 introduces times tables (to 10), so with its cap every product
+// stays <= multCap * multCap (100) — right-sized for the grade.
 //
 // NON-REPEATING SAMPLING: the whole question passes through sampleUnique
-// keyed on the printed prompt, so a document holds each distinct fact once
-// before the 100-fact (10x10) space cycles — the old free-draw loop could
-// print "7 × 8 = __" twice on one page.
+// keyed on the printed prompt, so each of the 100 facts prints once per
+// FORM before the space cycles — a 100-page document still spreads the
+// three forms evenly (the old free-draw loop could print "7 × 8 = __"
+// twice on one page).
 function generateMultiplication(rng: Rng, caps: Caps, count: number): RawProblem[] {
     // A grade that doesn't offer multiplication passes multCap 0; the
     // generator is unreachable for them (buildDocument checks grade.available
@@ -36,7 +42,14 @@ function generateMultiplication(rng: Rng, caps: Caps, count: number): RawProblem
         () => {
             const a = rng.int(1, cap);
             const b = rng.int(1, cap);
-            return { prompt: `${a} × ${b} = __`, answer: `${a * b}` };
+            const form = rng.int(0, 2);
+            if (form === 0) {
+                return { prompt: `${a} × ${b} = __`, answer: `${a * b}` };
+            }
+            if (form === 1) {
+                return { prompt: `__ × ${b} = ${a * b}`, answer: `${a}` };
+            }
+            return { prompt: `${a} × __ = ${a * b}`, answer: `${b}` };
         },
         (p) => p.prompt
     );

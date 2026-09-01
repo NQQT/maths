@@ -21,9 +21,17 @@ import { sampleUnique } from '../framework';
 // Number bonds / part-part-whole (V9 AC9M1N02: "to 10" in Y1; Y2 bridges
 // through 10 and 20). The total is 10 when bondCap < 20, otherwise 10 or 20.
 //
+// FOUR prompt forms over the same (total, part) fact space — the bond is a
+// tiny fact set (9 bonds to 10, 19 to 20), so the form variants are what keep
+// a long document fresh:
+//   0. "a + __ = total"          (missing second part)
+//   1. "__ + a = total"          (missing first part)
+//   2. "__ and a make total"     (verbal form)
+//   3. "total - a = __"          (the subtraction counterpart of the bond)
+//
 // NON-REPEATING SAMPLING: the whole question passes through sampleUnique
-// keyed on the printed prompt, so a document holds each distinct line once
-// before the space cycles.
+// keyed on the printed prompt, so each bond prints once per FORM before the
+// space cycles.
 function generateBonds(rng: Rng, caps: Caps, count: number): RawProblem[] {
     const totals = caps.bondCap >= 20 ? [10, 20] : [Math.max(5, caps.bondCap)];
     return sampleUnique(
@@ -34,9 +42,15 @@ function generateBonds(rng: Rng, caps: Caps, count: number): RawProblem[] {
             // item teaches nothing and would confuse the part-part-whole idea.
             const a = rng.int(1, total - 1);
             const missing = total - a; // the hidden part, 1..total-1
-            const r = rng.next();
+            const form = rng.int(0, 3);
             const prompt =
-                r < 0.4 ? `${a} + __ = ${total}` : r < 0.7 ? `__ + ${a} = ${total}` : `__ and ${a} make ${total}`;
+                form === 0
+                    ? `${a} + __ = ${total}`
+                    : form === 1
+                      ? `__ + ${a} = ${total}`
+                      : form === 2
+                        ? `__ and ${a} make ${total}`
+                        : `${total} - ${a} = __`;
             return { prompt, answer: `${missing}` };
         },
         (p) => p.prompt

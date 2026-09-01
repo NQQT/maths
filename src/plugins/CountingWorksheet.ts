@@ -18,22 +18,25 @@
 import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem, Rng, WorksheetSpec } from '../framework';
 import { sampleUnique } from '../framework';
 
-// Counting & number recognition — FOUR procedural kinds (the old two-kind
+// Counting & number recognition — SIX procedural kinds (the old two-kind
 // generator asked each next/before pair twice per page):
 //   0. next:        "a, a+1, __"            => a+2
 //   1. before:      "__, a, a+1"            => a-1
 //   2. run blank:   "a, a+1, a+2, __"       => a+3   (count on three)
 //   3. back run:    "a, a-1, a-2, __"       => a-3   (count back three)
+//   4. between:     "a, __, a+2"            => a+1   (the middle number)
+//   5. bigger MC:   "Which is bigger: a or b?" (number sense; distinct
+//                   values so there is always one answer)
 // All answers stay within [0, numCap].
 //
-// NON-REPEATING SAMPLING: every question passes through sampleUnique keyed on
-// the printed prompt, so a document of any length holds each distinct line
-// once before the space cycles.
+// NON-REPEATING SAMPLING: every question passes through sampleUnique keyed
+// on the printed prompt, so a document of any length holds each distinct
+// line once before the space cycles.
 function generateCounting(rng: Rng, caps: Caps, count: number): RawProblem[] {
     return sampleUnique(
         count,
         () => {
-            const kind = rng.int(0, 3);
+            const kind = rng.int(0, 5);
             if (kind === 0) {
                 // Next number: a, a+1, __  => answer a+2 (a+2 must be <= numCap)
                 const a = rng.int(0, Math.max(0, caps.numCap - 2));
@@ -49,9 +52,27 @@ function generateCounting(rng: Rng, caps: Caps, count: number): RawProblem[] {
                 const a = rng.int(0, Math.max(0, caps.numCap - 3));
                 return { prompt: `${a}, ${a + 1}, ${a + 2}, __`, answer: `${a + 3}` };
             }
-            // Backward run: a, a-1, a-2, __ => a-3 (a-3 >= 0)
-            const a = rng.int(3, Math.max(3, caps.numCap));
-            return { prompt: `${a}, ${a - 1}, ${a - 2}, __`, answer: `${a - 3}` };
+            if (kind === 3) {
+                // Backward run: a, a-1, a-2, __ => a-3 (a-3 >= 0)
+                const a = rng.int(3, Math.max(3, caps.numCap));
+                return { prompt: `${a}, ${a - 1}, ${a - 2}, __`, answer: `${a - 3}` };
+            }
+            if (kind === 4) {
+                // Between: a, __, a+2 => the middle number.
+                const a = rng.int(0, Math.max(0, caps.numCap - 2));
+                return { prompt: `${a}, __, ${a + 2}`, answer: `${a + 1}` };
+            }
+            // Bigger/smaller number sense: distinct values, one clear answer.
+            // Direction alternates so "bigger" isn't the only drilled word.
+            const a = rng.int(0, caps.numCap);
+            let b = rng.int(0, caps.numCap);
+            if (b === a) b = (a + 1) % (caps.numCap + 1);
+            const askBigger = rng.next() < 0.5;
+            const bigger = Math.max(a, b);
+            const smaller = Math.min(a, b);
+            return askBigger
+                ? { prompt: `Which is bigger: ${a} or ${b}?`, answer: `${bigger}` }
+                : { prompt: `Which is smaller: ${a} or ${b}?`, answer: `${smaller}` };
         },
         (p) => p.prompt
     );

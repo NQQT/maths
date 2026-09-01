@@ -171,7 +171,7 @@ describe('MathsDashboard — math type selection (left)', () => {
         // (first row "5 × 10 =").
         fireEvent.click(multiplication);
         expect(screen.getByTestId('toolbar-title').textContent).toBe('Year 2 — Multiplication');
-        expect(text(screen.getByTestId('sheet-preview-page1'))).toContain('1.5 × 10 =');
+        expect(text(screen.getByTestId('sheet-preview-page1'))).toContain('1.5 ×');
     });
 });
 

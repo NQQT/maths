@@ -32,16 +32,15 @@ const TIME_FACTS: readonly [string, string][] = [
 ];
 
 // Time & calendar (V8 ACMMG168-170; V9 AC9M2M04). Kind pool is uniform:
-// day-after/before, yesterday/tomorrow, days-until, month-after, season-after,
-// calendar facts — plus clock forms (o'clock + hours-later, half-past + one
-// hour later) which only appear when clockCap > 0 (i.e. Year 2).
+// day-after/before, yesterday/tomorrow, days-until, month-after, month-BEFORE,
+// season-after, calendar facts — plus clock forms (o'clock + hours-later,
+// half-past + one hour later) which only appear when clockCap > 0 (Year 2).
 //
 // NON-REPEATING SAMPLING: days, months and seasons are dealt from decks (the
 // finite calendar vocabularies each appear once per cycle) and every question
 // passes through sampleUnique keyed on the printed prompt. The days-until,
 // month, clock and half kinds are PROCEDURAL (ranges of starts/offsets), so
-// the space stays far deeper than the 3 calendar facts — a 100-page document
-// only ever repeats a fact line.
+// the space stays far deeper than the 3 calendar facts.
 function generateTime(rng: Rng, caps: Caps, count: number): RawProblem[] {
     const clock = caps.clockCap > 0;
     const dayDeck = createDeck(rng, DAYS);
@@ -51,7 +50,7 @@ function generateTime(rng: Rng, caps: Caps, count: number): RawProblem[] {
     return sampleUnique(
         count,
         () => {
-            const kinds: string[] = ['after', 'before', 'yesterday', 'tomorrow', 'until', 'month', 'season', 'fact'];
+            const kinds: string[] = ['after', 'before', 'yesterday', 'tomorrow', 'until', 'month', 'monthBefore', 'season', 'fact'];
             if (clock) kinds.push('clock', 'half');
             const kind = rng.pick(kinds);
             switch (kind) {
@@ -88,6 +87,11 @@ function generateTime(rng: Rng, caps: Caps, count: number): RawProblem[] {
                     const m = monthDeck.take();
                     const mi = MONTHS.indexOf(m);
                     return { prompt: `What month comes after ${m}?`, answer: MONTHS[(mi + 1) % 12] };
+                }
+                case 'monthBefore': {
+                    const m = monthDeck.take();
+                    const mi = MONTHS.indexOf(m);
+                    return { prompt: `What month comes before ${m}?`, answer: MONTHS[(mi + 11) % 12] };
                 }
                 case 'season': {
                     const s = seasonDeck.take();

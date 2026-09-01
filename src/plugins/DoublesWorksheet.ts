@@ -18,33 +18,50 @@
 import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem, Rng, WorksheetSpec } from '../framework';
 import { sampleUnique } from '../framework';
 
-// Doubles & near doubles (V9 AC9M2A02 / V8 "number facts to 20"): three forms
-// — an exact double (a + a), a near double (a + a+1), or the worded "double
-// of a". `doubleCap` bounds the base a (Y1: 10, Y2: 20).
+// Doubles & near doubles (V9 AC9M2A02 / V8 "number facts to 20") — FIVE
+// procedural forms over the same small fact space (doubleCap bounds the base
+// a; Y1: 10, Y2: 20):
+//   0. exact double:        "a + a = __"
+//   1. near double:         "a + a+1 = __"   (2a+1)
+//   2. worded double:       "What is double a?"
+//   3. worded halving:       "What is half of 2a?"   (the inverse recall;
+//      2a stays within 2*cap)
+//   4. near-double missing:  "a + __ = a+a+1"  (the missing near-double
+//      addend)
 //
 // NON-REPEATING SAMPLING: the whole question passes through sampleUnique
-// keyed on the printed prompt, so a document holds each distinct line once
-// before the space cycles (the old free-draw loop repeated "5 + 5 = __"
-// twice within one page).
+// keyed on the printed prompt, so each fact prints once per FORM before the
+// space cycles — a 100-page document spreads the five forms evenly (the
+// old free-draw loop repeated "5 + 5 = __" twice within one page).
 function generateDoubles(rng: Rng, caps: Caps, count: number): RawProblem[] {
     const cap = Math.max(2, caps.doubleCap);
     return sampleUnique(
         count,
         () => {
-            const r = rng.next();
-            if (r < 0.4) {
+            const form = rng.int(0, 4);
+            if (form === 0) {
                 // Exact double.
                 const a = rng.int(1, cap);
                 return { prompt: `${a} + ${a} = __`, answer: `${a * 2}` };
             }
-            if (r < 0.7) {
+            if (form === 1) {
                 // Near double: a + (a+1) = 2a + 1. a+1 must stay within the cap.
                 const a = rng.int(1, cap - 1);
                 return { prompt: `${a} + ${a + 1} = __`, answer: `${a + a + 1}` };
             }
-            // Worded doubling (the verbal form teachers drill in Y1/Y2).
-            const a = rng.int(1, cap);
-            return { prompt: `What is double ${a}?`, answer: `${a * 2}` };
+            if (form === 2) {
+                // Worded doubling (the verbal form teachers drill in Y1/Y2).
+                const a = rng.int(1, cap);
+                return { prompt: `What is double ${a}?`, answer: `${a * 2}` };
+            }
+            if (form === 3) {
+                // Worded halving — even results only, so the answer is whole.
+                const a = rng.int(1, cap);
+                return { prompt: `What is half of ${a * 2}?`, answer: `${a}` };
+            }
+            // Near-double missing addend: a + __ = a + (a+1).
+            const a = rng.int(1, cap - 1);
+            return { prompt: `${a} + __ = ${a + a + 1}`, answer: `${a + 1}` };
         },
         (p) => p.prompt
     );

@@ -108,13 +108,16 @@ for (const [specId, file] of Object.entries(TARGETS)) {
                 }
             }
             const body = text.slice(open + 1, j);
-            if (body.includes(`type: '${specId}'`) || body.includes(`"type": "${specId}"`)) {
-                const idm = body.match(/\bid:\s*(\d+)/);
+            const typeRe = new RegExp(`"?type"?:\\s*['"]${specId}['"]`);
+            if (typeRe.test(body)) {
+                // Row ids appear as `id: 1` (object-literal style) or
+                // `"id":1` (JSON style) — accept both.
+                const idm = body.match(/"?id"?:\s*(\d+)/);
                 const gradeId = gradeAbove(text, at);
                 if (idm && gradeId !== null && specPins[gradeId]) {
                     const firstId = Number(idm[1]);
                     // Count the block's pinned rows to pick full-page vs head.
-                    const rowCount = (body.match(/\bid:\s*\d+/g) || []).length;
+                    const rowCount = (body.match(/"?id"?:\s*\d+/g) || []).length;
                     if (firstId === 1) {
                         edits.push({ open, close: j, rows: specPins[gradeId].page1, gradeId, kind: 'page1' });
                     } else if (rowCount >= 20) {
@@ -140,7 +143,7 @@ for (const [specId, file] of Object.entries(TARGETS)) {
             const body = text.slice(openObj + 1, j);
             if (body.includes(`type: '${specId}'`)) {
                 const gradeId = gradeAbove(text, at);
-                const idm = body.match(/\bid:\s*(\d+)/);
+                const idm = body.match(/"?id"?:\s*(\d+)/);
                 if (gradeId !== null && specPins[gradeId] && idm) {
                     const id = Number(idm[1]);
                     // Find the pin row with THIS id (page1 or page2head).

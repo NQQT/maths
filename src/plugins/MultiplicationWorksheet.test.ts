@@ -41,40 +41,59 @@ describe('multiplication — Year 2 (times tables to 10)', () => {
     it('matches the exact Grade 2 times-tables sheet (operands <= 10)', () => {
         const s = sheet(g2);
         expect(s).toEqual([
-            {"prompt":"5 × 10 = __","answer":"50","id":1,"type":"mult"},
-            {"prompt":"9 × 7 = __","answer":"63","id":2,"type":"mult"},
-            {"prompt":"9 × 9 = __","answer":"81","id":3,"type":"mult"},
-            {"prompt":"6 × 7 = __","answer":"42","id":4,"type":"mult"},
-            {"prompt":"6 × 1 = __","answer":"6","id":5,"type":"mult"},
-            {"prompt":"9 × 5 = __","answer":"45","id":6,"type":"mult"},
-            {"prompt":"3 × 4 = __","answer":"12","id":7,"type":"mult"},
-            {"prompt":"5 × 5 = __","answer":"25","id":8,"type":"mult"},
-            {"prompt":"10 × 10 = __","answer":"100","id":9,"type":"mult"},
-            {"prompt":"10 × 3 = __","answer":"30","id":10,"type":"mult"},
-            {"prompt":"2 × 4 = __","answer":"8","id":11,"type":"mult"},
-            {"prompt":"10 × 6 = __","answer":"60","id":12,"type":"mult"},
-            {"prompt":"2 × 5 = __","answer":"10","id":13,"type":"mult"},
-            {"prompt":"8 × 2 = __","answer":"16","id":14,"type":"mult"},
-            {"prompt":"1 × 3 = __","answer":"3","id":15,"type":"mult"},
-            {"prompt":"9 × 2 = __","answer":"18","id":16,"type":"mult"},
-            {"prompt":"3 × 9 = __","answer":"27","id":17,"type":"mult"},
-            {"prompt":"7 × 4 = __","answer":"28","id":18,"type":"mult"},
-            {"prompt":"6 × 6 = __","answer":"36","id":19,"type":"mult"},
-            {"prompt":"5 × 9 = __","answer":"45","id":20,"type":"mult"},
-            {"prompt":"5 × 3 = __","answer":"15","id":21,"type":"mult"},
-            {"prompt":"5 × 8 = __","answer":"40","id":22,"type":"mult"},
-            {"prompt":"2 × 9 = __","answer":"18","id":23,"type":"mult"},
-            {"prompt":"2 × 10 = __","answer":"20","id":24,"type":"mult"},
+            {"prompt":"5 × __ = 50","answer":"10","id":1,"type":"mult"},
+            {"prompt":"7 × __ = 63","answer":"9","id":2,"type":"mult"},
+            {"prompt":"__ × 7 = 42","answer":"6","id":3,"type":"mult"},
+            {"prompt":"__ × 9 = 9","answer":"1","id":4,"type":"mult"},
+            {"prompt":"__ × 4 = 12","answer":"3","id":5,"type":"mult"},
+            {"prompt":"__ × 9 = 45","answer":"5","id":6,"type":"mult"},
+            {"prompt":"10 × __ = 100","answer":"10","id":7,"type":"mult"},
+            {"prompt":"__ × 2 = 6","answer":"3","id":8,"type":"mult"},
+            {"prompt":"10 × 6 = __","answer":"60","id":9,"type":"mult"},
+            {"prompt":"5 × 8 = __","answer":"40","id":10,"type":"mult"},
+            {"prompt":"1 × __ = 3","answer":"3","id":11,"type":"mult"},
+            {"prompt":"2 × __ = 6","answer":"3","id":12,"type":"mult"},
+            {"prompt":"9 × __ = 18","answer":"2","id":13,"type":"mult"},
+            {"prompt":"__ × 6 = 24","answer":"4","id":14,"type":"mult"},
+            {"prompt":"3 × __ = 15","answer":"5","id":15,"type":"mult"},
+            {"prompt":"2 × 9 = __","answer":"18","id":16,"type":"mult"},
+            {"prompt":"10 × 7 = __","answer":"70","id":17,"type":"mult"},
+            {"prompt":"3 × __ = 9","answer":"3","id":18,"type":"mult"},
+            {"prompt":"9 × __ = 81","answer":"9","id":19,"type":"mult"},
+            {"prompt":"__ × 3 = 18","answer":"6","id":20,"type":"mult"},
+            {"prompt":"9 × __ = 27","answer":"3","id":21,"type":"mult"},
+            {"prompt":"2 × 5 = __","answer":"10","id":22,"type":"mult"},
+            {"prompt":"4 × 8 = __","answer":"32","id":23,"type":"mult"},
+            {"prompt":"4 × __ = 20","answer":"5","id":24,"type":"mult"},
         ]);
-        // Every operand is within the times-tables cap and every product is correct.
+        // Every operand is within the times-tables cap and every equation is a
+        // correct fact, across all three forms: product, first factor or
+        // second factor unknown.
         for (const p of s) {
-            const m = p.prompt.match(/^(\d+) × (\d+) = __$/);
-            expect(m).not.toBeNull();
-            const a = Number(m![1]);
-            const b = Number(m![2]);
-            expect(a).toBeLessThanOrEqual(10);
-            expect(b).toBeLessThanOrEqual(10);
-            expect(p.answer).toBe(`${a * b}`);
+            const product = p.prompt.match(/^(\d+) × (\d+) = __$/);
+            const missFirst = p.prompt.match(/^__ × (\d+) = (\d+)$/);
+            const missSecond = p.prompt.match(/^(\d+) × __ = (\d+)$/);
+            if (product) {
+                const a = Number(product[1]);
+                const b = Number(product[2]);
+                expect(a).toBeLessThanOrEqual(10);
+                expect(b).toBeLessThanOrEqual(10);
+                expect(p.answer).toBe(`${a * b}`);
+            } else if (missFirst) {
+                const b = Number(missFirst[1]);
+                const c = Number(missFirst[2]);
+                expect(b).toBeLessThanOrEqual(10);
+                expect(c).toBeLessThanOrEqual(100);
+                expect(p.answer).toBe(`${c / b}`);
+            } else if (missSecond) {
+                const a = Number(missSecond[1]);
+                const c = Number(missSecond[2]);
+                expect(a).toBeLessThanOrEqual(10);
+                expect(c).toBeLessThanOrEqual(100);
+                expect(p.answer).toBe(`${c / a}`);
+            } else {
+                throw new Error(`unrecognised mult prompt: ${p.prompt}`);
+            }
         }
     });
 
@@ -84,9 +103,9 @@ describe('multiplication — Year 2 (times tables to 10)', () => {
         expect(doc.total).toBe(48);
         // Pinned head of the page-2 stream (ids 25, 26, 27).
         expect(doc.pages[1].slice(0, 3)).toEqual([
-            {"prompt":"7 × 2 = __","answer":"14","id":25,"type":"mult"},
-            {"prompt":"3 × 3 = __","answer":"9","id":26,"type":"mult"},
-            {"prompt":"8 × 9 = __","answer":"72","id":27,"type":"mult"},
+            {"prompt":"__ × 6 = 48","answer":"8","id":25,"type":"mult"},
+            {"prompt":"__ × 5 = 45","answer":"9","id":26,"type":"mult"},
+            {"prompt":"__ × 1 = 6","answer":"6","id":27,"type":"mult"},
         ]);
         // Page 1 still equals the single-page sheet (stream is one continuous run).
         expect(doc.pages[0]).toEqual(sheet(g2));
