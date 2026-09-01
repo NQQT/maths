@@ -1,0 +1,1348 @@
+
+===== addition grade 0 page1 =====
+[
+                { id: 1, type: 'addition', prompt: "2 + 7 = __", answer: "9" },
+                { id: 2, type: 'addition', prompt: "4 + 2 = __", answer: "6" },
+                { id: 3, type: 'addition', prompt: "6 + 2 = __", answer: "8" },
+                { id: 4, type: 'addition', prompt: "9 + 1 = __", answer: "10" },
+                { id: 5, type: 'addition', prompt: "3 + 6 = __", answer: "9" },
+                { id: 6, type: 'addition', prompt: "4 + 3 = __", answer: "7" },
+                { id: 7, type: 'addition', prompt: "4 + 5 = __", answer: "9" },
+                { id: 8, type: 'addition', prompt: "6 + 4 = __", answer: "10" },
+                { id: 9, type: 'addition', prompt: "4 + 6 = __", answer: "10" },
+                { id: 10, type: 'addition', prompt: "1 + 8 = __", answer: "9" },
+                { id: 11, type: 'addition', prompt: "6 + 1 = __", answer: "7" },
+                { id: 12, type: 'addition', prompt: "5 + 5 = __", answer: "10" },
+                { id: 13, type: 'addition', prompt: "3 + 3 = __", answer: "6" },
+                { id: 14, type: 'addition', prompt: "6 + 3 = __", answer: "9" },
+                { id: 15, type: 'addition', prompt: "5 + 1 = __", answer: "6" },
+                { id: 16, type: 'addition', prompt: "5 + 2 = __", answer: "7" },
+                { id: 17, type: 'addition', prompt: "1 + 5 = __", answer: "6" },
+                { id: 18, type: 'addition', prompt: "1 + 6 = __", answer: "7" },
+                { id: 19, type: 'addition', prompt: "8 + 1 = __", answer: "9" },
+                { id: 20, type: 'addition', prompt: "4 + 1 = __", answer: "5" },
+                { id: 21, type: 'addition', prompt: "7 + 2 = __", answer: "9" },
+                { id: 22, type: 'addition', prompt: "8 + 2 = __", answer: "10" },
+                { id: 23, type: 'addition', prompt: "2 + 2 = __", answer: "4" },
+                { id: 24, type: 'addition', prompt: "3 + 4 = __", answer: "7" }
+            ]
+===== addition grade 0 page2head =====
+[
+                { id: 25, type: 'addition', prompt: "5 + 4 = __", answer: "9" },
+                { id: 26, type: 'addition', prompt: "7 + 3 = __", answer: "10" },
+                { id: 27, type: 'addition', prompt: "1 + 3 = __", answer: "4" }
+            ]
+
+===== addition grade 1 page1 =====
+[
+                { id: 1, type: 'addition', prompt: "10 + 9 = __", answer: "19" },
+                { id: 2, type: 'addition', prompt: "12 + 2 = __", answer: "14" },
+                { id: 3, type: 'addition', prompt: "19 + 1 = __", answer: "20" },
+                { id: 4, type: 'addition', prompt: "16 + 4 = __", answer: "20" },
+                { id: 5, type: 'addition', prompt: "2 + 12 = __", answer: "14" },
+                { id: 6, type: 'addition', prompt: "4 + 11 = __", answer: "15" },
+                { id: 7, type: 'addition', prompt: "10 + 4 = __", answer: "14" },
+                { id: 8, type: 'addition', prompt: "18 + 2 = __", answer: "20" },
+                { id: 9, type: 'addition', prompt: "9 + 2 = __", answer: "11" },
+                { id: 10, type: 'addition', prompt: "11 + 5 = __", answer: "16" },
+                { id: 11, type: 'addition', prompt: "14 + 5 = __", answer: "19" },
+                { id: 12, type: 'addition', prompt: "9 + 3 = __", answer: "12" },
+                { id: 13, type: 'addition', prompt: "14 + 1 = __", answer: "15" },
+                { id: 14, type: 'addition', prompt: "7 + 10 = __", answer: "17" },
+                { id: 15, type: 'addition', prompt: "16 + 2 = __", answer: "18" },
+                { id: 16, type: 'addition', prompt: "10 + 7 = __", answer: "17" },
+                { id: 17, type: 'addition', prompt: "1 + 18 = __", answer: "19" },
+                { id: 18, type: 'addition', prompt: "5 + 11 = __", answer: "16" },
+                { id: 19, type: 'addition', prompt: "9 + 5 = __", answer: "14" },
+                { id: 20, type: 'addition', prompt: "18 + 1 = __", answer: "19" },
+                { id: 21, type: 'addition', prompt: "12 + 1 = __", answer: "13" },
+                { id: 22, type: 'addition', prompt: "7 + 13 = __", answer: "20" },
+                { id: 23, type: 'addition', prompt: "7 + 11 = __", answer: "18" },
+                { id: 24, type: 'addition', prompt: "11 + 3 = __", answer: "14" }
+            ]
+===== addition grade 1 page2head =====
+[
+                { id: 25, type: 'addition', prompt: "17 + 2 = __", answer: "19" },
+                { id: 26, type: 'addition', prompt: "2 + 1 = __", answer: "3" },
+                { id: 27, type: 'addition', prompt: "12 + 4 = __", answer: "16" }
+            ]
+
+===== addition grade 2 page1 =====
+[
+                { id: 1, type: 'addition', prompt: "45 + 41 = __", answer: "86" },
+                { id: 2, type: 'addition', prompt: "43 + 57 = __", answer: "100" },
+                { id: 3, type: 'addition', prompt: "33 + 66 = __", answer: "99" },
+                { id: 4, type: 'addition', prompt: "62 + 34 = __", answer: "96" },
+                { id: 5, type: 'addition', prompt: "56 + 17 = __", answer: "73" },
+                { id: 6, type: 'addition', prompt: "31 + 27 = __", answer: "58" },
+                { id: 7, type: 'addition', prompt: "42 + 26 = __", answer: "68" },
+                { id: 8, type: 'addition', prompt: "24 + 64 = __", answer: "88" },
+                { id: 9, type: 'addition', prompt: "45 + 31 = __", answer: "76" },
+                { id: 10, type: 'addition', prompt: "58 + 40 = __", answer: "98" },
+                { id: 11, type: 'addition', prompt: "38 + 61 = __", answer: "99" },
+                { id: 12, type: 'addition', prompt: "13 + 65 = __", answer: "78" },
+                { id: 13, type: 'addition', prompt: "49 + 41 = __", answer: "90" },
+                { id: 14, type: 'addition', prompt: "50 + 47 = __", answer: "97" },
+                { id: 15, type: 'addition', prompt: "31 + 19 = __", answer: "50" },
+                { id: 16, type: 'addition', prompt: "30 + 58 = __", answer: "88" },
+                { id: 17, type: 'addition', prompt: "31 + 59 = __", answer: "90" },
+                { id: 18, type: 'addition', prompt: "67 + 7 = __", answer: "74" },
+                { id: 19, type: 'addition', prompt: "14 + 42 = __", answer: "56" },
+                { id: 20, type: 'addition', prompt: "94 + 3 = __", answer: "97" },
+                { id: 21, type: 'addition', prompt: "56 + 6 = __", answer: "62" },
+                { id: 22, type: 'addition', prompt: "75 + 3 = __", answer: "78" },
+                { id: 23, type: 'addition', prompt: "40 + 7 = __", answer: "47" },
+                { id: 24, type: 'addition', prompt: "2 + 21 = __", answer: "23" }
+            ]
+===== addition grade 2 page2head =====
+[
+                { id: 25, type: 'addition', prompt: "96 + 2 = __", answer: "98" },
+                { id: 26, type: 'addition', prompt: "28 + 6 = __", answer: "34" },
+                { id: 27, type: 'addition', prompt: "2 + 14 = __", answer: "16" }
+            ]
+
+===== addition grade 3 page1 =====
+[
+                { id: 1, type: 'addition', prompt: "53 + 942 = __", answer: "995" },
+                { id: 2, type: 'addition', prompt: "412 + 90 = __", answer: "502" },
+                { id: 3, type: 'addition', prompt: "250 + 648 = __", answer: "898" },
+                { id: 4, type: 'addition', prompt: "836 + 10 = __", answer: "846" },
+                { id: 5, type: 'addition', prompt: "5 + 7 = __", answer: "12" },
+                { id: 6, type: 'addition', prompt: "707 + 28 = __", answer: "735" },
+                { id: 7, type: 'addition', prompt: "713 + 41 = __", answer: "754" },
+                { id: 8, type: 'addition', prompt: "950 + 37 = __", answer: "987" },
+                { id: 9, type: 'addition', prompt: "591 + 352 = __", answer: "943" },
+                { id: 10, type: 'addition', prompt: "486 + 215 = __", answer: "701" },
+                { id: 11, type: 'addition', prompt: "951 + 12 = __", answer: "963" },
+                { id: 12, type: 'addition', prompt: "256 + 530 = __", answer: "786" },
+                { id: 13, type: 'addition', prompt: "717 + 4 = __", answer: "721" },
+                { id: 14, type: 'addition', prompt: "619 + 367 = __", answer: "986" },
+                { id: 15, type: 'addition', prompt: "548 + 4 = __", answer: "552" },
+                { id: 16, type: 'addition', prompt: "855 + 89 = __", answer: "944" },
+                { id: 17, type: 'addition', prompt: "927 + 62 = __", answer: "989" },
+                { id: 18, type: 'addition', prompt: "903 + 29 = __", answer: "932" },
+                { id: 19, type: 'addition', prompt: "792 + 177 = __", answer: "969" },
+                { id: 20, type: 'addition', prompt: "482 + 492 = __", answer: "974" },
+                { id: 21, type: 'addition', prompt: "91 + 785 = __", answer: "876" },
+                { id: 22, type: 'addition', prompt: "997 + 1 = __", answer: "998" },
+                { id: 23, type: 'addition', prompt: "402 + 120 = __", answer: "522" },
+                { id: 24, type: 'addition', prompt: "948 + 36 = __", answer: "984" }
+            ]
+===== addition grade 3 page2head =====
+[
+                { id: 25, type: 'addition', prompt: "327 + 457 = __", answer: "784" },
+                { id: 26, type: 'addition', prompt: "584 + 374 = __", answer: "958" },
+                { id: 27, type: 'addition', prompt: "836 + 94 = __", answer: "930" }
+            ]
+
+===== addition grade 4 page1 =====
+[
+                { id: 1, type: 'addition', prompt: "790 + 1541 + 2805 = __", answer: "5136" },
+                { id: 2, type: 'addition', prompt: "580 + 4264 + 3866 = __", answer: "8710" },
+                { id: 3, type: 'addition', prompt: "3118 + 6737 = __", answer: "9855" },
+                { id: 4, type: 'addition', prompt: "948 + 1571 + 3313 = __", answer: "5832" },
+                { id: 5, type: 'addition', prompt: "7786 + 610 + 67 = __", answer: "8463" },
+                { id: 6, type: 'addition', prompt: "4281 + 2215 = __", answer: "6496" },
+                { id: 7, type: 'addition', prompt: "2232 + 141 + 130 = __", answer: "2503" },
+                { id: 8, type: 'addition', prompt: "3628 + 499 + 894 = __", answer: "5021" },
+                { id: 9, type: 'addition', prompt: "7830 + 68 = __", answer: "7898" },
+                { id: 10, type: 'addition', prompt: "8357 + 421 = __", answer: "8778" },
+                { id: 11, type: 'addition', prompt: "6369 + 1238 = __", answer: "7607" },
+                { id: 12, type: 'addition', prompt: "6662 + 1109 = __", answer: "7771" },
+                { id: 13, type: 'addition', prompt: "543 + 5476 = __", answer: "6019" },
+                { id: 14, type: 'addition', prompt: "473 + 536 + 7339 = __", answer: "8348" },
+                { id: 15, type: 'addition', prompt: "1325 + 7513 = __", answer: "8838" },
+                { id: 16, type: 'addition', prompt: "164 + 1652 + 6946 = __", answer: "8762" },
+                { id: 17, type: 'addition', prompt: "735 + 3 + 31 = __", answer: "769" },
+                { id: 18, type: 'addition', prompt: "3465 + 502 + 2534 = __", answer: "6501" },
+                { id: 19, type: 'addition', prompt: "6012 + 14 + 6 = __", answer: "6032" },
+                { id: 20, type: 'addition', prompt: "3288 + 6267 = __", answer: "9555" },
+                { id: 21, type: 'addition', prompt: "3724 + 5223 + 562 = __", answer: "9509" },
+                { id: 22, type: 'addition', prompt: "6436 + 1843 = __", answer: "8279" },
+                { id: 23, type: 'addition', prompt: "1768 + 2053 + 1519 = __", answer: "5340" },
+                { id: 24, type: 'addition', prompt: "8514 + 490 + 111 = __", answer: "9115" }
+            ]
+===== addition grade 4 page2head =====
+[
+                { id: 25, type: 'addition', prompt: "3927 + 2456 = __", answer: "6383" },
+                { id: 26, type: 'addition', prompt: "751 + 261 + 1236 = __", answer: "2248" },
+                { id: 27, type: 'addition', prompt: "201 + 176 + 5948 = __", answer: "6325" }
+            ]
+
+===== addition grade 5 page1 =====
+[
+                { id: 1, type: 'addition', prompt: "32798 + 52862 + 1006 = __", answer: "86666" },
+                { id: 2, type: 'addition', prompt: "21825 + 8026 = __", answer: "29851" },
+                { id: 3, type: 'addition', prompt: "4623 + 66698 = __", answer: "71321" },
+                { id: 4, type: 'addition', prompt: "627 + 68762 = __", answer: "69389" },
+                { id: 5, type: 'addition', prompt: "92464 + 4408 = __", answer: "96872" },
+                { id: 6, type: 'addition', prompt: "23429 + 4547 + 48517 = __", answer: "76493" },
+                { id: 7, type: 'addition', prompt: "63082 + 13562 = __", answer: "76644" },
+                { id: 8, type: 'addition', prompt: "8317 + 78798 = __", answer: "87115" },
+                { id: 9, type: 'addition', prompt: "90927 + 8266 = __", answer: "99193" },
+                { id: 10, type: 'addition', prompt: "14279 + 47229 + 33011 = __", answer: "94519" },
+                { id: 11, type: 'addition', prompt: "87106 + 116 = __", answer: "87222" },
+                { id: 12, type: 'addition', prompt: "2260 + 26602 + 16501 = __", answer: "45363" },
+                { id: 13, type: 'addition', prompt: "49698 + 12630 = __", answer: "62328" },
+                { id: 14, type: 'addition', prompt: "52769 + 46326 = __", answer: "99095" },
+                { id: 15, type: 'addition', prompt: "13781 + 23496 + 42545 = __", answer: "79822" },
+                { id: 16, type: 'addition', prompt: "73463 + 6914 + 13060 = __", answer: "93437" },
+                { id: 17, type: 'addition', prompt: "86129 + 11210 = __", answer: "97339" },
+                { id: 18, type: 'addition', prompt: "1422 + 166 + 27 = __", answer: "1615" },
+                { id: 19, type: 'addition', prompt: "9803 + 15852 + 8125 = __", answer: "33780" },
+                { id: 20, type: 'addition', prompt: "7805 + 5043 + 9498 = __", answer: "22346" },
+                { id: 21, type: 'addition', prompt: "8004 + 32744 + 1910 = __", answer: "42658" },
+                { id: 22, type: 'addition', prompt: "53532 + 794 + 33095 = __", answer: "87421" },
+                { id: 23, type: 'addition', prompt: "95895 + 696 = __", answer: "96591" },
+                { id: 24, type: 'addition', prompt: "53129 + 507 + 11777 = __", answer: "65413" }
+            ]
+===== addition grade 5 page2head =====
+[
+                { id: 25, type: 'addition', prompt: "544 + 9396 + 34813 = __", answer: "44753" },
+                { id: 26, type: 'addition', prompt: "3493 + 19591 + 18544 = __", answer: "41628" },
+                { id: 27, type: 'addition', prompt: "2533 + 24440 = __", answer: "26973" }
+            ]
+
+===== addition grade 6 page1 =====
+[
+                { id: 1, type: 'addition', prompt: "536401 + 83342 = __", answer: "619743" },
+                { id: 2, type: 'addition', prompt: "127460 + 91908 + 2370 = __", answer: "221738" },
+                { id: 3, type: 'addition', prompt: "132831 + 699137 = __", answer: "831968" },
+                { id: 4, type: 'addition', prompt: "127584 + 20908 = __", answer: "148492" },
+                { id: 5, type: 'addition', prompt: "11781 + 321932 = __", answer: "333713" },
+                { id: 6, type: 'addition', prompt: "805837 + 9185 = __", answer: "815022" },
+                { id: 7, type: 'addition', prompt: "128668 + 145047 = __", answer: "273715" },
+                { id: 8, type: 'addition', prompt: "71449 + 731154 = __", answer: "802603" },
+                { id: 9, type: 'addition', prompt: "1171 + 116 + 50 + 155 = __", answer: "1492" },
+                { id: 10, type: 'addition', prompt: "155601 + 99205 = __", answer: "254806" },
+                { id: 11, type: 'addition', prompt: "689479 + 54065 = __", answer: "743544" },
+                { id: 12, type: 'addition', prompt: "644387 + 165202 = __", answer: "809589" },
+                { id: 13, type: 'addition', prompt: "145524 + 6348 + 322758 = __", answer: "474630" },
+                { id: 14, type: 'addition', prompt: "235570 + 26704 + 11312 + 45390 = __", answer: "318976" },
+                { id: 15, type: 'addition', prompt: "268542 + 181950 = __", answer: "450492" },
+                { id: 16, type: 'addition', prompt: "40777 + 240996 + 302960 = __", answer: "584733" },
+                { id: 17, type: 'addition', prompt: "180623 + 95849 + 515591 = __", answer: "792063" },
+                { id: 18, type: 'addition', prompt: "854212 + 46573 = __", answer: "900785" },
+                { id: 19, type: 'addition', prompt: "238701 + 231950 + 14450 + 112982 = __", answer: "598083" },
+                { id: 20, type: 'addition', prompt: "220800 + 33212 + 15257 + 9194 = __", answer: "278463" },
+                { id: 21, type: 'addition', prompt: "879490 + 26626 = __", answer: "906116" },
+                { id: 22, type: 'addition', prompt: "207556 + 160277 = __", answer: "367833" },
+                { id: 23, type: 'addition', prompt: "49635 + 147634 + 17571 = __", answer: "214840" },
+                { id: 24, type: 'addition', prompt: "627243 + 8416 + 339146 = __", answer: "974805" }
+            ]
+===== addition grade 6 page2head =====
+[
+                { id: 25, type: 'addition', prompt: "251956 + 24139 + 1822 = __", answer: "277917" },
+                { id: 26, type: 'addition', prompt: "18918 + 166508 + 67081 + 196843 = __", answer: "449350" },
+                { id: 27, type: 'addition', prompt: "265374 + 33600 + 20701 = __", answer: "319675" }
+            ]
+
+===== subtraction grade 0 page1 =====
+[
+                { id: 1, type: 'subtraction', prompt: "7 - 1 = __", answer: "6" },
+                { id: 2, type: 'subtraction', prompt: "4 - 2 = __", answer: "2" },
+                { id: 3, type: 'subtraction', prompt: "5 - 4 = __", answer: "1" },
+                { id: 4, type: 'subtraction', prompt: "3 - 1 = __", answer: "2" },
+                { id: 5, type: 'subtraction', prompt: "3 - 0 = __", answer: "3" },
+                { id: 6, type: 'subtraction', prompt: "9 - 2 = __", answer: "7" },
+                { id: 7, type: 'subtraction', prompt: "6 - 2 = __", answer: "4" },
+                { id: 8, type: 'subtraction', prompt: "9 - 5 = __", answer: "4" },
+                { id: 9, type: 'subtraction', prompt: "3 - 2 = __", answer: "1" },
+                { id: 10, type: 'subtraction', prompt: "9 - 8 = __", answer: "1" },
+                { id: 11, type: 'subtraction', prompt: "8 - 7 = __", answer: "1" },
+                { id: 12, type: 'subtraction', prompt: "10 - 1 = __", answer: "9" },
+                { id: 13, type: 'subtraction', prompt: "5 - 3 = __", answer: "2" },
+                { id: 14, type: 'subtraction', prompt: "10 - 6 = __", answer: "4" },
+                { id: 15, type: 'subtraction', prompt: "4 - 3 = __", answer: "1" },
+                { id: 16, type: 'subtraction', prompt: "8 - 2 = __", answer: "6" },
+                { id: 17, type: 'subtraction', prompt: "10 - 0 = __", answer: "10" },
+                { id: 18, type: 'subtraction', prompt: "6 - 5 = __", answer: "1" },
+                { id: 19, type: 'subtraction', prompt: "5 - 0 = __", answer: "5" },
+                { id: 20, type: 'subtraction', prompt: "5 - 2 = __", answer: "3" },
+                { id: 21, type: 'subtraction', prompt: "5 - 1 = __", answer: "4" },
+                { id: 22, type: 'subtraction', prompt: "8 - 6 = __", answer: "2" },
+                { id: 23, type: 'subtraction', prompt: "2 - 0 = __", answer: "2" },
+                { id: 24, type: 'subtraction', prompt: "10 - 2 = __", answer: "8" }
+            ]
+===== subtraction grade 0 page2head =====
+[
+                { id: 25, type: 'subtraction', prompt: "8 - 1 = __", answer: "7" },
+                { id: 26, type: 'subtraction', prompt: "7 - 5 = __", answer: "2" },
+                { id: 27, type: 'subtraction', prompt: "6 - 3 = __", answer: "3" }
+            ]
+
+===== subtraction grade 1 page1 =====
+[
+                { id: 1, type: 'subtraction', prompt: "6 - 4 = __", answer: "2" },
+                { id: 2, type: 'subtraction', prompt: "3 - 1 = __", answer: "2" },
+                { id: 3, type: 'subtraction', prompt: "20 - 10 = __", answer: "10" },
+                { id: 4, type: 'subtraction', prompt: "9 - 5 = __", answer: "4" },
+                { id: 5, type: 'subtraction', prompt: "19 - 2 = __", answer: "17" },
+                { id: 6, type: 'subtraction', prompt: "12 - 3 = __", answer: "9" },
+                { id: 7, type: 'subtraction', prompt: "9 - 1 = __", answer: "8" },
+                { id: 8, type: 'subtraction', prompt: "18 - 2 = __", answer: "16" },
+                { id: 9, type: 'subtraction', prompt: "16 - 0 = __", answer: "16" },
+                { id: 10, type: 'subtraction', prompt: "2 - 0 = __", answer: "2" },
+                { id: 11, type: 'subtraction', prompt: "19 - 4 = __", answer: "15" },
+                { id: 12, type: 'subtraction', prompt: "16 - 6 = __", answer: "10" },
+                { id: 13, type: 'subtraction', prompt: "15 - 2 = __", answer: "13" },
+                { id: 14, type: 'subtraction', prompt: "14 - 8 = __", answer: "6" },
+                { id: 15, type: 'subtraction', prompt: "12 - 8 = __", answer: "4" },
+                { id: 16, type: 'subtraction', prompt: "8 - 4 = __", answer: "4" },
+                { id: 17, type: 'subtraction', prompt: "4 - 0 = __", answer: "4" },
+                { id: 18, type: 'subtraction', prompt: "5 - 3 = __", answer: "2" },
+                { id: 19, type: 'subtraction', prompt: "12 - 2 = __", answer: "10" },
+                { id: 20, type: 'subtraction', prompt: "11 - 5 = __", answer: "6" },
+                { id: 21, type: 'subtraction', prompt: "15 - 5 = __", answer: "10" },
+                { id: 22, type: 'subtraction', prompt: "20 - 19 = __", answer: "1" },
+                { id: 23, type: 'subtraction', prompt: "19 - 6 = __", answer: "13" },
+                { id: 24, type: 'subtraction', prompt: "13 - 6 = __", answer: "7" }
+            ]
+===== subtraction grade 1 page2head =====
+[
+                { id: 25, type: 'subtraction', prompt: "9 - 2 = __", answer: "7" },
+                { id: 26, type: 'subtraction', prompt: "10 - 1 = __", answer: "9" },
+                { id: 27, type: 'subtraction', prompt: "20 - 17 = __", answer: "3" }
+            ]
+
+===== subtraction grade 2 page1 =====
+[
+                { id: 1, type: 'subtraction', prompt: "47 - 41 = __", answer: "6" },
+                { id: 2, type: 'subtraction', prompt: "16 - 10 = __", answer: "6" },
+                { id: 3, type: 'subtraction', prompt: "42 - 17 = __", answer: "25" },
+                { id: 4, type: 'subtraction', prompt: "9 - 7 = __", answer: "2" },
+                { id: 5, type: 'subtraction', prompt: "58 - 32 = __", answer: "26" },
+                { id: 6, type: 'subtraction', prompt: "27 - 12 = __", answer: "15" },
+                { id: 7, type: 'subtraction', prompt: "54 - 0 = __", answer: "54" },
+                { id: 8, type: 'subtraction', prompt: "94 - 76 = __", answer: "18" },
+                { id: 9, type: 'subtraction', prompt: "19 - 3 = __", answer: "16" },
+                { id: 10, type: 'subtraction', prompt: "27 - 0 = __", answer: "27" },
+                { id: 11, type: 'subtraction', prompt: "16 - 7 = __", answer: "9" },
+                { id: 12, type: 'subtraction', prompt: "95 - 69 = __", answer: "26" },
+                { id: 13, type: 'subtraction', prompt: "46 - 44 = __", answer: "2" },
+                { id: 14, type: 'subtraction', prompt: "55 - 9 = __", answer: "46" },
+                { id: 15, type: 'subtraction', prompt: "59 - 31 = __", answer: "28" },
+                { id: 16, type: 'subtraction', prompt: "12 - 10 = __", answer: "2" },
+                { id: 17, type: 'subtraction', prompt: "31 - 29 = __", answer: "2" },
+                { id: 18, type: 'subtraction', prompt: "86 - 64 = __", answer: "22" },
+                { id: 19, type: 'subtraction', prompt: "10 - 7 = __", answer: "3" },
+                { id: 20, type: 'subtraction', prompt: "51 - 21 = __", answer: "30" },
+                { id: 21, type: 'subtraction', prompt: "32 - 22 = __", answer: "10" },
+                { id: 22, type: 'subtraction', prompt: "17 - 1 = __", answer: "16" },
+                { id: 23, type: 'subtraction', prompt: "68 - 12 = __", answer: "56" },
+                { id: 24, type: 'subtraction', prompt: "68 - 33 = __", answer: "35" }
+            ]
+===== subtraction grade 2 page2head =====
+[
+                { id: 25, type: 'subtraction', prompt: "32 - 26 = __", answer: "6" },
+                { id: 26, type: 'subtraction', prompt: "46 - 17 = __", answer: "29" },
+                { id: 27, type: 'subtraction', prompt: "48 - 27 = __", answer: "21" }
+            ]
+
+===== subtraction grade 3 page1 =====
+[
+                { id: 1, type: 'subtraction', prompt: "990 - 175 = __", answer: "815" },
+                { id: 2, type: 'subtraction', prompt: "608 - 89 = __", answer: "519" },
+                { id: 3, type: 'subtraction', prompt: "952 - 528 = __", answer: "424" },
+                { id: 4, type: 'subtraction', prompt: "235 - 23 = __", answer: "212" },
+                { id: 5, type: 'subtraction', prompt: "605 - 286 = __", answer: "319" },
+                { id: 6, type: 'subtraction', prompt: "530 - 478 = __", answer: "52" },
+                { id: 7, type: 'subtraction', prompt: "26 - 16 = __", answer: "10" },
+                { id: 8, type: 'subtraction', prompt: "306 - 173 = __", answer: "133" },
+                { id: 9, type: 'subtraction', prompt: "939 - 195 = __", answer: "744" },
+                { id: 10, type: 'subtraction', prompt: "557 - 336 = __", answer: "221" },
+                { id: 11, type: 'subtraction', prompt: "789 - 178 = __", answer: "611" },
+                { id: 12, type: 'subtraction', prompt: "257 - 98 = __", answer: "159" },
+                { id: 13, type: 'subtraction', prompt: "373 - 107 = __", answer: "266" },
+                { id: 14, type: 'subtraction', prompt: "480 - 311 = __", answer: "169" },
+                { id: 15, type: 'subtraction', prompt: "174 - 145 = __", answer: "29" },
+                { id: 16, type: 'subtraction', prompt: "682 - 190 = __", answer: "492" },
+                { id: 17, type: 'subtraction', prompt: "325 - 57 = __", answer: "268" },
+                { id: 18, type: 'subtraction', prompt: "264 - 88 = __", answer: "176" },
+                { id: 19, type: 'subtraction', prompt: "839 - 291 = __", answer: "548" },
+                { id: 20, type: 'subtraction', prompt: "80 - 35 = __", answer: "45" },
+                { id: 21, type: 'subtraction', prompt: "156 - 111 = __", answer: "45" },
+                { id: 22, type: 'subtraction', prompt: "356 - 176 = __", answer: "180" },
+                { id: 23, type: 'subtraction', prompt: "746 - 366 = __", answer: "380" },
+                { id: 24, type: 'subtraction', prompt: "72 - 57 = __", answer: "15" }
+            ]
+===== subtraction grade 3 page2head =====
+[
+                { id: 25, type: 'subtraction', prompt: "363 - 360 = __", answer: "3" },
+                { id: 26, type: 'subtraction', prompt: "841 - 671 = __", answer: "170" },
+                { id: 27, type: 'subtraction', prompt: "411 - 241 = __", answer: "170" }
+            ]
+
+===== subtraction grade 4 page1 =====
+[
+                { id: 1, type: 'subtraction', prompt: "5827 - 5236 = __", answer: "591" },
+                { id: 2, type: 'subtraction', prompt: "8272 - 4054 = __", answer: "4218" },
+                { id: 3, type: 'subtraction', prompt: "4362 - 542 = __", answer: "3820" },
+                { id: 4, type: 'subtraction', prompt: "3225 - 1271 = __", answer: "1954" },
+                { id: 5, type: 'subtraction', prompt: "5440 - 4467 - 772 = __", answer: "201" },
+                { id: 6, type: 'subtraction', prompt: "4536 - 3565 - 711 = __", answer: "260" },
+                { id: 7, type: 'subtraction', prompt: "9538 - 10 - 5201 = __", answer: "4327" },
+                { id: 8, type: 'subtraction', prompt: "7342 - 1799 - 5445 = __", answer: "98" },
+                { id: 9, type: 'subtraction', prompt: "176 - 7 = __", answer: "169" },
+                { id: 10, type: 'subtraction', prompt: "9322 - 6879 = __", answer: "2443" },
+                { id: 11, type: 'subtraction', prompt: "1658 - 747 = __", answer: "911" },
+                { id: 12, type: 'subtraction', prompt: "1590 - 412 - 871 = __", answer: "307" },
+                { id: 13, type: 'subtraction', prompt: "2900 - 2506 - 143 = __", answer: "251" },
+                { id: 14, type: 'subtraction', prompt: "3085 - 3060 = __", answer: "25" },
+                { id: 15, type: 'subtraction', prompt: "8907 - 1866 - 6165 = __", answer: "876" },
+                { id: 16, type: 'subtraction', prompt: "6523 - 3690 = __", answer: "2833" },
+                { id: 17, type: 'subtraction', prompt: "5539 - 148 = __", answer: "5391" },
+                { id: 18, type: 'subtraction', prompt: "2718 - 390 - 1526 = __", answer: "802" },
+                { id: 19, type: 'subtraction', prompt: "7671 - 599 = __", answer: "7072" },
+                { id: 20, type: 'subtraction', prompt: "5006 - 2591 - 74 = __", answer: "2341" },
+                { id: 21, type: 'subtraction', prompt: "6015 - 5669 - 267 = __", answer: "79" },
+                { id: 22, type: 'subtraction', prompt: "9802 - 7351 = __", answer: "2451" },
+                { id: 23, type: 'subtraction', prompt: "4159 - 3831 = __", answer: "328" },
+                { id: 24, type: 'subtraction', prompt: "2574 - 2060 = __", answer: "514" }
+            ]
+===== subtraction grade 4 page2head =====
+[
+                { id: 25, type: 'subtraction', prompt: "8561 - 4243 - 2089 = __", answer: "2229" },
+                { id: 26, type: 'subtraction', prompt: "7547 - 4898 = __", answer: "2649" },
+                { id: 27, type: 'subtraction', prompt: "3818 - 2403 = __", answer: "1415" }
+            ]
+
+===== subtraction grade 5 page1 =====
+[
+                { id: 1, type: 'subtraction', prompt: "92734 - 54774 = __", answer: "37960" },
+                { id: 2, type: 'subtraction', prompt: "87304 - 54556 = __", answer: "32748" },
+                { id: 3, type: 'subtraction', prompt: "87043 - 3781 - 52097 = __", answer: "31165" },
+                { id: 4, type: 'subtraction', prompt: "13985 - 12421 = __", answer: "1564" },
+                { id: 5, type: 'subtraction', prompt: "51875 - 48819 - 1987 = __", answer: "1069" },
+                { id: 6, type: 'subtraction', prompt: "2638 - 2157 - 332 = __", answer: "149" },
+                { id: 7, type: 'subtraction', prompt: "21991 - 20254 - 235 = __", answer: "1502" },
+                { id: 8, type: 'subtraction', prompt: "39454 - 25521 - 3410 = __", answer: "10523" },
+                { id: 9, type: 'subtraction', prompt: "20114 - 3178 - 2253 = __", answer: "14683" },
+                { id: 10, type: 'subtraction', prompt: "62744 - 59007 - 1315 = __", answer: "2422" },
+                { id: 11, type: 'subtraction', prompt: "22479 - 3213 - 3587 = __", answer: "15679" },
+                { id: 12, type: 'subtraction', prompt: "60997 - 12161 - 13341 = __", answer: "35495" },
+                { id: 13, type: 'subtraction', prompt: "30147 - 23642 = __", answer: "6505" },
+                { id: 14, type: 'subtraction', prompt: "44985 - 42680 - 1639 = __", answer: "666" },
+                { id: 15, type: 'subtraction', prompt: "93570 - 58402 = __", answer: "35168" },
+                { id: 16, type: 'subtraction', prompt: "39521 - 30404 - 8585 = __", answer: "532" },
+                { id: 17, type: 'subtraction', prompt: "78801 - 1689 = __", answer: "77112" },
+                { id: 18, type: 'subtraction', prompt: "25100 - 11315 = __", answer: "13785" },
+                { id: 19, type: 'subtraction', prompt: "4079 - 2949 = __", answer: "1130" },
+                { id: 20, type: 'subtraction', prompt: "38774 - 19396 - 5092 = __", answer: "14286" },
+                { id: 21, type: 'subtraction', prompt: "53608 - 31264 = __", answer: "22344" },
+                { id: 22, type: 'subtraction', prompt: "89780 - 81950 = __", answer: "7830" },
+                { id: 23, type: 'subtraction', prompt: "22446 - 11156 - 10413 = __", answer: "877" },
+                { id: 24, type: 'subtraction', prompt: "29564 - 15399 = __", answer: "14165" }
+            ]
+===== subtraction grade 5 page2head =====
+[
+                { id: 25, type: 'subtraction', prompt: "4794 - 3526 - 988 = __", answer: "280" },
+                { id: 26, type: 'subtraction', prompt: "1688 - 1298 - 57 = __", answer: "333" },
+                { id: 27, type: 'subtraction', prompt: "91453 - 86113 - 4913 = __", answer: "427" }
+            ]
+
+===== subtraction grade 6 page1 =====
+[
+                { id: 1, type: 'subtraction', prompt: "216632 - 62224 = __", answer: "154408" },
+                { id: 2, type: 'subtraction', prompt: "655011 - 153558 - 51032 = __", answer: "450421" },
+                { id: 3, type: 'subtraction', prompt: "397156 - 151454 - 32625 = __", answer: "213077" },
+                { id: 4, type: 'subtraction', prompt: "748423 - 199477 = __", answer: "548946" },
+                { id: 5, type: 'subtraction', prompt: "532770 - 269128 = __", answer: "263642" },
+                { id: 6, type: 'subtraction', prompt: "370879 - 104897 = __", answer: "265982" },
+                { id: 7, type: 'subtraction', prompt: "95730 - 47466 - 43920 - 1722 = __", answer: "2622" },
+                { id: 8, type: 'subtraction', prompt: "364791 - 43746 - 267798 = __", answer: "53247" },
+                { id: 9, type: 'subtraction', prompt: "643871 - 375695 = __", answer: "268176" },
+                { id: 10, type: 'subtraction', prompt: "817394 - 346129 - 214637 - 102569 = __", answer: "154059" },
+                { id: 11, type: 'subtraction', prompt: "370837 - 83607 - 89257 - 154629 = __", answer: "43344" },
+                { id: 12, type: 'subtraction', prompt: "36363 - 29724 - 1669 - 2249 = __", answer: "2721" },
+                { id: 13, type: 'subtraction', prompt: "769852 - 440047 = __", answer: "329805" },
+                { id: 14, type: 'subtraction', prompt: "863268 - 814034 = __", answer: "49234" },
+                { id: 15, type: 'subtraction', prompt: "731171 - 168977 - 132915 = __", answer: "429279" },
+                { id: 16, type: 'subtraction', prompt: "658156 - 127369 - 298579 = __", answer: "232208" },
+                { id: 17, type: 'subtraction', prompt: "120681 - 101843 - 2826 = __", answer: "16012" },
+                { id: 18, type: 'subtraction', prompt: "495219 - 236885 - 61959 = __", answer: "196375" },
+                { id: 19, type: 'subtraction', prompt: "395123 - 395058 = __", answer: "65" },
+                { id: 20, type: 'subtraction', prompt: "295853 - 92195 - 69734 - 21506 = __", answer: "112418" },
+                { id: 21, type: 'subtraction', prompt: "235665 - 214918 - 20094 - 17 = __", answer: "636" },
+                { id: 22, type: 'subtraction', prompt: "722992 - 231328 - 466744 - 12523 = __", answer: "12397" },
+                { id: 23, type: 'subtraction', prompt: "977133 - 215652 = __", answer: "761481" },
+                { id: 24, type: 'subtraction', prompt: "494440 - 103577 - 349732 = __", answer: "41131" }
+            ]
+===== subtraction grade 6 page2head =====
+[
+                { id: 25, type: 'subtraction', prompt: "343107 - 152961 = __", answer: "190146" },
+                { id: 26, type: 'subtraction', prompt: "239608 - 134770 - 52359 = __", answer: "52479" },
+                { id: 27, type: 'subtraction', prompt: "163985 - 28467 - 133051 - 706 = __", answer: "1761" }
+            ]
+
+===== mult grade 2 page1 =====
+[
+                { id: 1, type: 'mult', prompt: "5 ├ù 10 = __", answer: "50" },
+                { id: 2, type: 'mult', prompt: "9 ├ù 7 = __", answer: "63" },
+                { id: 3, type: 'mult', prompt: "9 ├ù 9 = __", answer: "81" },
+                { id: 4, type: 'mult', prompt: "6 ├ù 7 = __", answer: "42" },
+                { id: 5, type: 'mult', prompt: "6 ├ù 1 = __", answer: "6" },
+                { id: 6, type: 'mult', prompt: "9 ├ù 5 = __", answer: "45" },
+                { id: 7, type: 'mult', prompt: "3 ├ù 4 = __", answer: "12" },
+                { id: 8, type: 'mult', prompt: "5 ├ù 5 = __", answer: "25" },
+                { id: 9, type: 'mult', prompt: "10 ├ù 10 = __", answer: "100" },
+                { id: 10, type: 'mult', prompt: "10 ├ù 3 = __", answer: "30" },
+                { id: 11, type: 'mult', prompt: "2 ├ù 4 = __", answer: "8" },
+                { id: 12, type: 'mult', prompt: "10 ├ù 6 = __", answer: "60" },
+                { id: 13, type: 'mult', prompt: "2 ├ù 5 = __", answer: "10" },
+                { id: 14, type: 'mult', prompt: "8 ├ù 2 = __", answer: "16" },
+                { id: 15, type: 'mult', prompt: "1 ├ù 3 = __", answer: "3" },
+                { id: 16, type: 'mult', prompt: "9 ├ù 2 = __", answer: "18" },
+                { id: 17, type: 'mult', prompt: "3 ├ù 9 = __", answer: "27" },
+                { id: 18, type: 'mult', prompt: "7 ├ù 4 = __", answer: "28" },
+                { id: 19, type: 'mult', prompt: "6 ├ù 6 = __", answer: "36" },
+                { id: 20, type: 'mult', prompt: "5 ├ù 9 = __", answer: "45" },
+                { id: 21, type: 'mult', prompt: "5 ├ù 3 = __", answer: "15" },
+                { id: 22, type: 'mult', prompt: "5 ├ù 8 = __", answer: "40" },
+                { id: 23, type: 'mult', prompt: "2 ├ù 9 = __", answer: "18" },
+                { id: 24, type: 'mult', prompt: "2 ├ù 10 = __", answer: "20" }
+            ]
+===== mult grade 2 page2head =====
+[
+                { id: 25, type: 'mult', prompt: "7 ├ù 2 = __", answer: "14" },
+                { id: 26, type: 'mult', prompt: "3 ├ù 3 = __", answer: "9" },
+                { id: 27, type: 'mult', prompt: "8 ├ù 9 = __", answer: "72" }
+            ]
+
+===== missing grade 1 page1 =====
+[
+                { id: 1, type: 'missing', prompt: "1 + __ = 5", answer: "4" },
+                { id: 2, type: 'missing', prompt: "2 + __ = 3", answer: "1" },
+                { id: 3, type: 'missing', prompt: "__ + 3 = 7", answer: "4" },
+                { id: 4, type: 'missing', prompt: "10 + __ = 19", answer: "9" },
+                { id: 5, type: 'missing', prompt: "__ + 16 = 19", answer: "3" },
+                { id: 6, type: 'missing', prompt: "14 + __ = 18", answer: "4" },
+                { id: 7, type: 'missing', prompt: "9 + __ = 18", answer: "9" },
+                { id: 8, type: 'missing', prompt: "1 + __ = 12", answer: "11" },
+                { id: 9, type: 'missing', prompt: "0 + __ = 6", answer: "6" },
+                { id: 10, type: 'missing', prompt: "__ + 12 = 14", answer: "2" },
+                { id: 11, type: 'missing', prompt: "12 + __ = 18", answer: "6" },
+                { id: 12, type: 'missing', prompt: "7 + __ = 13", answer: "6" },
+                { id: 13, type: 'missing', prompt: "9 + __ = 17", answer: "8" },
+                { id: 14, type: 'missing', prompt: "8 + __ = 14", answer: "6" },
+                { id: 15, type: 'missing', prompt: "1 + __ = 1", answer: "0" },
+                { id: 16, type: 'missing', prompt: "__ + 11 = 15", answer: "4" }
+            ]
+===== missing grade 1 page2head =====
+[
+                { id: 17, type: 'missing', prompt: "2 + __ = 4", answer: "2" },
+                { id: 18, type: 'missing', prompt: "__ + 5 = 5", answer: "0" },
+                { id: 19, type: 'missing', prompt: "0 + __ = 3", answer: "3" }
+            ]
+
+===== missing grade 2 page1 =====
+[
+                { id: 1, type: 'missing', prompt: "__ + 12 = 53", answer: "41" },
+                { id: 2, type: 'missing', prompt: "2 + __ = 30", answer: "28" },
+                { id: 3, type: 'missing', prompt: "11 + __ = 17", answer: "6" },
+                { id: 4, type: 'missing', prompt: "57 + __ = 73", answer: "16" },
+                { id: 5, type: 'missing', prompt: "24 + __ = 73", answer: "49" },
+                { id: 6, type: 'missing', prompt: "8 + __ = 26", answer: "18" },
+                { id: 7, type: 'missing', prompt: "28 + __ = 87", answer: "59" },
+                { id: 8, type: 'missing', prompt: "72 + __ = 96", answer: "24" },
+                { id: 9, type: 'missing', prompt: "12 + __ = 17", answer: "5" },
+                { id: 10, type: 'missing', prompt: "2 + __ = 11", answer: "9" },
+                { id: 11, type: 'missing', prompt: "__ + 33 = 39", answer: "6" },
+                { id: 12, type: 'missing', prompt: "7 + __ = 20", answer: "13" },
+                { id: 13, type: 'missing', prompt: "0 + __ = 11", answer: "11" },
+                { id: 14, type: 'missing', prompt: "__ + 59 = 97", answer: "38" },
+                { id: 15, type: 'missing', prompt: "3 + __ = 91", answer: "88" },
+                { id: 16, type: 'missing', prompt: "__ + 27 = 55", answer: "28" }
+            ]
+===== missing grade 2 page2head =====
+[
+                { id: 17, type: 'missing', prompt: "49 + __ = 57", answer: "8" },
+                { id: 18, type: 'missing', prompt: "5 + __ = 20", answer: "15" },
+                { id: 19, type: 'missing', prompt: "__ + 18 = 70", answer: "52" }
+            ]
+
+===== comparison grade 0 page1 =====
+[
+                { id: 1, type: 'comparison', prompt: "8 __ 5", answer: ">" },
+                { id: 2, type: 'comparison', prompt: "4 __ 3", answer: ">" },
+                { id: 3, type: 'comparison', prompt: "5 __ 9", answer: "<" },
+                { id: 4, type: 'comparison', prompt: "9 __ 0", answer: ">" },
+                { id: 5, type: 'comparison', prompt: "6 __ 5", answer: ">" },
+                { id: 6, type: 'comparison', prompt: "10 __ 7", answer: ">" },
+                { id: 7, type: 'comparison', prompt: "7 __ 4", answer: ">" },
+                { id: 8, type: 'comparison', prompt: "2 __ 3", answer: "<" },
+                { id: 9, type: 'comparison', prompt: "2 __ 7", answer: "<" },
+                { id: 10, type: 'comparison', prompt: "0 __ 0", answer: "=" },
+                { id: 11, type: 'comparison', prompt: "7 __ 9", answer: "<" },
+                { id: 12, type: 'comparison', prompt: "4 __ 0", answer: ">" },
+                { id: 13, type: 'comparison', prompt: "0 __ 10", answer: "<" },
+                { id: 14, type: 'comparison', prompt: "5 __ 10", answer: "<" },
+                { id: 15, type: 'comparison', prompt: "4 __ 2", answer: ">" },
+                { id: 16, type: 'comparison', prompt: "1 __ 10", answer: "<" },
+                { id: 17, type: 'comparison', prompt: "8 __ 4", answer: ">" },
+                { id: 18, type: 'comparison', prompt: "6 __ 8", answer: "<" },
+                { id: 19, type: 'comparison', prompt: "3 __ 6", answer: "<" },
+                { id: 20, type: 'comparison', prompt: "1 __ 1", answer: "=" },
+                { id: 21, type: 'comparison', prompt: "5 __ 0", answer: ">" },
+                { id: 22, type: 'comparison', prompt: "6 __ 10", answer: "<" },
+                { id: 23, type: 'comparison', prompt: "4 __ 8", answer: "<" },
+                { id: 24, type: 'comparison', prompt: "1 __ 3", answer: "<" }
+            ]
+===== comparison grade 0 page2head =====
+[
+                { id: 25, type: 'comparison', prompt: "6 __ 4", answer: ">" },
+                { id: 26, type: 'comparison', prompt: "1 __ 4", answer: "<" },
+                { id: 27, type: 'comparison', prompt: "6 __ 6", answer: "=" }
+            ]
+
+===== comparison grade 1 page1 =====
+[
+                { id: 1, type: 'comparison', prompt: "2 __ 11", answer: "<" },
+                { id: 2, type: 'comparison', prompt: "16 __ 5", answer: ">" },
+                { id: 3, type: 'comparison', prompt: "4 __ 14", answer: "<" },
+                { id: 4, type: 'comparison', prompt: "2 __ 8", answer: "<" },
+                { id: 5, type: 'comparison', prompt: "14 __ 16", answer: "<" },
+                { id: 6, type: 'comparison', prompt: "2 __ 15", answer: "<" },
+                { id: 7, type: 'comparison', prompt: "9 __ 16", answer: "<" },
+                { id: 8, type: 'comparison', prompt: "20 __ 11", answer: ">" },
+                { id: 9, type: 'comparison', prompt: "16 __ 15", answer: ">" },
+                { id: 10, type: 'comparison', prompt: "1 __ 7", answer: "<" },
+                { id: 11, type: 'comparison', prompt: "18 __ 14", answer: ">" },
+                { id: 12, type: 'comparison', prompt: "14 __ 12", answer: ">" },
+                { id: 13, type: 'comparison', prompt: "3 __ 2", answer: ">" },
+                { id: 14, type: 'comparison', prompt: "7 __ 13", answer: "<" },
+                { id: 15, type: 'comparison', prompt: "13 __ 2", answer: ">" },
+                { id: 16, type: 'comparison', prompt: "12 __ 8", answer: ">" },
+                { id: 17, type: 'comparison', prompt: "8 __ 0", answer: ">" },
+                { id: 18, type: 'comparison', prompt: "6 __ 12", answer: "<" },
+                { id: 19, type: 'comparison', prompt: "14 __ 1", answer: ">" },
+                { id: 20, type: 'comparison', prompt: "5 __ 4", answer: ">" },
+                { id: 21, type: 'comparison', prompt: "0 __ 10", answer: "<" },
+                { id: 22, type: 'comparison', prompt: "12 __ 11", answer: ">" },
+                { id: 23, type: 'comparison', prompt: "3 __ 11", answer: "<" },
+                { id: 24, type: 'comparison', prompt: "9 __ 0", answer: ">" }
+            ]
+===== comparison grade 1 page2head =====
+[
+                { id: 25, type: 'comparison', prompt: "4 __ 2", answer: ">" },
+                { id: 26, type: 'comparison', prompt: "3 __ 17", answer: "<" },
+                { id: 27, type: 'comparison', prompt: "2 __ 5", answer: "<" }
+            ]
+
+===== comparison grade 2 page1 =====
+[
+                { id: 1, type: 'comparison', prompt: "24 __ 36", answer: "<" },
+                { id: 2, type: 'comparison', prompt: "61 __ 70", answer: "<" },
+                { id: 3, type: 'comparison', prompt: "91 __ 66", answer: ">" },
+                { id: 4, type: 'comparison', prompt: "2 __ 90", answer: "<" },
+                { id: 5, type: 'comparison', prompt: "88 __ 37", answer: ">" },
+                { id: 6, type: 'comparison', prompt: "0 __ 9", answer: "<" },
+                { id: 7, type: 'comparison', prompt: "48 __ 22", answer: ">" },
+                { id: 8, type: 'comparison', prompt: "41 __ 96", answer: "<" },
+                { id: 9, type: 'comparison', prompt: "0 __ 30", answer: "<" },
+                { id: 10, type: 'comparison', prompt: "76 __ 13", answer: ">" },
+                { id: 11, type: 'comparison', prompt: "15 __ 70", answer: "<" },
+                { id: 12, type: 'comparison', prompt: "92 __ 70", answer: ">" },
+                { id: 13, type: 'comparison', prompt: "1 __ 64", answer: "<" },
+                { id: 14, type: 'comparison', prompt: "19 __ 65", answer: "<" },
+                { id: 15, type: 'comparison', prompt: "46 __ 90", answer: "<" },
+                { id: 16, type: 'comparison', prompt: "7 __ 58", answer: "<" },
+                { id: 17, type: 'comparison', prompt: "12 __ 20", answer: "<" },
+                { id: 18, type: 'comparison', prompt: "1 __ 54", answer: "<" },
+                { id: 19, type: 'comparison', prompt: "67 __ 13", answer: ">" },
+                { id: 20, type: 'comparison', prompt: "75 __ 65", answer: ">" },
+                { id: 21, type: 'comparison', prompt: "34 __ 26", answer: ">" },
+                { id: 22, type: 'comparison', prompt: "73 __ 55", answer: ">" },
+                { id: 23, type: 'comparison', prompt: "88 __ 79", answer: ">" },
+                { id: 24, type: 'comparison', prompt: "48 __ 29", answer: ">" }
+            ]
+===== comparison grade 2 page2head =====
+[
+                { id: 25, type: 'comparison', prompt: "76 __ 0", answer: ">" },
+                { id: 26, type: 'comparison', prompt: "60 __ 27", answer: ">" },
+                { id: 27, type: 'comparison', prompt: "53 __ 68", answer: "<" }
+            ]
+
+===== skip grade 1 page1 =====
+[
+                { id: 1, type: 'skip', prompt: "43, 33, 23, __", answer: "13" },
+                { id: 2, type: 'skip', prompt: "24, 29, __, 39", answer: "34" },
+                { id: 3, type: 'skip', prompt: "11, 13, 15, __", answer: "17" },
+                { id: 4, type: 'skip', prompt: "13, 23, 33, __", answer: "43" },
+                { id: 5, type: 'skip', prompt: "16, 21, 26, __", answer: "31" },
+                { id: 6, type: 'skip', prompt: "8, 10, __, 14", answer: "12" },
+                { id: 7, type: 'skip', prompt: "34, 39, __, 49", answer: "44" },
+                { id: 8, type: 'skip', prompt: "34, 24, 14, __", answer: "4" },
+                { id: 9, type: 'skip', prompt: "21, 23, __, 27", answer: "25" },
+                { id: 10, type: 'skip', prompt: "3, 13, 23, __", answer: "33" },
+                { id: 11, type: 'skip', prompt: "25, 30, 35, __", answer: "40" },
+                { id: 12, type: 'skip', prompt: "36, 38, 40, __", answer: "42" },
+                { id: 13, type: 'skip', prompt: "1, 11, __, 31", answer: "21" },
+                { id: 14, type: 'skip', prompt: "23, 18, 13, __", answer: "8" },
+                { id: 15, type: 'skip', prompt: "4, 6, __, 10", answer: "8" },
+                { id: 16, type: 'skip', prompt: "16, 26, __, 46", answer: "36" }
+            ]
+===== skip grade 1 page2head =====
+[
+                { id: 17, type: 'skip', prompt: "18, 23, 28, __", answer: "33" },
+                { id: 18, type: 'skip', prompt: "20, 18, 16, __", answer: "14" },
+                { id: 19, type: 'skip', prompt: "15, 25, __, 45", answer: "35" }
+            ]
+
+===== skip grade 2 page1 =====
+[
+                { id: 1, type: 'skip', prompt: "84, 86, 88, __", answer: "90" },
+                { id: 2, type: 'skip', prompt: "94, 89, 84, __", answer: "79" },
+                { id: 3, type: 'skip', prompt: "48, 58, 68, __", answer: "78" },
+                { id: 4, type: 'skip', prompt: "15, 20, __, 30", answer: "25" },
+                { id: 5, type: 'skip', prompt: "75, 73, 71, __", answer: "69" },
+                { id: 6, type: 'skip', prompt: "37, 47, __, 67", answer: "57" },
+                { id: 7, type: 'skip', prompt: "25, 27, __, 31", answer: "29" },
+                { id: 8, type: 'skip', prompt: "32, 42, __, 62", answer: "52" },
+                { id: 9, type: 'skip', prompt: "70, 75, __, 85", answer: "80" },
+                { id: 10, type: 'skip', prompt: "37, 39, 41, __", answer: "43" },
+                { id: 11, type: 'skip', prompt: "30, 40, __, 60", answer: "50" },
+                { id: 12, type: 'skip', prompt: "39, 44, __, 54", answer: "49" },
+                { id: 13, type: 'skip', prompt: "75, 77, __, 81", answer: "79" },
+                { id: 14, type: 'skip', prompt: "67, 77, __, 97", answer: "87" },
+                { id: 15, type: 'skip', prompt: "43, 48, 53, __", answer: "58" },
+                { id: 16, type: 'skip', prompt: "17, 15, 13, __", answer: "11" }
+            ]
+===== skip grade 2 page2head =====
+[
+                { id: 17, type: 'skip', prompt: "58, 48, 38, __", answer: "28" },
+                { id: 18, type: 'skip', prompt: "99, 94, 89, __", answer: "84" },
+                { id: 19, type: 'skip', prompt: "92, 94, __, 98", answer: "96" }
+            ]
+
+===== word grade 1 page1 =====
+[
+                { id: 1, type: 'word', prompt: "Tom has 4 toys. Kai has 16 toys. How many toys are there in total?", answer: "20" },
+                { id: 2, type: 'word', prompt: "Leo has 18 cookies. Sam has 1 cookies. How many cookies are there in total?", answer: "19" },
+                { id: 3, type: 'word', prompt: "Rae had 7 apples. Rae gave 3 apples to a friend. How many apples does Rae have left?", answer: "4" },
+                { id: 4, type: 'word', prompt: "Zoe has 8 flowers. Mia has 6 flowers. How many flowers are there in total?", answer: "14" },
+                { id: 5, type: 'word', prompt: "Max had 9 balloons. Max gave 8 balloons to a friend. How many balloons does Max have left?", answer: "1" },
+                { id: 6, type: 'word', prompt: "Rae had 14 stickers. Rae gave 11 stickers to a friend. How many stickers does Rae have left?", answer: "3" },
+                { id: 7, type: 'word', prompt: "Zoe has 13 cars. Max has 4 cars. How many cars are there in total?", answer: "17" },
+                { id: 8, type: 'word', prompt: "Leo has 1 crayons. Mia has 19 crayons. How many crayons are there in total?", answer: "20" },
+                { id: 9, type: 'word', prompt: "Kai had 7 cars. Kai gave 6 cars to a friend. How many cars does Kai have left?", answer: "1" },
+                { id: 10, type: 'word', prompt: "Sam had 5 apples. Sam gave 2 apples to a friend. How many apples does Sam have left?", answer: "3" }
+            ]
+===== word grade 1 page2head =====
+[
+                { id: 11, type: 'word', prompt: "Tom had 11 balloons. Tom gave 4 balloons to a friend. How many balloons does Tom have left?", answer: "7" },
+                { id: 12, type: 'word', prompt: "Mia had 13 stickers. Mia gave 6 stickers to a friend. How many stickers does Mia have left?", answer: "7" },
+                { id: 13, type: 'word', prompt: "Rae had 20 cookies. Rae gave 10 cookies to a friend. How many cookies does Rae have left?", answer: "10" }
+            ]
+
+===== word grade 2 page1 =====
+[
+                { id: 1, type: 'word', prompt: "Sam had 29 toys. Sam gave 5 toys to a friend. How many toys does Sam have left?", answer: "24" },
+                { id: 2, type: 'word', prompt: "Tom had 30 stickers. Tom gave 22 stickers to a friend. How many stickers does Tom have left?", answer: "8" },
+                { id: 3, type: 'word', prompt: "Kai had 10 cars. Kai gave 5 cars to a friend. How many cars does Kai have left?", answer: "5" },
+                { id: 4, type: 'word', prompt: "Zoe has 25 flowers. Mia has 4 flowers. How many flowers are there in total?", answer: "29" },
+                { id: 5, type: 'word', prompt: "Leo had 18 crayons. Leo gave 5 crayons to a friend. How many crayons does Leo have left?", answer: "13" },
+                { id: 6, type: 'word', prompt: "Rae had 6 balloons. Rae gave 3 balloons to a friend. How many balloons does Rae have left?", answer: "3" },
+                { id: 7, type: 'word', prompt: "Max had 9 cookies. Max gave 1 cookies to a friend. How many cookies does Max have left?", answer: "8" },
+                { id: 8, type: 'word', prompt: "Rae had 8 apples. Rae gave 3 apples to a friend. How many apples does Rae have left?", answer: "5" },
+                { id: 9, type: 'word', prompt: "Max has 17 toys. Mia has 11 toys. How many toys are there in total?", answer: "28" },
+                { id: 10, type: 'word', prompt: "Sam has 8 balloons. Leo has 2 balloons. How many balloons are there in total?", answer: "10" }
+            ]
+===== word grade 2 page2head =====
+[
+                { id: 11, type: 'word', prompt: "Zoe has 15 cookies. Tom has 5 cookies. How many cookies are there in total?", answer: "20" },
+                { id: 12, type: 'word', prompt: "Kai has 18 crayons. Leo has 1 crayons. How many crayons are there in total?", answer: "19" },
+                { id: 13, type: 'word', prompt: "Mia had 6 flowers. Mia gave 4 flowers to a friend. How many flowers does Mia have left?", answer: "2" }
+            ]
+
+===== counting grade 0 page1 =====
+[
+                { id: 1, type: 'counting', prompt: "3, 4, 5, __", answer: "6" },
+                { id: 2, type: 'counting', prompt: "8, 7, 6, __", answer: "5" },
+                { id: 3, type: 'counting', prompt: "__, 5, 6", answer: "4" },
+                { id: 4, type: 'counting', prompt: "8, 9, __", answer: "10" },
+                { id: 5, type: 'counting', prompt: "__, 2, 3", answer: "1" },
+                { id: 6, type: 'counting', prompt: "7, 8, __", answer: "9" },
+                { id: 7, type: 'counting', prompt: "5, 6, __", answer: "7" },
+                { id: 8, type: 'counting', prompt: "7, 6, 5, __", answer: "4" },
+                { id: 9, type: 'counting', prompt: "5, 6, 7, __", answer: "8" },
+                { id: 10, type: 'counting', prompt: "7, 8, 9, __", answer: "10" },
+                { id: 11, type: 'counting', prompt: "6, 7, 8, __", answer: "9" },
+                { id: 12, type: 'counting', prompt: "2, 3, 4, __", answer: "5" },
+                { id: 13, type: 'counting', prompt: "9, 8, 7, __", answer: "6" },
+                { id: 14, type: 'counting', prompt: "6, 5, 4, __", answer: "3" },
+                { id: 15, type: 'counting', prompt: "10, 9, 8, __", answer: "7" },
+                { id: 16, type: 'counting', prompt: "__, 4, 5", answer: "3" },
+                { id: 17, type: 'counting', prompt: "__, 6, 7", answer: "5" },
+                { id: 18, type: 'counting', prompt: "4, 5, __", answer: "6" }
+            ]
+===== counting grade 0 page2head =====
+[
+                { id: 19, type: 'counting', prompt: "3, 2, 1, __", answer: "0" },
+                { id: 20, type: 'counting', prompt: "4, 5, 6, __", answer: "7" },
+                { id: 21, type: 'counting', prompt: "__, 1, 2", answer: "0" }
+            ]
+
+===== counting grade 1 page1 =====
+[
+                { id: 1, type: 'counting', prompt: "14, 15, 16, __", answer: "17" },
+                { id: 2, type: 'counting', prompt: "0, 1, __", answer: "2" },
+                { id: 3, type: 'counting', prompt: "15, 16, __", answer: "17" },
+                { id: 4, type: 'counting', prompt: "11, 10, 9, __", answer: "8" },
+                { id: 5, type: 'counting', prompt: "__, 15, 16", answer: "14" },
+                { id: 6, type: 'counting', prompt: "20, 19, 18, __", answer: "17" },
+                { id: 7, type: 'counting', prompt: "14, 15, __", answer: "16" },
+                { id: 8, type: 'counting', prompt: "16, 17, __", answer: "18" },
+                { id: 9, type: 'counting', prompt: "8, 9, 10, __", answer: "11" },
+                { id: 10, type: 'counting', prompt: "0, 1, 2, __", answer: "3" },
+                { id: 11, type: 'counting', prompt: "2, 3, 4, __", answer: "5" },
+                { id: 12, type: 'counting', prompt: "5, 6, __", answer: "7" },
+                { id: 13, type: 'counting', prompt: "19, 18, 17, __", answer: "16" },
+                { id: 14, type: 'counting', prompt: "3, 2, 1, __", answer: "0" },
+                { id: 15, type: 'counting', prompt: "__, 16, 17", answer: "15" },
+                { id: 16, type: 'counting', prompt: "15, 14, 13, __", answer: "12" },
+                { id: 17, type: 'counting', prompt: "5, 4, 3, __", answer: "2" },
+                { id: 18, type: 'counting', prompt: "17, 16, 15, __", answer: "14" }
+            ]
+===== counting grade 1 page2head =====
+[
+                { id: 19, type: 'counting', prompt: "__, 14, 15", answer: "13" },
+                { id: 20, type: 'counting', prompt: "10, 9, 8, __", answer: "7" },
+                { id: 21, type: 'counting', prompt: "10, 11, 12, __", answer: "13" }
+            ]
+
+===== counting grade 2 page1 =====
+[
+                { id: 1, type: 'counting', prompt: "3, 2, 1, __", answer: "0" },
+                { id: 2, type: 'counting', prompt: "81, 80, 79, __", answer: "78" },
+                { id: 3, type: 'counting', prompt: "60, 59, 58, __", answer: "57" },
+                { id: 4, type: 'counting', prompt: "__, 82, 83", answer: "81" },
+                { id: 5, type: 'counting', prompt: "96, 97, 98, __", answer: "99" },
+                { id: 6, type: 'counting', prompt: "0, 1, __", answer: "2" },
+                { id: 7, type: 'counting', prompt: "__, 36, 37", answer: "35" },
+                { id: 8, type: 'counting', prompt: "22, 23, __", answer: "24" },
+                { id: 9, type: 'counting', prompt: "77, 78, 79, __", answer: "80" },
+                { id: 10, type: 'counting', prompt: "47, 48, 49, __", answer: "50" },
+                { id: 11, type: 'counting', prompt: "10, 9, 8, __", answer: "7" },
+                { id: 12, type: 'counting', prompt: "93, 94, 95, __", answer: "96" },
+                { id: 13, type: 'counting', prompt: "1, 2, __", answer: "3" },
+                { id: 14, type: 'counting', prompt: "19, 18, 17, __", answer: "16" },
+                { id: 15, type: 'counting', prompt: "83, 84, __", answer: "85" },
+                { id: 16, type: 'counting', prompt: "12, 13, __", answer: "14" },
+                { id: 17, type: 'counting', prompt: "59, 58, 57, __", answer: "56" },
+                { id: 18, type: 'counting', prompt: "__, 49, 50", answer: "48" }
+            ]
+===== counting grade 2 page2head =====
+[
+                { id: 19, type: 'counting', prompt: "70, 71, __", answer: "72" },
+                { id: 20, type: 'counting', prompt: "4, 3, 2, __", answer: "1" },
+                { id: 21, type: 'counting', prompt: "91, 92, __", answer: "93" }
+            ]
+
+===== doubles grade 1 page1 =====
+[
+                { id: 1, type: 'doubles', prompt: "4 + 5 = __", answer: "9" },
+                { id: 2, type: 'doubles', prompt: "What is double 6?", answer: "12" },
+                { id: 3, type: 'doubles', prompt: "7 + 8 = __", answer: "15" },
+                { id: 4, type: 'doubles', prompt: "What is double 3?", answer: "6" },
+                { id: 5, type: 'doubles', prompt: "6 + 6 = __", answer: "12" },
+                { id: 6, type: 'doubles', prompt: "What is double 8?", answer: "16" },
+                { id: 7, type: 'doubles', prompt: "4 + 4 = __", answer: "8" },
+                { id: 8, type: 'doubles', prompt: "2 + 2 = __", answer: "4" },
+                { id: 9, type: 'doubles', prompt: "What is double 4?", answer: "8" },
+                { id: 10, type: 'doubles', prompt: "What is double 5?", answer: "10" },
+                { id: 11, type: 'doubles', prompt: "3 + 3 = __", answer: "6" },
+                { id: 12, type: 'doubles', prompt: "What is double 9?", answer: "18" },
+                { id: 13, type: 'doubles', prompt: "10 + 10 = __", answer: "20" },
+                { id: 14, type: 'doubles', prompt: "What is double 2?", answer: "4" },
+                { id: 15, type: 'doubles', prompt: "What is double 7?", answer: "14" },
+                { id: 16, type: 'doubles', prompt: "5 + 5 = __", answer: "10" },
+                { id: 17, type: 'doubles', prompt: "2 + 3 = __", answer: "5" },
+                { id: 18, type: 'doubles', prompt: "3 + 4 = __", answer: "7" },
+                { id: 19, type: 'doubles', prompt: "7 + 7 = __", answer: "14" },
+                { id: 20, type: 'doubles', prompt: "9 + 10 = __", answer: "19" },
+                { id: 21, type: 'doubles', prompt: "1 + 2 = __", answer: "3" },
+                { id: 22, type: 'doubles', prompt: "9 + 9 = __", answer: "18" },
+                { id: 23, type: 'doubles', prompt: "8 + 8 = __", answer: "16" },
+                { id: 24, type: 'doubles', prompt: "What is double 1?", answer: "2" }
+            ]
+===== doubles grade 1 page2head =====
+[
+                { id: 25, type: 'doubles', prompt: "1 + 1 = __", answer: "2" },
+                { id: 26, type: 'doubles', prompt: "5 + 6 = __", answer: "11" },
+                { id: 27, type: 'doubles', prompt: "What is double 10?", answer: "20" }
+            ]
+
+===== doubles grade 2 page1 =====
+[
+                { id: 1, type: 'doubles', prompt: "13 + 13 = __", answer: "26" },
+                { id: 2, type: 'doubles', prompt: "11 + 11 = __", answer: "22" },
+                { id: 3, type: 'doubles', prompt: "What is double 16?", answer: "32" },
+                { id: 4, type: 'doubles', prompt: "4 + 5 = __", answer: "9" },
+                { id: 5, type: 'doubles', prompt: "8 + 9 = __", answer: "17" },
+                { id: 6, type: 'doubles', prompt: "What is double 11?", answer: "22" },
+                { id: 7, type: 'doubles', prompt: "18 + 19 = __", answer: "37" },
+                { id: 8, type: 'doubles', prompt: "What is double 2?", answer: "4" },
+                { id: 9, type: 'doubles', prompt: "5 + 5 = __", answer: "10" },
+                { id: 10, type: 'doubles', prompt: "What is double 18?", answer: "36" },
+                { id: 11, type: 'doubles', prompt: "8 + 8 = __", answer: "16" },
+                { id: 12, type: 'doubles', prompt: "16 + 17 = __", answer: "33" },
+                { id: 13, type: 'doubles', prompt: "What is double 10?", answer: "20" },
+                { id: 14, type: 'doubles', prompt: "1 + 2 = __", answer: "3" },
+                { id: 15, type: 'doubles', prompt: "5 + 6 = __", answer: "11" },
+                { id: 16, type: 'doubles', prompt: "3 + 3 = __", answer: "6" },
+                { id: 17, type: 'doubles', prompt: "6 + 6 = __", answer: "12" },
+                { id: 18, type: 'doubles', prompt: "2 + 3 = __", answer: "5" },
+                { id: 19, type: 'doubles', prompt: "16 + 16 = __", answer: "32" },
+                { id: 20, type: 'doubles', prompt: "What is double 3?", answer: "6" },
+                { id: 21, type: 'doubles', prompt: "What is double 14?", answer: "28" },
+                { id: 22, type: 'doubles', prompt: "4 + 4 = __", answer: "8" },
+                { id: 23, type: 'doubles', prompt: "11 + 12 = __", answer: "23" },
+                { id: 24, type: 'doubles', prompt: "17 + 17 = __", answer: "34" }
+            ]
+===== doubles grade 2 page2head =====
+[
+                { id: 25, type: 'doubles', prompt: "13 + 14 = __", answer: "27" },
+                { id: 26, type: 'doubles', prompt: "14 + 15 = __", answer: "29" },
+                { id: 27, type: 'doubles', prompt: "14 + 14 = __", answer: "28" }
+            ]
+
+===== bonds grade 1 page1 =====
+[
+                { id: 1, type: 'bonds', prompt: "4 + __ = 10", answer: "6" },
+                { id: 2, type: 'bonds', prompt: "__ and 1 make 10", answer: "9" },
+                { id: 3, type: 'bonds', prompt: "__ + 2 = 10", answer: "8" },
+                { id: 4, type: 'bonds', prompt: "9 + __ = 10", answer: "1" },
+                { id: 5, type: 'bonds', prompt: "__ and 5 make 10", answer: "5" },
+                { id: 6, type: 'bonds', prompt: "__ + 1 = 10", answer: "9" },
+                { id: 7, type: 'bonds', prompt: "__ + 7 = 10", answer: "3" },
+                { id: 8, type: 'bonds', prompt: "6 + __ = 10", answer: "4" },
+                { id: 9, type: 'bonds', prompt: "__ + 4 = 10", answer: "6" },
+                { id: 10, type: 'bonds', prompt: "1 + __ = 10", answer: "9" },
+                { id: 11, type: 'bonds', prompt: "__ + 3 = 10", answer: "7" },
+                { id: 12, type: 'bonds', prompt: "3 + __ = 10", answer: "7" },
+                { id: 13, type: 'bonds', prompt: "__ and 7 make 10", answer: "3" },
+                { id: 14, type: 'bonds', prompt: "2 + __ = 10", answer: "8" },
+                { id: 15, type: 'bonds', prompt: "__ + 8 = 10", answer: "2" },
+                { id: 16, type: 'bonds', prompt: "5 + __ = 10", answer: "5" },
+                { id: 17, type: 'bonds', prompt: "7 + __ = 10", answer: "3" },
+                { id: 18, type: 'bonds', prompt: "__ and 8 make 10", answer: "2" },
+                { id: 19, type: 'bonds', prompt: "__ + 6 = 10", answer: "4" },
+                { id: 20, type: 'bonds', prompt: "__ and 2 make 10", answer: "8" },
+                { id: 21, type: 'bonds', prompt: "__ and 9 make 10", answer: "1" },
+                { id: 22, type: 'bonds', prompt: "__ and 4 make 10", answer: "6" },
+                { id: 23, type: 'bonds', prompt: "__ and 6 make 10", answer: "4" },
+                { id: 24, type: 'bonds', prompt: "8 + __ = 10", answer: "2" }
+            ]
+===== bonds grade 1 page2head =====
+[
+                { id: 25, type: 'bonds', prompt: "__ + 5 = 10", answer: "5" },
+                { id: 26, type: 'bonds', prompt: "__ + 9 = 10", answer: "1" },
+                { id: 27, type: 'bonds', prompt: "__ and 3 make 10", answer: "7" }
+            ]
+
+===== bonds grade 2 page1 =====
+[
+                { id: 1, type: 'bonds', prompt: "__ and 4 make 20", answer: "16" },
+                { id: 2, type: 'bonds', prompt: "13 + __ = 20", answer: "7" },
+                { id: 3, type: 'bonds', prompt: "__ and 2 make 20", answer: "18" },
+                { id: 4, type: 'bonds', prompt: "__ + 13 = 20", answer: "7" },
+                { id: 5, type: 'bonds', prompt: "19 + __ = 20", answer: "1" },
+                { id: 6, type: 'bonds', prompt: "__ and 13 make 20", answer: "7" },
+                { id: 7, type: 'bonds', prompt: "__ and 3 make 10", answer: "7" },
+                { id: 8, type: 'bonds', prompt: "__ + 8 = 10", answer: "2" },
+                { id: 9, type: 'bonds', prompt: "__ + 7 = 10", answer: "3" },
+                { id: 10, type: 'bonds', prompt: "__ + 1 = 20", answer: "19" },
+                { id: 11, type: 'bonds', prompt: "__ + 9 = 10", answer: "1" },
+                { id: 12, type: 'bonds', prompt: "6 + __ = 10", answer: "4" },
+                { id: 13, type: 'bonds', prompt: "__ + 4 = 10", answer: "6" },
+                { id: 14, type: 'bonds', prompt: "3 + __ = 20", answer: "17" },
+                { id: 15, type: 'bonds', prompt: "__ and 8 make 20", answer: "12" },
+                { id: 16, type: 'bonds', prompt: "__ + 1 = 10", answer: "9" },
+                { id: 17, type: 'bonds', prompt: "__ + 5 = 10", answer: "5" },
+                { id: 18, type: 'bonds', prompt: "__ + 18 = 20", answer: "2" },
+                { id: 19, type: 'bonds', prompt: "__ + 14 = 20", answer: "6" },
+                { id: 20, type: 'bonds', prompt: "1 + __ = 10", answer: "9" },
+                { id: 21, type: 'bonds', prompt: "3 + __ = 10", answer: "7" },
+                { id: 22, type: 'bonds', prompt: "__ + 3 = 10", answer: "7" },
+                { id: 23, type: 'bonds', prompt: "__ + 11 = 20", answer: "9" },
+                { id: 24, type: 'bonds', prompt: "__ and 7 make 20", answer: "13" }
+            ]
+===== bonds grade 2 page2head =====
+[
+                { id: 25, type: 'bonds', prompt: "__ + 17 = 20", answer: "3" },
+                { id: 26, type: 'bonds', prompt: "16 + __ = 20", answer: "4" },
+                { id: 27, type: 'bonds', prompt: "5 + __ = 10", answer: "5" }
+            ]
+
+===== patterns grade 1 page1 =====
+[
+                { id: 1, type: 'patterns', prompt: "20, 30, 40, __", answer: "50" },
+                { id: 2, type: 'patterns', prompt: "triangle, diamond, square, triangle, diamond, __", answer: "square" },
+                { id: 3, type: 'patterns', prompt: "0, 5, __, 15, 20", answer: "10" },
+                { id: 4, type: 'patterns', prompt: "40, 42, 44, __", answer: "46" },
+                { id: 5, type: 'patterns', prompt: "5, 6, __, 8, 9", answer: "7" },
+                { id: 6, type: 'patterns', prompt: "bird, cat, bird, cat, bird, __", answer: "cat" },
+                { id: 7, type: 'patterns', prompt: "14, 19, __, 29, 34", answer: "24" },
+                { id: 8, type: 'patterns', prompt: "red, white, yellow, red, white, __", answer: "yellow" },
+                { id: 9, type: 'patterns', prompt: "bird, cat, pig, bird, cat, __", answer: "pig" },
+                { id: 10, type: 'patterns', prompt: "red, yellow, red, yellow, red, __", answer: "yellow" },
+                { id: 11, type: 'patterns', prompt: "cross, diamond, cross, diamond, cross, __", answer: "diamond" },
+                { id: 12, type: 'patterns', prompt: "green, yellow, green, yellow, green, __", answer: "yellow" },
+                { id: 13, type: 'patterns', prompt: "9, 19, 29, __", answer: "39" },
+                { id: 14, type: 'patterns', prompt: "12, 13, 14, __", answer: "15" },
+                { id: 15, type: 'patterns', prompt: "0, 2, __, 6, 8", answer: "4" },
+                { id: 16, type: 'patterns', prompt: "40, 41, 42, __", answer: "43" }
+            ]
+===== patterns grade 1 page2head =====
+[
+                { id: 17, type: 'patterns', prompt: "duck, frog, duck, frog, duck, __", answer: "frog" },
+                { id: 18, type: 'patterns', prompt: "2, 7, 12, __", answer: "17" },
+                { id: 19, type: 'patterns', prompt: "17, 27, 37, __", answer: "47" }
+            ]
+
+===== patterns grade 2 page1 =====
+[
+                { id: 1, type: 'patterns', prompt: "oval, circle, oval, circle, oval, __", answer: "circle" },
+                { id: 2, type: 'patterns', prompt: "pink, blue, black, pink, blue, __", answer: "black" },
+                { id: 3, type: 'patterns', prompt: "32, 36, 40, __", answer: "44" },
+                { id: 4, type: 'patterns', prompt: "16, 26, __, 46, 56", answer: "36" },
+                { id: 5, type: 'patterns', prompt: "cat, pig, cat, pig, cat, __", answer: "pig" },
+                { id: 6, type: 'patterns', prompt: "71, 72, 73, __", answer: "74" },
+                { id: 7, type: 'patterns', prompt: "orange, green, pink, orange, green, __", answer: "pink" },
+                { id: 8, type: 'patterns', prompt: "30, 33, __, 39, 42", answer: "36" },
+                { id: 9, type: 'patterns', prompt: "cat, duck, frog, cat, duck, __", answer: "frog" },
+                { id: 10, type: 'patterns', prompt: "18, 23, 28, __", answer: "33" },
+                { id: 11, type: 'patterns', prompt: "62, 64, __, 68, 70", answer: "66" },
+                { id: 12, type: 'patterns', prompt: "72, 76, __, 84, 88", answer: "80" },
+                { id: 13, type: 'patterns', prompt: "circle, square, circle, square, circle, __", answer: "square" },
+                { id: 14, type: 'patterns', prompt: "white, red, yellow, white, red, __", answer: "yellow" },
+                { id: 15, type: 'patterns', prompt: "87, 88, 89, __", answer: "90" },
+                { id: 16, type: 'patterns', prompt: "12, 22, __, 42, 52", answer: "32" }
+            ]
+===== patterns grade 2 page2head =====
+[
+                { id: 17, type: 'patterns', prompt: "duck, fish, duck, fish, duck, __", answer: "fish" },
+                { id: 18, type: 'patterns', prompt: "14, 16, 18, __", answer: "20" },
+                { id: 19, type: 'patterns', prompt: "oval, cross, circle, oval, cross, __", answer: "circle" }
+            ]
+
+===== shapes grade 1 page1 =====
+[
+                { id: 1, type: 'shapes', prompt: "Which of these 3-D objects has only flat faces? (cube, cylinder, sphere)", answer: "cube" },
+                { id: 2, type: 'shapes', prompt: "Which of these 3-D objects has only flat faces? (cube, sphere, cylinder)", answer: "cube" },
+                { id: 3, type: 'shapes', prompt: "How many sides does a triangle have?", answer: "3" },
+                { id: 4, type: 'shapes', prompt: "How many corners does a rectangle have?", answer: "4" },
+                { id: 5, type: 'shapes', prompt: "How many corners does a square have?", answer: "4" },
+                { id: 6, type: 'shapes', prompt: "How many corners does a triangle have?", answer: "3" },
+                { id: 7, type: 'shapes', prompt: "How many corners does an oval have?", answer: "0" },
+                { id: 8, type: 'shapes', prompt: "How many sides does a rectangle have?", answer: "4" },
+                { id: 9, type: 'shapes', prompt: "Which 2-D shape has 0 corners? (triangle, circle, square)", answer: "circle" },
+                { id: 10, type: 'shapes', prompt: "Which 2-D shape has 4 corners? (oval, square, circle)", answer: "square" },
+                { id: 11, type: 'shapes', prompt: "How many flat faces does a sphere have?", answer: "0" },
+                { id: 12, type: 'shapes', prompt: "How many flat faces does a cube have?", answer: "6" },
+                { id: 13, type: 'shapes', prompt: "How many flat faces does a cylinder have?", answer: "2" },
+                { id: 14, type: 'shapes', prompt: "Which 2-D shape has 4 corners? (triangle, square, circle)", answer: "square" },
+                { id: 15, type: 'shapes', prompt: "Which 2-D shape has 3 corners? (rectangle, triangle, oval)", answer: "triangle" },
+                { id: 16, type: 'shapes', prompt: "How many sides does a square have?", answer: "4" }
+            ]
+===== shapes grade 1 page2head =====
+[
+                { id: 17, type: 'shapes', prompt: "Which 2-D shape has 4 corners? (triangle, rectangle, circle)", answer: "rectangle" },
+                { id: 18, type: 'shapes', prompt: "Which 2-D shape has 3 corners? (square, triangle, oval)", answer: "triangle" },
+                { id: 19, type: 'shapes', prompt: "Which 2-D shape has 0 corners? (rectangle, circle, triangle)", answer: "circle" }
+            ]
+
+===== shapes grade 2 page1 =====
+[
+                { id: 1, type: 'shapes', prompt: "How many sides does a rectangle have?", answer: "4" },
+                { id: 2, type: 'shapes', prompt: "Which of these 3-D objects has only flat faces? (pyramid, prism, cube)", answer: "pyramid" },
+                { id: 3, type: 'shapes', prompt: "How many flat faces does a sphere have?", answer: "0" },
+                { id: 4, type: 'shapes', prompt: "How many sides does a hexagon have?", answer: "6" },
+                { id: 5, type: 'shapes', prompt: "Which 2-D shape has 0 corners? (square, oval, rectangle)", answer: "oval" },
+                { id: 6, type: 'shapes', prompt: "How many sides does a triangle have?", answer: "3" },
+                { id: 7, type: 'shapes', prompt: "How many corners does a triangle have?", answer: "3" },
+                { id: 8, type: 'shapes', prompt: "Which of these 3-D objects has only flat faces? (cube, pyramid, prism)", answer: "cube" },
+                { id: 9, type: 'shapes', prompt: "Which 2-D shape has 3 corners? (hexagon, triangle, square)", answer: "triangle" },
+                { id: 10, type: 'shapes', prompt: "Which of these 3-D objects has only flat faces? (prism, pyramid, sphere)", answer: "prism" },
+                { id: 11, type: 'shapes', prompt: "Which 2-D shape has 0 corners? (rectangle, oval, triangle)", answer: "oval" },
+                { id: 12, type: 'shapes', prompt: "How many corners does a rectangle have?", answer: "4" },
+                { id: 13, type: 'shapes', prompt: "How many corners does an oval have?", answer: "0" },
+                { id: 14, type: 'shapes', prompt: "Which 2-D shape has 4 corners? (triangle, square, circle)", answer: "square" },
+                { id: 15, type: 'shapes', prompt: "How many flat faces does a cylinder have?", answer: "2" },
+                { id: 16, type: 'shapes', prompt: "Which of these 3-D objects has only flat faces? (cube, cylinder, prism)", answer: "cube" }
+            ]
+===== shapes grade 2 page2head =====
+[
+                { id: 17, type: 'shapes', prompt: "How many corners does a square have?", answer: "4" },
+                { id: 18, type: 'shapes', prompt: "Which 2-D shape has 4 corners? (circle, square, oval)", answer: "square" },
+                { id: 19, type: 'shapes', prompt: "How many sides does a square have?", answer: "4" }
+            ]
+
+===== time grade 1 page1 =====
+[
+                { id: 1, type: 'time', prompt: "If today is Tuesday, how many days is it until Sunday?", answer: "5" },
+                { id: 2, type: 'time', prompt: "What day comes after Wednesday?", answer: "Thursday" },
+                { id: 3, type: 'time', prompt: "What season comes after autumn?", answer: "winter" },
+                { id: 4, type: 'time', prompt: "What day comes before Tuesday?", answer: "Monday" },
+                { id: 5, type: 'time', prompt: "If today is Monday, what day was yesterday?", answer: "Sunday" },
+                { id: 6, type: 'time', prompt: "If today is Sunday, what day was yesterday?", answer: "Saturday" },
+                { id: 7, type: 'time', prompt: "If today is Monday, how many days is it until Saturday?", answer: "5" },
+                { id: 8, type: 'time', prompt: "If today is Tuesday, how many days is it until Saturday?", answer: "4" },
+                { id: 9, type: 'time', prompt: "If today is Tuesday, how many days is it until Friday?", answer: "3" },
+                { id: 10, type: 'time', prompt: "What day comes before Saturday?", answer: "Friday" },
+                { id: 11, type: 'time', prompt: "If today is Friday, what day was yesterday?", answer: "Thursday" },
+                { id: 12, type: 'time', prompt: "If today is Friday, how many days is it until Saturday?", answer: "1" },
+                { id: 13, type: 'time', prompt: "If today is Thursday, what day was yesterday?", answer: "Wednesday" },
+                { id: 14, type: 'time', prompt: "What day comes after Tuesday?", answer: "Wednesday" },
+                { id: 15, type: 'time', prompt: "If today is Saturday, what day is tomorrow?", answer: "Sunday" },
+                { id: 16, type: 'time', prompt: "What day comes before Friday?", answer: "Thursday" }
+            ]
+===== time grade 1 page2head =====
+[
+                { id: 17, type: 'time', prompt: "What season comes after spring?", answer: "summer" },
+                { id: 18, type: 'time', prompt: "What month comes after May?", answer: "June" },
+                { id: 19, type: 'time', prompt: "How many months are in a year?", answer: "12" }
+            ]
+
+===== time grade 2 page1 =====
+[
+                { id: 1, type: 'time', prompt: "How many days are in a year?", answer: "365" },
+                { id: 2, type: 'time', prompt: "It is 5 o'clock now. What time is it 2 hours later?", answer: "7 o'clock" },
+                { id: 3, type: 'time', prompt: "What day comes after Sunday?", answer: "Monday" },
+                { id: 4, type: 'time', prompt: "What day comes after Wednesday?", answer: "Thursday" },
+                { id: 5, type: 'time', prompt: "If today is Monday, how many days is it until Wednesday?", answer: "2" },
+                { id: 6, type: 'time', prompt: "It is half past 11 now. What time is it one hour later?", answer: "half past 12" },
+                { id: 7, type: 'time', prompt: "What month comes after January?", answer: "February" },
+                { id: 8, type: 'time', prompt: "If today is Monday, what day was yesterday?", answer: "Sunday" },
+                { id: 9, type: 'time', prompt: "If today is Saturday, what day is tomorrow?", answer: "Sunday" },
+                { id: 10, type: 'time', prompt: "What day comes before Friday?", answer: "Thursday" },
+                { id: 11, type: 'time', prompt: "If today is Thursday, what day was yesterday?", answer: "Wednesday" },
+                { id: 12, type: 'time', prompt: "It is half past 2 now. What time is it one hour later?", answer: "half past 3" },
+                { id: 13, type: 'time', prompt: "It is half past 8 now. What time is it one hour later?", answer: "half past 9" },
+                { id: 14, type: 'time', prompt: "What day comes before Tuesday?", answer: "Monday" },
+                { id: 15, type: 'time', prompt: "If today is Tuesday, how many days is it until Friday?", answer: "3" },
+                { id: 16, type: 'time', prompt: "How many months are in a year?", answer: "12" }
+            ]
+===== time grade 2 page2head =====
+[
+                { id: 17, type: 'time', prompt: "What day comes after Monday?", answer: "Tuesday" },
+                { id: 18, type: 'time', prompt: "If today is Friday, what day is tomorrow?", answer: "Saturday" },
+                { id: 19, type: 'time', prompt: "It is half past 7 now. What time is it one hour later?", answer: "half past 8" }
+            ]
+
+===== clock grade 2 page1 =====
+[
+                { id: 1, type: 'clock', prompt: "Quarter to 9 is the same time in digital:", answer: "8:45", answerLine: true },
+                { id: 2, type: 'clock', prompt: "3:30 is the same time in words:", answer: "half past 3", answerLine: true },
+                { id: 3, type: 'clock', prompt: "Write the digital time the clock shows:__", answer: "11:45", clock: { hour: 11, minute: 45 }, wideBlanks: true },
+                { id: 4, type: 'clock', prompt: "Quarter to 2 is the same time in digital:", answer: "1:45", answerLine: true },
+                { id: 5, type: 'clock', prompt: "Quarter past 12 is the same time in digital:", answer: "12:15", answerLine: true },
+                { id: 6, type: 'clock', prompt: "10:00 is the same time in words:", answer: "10 o'clock", answerLine: true },
+                { id: 7, type: 'clock', prompt: "Draw the hands to show quarter to 1.", answer: "12:45 ΓÇö hour hand on 12, minute hand on 9", clock: { hour: 12, minute: 45, hands: false } },
+                { id: 8, type: 'clock', prompt: "What time is shown on the clock?__", answer: "quarter past 8", clock: { hour: 8, minute: 15 }, wideBlanks: true },
+                { id: 9, type: 'clock', prompt: "2:45 is the same time in words:", answer: "quarter to 3", answerLine: true },
+                { id: 10, type: 'clock', prompt: "Draw the hands to show quarter to 8.", answer: "7:45 ΓÇö hour hand on 7, minute hand on 9", clock: { hour: 7, minute: 45, hands: false } }
+            ]
+===== clock grade 2 page2head =====
+[
+                { id: 11, type: 'clock', prompt: "11 o'clock is the same time in digital:", answer: "11:00", answerLine: true },
+                { id: 12, type: 'clock', prompt: "7:30 is the same time in words:", answer: "half past 7", answerLine: true },
+                { id: 13, type: 'clock', prompt: "10:30 is the same time in words:", answer: "half past 10", answerLine: true }
+            ]
+
+===== measure grade 1 page1 =====
+[
+                { id: 1, type: 'measure', prompt: "Which is longer: the notebook or the door?", answer: "door" },
+                { id: 2, type: 'measure', prompt: "Which holds more: the water bottle or the cup?", answer: "water bottle" },
+                { id: 3, type: 'measure', prompt: "Which is heavier: the pencil or the cat?", answer: "cat" },
+                { id: 4, type: 'measure', prompt: "Which is heavier: the bucket or the cup?", answer: "bucket" },
+                { id: 5, type: 'measure', prompt: "Which is heavier: the ruler or the pencil?", answer: "ruler" },
+                { id: 6, type: 'measure', prompt: "Which holds more: the tank or the spoon?", answer: "tank" },
+                { id: 7, type: 'measure', prompt: "Which is heavier: the pencil or the spoon?", answer: "pencil" },
+                { id: 8, type: 'measure', prompt: "Which is heavier: the crayon or the apple?", answer: "apple" },
+                { id: 9, type: 'measure', prompt: "Which holds more: the spoon or the cup?", answer: "cup" },
+                { id: 10, type: 'measure', prompt: "Which holds more: the cup or the bucket?", answer: "bucket" },
+                { id: 11, type: 'measure', prompt: "Which is longer: the ruler or the crayon?", answer: "ruler" },
+                { id: 12, type: 'measure', prompt: "Which is heavier: the pencil or the door?", answer: "door" }
+            ]
+===== measure grade 1 page2head =====
+[
+                { id: 13, type: 'measure', prompt: "Which holds more: the bucket or the cup?", answer: "bucket" },
+                { id: 14, type: 'measure', prompt: "Which is longer: the crayon or the table?", answer: "table" },
+                { id: 15, type: 'measure', prompt: "Which is heavier: the cup or the door?", answer: "door" }
+            ]
+
+===== measure grade 2 page1 =====
+[
+                { id: 1, type: 'measure', prompt: "Which is heavier: the door or the crayon?", answer: "door" },
+                { id: 2, type: 'measure', prompt: "Which is longer: the finger or the door?", answer: "door" },
+                { id: 3, type: 'measure', prompt: "A notebook is about 22 cm long. Is it longer or shorter than a metre?", answer: "shorter" },
+                { id: 4, type: 'measure', prompt: "Which is longer: the pencil or the notebook?", answer: "notebook" },
+                { id: 5, type: 'measure', prompt: "Which is heavier: the cup or the bucket?", answer: "bucket" },
+                { id: 6, type: 'measure', prompt: "Which holds more: the bucket or the water bottle?", answer: "bucket" },
+                { id: 7, type: 'measure', prompt: "Which holds more: the water bottle or the bucket?", answer: "bucket" },
+                { id: 8, type: 'measure', prompt: "A table is about 75 cm long. A pencil is about 15 cm long. About how many pencils long is a table?", answer: "5" },
+                { id: 9, type: 'measure', prompt: "A finger is about 5 cm long. Is it longer or shorter than a metre?", answer: "shorter" },
+                { id: 10, type: 'measure', prompt: "Which is longer: the crayon or the pencil?", answer: "pencil" },
+                { id: 11, type: 'measure', prompt: "Which is heavier: the ruler or the door?", answer: "door" },
+                { id: 12, type: 'measure', prompt: "Which is longer: the ruler or the finger?", answer: "ruler" }
+            ]
+===== measure grade 2 page2head =====
+[
+                { id: 13, type: 'measure', prompt: "A door is about 200 cm long. Is it longer or shorter than a metre?", answer: "longer" },
+                { id: 14, type: 'measure', prompt: "Which holds more: the bucket or the tank?", answer: "tank" },
+                { id: 15, type: 'measure', prompt: "Which is longer: the ruler or the crayon?", answer: "ruler" }
+            ]
+
+===== placevalue grade 1 page1 =====
+[
+                { id: 1, type: 'placevalue', prompt: "What number is 1 ten and 9 ones?", answer: "19" },
+                { id: 2, type: 'placevalue', prompt: "How many ones are in 10?", answer: "0" },
+                { id: 3, type: 'placevalue', prompt: "How many tens are in 10?", answer: "1" },
+                { id: 4, type: 'placevalue', prompt: "How many ones are in 18?", answer: "8" },
+                { id: 5, type: 'placevalue', prompt: "How many ones are in 14?", answer: "4" },
+                { id: 6, type: 'placevalue', prompt: "How many tens are in 14?", answer: "1" },
+                { id: 7, type: 'placevalue', prompt: "How many tens are in 15?", answer: "1" },
+                { id: 8, type: 'placevalue', prompt: "What number is 2 tens and 0 ones?", answer: "20" },
+                { id: 9, type: 'placevalue', prompt: "How many ones are in 16?", answer: "6" },
+                { id: 10, type: 'placevalue', prompt: "How many tens are in 12?", answer: "1" },
+                { id: 11, type: 'placevalue', prompt: "How many tens and ones make 18?", answer: "1 ten and 8 ones" },
+                { id: 12, type: 'placevalue', prompt: "How many tens and ones make 12?", answer: "1 ten and 2 ones" },
+                { id: 13, type: 'placevalue', prompt: "How many tens and ones make 14?", answer: "1 ten and 4 ones" },
+                { id: 14, type: 'placevalue', prompt: "How many tens and ones make 15?", answer: "1 ten and 5 ones" },
+                { id: 15, type: 'placevalue', prompt: "How many tens and ones make 13?", answer: "1 ten and 3 ones" },
+                { id: 16, type: 'placevalue', prompt: "How many tens and ones make 17?", answer: "1 ten and 7 ones" }
+            ]
+===== placevalue grade 1 page2head =====
+[
+                { id: 17, type: 'placevalue', prompt: "How many tens are in 18?", answer: "1" },
+                { id: 18, type: 'placevalue', prompt: "What number is 1 ten and 0 ones?", answer: "10" },
+                { id: 19, type: 'placevalue', prompt: "What number is 1 ten and 2 ones?", answer: "12" }
+            ]
+
+===== placevalue grade 2 page1 =====
+[
+                { id: 1, type: 'placevalue', prompt: "How many tens and ones make 45?", answer: "4 tens and 5 ones" },
+                { id: 2, type: 'placevalue', prompt: "How many ones are in 38?", answer: "8" },
+                { id: 3, type: 'placevalue', prompt: "How many tens and ones make 69?", answer: "6 tens and 9 ones" },
+                { id: 4, type: 'placevalue', prompt: "How many tens and ones make 73?", answer: "7 tens and 3 ones" },
+                { id: 5, type: 'placevalue', prompt: "What number is 9 tens and 8 ones?", answer: "98" },
+                { id: 6, type: 'placevalue', prompt: "How many tens are in 61?", answer: "6" },
+                { id: 7, type: 'placevalue', prompt: "How many tens and ones make 96?", answer: "9 tens and 6 ones" },
+                { id: 8, type: 'placevalue', prompt: "What number is 1 ten and 6 ones?", answer: "16" },
+                { id: 9, type: 'placevalue', prompt: "What number is 7 tens and 6 ones?", answer: "76" },
+                { id: 10, type: 'placevalue', prompt: "How many tens are in 16?", answer: "1" },
+                { id: 11, type: 'placevalue', prompt: "How many tens are in 92?", answer: "9" },
+                { id: 12, type: 'placevalue', prompt: "What number is 2 tens and 0 ones?", answer: "20" },
+                { id: 13, type: 'placevalue', prompt: "How many tens and ones make 42?", answer: "4 tens and 2 ones" },
+                { id: 14, type: 'placevalue', prompt: "What number is 1 ten and 1 one?", answer: "11" },
+                { id: 15, type: 'placevalue', prompt: "How many ones are in 48?", answer: "8" },
+                { id: 16, type: 'placevalue', prompt: "How many tens and ones make 76?", answer: "7 tens and 6 ones" }
+            ]
+===== placevalue grade 2 page2head =====
+[
+                { id: 17, type: 'placevalue', prompt: "How many tens and ones make 25?", answer: "2 tens and 5 ones" },
+                { id: 18, type: 'placevalue', prompt: "What number is 6 tens and 8 ones?", answer: "68" },
+                { id: 19, type: 'placevalue', prompt: "How many tens and ones make 15?", answer: "1 ten and 5 ones" }
+            ]
+
+===== data grade 1 page1 =====
+[
+                { id: 1, type: 'data', prompt: "Count the tallies: ||||/ ||||/ ||||/ ||||/ ΓÇö how many in all?", answer: "20" },
+                { id: 2, type: 'data', prompt: "In a column graph, each square is 1 vote. Kai's bar is 9 squares tall and Mia's bar is 8 squares tall. How many more votes did Kai get?", answer: "1" },
+                { id: 3, type: 'data', prompt: "In a picture graph, 1 star = 2 cookies. How many cookies do ΓÿàΓÿàΓÿàΓÿàΓÿàΓÿà show?", answer: "12" },
+                { id: 4, type: 'data', prompt: "In a picture graph, 1 star = 1 crayon. How many crayons do ΓÿàΓÿàΓÿàΓÿàΓÿàΓÿà show?", answer: "6" },
+                { id: 5, type: 'data', prompt: "In a column graph, each square is 1 vote. Tom's bar is 7 squares tall and Sam's bar is 2 squares tall. How many more votes did Tom get?", answer: "5" },
+                { id: 6, type: 'data', prompt: "Count the tallies: ||||/ ||||/ | | | ΓÇö how many in all?", answer: "13" },
+                { id: 7, type: 'data', prompt: "In a column graph, each square is 1 vote. Zoe's bar is 9 squares tall and Max's bar is 8 squares tall. How many more votes did Zoe get?", answer: "1" },
+                { id: 8, type: 'data', prompt: "Count the tallies: ||||/ ||||/ ||||/ ΓÇö how many in all?", answer: "15" },
+                { id: 9, type: 'data', prompt: "Count the tallies: | | | ΓÇö how many in all?", answer: "3" },
+                { id: 10, type: 'data', prompt: "In a picture graph, 1 star = 1 balloon. How many balloons do ΓÿàΓÿàΓÿàΓÿàΓÿàΓÿà show?", answer: "6" },
+                { id: 11, type: 'data', prompt: "Count the tallies: ||||/ ΓÇö how many in all?", answer: "5" },
+                { id: 12, type: 'data', prompt: "In a column graph, each square is 1 vote. Leo's bar is 6 squares tall and Rae's bar is 1 square tall. How many more votes did Leo get?", answer: "5" },
+                { id: 13, type: 'data', prompt: "Count the tallies: ||||/ ||||/ | | | | ΓÇö how many in all?", answer: "14" },
+                { id: 14, type: 'data', prompt: "In a picture graph, 1 star = 1 toy. How many toys do ΓÿàΓÿà show?", answer: "2" },
+                { id: 15, type: 'data', prompt: "In a column graph, each square is 1 vote. Tom's bar is 7 squares tall and Max's bar is 6 squares tall. How many more votes did Tom get?", answer: "1" },
+                { id: 16, type: 'data', prompt: "In a picture graph, 1 star = 3 cars. How many cars do ΓÿàΓÿàΓÿàΓÿàΓÿà show?", answer: "15" },
+                { id: 17, type: 'data', prompt: "Count the tallies: ||||/ ||||/ ||||/ | ΓÇö how many in all?", answer: "16" },
+                { id: 18, type: 'data', prompt: "In a column graph, each square is 1 vote. Zoe's bar is 5 squares tall and Rae's bar is 4 squares tall. How many more votes did Zoe get?", answer: "1" }
+            ]
+===== data grade 1 page2head =====
+[
+                { id: 19, type: 'data', prompt: "In a column graph, each square is 1 vote. Leo's bar is 2 squares tall and Mia's bar is 1 square tall. How many more votes did Leo get?", answer: "1" },
+                { id: 20, type: 'data', prompt: "Count the tallies: ||||/ ||||/ ||||/ | | | | ΓÇö how many in all?", answer: "19" },
+                { id: 21, type: 'data', prompt: "In a picture graph, 1 star = 1 flower. How many flowers do ΓÿàΓÿàΓÿàΓÿàΓÿàΓÿà show?", answer: "6" }
+            ]
+
+===== data grade 2 page1 =====
+[
+                { id: 1, type: 'data', prompt: "In a picture graph, 1 star = 1 car. How many cars do ΓÿàΓÿàΓÿàΓÿà show?", answer: "4" },
+                { id: 2, type: 'data', prompt: "Count the tallies: ||||/ | | ΓÇö how many in all?", answer: "7" },
+                { id: 3, type: 'data', prompt: "In a column graph, each square is 1 vote. Mia's bar is 6 squares tall and Leo's bar is 5 squares tall. How many more votes did Mia get?", answer: "1" },
+                { id: 4, type: 'data', prompt: "Count the tallies: ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ | | | | ΓÇö how many in all?", answer: "39" },
+                { id: 5, type: 'data', prompt: "Count the tallies: ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ ΓÇö how many in all?", answer: "35" },
+                { id: 6, type: 'data', prompt: "Count the tallies: ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ | | | | ΓÇö how many in all?", answer: "34" },
+                { id: 7, type: 'data', prompt: "In a picture graph, 1 star = 1 crayon. How many crayons do ΓÿàΓÿàΓÿà show?", answer: "3" },
+                { id: 8, type: 'data', prompt: "Count the tallies: ||||/ ||||/ ||||/ ||||/ ΓÇö how many in all?", answer: "20" },
+                { id: 9, type: 'data', prompt: "Count the tallies: ||||/ ||||/ ||||/ | | | | ΓÇö how many in all?", answer: "19" },
+                { id: 10, type: 'data', prompt: "In a picture graph, 1 star = 2 flowers. How many flowers do ΓÿàΓÿàΓÿàΓÿà show?", answer: "8" },
+                { id: 11, type: 'data', prompt: "In a picture graph, 1 star = 3 toys. How many toys do ΓÿàΓÿàΓÿàΓÿà show?", answer: "12" },
+                { id: 12, type: 'data', prompt: "Count the tallies: ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ | | | ΓÇö how many in all?", answer: "38" },
+                { id: 13, type: 'data', prompt: "Count the tallies: ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ | | ΓÇö how many in all?", answer: "37" },
+                { id: 14, type: 'data', prompt: "In a column graph, each square is 1 vote. Max's bar is 14 squares tall and Rae's bar is 12 squares tall. How many more votes did Max get?", answer: "2" },
+                { id: 15, type: 'data', prompt: "Count the tallies: ||||/ | | | | ΓÇö how many in all?", answer: "9" },
+                { id: 16, type: 'data', prompt: "In a picture graph, 1 star = 1 sticker. How many stickers do ΓÿàΓÿàΓÿà show?", answer: "3" },
+                { id: 17, type: 'data', prompt: "In a picture graph, 1 star = 1 cookie. How many cookies do Γÿà show?", answer: "1" },
+                { id: 18, type: 'data', prompt: "In a column graph, each square is 1 vote. Tom's bar is 17 squares tall and Sam's bar is 10 squares tall. How many more votes did Tom get?", answer: "7" }
+            ]
+===== data grade 2 page2head =====
+[
+                { id: 19, type: 'data', prompt: "In a picture graph, 1 star = 3 apples. How many apples do ΓÿàΓÿàΓÿàΓÿàΓÿà show?", answer: "15" },
+                { id: 20, type: 'data', prompt: "Count the tallies: ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ | ΓÇö how many in all?", answer: "36" },
+                { id: 21, type: 'data', prompt: "Count the tallies: ||||/ ||||/ | ΓÇö how many in all?", answer: "11" }
+            ]
+
+===== division grade 2 page1 =====
+[
+                { id: 1, type: 'division', prompt: "There are 21 balloons. They are put into groups of 7. How many groups are there?", answer: "3" },
+                { id: 2, type: 'division', prompt: "There are 30 flowers. They are put into groups of 10. How many groups are there?", answer: "3" },
+                { id: 3, type: 'division', prompt: "Kai had 36 cars. Kai shared them equally between 4 friends. How many cars does each friend get?", answer: "9" },
+                { id: 4, type: 'division', prompt: "14 ├╖ 2 = __", answer: "7" },
+                { id: 5, type: 'division', prompt: "There are 45 toys. They are put into groups of 5. How many groups are there?", answer: "9" },
+                { id: 6, type: 'division', prompt: "Max had 12 stickers. Max shared them equally between 2 friends. How many stickers does each friend get?", answer: "6" },
+                { id: 7, type: 'division', prompt: "28 ├╖ 7 = __", answer: "4" },
+                { id: 8, type: 'division', prompt: "24 ├╖ 4 = __", answer: "6" },
+                { id: 9, type: 'division', prompt: "Sam had 30 crayons. Sam shared them equally between 5 friends. How many crayons does each friend get?", answer: "6" },
+                { id: 10, type: 'division', prompt: "Tom had 42 cookies. Tom shared them equally between 6 friends. How many cookies does each friend get?", answer: "7" },
+                { id: 11, type: 'division', prompt: "There are 14 apples. They are put into groups of 7. How many groups are there?", answer: "2" },
+                { id: 12, type: 'division', prompt: "16 ├╖ 8 = __", answer: "2" }
+            ]
+===== division grade 2 page2head =====
+[
+                { id: 13, type: 'division', prompt: "Rae had 20 cars. Rae shared them equally between 5 friends. How many cars does each friend get?", answer: "4" },
+                { id: 14, type: 'division', prompt: "70 ├╖ 7 = __", answer: "10" },
+                { id: 15, type: 'division', prompt: "There are 50 apples. They are put into groups of 10. How many groups are there?", answer: "5" }
+            ]
+
+===== money grade 2 page1 =====
+[
+                { id: 1, type: 'money', prompt: "You have one $1 note and one fifty-cent coin. How much money is there in all?", answer: "$1.50" },
+                { id: 2, type: 'money', prompt: "How many five-cent coins make 15c?", answer: "3" },
+                { id: 3, type: 'money', prompt: "You have one $1 note and one five-cent coin. How much money is there in all?", answer: "$1.05" },
+                { id: 4, type: 'money', prompt: "What coins make 60c?", answer: "50c + 10c" },
+                { id: 5, type: 'money', prompt: "How many ten-cent coins make 20c?", answer: "2" },
+                { id: 6, type: 'money', prompt: "A jar holds 8 five-cent coins. How much money is in the jar?", answer: "40c" },
+                { id: 7, type: 'money', prompt: "What coins make 45c?", answer: "20c + 20c + 5c" },
+                { id: 8, type: 'money', prompt: "You have one $2 note and one twenty-cent coin. How much money is there in all?", answer: "$2.20" },
+                { id: 9, type: 'money', prompt: "How many ten-cent coins make 30c?", answer: "3" },
+                { id: 10, type: 'money', prompt: "What coins make 15c?", answer: "10c + 5c" },
+                { id: 11, type: 'money', prompt: "A jar holds 8 ten-cent coins. How much money is in the jar?", answer: "80c" },
+                { id: 12, type: 'money', prompt: "What coins make 35c?", answer: "20c + 10c + 5c" }
+            ]
+===== money grade 2 page2head =====
+[
+                { id: 13, type: 'money', prompt: "You have one $5 note and one ten-cent coin. How much money is there in all?", answer: "$5.10" },
+                { id: 14, type: 'money', prompt: "What coins make 5c?", answer: "5c" },
+                { id: 15, type: 'money', prompt: "You have one $1 note and one ten-cent coin. How much money is there in all?", answer: "$1.10" }
+            ]

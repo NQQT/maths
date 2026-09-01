@@ -15,23 +15,64 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem, Rng, WorksheetSpec } from '../framework';
+import { createDeck, sampleUnique } from '../framework';
 
-// Skip counting: "count on" by an interval from skipSet. We print the first
-// three terms and ask for the fourth (4 x interval). If the chosen interval
-// would push the 4th term past skipCap we fall back to the smallest interval,
-// which is always small enough.
+// Skip counting: "count on" by an interval from skipSet. THREE procedural
+// forms, each with a RANDOM START (the old generator always started at the
+// interval itself — a 4-interval space that repeated within one page):
+//   0. forward run, blank at the END:      "4, 6, 8, __"       (start 4, step 2)
+//   1. forward run, blank in the MIDDLE:  "4, __, 8, 10"       (Y2 missing-element
+//      form, V9 AC9M2A01)
+//   2. BACKWARD run, blank at the end:    "20, 18, 16, __"     (count back)
+// The start is drawn so the whole printed run stays inside [0, skipCap], and
+// the interval is dealt from a deck so every enabled interval appears before
+// any repeats.
+//
+// NON-REPEATING SAMPLING: intervals AND starts are drawn through the shared
+// rng and the whole question passes through sampleUnique keyed on the printed
+// prompt, so the same interval with a different start (or blank position) is a
+// fresh question — the space (intervals x starts x forms) is hundreds deep
+// per grade and never repeats inside 100 pages.
 function generateSkip(rng: Rng, caps: Caps, count: number): RawProblem[] {
-    const out: RawProblem[] = [];
-    const fallback = caps.skipSet.length ? Math.min(...caps.skipSet) : 1;
-    for (let i = 0; i < count; i++) {
-        let interval = caps.skipSet.length ? rng.pick(caps.skipSet) : 1;
-        if (interval * 4 > caps.skipCap) interval = fallback;
-        out.push({
-            prompt: `${interval}, ${interval * 2}, ${interval * 3}, __`,
-            answer: `${interval * 4}`
-        });
-    }
-    return out;
+    const intervals = caps.skipSet.length ? [...caps.skipSet] : [1];
+    const intervalDeck = createDeck(rng, intervals);
+    return sampleUnique(
+        count,
+        () => {
+            const interval = intervalDeck.take();
+            const form = rng.int(0, 2);
+            // Forward runs print 3 known terms + the blank (4 terms); the
+            // backward run the same. The last printed term must stay <= cap.
+            if (form === 2) {
+                // Backward run: end at a value >= 1 so the answer stays
+                // non-negative, and the FIRST term <= cap.
+                const endLow = 3 * interval;
+                const end = rng.int(endLow, Math.max(endLow, caps.skipCap));
+                return {
+                    prompt: `${end}, ${end - interval}, ${end - 2 * interval}, __`,
+                    answer: `${end - 3 * interval}`
+                };
+            }
+            // Forward run: start anywhere from 0 (or interval for grades
+            // that never show 0 — see below) up to cap - 3*interval.
+            const maxStart = Math.max(0, caps.skipCap - 3 * interval);
+            const start = form === 0 ? rng.int(0, maxStart) : rng.int(1, Math.max(1, maxStart));
+            if (form === 0) {
+                // Blank at the end: start, start+s, start+2s, __
+                return {
+                    prompt: `${start}, ${start + interval}, ${start + 2 * interval}, __`,
+                    answer: `${start + 3 * interval}`
+                };
+            }
+            // Blank in the middle: start, start+s, __, start+3s
+            // (the answer start+2s is derivable from the shown step).
+            return {
+                prompt: `${start}, ${start + interval}, __, ${start + 3 * interval}`,
+                answer: `${start + 2 * interval}`
+            };
+        },
+        (p) => p.prompt
+    );
 }
 
 // The plugin's declarative spec (exported for its own tests).

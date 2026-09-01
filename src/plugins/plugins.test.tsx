@@ -380,16 +380,16 @@ describe('the real worksheet plugins — register through the same pipeline', ()
         fireEvent.click(screen.getByRole('button', { name: 'Clock Faces' }));
 
         // The pinned Year 2 sheet has 10 problems, 4 of which carry a clock
-        // figure (3 reading + 1 drawing; the 6 conversions are pure text).
+        // figure (2 reading + 2 drawing; the 6 conversions are pure text).
         // Every face carries 12 tick <line>s; hands add 2 more (hour hand
-        // strokeWidth 3.5) — so exactly 3 drawn faces + 1 blank draw face.
+        // strokeWidth 3.5) — so exactly 2 drawn faces + 2 blank draw faces.
         const page = screen.getByTestId('sheet-preview-page1');
         const svgs = Array.from(page.querySelectorAll('svg'));
         expect(svgs).toHaveLength(4);
         const hasHourHand = (svg: Element) =>
             Array.from(svg.querySelectorAll('line')).some((l) => l.getAttribute('stroke-width') === '3.5');
-        expect(svgs.filter((svg) => !hasHourHand(svg))).toHaveLength(1);
-        expect(svgs.filter(hasHourHand)).toHaveLength(3);
+        expect(svgs.filter((svg) => !hasHourHand(svg))).toHaveLength(2);
+        expect(svgs.filter(hasHourHand)).toHaveLength(2);
     });
 });
 

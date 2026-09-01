@@ -31,6 +31,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem, Rng, WorksheetSpec } from '../framework';
+import { createDeck, sampleUnique } from '../framework';
 
 // The five exercise kinds mixed onto every sheet (see header comment).
 const MODES = ['read-words', 'read-digital', 'draw', 'words-to-digital', 'digital-to-words'] as const;
@@ -70,68 +71,76 @@ function sentence(text: string): string {
 // sheet: two reading kinds (words / digital), one drawing kind (blank face)
 // and two conversion kinds (words ↔ digital). Every item uses the same
 // quarter-scale minute pool, so each mode drills all four positions.
+//
+// NON-REPEATING SAMPLING: hour × minute pairs are dealt from a deck of the
+// full 48-face grid (each face is read once per cycle before any repeats),
+// the mode is drawn fresh per question, and the whole question passes through
+// sampleUnique keyed on the printed prompt. The same face in a different
+// mode is a different question, so the effective space is 48 faces x 5 modes.
 function generateClock(rng: Rng, _caps: Caps, count: number): RawProblem[] {
-    const out: RawProblem[] = [];
-    for (let i = 0; i < count; i++) {
-        const mode = rng.pick(MODES);
-        const h = rng.int(1, 12);
-        const m = rng.pick(MINUTES);
-        switch (mode) {
-            case 'read-words': {
-                // Clock WITH hands; the student writes the word form.
-                out.push({
-                    prompt: 'What time is shown on the clock?__',
-                    answer: timeWords(h, m),
-                    clock: { hour: h, minute: m },
-                    // Word answers ("quarter past 11") need the wide blank.
-                    wideBlanks: true
-                });
-                break;
+    // The full hour × minute grid, dealt so every face appears before any
+    // repeats (a deck over the 48 possible faces).
+    const faceDeck = createDeck(
+        rng,
+        MINUTES.flatMap((m) => Array.from({ length: 12 }, (_, i) => [i + 1, m] as [number, number]))
+    );
+    return sampleUnique(
+        count,
+        () => {
+            const mode = rng.pick(MODES);
+            const [h, m] = faceDeck.take();
+            switch (mode) {
+                case 'read-words': {
+                    // Clock WITH hands; the student writes the word form.
+                    return {
+                        prompt: 'What time is shown on the clock?__',
+                        answer: timeWords(h, m),
+                        clock: { hour: h, minute: m },
+                        // Word answers ("quarter past 11") need the wide blank.
+                        wideBlanks: true
+                    };
+                }
+                case 'read-digital': {
+                    // Clock WITH hands; the student writes the digital form.
+                    return {
+                        prompt: 'Write the digital time the clock shows:__',
+                        answer: timeDigital(h, m),
+                        clock: { hour: h, minute: m },
+                        wideBlanks: true
+                    };
+                }
+                case 'draw': {
+                    // BLANK face (hands: false) — the student draws both hands on
+                    // it. The answer records the exact hand positions for marking.
+                    return {
+                        prompt: sentence(`draw the hands to show ${timeWords(h, m)}.`),
+                        answer: `${timeDigital(h, m)} — hour hand on ${h}, minute hand on ${minuteMark(m)}`,
+                        clock: { hour: h, minute: m, hands: false }
+                    };
+                }
+                case 'words-to-digital': {
+                    // Word form → digital form (pure text, no clock figure). The
+                    // answer is written on a full-width line BELOW the prompt
+                    // (answerLine) — no inline "__" squeeze.
+                    return {
+                        prompt: sentence(`${timeWords(h, m)} is the same time in digital:`),
+                        answer: timeDigital(h, m),
+                        answerLine: true
+                    };
+                }
+                default: {
+                    // 'digital-to-words': digital form → word form (pure text),
+                    // answered on the full-width line below the prompt.
+                    return {
+                        prompt: sentence(`${timeDigital(h, m)} is the same time in words:`),
+                        answer: timeWords(h, m),
+                        answerLine: true
+                    };
+                }
             }
-            case 'read-digital': {
-                // Clock WITH hands; the student writes the digital form.
-                out.push({
-                    prompt: 'Write the digital time the clock shows:__',
-                    answer: timeDigital(h, m),
-                    clock: { hour: h, minute: m },
-                    wideBlanks: true
-                });
-                break;
-            }
-            case 'draw': {
-                // BLANK face (hands: false) — the student draws both hands on
-                // it. The answer records the exact hand positions for marking.
-                out.push({
-                    prompt: sentence(`draw the hands to show ${timeWords(h, m)}.`),
-                    answer: `${timeDigital(h, m)} — hour hand on ${h}, minute hand on ${minuteMark(m)}`,
-                    clock: { hour: h, minute: m, hands: false }
-                });
-                break;
-            }
-            case 'words-to-digital': {
-                // Word form → digital form (pure text, no clock figure). The
-                // answer is written on a full-width line BELOW the prompt
-                // (answerLine) — no inline "__" squeeze.
-                out.push({
-                    prompt: sentence(`${timeWords(h, m)} is the same time in digital:`),
-                    answer: timeDigital(h, m),
-                    answerLine: true
-                });
-                break;
-            }
-            default: {
-                // 'digital-to-words': digital form → word form (pure text),
-                // answered on the full-width line below the prompt.
-                out.push({
-                    prompt: sentence(`${timeDigital(h, m)} is the same time in words:`),
-                    answer: timeWords(h, m),
-                    answerLine: true
-                });
-                break;
-            }
-        }
-    }
-    return out;
+        },
+        (p) => p.prompt
+    );
 }
 
 // The plugin's declarative spec (exported for its own tests).

@@ -16,22 +16,30 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem, Rng, WorksheetSpec } from '../framework';
+import { sampleUnique } from '../framework';
 
 // Multiplication / times tables: `a × b = __` with both operands in
 // [1, multCap]. Grade 2 introduces times tables (to 10), so with its cap
 // every product stays <= multCap * multCap (100) — right-sized for the grade.
+//
+// NON-REPEATING SAMPLING: the whole question passes through sampleUnique
+// keyed on the printed prompt, so a document holds each distinct fact once
+// before the 100-fact (10x10) space cycles — the old free-draw loop could
+// print "7 × 8 = __" twice on one page.
 function generateMultiplication(rng: Rng, caps: Caps, count: number): RawProblem[] {
-    const out: RawProblem[] = [];
     // A grade that doesn't offer multiplication passes multCap 0; the
     // generator is unreachable for them (buildDocument checks grade.available
     // through the spec's offered() first).
     const cap = Math.max(1, caps.multCap);
-    for (let i = 0; i < count; i++) {
-        const a = rng.int(1, cap);
-        const b = rng.int(1, cap);
-        out.push({ prompt: `${a} × ${b} = __`, answer: `${a * b}` });
-    }
-    return out;
+    return sampleUnique(
+        count,
+        () => {
+            const a = rng.int(1, cap);
+            const b = rng.int(1, cap);
+            return { prompt: `${a} × ${b} = __`, answer: `${a * b}` };
+        },
+        (p) => p.prompt
+    );
 }
 
 // The plugin's declarative spec (exported for its own tests).

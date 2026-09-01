@@ -17,9 +17,10 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem, Rng, WorksheetSpec } from '../framework';
+import { createDeck, sampleUnique } from '../framework';
 
 // Word pools for repeating-pattern items: each column is one pool; the
-// generator picks a pool and 3 distinct words from it to form an
+// generator deals 3 distinct words from it (through a deck) to form an
 // A-B or A-B-C cycle (V9 AC9M1A01/AC9M2A01: repeating + constant-step
 // patterns with missing elements).
 const PATTERN_POOLS = [
@@ -28,52 +29,59 @@ const PATTERN_POOLS = [
     ['cat', 'dog', 'fish', 'bird', 'frog', 'duck', 'pig', 'bee']
 ] as const;
 
-// Number & repeating patterns (V9 AC9M1A01/AC9M2A01). 60% numeric: count on by
-// a step from patSet, blank at the END (4 terms) or in the MIDDLE (5 terms) —
-// the missing-element form is the Y2 requirement. 40% word: an A-B or A-B-C
-// colour/shape/animal cycle with the 6th term blanked.
+// Number & repeating patterns (V9 AC9M1A01/AC9M2A01). 60% numeric: count on
+// by a step from patSet, blank at the END (4 terms) or in the MIDDLE (5
+// terms) — the missing-element form is the Y2 requirement. 40% word: an A-B
+// or A-B-C colour/shape/animal cycle with the 6th term blanked.
+//
+// NON-REPEATING SAMPLING: pools and steps are dealt from decks and every
+// question passes through sampleUnique keyed on the printed prompt, so the
+// same cycle with a different start/step/blank position is a fresh question.
 function generatePatterns(rng: Rng, caps: Caps, count: number): RawProblem[] {
-    const out: RawProblem[] = [];
     const steps = caps.patSet.length ? [...caps.patSet].sort((a, b) => a - b) : [1, 2, 5];
     const fallback = steps[0];
-    for (let i = 0; i < count; i++) {
-        if (rng.next() < 0.6) {
-            // Numeric count-on pattern.
-            const middle = rng.next() < 0.5;
-            // span = number of steps from the first term to the blanked term.
-            const span = middle ? 4 : 3;
-            let step = rng.pick(steps);
-            if (step * span > caps.skipCap) step = fallback;
-            const start = rng.int(0, Math.max(0, caps.skipCap - span * step));
-            if (middle) {
-                // start, start+s, __, start+3s, start+4s  => answer start+2s
-                out.push({
-                    prompt: `${start}, ${start + step}, __, ${start + 3 * step}, ${start + 4 * step}`,
-                    answer: `${start + 2 * step}`
-                });
-            } else {
+    const stepDeck = createDeck(rng, steps);
+    const poolDeck = createDeck(rng, PATTERN_POOLS);
+    return sampleUnique(
+        count,
+        () => {
+            if (rng.next() < 0.6) {
+                // Numeric count-on pattern.
+                const middle = rng.next() < 0.5;
+                // span = number of steps from the first term to the blanked term.
+                const span = middle ? 4 : 3;
+                let step = stepDeck.take();
+                if (step * span > caps.skipCap) step = fallback;
+                const start = rng.int(0, Math.max(0, caps.skipCap - span * step));
+                if (middle) {
+                    // start, start+s, __, start+3s, start+4s  => answer start+2s
+                    return {
+                        prompt: `${start}, ${start + step}, __, ${start + 3 * step}, ${start + 4 * step}`,
+                        answer: `${start + 2 * step}`
+                    };
+                }
                 // start, start+s, start+2s, __  => answer start+3s
-                out.push({
+                return {
                     prompt: `${start}, ${start + step}, ${start + 2 * step}, __`,
                     answer: `${start + 3 * step}`
-                });
+                };
             }
-        } else {
             // Repeating word pattern: A-B or A-B-C cycle, 6th term missing.
-            const pool = rng.pick(PATTERN_POOLS);
-            let w1 = rng.pick(pool);
-            let w2 = rng.pick(pool);
-            if (w2 === w1) w2 = rng.pick(pool.filter((w) => w !== w1));
-            let w3 = rng.pick(pool);
-            if (w3 === w1 || w3 === w2) {
-                w3 = rng.pick(pool.filter((w) => w !== w1 && w !== w2));
+            const pool = [...poolDeck.take()];
+            // Deal 3 distinct words from the pool (a shuffled slice of 3 —
+            // distinct by construction, order is the randomness).
+            const picked = [];
+            while (picked.length < 3) {
+                const w = pool.splice(rng.int(0, pool.length - 1), 1)[0];
+                picked.push(w);
             }
+            const [w1, w2, w3] = picked as [string, string, string];
             const cycle = rng.next() < 0.5 ? [w1, w2] : [w1, w2, w3];
             const shown = Array.from({ length: 5 }, (_, k) => cycle[k % cycle.length]);
-            out.push({ prompt: `${shown.join(', ')}, __`, answer: cycle[5 % cycle.length] });
-        }
-    }
-    return out;
+            return { prompt: `${shown.join(', ')}, __`, answer: cycle[5 % cycle.length] };
+        },
+        (p) => p.prompt
+    );
 }
 
 // The plugin's declarative spec (exported for its own tests).

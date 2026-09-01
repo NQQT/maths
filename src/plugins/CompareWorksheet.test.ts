@@ -39,6 +39,6 @@ describe('compare — Year 1', () => {
             const expected = a > b ? '>' : a < b ? '<' : '=';
             expect(p.answer).toBe(expected);
         }
-        expect(s[0]).toEqual({ id: 1, type: 'comparison', prompt: '2 __ 11', answer: '<' });
+        expect(s[0]).toEqual({ id: 1, type: "comparison", prompt: "2 __ 11", answer: "<" });
     });
 });

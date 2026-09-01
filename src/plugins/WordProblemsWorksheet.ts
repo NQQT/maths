@@ -17,41 +17,64 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem, Rng, WorksheetSpec } from '../framework';
+import { createDeck, sampleUnique } from '../framework';
 
 // Kid-friendly vocabulary for word problems (no money, no time, single-step).
+// Each pool is dealt from a deck so every name/thing appears before repeats.
+// Singular forms pair index-aligned with the plurals so counts of 1 read
+// grammatically ("Sam has 1 cookie", never "1 cookies").
 const NAMES = ['Sam', 'Mia', 'Leo', 'Zoe', 'Tom', 'Max', 'Rae', 'Kai'] as const;
 const THINGS = ['apples', 'toys', 'stickers', 'balloons', 'cookies', 'crayons', 'flowers', 'cars'] as const;
+const THINGS_SING = ['apple', 'toy', 'sticker', 'balloon', 'cookie', 'crayon', 'flower', 'car'] as const;
+
+// Grammatical count phrase: "1 cookie", "2 cookies".
+const countOf = (n: number, idx: number) => `${n} ${n === 1 ? THINGS_SING[idx] : THINGS[idx]}`;
 
 // Word problems: single-step add or subtract stories in familiar contexts.
 // Numbers are drawn from wordCap. Addition keeps a + b <= wordCap.
+//
+// NON-REPEATING SAMPLING: names and things are dealt from decks (even pool
+// coverage) and the whole question passes through sampleUnique keyed on the
+// printed prompt — the same story with different children/things is a
+// different question, and the (names x things x number pairs) cross-product
+// keeps a 100-page document repeat-free.
 function generateWord(rng: Rng, caps: Caps, count: number): RawProblem[] {
-    const out: RawProblem[] = [];
     const cap = Math.max(3, caps.wordCap);
-    for (let i = 0; i < count; i++) {
-        const thing = rng.pick(THINGS);
-        if (rng.next() < 0.5) {
-            // Addition story: two children combine their things.
-            const a = rng.int(1, Math.max(1, cap - 2));
-            const b = rng.int(1, cap - a); // b >= 1 and a+b <= cap
-            const n1 = rng.pick(NAMES);
-            let n2 = rng.pick(NAMES);
-            if (n2 === n1) n2 = rng.pick(NAMES.filter((n) => n !== n1));
-            out.push({
-                prompt: `${n1} has ${a} ${thing}. ${n2} has ${b} ${thing}. How many ${thing} are there in total?`,
-                answer: `${a + b}`
-            });
-        } else {
+    const nameDeck = createDeck(rng, NAMES);
+    const thingDeck = createDeck(rng, THINGS.map((_, i) => i));
+    return sampleUnique(
+        count,
+        () => {
+            const idx = thingDeck.take();
+            const thing = THINGS[idx];
+            if (rng.next() < 0.5) {
+                // Addition story: two children combine their things.
+                const a = rng.int(1, Math.max(1, cap - 2));
+                const b = rng.int(1, cap - a); // b >= 1 and a+b <= cap
+                const n1 = nameDeck.take();
+                // A second, different child (a deck of 8 names; the filter
+                // redraw keeps the pair distinct even at cycle boundaries).
+                let n2 = nameDeck.take();
+                if (n2 === n1) n2 = nameDeck.take();
+                if (n2 === n1) n2 = NAMES.find((n) => n !== n1)!;
+                const total = a + b;
+                return {
+                    prompt: `${n1} has ${countOf(a, idx)}. ${n2} has ${countOf(b, idx)}. How many ${thing} are there in total?`,
+                    answer: `${total}`
+                };
+            }
             // Subtraction story: a child gives some away. a >= 2, b in [1, a-1].
             const a = rng.int(2, cap);
             const b = rng.int(1, a - 1);
-            const n1 = rng.pick(NAMES);
-            out.push({
-                prompt: `${n1} had ${a} ${thing}. ${n1} gave ${b} ${thing} to a friend. How many ${thing} does ${n1} have left?`,
-                answer: `${a - b}`
-            });
-        }
-    }
-    return out;
+            const left = a - b;
+            const n1 = nameDeck.take();
+            return {
+                prompt: `${n1} had ${countOf(a, idx)}. ${n1} gave ${countOf(b, idx)} to a friend. How many ${thing} does ${n1} have left?`,
+                answer: `${left}`
+            };
+        },
+        (p) => p.prompt
+    );
 }
 
 // The plugin's declarative spec (exported for its own tests).

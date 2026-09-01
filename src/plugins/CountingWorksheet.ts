@@ -16,23 +16,45 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem, Rng, WorksheetSpec } from '../framework';
+import { sampleUnique } from '../framework';
 
-// Counting & number recognition: "what comes next" or "what comes before".
-// Both reduce to a single integer answer and stay within numCap.
+// Counting & number recognition — FOUR procedural kinds (the old two-kind
+// generator asked each next/before pair twice per page):
+//   0. next:        "a, a+1, __"            => a+2
+//   1. before:      "__, a, a+1"            => a-1
+//   2. run blank:   "a, a+1, a+2, __"       => a+3   (count on three)
+//   3. back run:    "a, a-1, a-2, __"       => a-3   (count back three)
+// All answers stay within [0, numCap].
+//
+// NON-REPEATING SAMPLING: every question passes through sampleUnique keyed on
+// the printed prompt, so a document of any length holds each distinct line
+// once before the space cycles.
 function generateCounting(rng: Rng, caps: Caps, count: number): RawProblem[] {
-    const out: RawProblem[] = [];
-    for (let i = 0; i < count; i++) {
-        if (rng.next() < 0.5) {
-            // Next number: a, a+1, __  => answer a+2 (a+2 must be <= numCap)
-            const a = rng.int(0, Math.max(0, caps.numCap - 2));
-            out.push({ prompt: `${a}, ${a + 1}, __`, answer: `${a + 2}` });
-        } else {
-            // Previous number: __, a, a+1  => answer a-1 (a-1 >= 0)
-            const a = rng.int(1, Math.max(1, caps.numCap - 1));
-            out.push({ prompt: `__, ${a}, ${a + 1}`, answer: `${a - 1}` });
-        }
-    }
-    return out;
+    return sampleUnique(
+        count,
+        () => {
+            const kind = rng.int(0, 3);
+            if (kind === 0) {
+                // Next number: a, a+1, __  => answer a+2 (a+2 must be <= numCap)
+                const a = rng.int(0, Math.max(0, caps.numCap - 2));
+                return { prompt: `${a}, ${a + 1}, __`, answer: `${a + 2}` };
+            }
+            if (kind === 1) {
+                // Previous number: __, a, a+1  => answer a-1 (a-1 >= 0)
+                const a = rng.int(1, Math.max(1, caps.numCap - 1));
+                return { prompt: `__, ${a}, ${a + 1}`, answer: `${a - 1}` };
+            }
+            if (kind === 2) {
+                // Longer forward run: a, a+1, a+2, __ => a+3 (<= numCap)
+                const a = rng.int(0, Math.max(0, caps.numCap - 3));
+                return { prompt: `${a}, ${a + 1}, ${a + 2}, __`, answer: `${a + 3}` };
+            }
+            // Backward run: a, a-1, a-2, __ => a-3 (a-3 >= 0)
+            const a = rng.int(3, Math.max(3, caps.numCap));
+            return { prompt: `${a}, ${a - 1}, ${a - 2}, __`, answer: `${a - 3}` };
+        },
+        (p) => p.prompt
+    );
 }
 
 // The plugin's declarative spec (exported for its own tests).

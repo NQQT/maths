@@ -25,32 +25,37 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem, Rng, WorksheetSpec } from '../framework';
+import { sampleUnique } from '../framework';
 
 // Difficulty is read from two caps:
 //   - caps.opCap      — the "within N" ceiling the sum may reach;
 //   - caps.addendCap  — max addends per question (2 = classic pairs; 3/4 =
 //                       multi-addend column addition, from Year 4 upwards).
+//
+// NON-REPEATING SAMPLING: the whole question passes through sampleUnique
+// keyed on the printed prompt, so a document holds each distinct problem
+// line once before the space cycles (the old free-draw loop repeated pairs
+// like "4 + 2 = __" twice within a single 24-question page).
 function generateAddition(rng: Rng, caps: Caps, count: number): RawProblem[] {
-    const out: RawProblem[] = [];
     // Normalise the addend cap: 0/undefined (unimplemented grades) behaves
     // like classic pairs, and the ladder never goes below 2 addends.
     const maxAddends = Math.max(2, caps.addendCap || 2);
-    for (let i = 0; i < count; i++) {
-        // Roll THIS question's addend count — but only when the grade allows
-        // more than pairs. Grades 0..2 (addendCap 2) take no extra RNG draw,
-        // so the legacy pair stream (and the pinned Prep/Y1/Y2 sheets) is
-        // preserved byte-for-byte.
-        const k = maxAddends > 2 ? rng.int(2, maxAddends) : 2;
-        if (k === 2) {
-            // PAIRS — the original within-opCap recipe: a is never the full
-            // cap and b >= 1 whenever possible, so we avoid the trivial
-            // "x + 0" and guarantee a + b <= opCap.
-            const aMax = Math.max(1, caps.opCap - 1);
-            const a = rng.int(1, aMax);
-            const bMax = caps.opCap - a; // >= 1 because a <= opCap-1
-            const b = bMax >= 1 ? rng.int(1, bMax) : 0;
-            out.push({ prompt: `${a} + ${b} = __`, answer: `${a + b}` });
-        } else {
+    // Roll THIS question's addend count — but only when the grade allows
+    // more than pairs. Grades 0..2 (addendCap 2) take no extra RNG draw.
+    return sampleUnique(
+        count,
+        () => {
+            const k = maxAddends > 2 ? rng.int(2, maxAddends) : 2;
+            if (k === 2) {
+                // PAIRS — the original within-opCap recipe: a is never the full
+                // cap and b >= 1 whenever possible, so we avoid the trivial
+                // "x + 0" and guarantee a + b <= opCap.
+                const aMax = Math.max(1, caps.opCap - 1);
+                const a = rng.int(1, aMax);
+                const bMax = caps.opCap - a; // >= 1 because a <= opCap-1
+                const b = bMax >= 1 ? rng.int(1, bMax) : 0;
+                return { prompt: `${a} + ${b} = __`, answer: `${a + b}` };
+            }
             // MULTI-ADDEND — draw the question's TOTAL first (anywhere within
             // the cap, at least k so every addend can be >= 1), then split it
             // into k addends. Each draw reserves 1 for every still-to-come
@@ -66,10 +71,10 @@ function generateAddition(rng: Rng, caps: Caps, count: number): RawProblem[] {
                 parts.push(v);
                 remaining -= v;
             }
-            out.push({ prompt: `${parts.join(' + ')} = __`, answer: `${target}` });
-        }
-    }
-    return out;
+            return { prompt: `${parts.join(' + ')} = __`, answer: `${target}` };
+        },
+        (p) => p.prompt
+    );
 }
 
 // The plugin's declarative spec (exported for its own tests).

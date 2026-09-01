@@ -15,19 +15,26 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem, Rng, WorksheetSpec } from '../framework';
+import { sampleUnique } from '../framework';
 
 // Missing number / number bond: a + __ = c  or  __ + a = c  (c within opCap,
 // the hidden addend is always >= 0 because a is chosen <= c).
+//
+// NON-REPEATING SAMPLING: the whole question passes through sampleUnique
+// keyed on the printed prompt, so a document holds each distinct line once
+// before the space cycles.
 function generateMissing(rng: Rng, caps: Caps, count: number): RawProblem[] {
-    const out: RawProblem[] = [];
-    for (let i = 0; i < count; i++) {
-        const c = rng.int(1, caps.opCap); // the sum
-        const a = rng.int(0, c); // one known addend
-        const missing = c - a; // always >= 0
-        const prompt = rng.next() < 0.5 ? `${a} + __ = ${c}` : `__ + ${a} = ${c}`;
-        out.push({ prompt, answer: `${missing}` });
-    }
-    return out;
+    return sampleUnique(
+        count,
+        () => {
+            const c = rng.int(1, caps.opCap); // the sum
+            const a = rng.int(0, c); // one known addend
+            const missing = c - a; // always >= 0
+            const prompt = rng.next() < 0.5 ? `${a} + __ = ${c}` : `__ + ${a} = ${c}`;
+            return { prompt, answer: `${missing}` };
+        },
+        (p) => p.prompt
+    );
 }
 
 // The plugin's declarative spec (exported for its own tests).

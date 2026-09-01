@@ -16,17 +16,24 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem, Rng, WorksheetSpec } from '../framework';
+import { sampleUnique } from '../framework';
 
 // Comparison: fill in >, < or = between two numbers within opCap.
+//
+// NON-REPEATING SAMPLING: the whole question passes through sampleUnique
+// keyed on the printed prompt, so a document holds each distinct "a __ b"
+// line once before the space cycles.
 function generateComparison(rng: Rng, caps: Caps, count: number): RawProblem[] {
-    const out: RawProblem[] = [];
-    for (let i = 0; i < count; i++) {
-        const a = rng.int(0, caps.opCap);
-        const b = rng.int(0, caps.opCap);
-        const sign = a > b ? '>' : a < b ? '<' : '=';
-        out.push({ prompt: `${a} __ ${b}`, answer: sign });
-    }
-    return out;
+    return sampleUnique(
+        count,
+        () => {
+            const a = rng.int(0, caps.opCap);
+            const b = rng.int(0, caps.opCap);
+            const sign = a > b ? '>' : a < b ? '<' : '=';
+            return { prompt: `${a} __ ${b}`, answer: sign };
+        },
+        (p) => p.prompt
+    );
 }
 
 // The plugin's declarative spec (exported for its own tests).

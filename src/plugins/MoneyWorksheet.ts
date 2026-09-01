@@ -18,6 +18,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem, Rng, WorksheetSpec } from '../framework';
+import { sampleUnique } from '../framework';
 
 // Australian coin denominations (V8 Y2: form amounts to $10 with coins & notes;
 // V9 moves cents to Y3, so this sheet is V8-aligned — see the grade catalogue).
@@ -34,49 +35,56 @@ function formatMoney(cents: number): string {
 // Four forms: make an amount with the canonical fewest coins, total a jar of
 // same-denomination coins, "how many <coin> make <amount>?", and a note +
 // coin combination.
+//
+// NON-REPEATING SAMPLING: the whole question passes through sampleUnique
+// keyed on the printed prompt, so each distinct amount/coin-count line
+// prints once before the space cycles.
 function generateMoney(rng: Rng, caps: Caps, count: number): RawProblem[] {
-    const out: RawProblem[] = [];
     const cap = Math.max(5, caps.coinCap);
-    for (let i = 0; i < count; i++) {
-        const r = rng.next();
-        if (r < 0.4) {
-            // Make the amount: multiples of 5c up to the cap, answered with
-            // the canonical coin set (greedy 50/20/10/5 = fewest coins).
-            const amount = 5 * rng.int(1, Math.floor(cap / 5));
-            const coinList: string[] = [];
-            let rem = amount;
-            for (const c of [50, 20, 10, 5]) {
-                const n = Math.floor(rem / c);
-                for (let k = 0; k < n; k++) coinList.push(`${c}c`);
-                rem -= n * c;
+    return sampleUnique(
+        count,
+        () => {
+            const r = rng.next();
+            if (r < 0.4) {
+                // Make the amount: multiples of 5c up to the cap, answered with
+                // the canonical coin set (greedy 50/20/10/5 = fewest coins).
+                const amount = 5 * rng.int(1, Math.floor(cap / 5));
+                const coinList: string[] = [];
+                let rem = amount;
+                for (const c of [50, 20, 10, 5]) {
+                    const n = Math.floor(rem / c);
+                    for (let k = 0; k < n; k++) coinList.push(`${c}c`);
+                    rem -= n * c;
+                }
+                return { prompt: `What coins make ${formatMoney(amount)}?`, answer: coinList.join(' + ') };
             }
-            out.push({ prompt: `What coins make ${formatMoney(amount)}?`, answer: coinList.join(' + ') });
-        } else if (r < 0.65) {
-            // A jar of one denomination — a skip-counting-in-money task. The
-            // coin count is capped at 9: "16 five-cent coins" is a fine fact
-            // but a tedious count for the grade's counting fluency goal.
-            const c = rng.pick(AU_COIN_CENTS);
-            const word = AU_COIN_WORDS[AU_COIN_CENTS.indexOf(c)];
-            const n = rng.int(1, Math.max(1, Math.min(9, Math.floor(cap / c))));
-            out.push({ prompt: `A jar holds ${n} ${word} coins. How much money is in the jar?`, answer: formatMoney(n * c) });
-        } else if (r < 0.85) {
-            // How many of one coin make a round amount.
-            const c = rng.pick(AU_COIN_CENTS);
-            const word = AU_COIN_WORDS[AU_COIN_CENTS.indexOf(c)];
-            const k = rng.int(1, Math.max(1, Math.min(4, Math.floor(cap / c))));
-            out.push({ prompt: `How many ${word} coins make ${formatMoney(k * c)}?`, answer: `${k}` });
-        } else {
+            if (r < 0.65) {
+                // A jar of one denomination — a skip-counting-in-money task. The
+                // coin count is capped at 9: "16 five-cent coins" is a fine fact
+                // but a tedious count for the grade's counting fluency goal.
+                const c = rng.pick(AU_COIN_CENTS);
+                const word = AU_COIN_WORDS[AU_COIN_CENTS.indexOf(c)];
+                const n = rng.int(1, Math.max(1, Math.min(9, Math.floor(cap / c))));
+                return { prompt: `A jar holds ${n} ${word} coins. How much money is in the jar?`, answer: formatMoney(n * c) };
+            }
+            if (r < 0.85) {
+                // How many of one coin make a round amount.
+                const c = rng.pick(AU_COIN_CENTS);
+                const word = AU_COIN_WORDS[AU_COIN_CENTS.indexOf(c)];
+                const k = rng.int(1, Math.max(1, Math.min(4, Math.floor(cap / c))));
+                return { prompt: `How many ${word} coins make ${formatMoney(k * c)}?`, answer: `${k}` };
+            }
             // A note plus one coin: total printed as dollars.cents.
             const note = rng.pick(AU_NOTE_DOLLARS);
             const cent = rng.pick(AU_COIN_CENTS);
             const word = AU_COIN_WORDS[AU_COIN_CENTS.indexOf(cent)];
-            out.push({
+            return {
                 prompt: `You have one $${note} note and one ${word} coin. How much money is there in all?`,
                 answer: formatMoney(note * 100 + cent)
-            });
-        }
-    }
-    return out;
+            };
+        },
+        (p) => p.prompt
+    );
 }
 
 // The plugin's declarative spec (exported for its own tests).

@@ -45,79 +45,16 @@ describe('clock — Year 2 (reading, drawing and conversions, quarter scale)', (
     it('matches the exact sheet', () => {
         const s = sheet(g2);
         expect(s).toEqual([
-            {
-                id: 1,
-                type: 'clock',
-                prompt: '7:30 is the same time in words:',
-                answer: 'half past 7',
-                answerLine: true
-            },
-            {
-                id: 2,
-                type: 'clock',
-                prompt: '7:45 is the same time in words:',
-                answer: 'quarter to 8',
-                answerLine: true
-            },
-            {
-                id: 3,
-                type: 'clock',
-                prompt: 'Write the digital time the clock shows:__',
-                answer: '11:30',
-                clock: { hour: 11, minute: 30 },
-                wideBlanks: true
-            },
-            {
-                id: 4,
-                type: 'clock',
-                prompt: 'Draw the hands to show quarter to 1.',
-                answer: '12:45 — hour hand on 12, minute hand on 9',
-                clock: { hour: 12, minute: 45, hands: false }
-            },
-            {
-                id: 5,
-                type: 'clock',
-                prompt: '6:15 is the same time in words:',
-                answer: 'quarter past 6',
-                answerLine: true
-            },
-            {
-                id: 6,
-                type: 'clock',
-                prompt: '12:00 is the same time in words:',
-                answer: "12 o'clock",
-                answerLine: true
-            },
-            {
-                id: 7,
-                type: 'clock',
-                prompt: 'Write the digital time the clock shows:__',
-                answer: '5:15',
-                clock: { hour: 5, minute: 15 },
-                wideBlanks: true
-            },
-            {
-                id: 8,
-                type: 'clock',
-                prompt: 'Quarter to 1 is the same time in digital:',
-                answer: '12:45',
-                answerLine: true
-            },
-            {
-                id: 9,
-                type: 'clock',
-                prompt: '8:30 is the same time in words:',
-                answer: 'half past 8',
-                answerLine: true
-            },
-            {
-                id: 10,
-                type: 'clock',
-                prompt: 'Write the digital time the clock shows:__',
-                answer: '9:30',
-                clock: { hour: 9, minute: 30 },
-                wideBlanks: true
-            }
+            {"prompt":"Quarter to 9 is the same time in digital:","answer":"8:45","answerLine":true,"id":1,"type":"clock"},
+            {"prompt":"3:30 is the same time in words:","answer":"half past 3","answerLine":true,"id":2,"type":"clock"},
+            {"prompt":"Write the digital time the clock shows:__","answer":"11:45","clock":{"hour":11,"minute":45},"wideBlanks":true,"id":3,"type":"clock"},
+            {"prompt":"Quarter to 2 is the same time in digital:","answer":"1:45","answerLine":true,"id":4,"type":"clock"},
+            {"prompt":"Quarter past 12 is the same time in digital:","answer":"12:15","answerLine":true,"id":5,"type":"clock"},
+            {"prompt":"10:00 is the same time in words:","answer":"10 o'clock","answerLine":true,"id":6,"type":"clock"},
+            {"prompt":"Draw the hands to show quarter to 1.","answer":"12:45 — hour hand on 12, minute hand on 9","clock":{"hour":12,"minute":45,"hands":false},"id":7,"type":"clock"},
+            {"prompt":"What time is shown on the clock?__","answer":"quarter past 8","clock":{"hour":8,"minute":15},"wideBlanks":true,"id":8,"type":"clock"},
+            {"prompt":"2:45 is the same time in words:","answer":"quarter to 3","answerLine":true,"id":9,"type":"clock"},
+            {"prompt":"Draw the hands to show quarter to 8.","answer":"7:45 — hour hand on 7, minute hand on 9","clock":{"hour":7,"minute":45,"hands":false},"id":10,"type":"clock"},
         ]);
     });
 
@@ -125,7 +62,7 @@ describe('clock — Year 2 (reading, drawing and conversions, quarter scale)', (
         const s = sheet(g2);
         // Reading items keep an inline wide "__" blank after the question.
         const inline = s.filter((p) => p.prompt.includes('__'));
-        expect(inline).toHaveLength(3);
+        expect(inline).toHaveLength(2);
         for (const p of inline) {
             expect(p.wideBlanks).toBe(true);
             expect(p.answerLine).toBeUndefined();
@@ -139,21 +76,26 @@ describe('clock — Year 2 (reading, drawing and conversions, quarter scale)', (
             expect(p.answerLine).toBe(true);
             expect(p.wideBlanks).toBeUndefined();
         }
-        // The draw item has neither (the student draws on the blank face).
-        const draw = s.filter((p) => p.prompt.startsWith('Draw the hands'))[0];
-        expect(draw.wideBlanks).toBeUndefined();
-        expect(draw.answerLine).toBeUndefined();
+        // The draw items have neither (the student draws on the blank face).
+        const draws = s.filter((p) => p.prompt.startsWith('Draw the hands'));
+        for (const p of draws) {
+            expect(p.wideBlanks).toBeUndefined();
+            expect(p.answerLine).toBeUndefined();
+        }
     });
 
     it('only draw items get a blank face; reading items get drawn hands; conversions get no figure', () => {
         const s = sheet(g2);
         // Draw items: blank face (hands: false).
         const draws = s.filter((p) => p.prompt.startsWith('Draw the hands'));
-        expect(draws.length).toBe(1);
-        expect(draws[0].clock).toEqual({ hour: 12, minute: 45, hands: false });
+        expect(draws.length).toBe(2);
+        for (const p of draws) {
+            expect(p.clock).toBeDefined();
+            expect(p.clock!.hands).toBe(false);
+        }
         // Reading items: hands drawn (hands omitted = default true).
         const reads = s.filter((p) => p.prompt.includes('the clock shows') || p.prompt.includes('shown on the clock'));
-        expect(reads.length).toBe(3);
+        expect(reads.length).toBe(2);
         for (const p of reads) {
             expect(p.clock).toBeDefined();
             expect(p.clock!.hands).toBeUndefined();

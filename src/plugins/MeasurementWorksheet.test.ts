@@ -42,18 +42,18 @@ describe('measurement — Year 1 (informal comparisons only)', () => {
     it('matches the exact sheet', () => {
         const s = sheet(g1);
         expect(s).toEqual([
-            { id: 1, type: 'measure', prompt: 'Which is longer: the notebook or the door?', answer: 'door' },
-            { id: 2, type: 'measure', prompt: 'Which holds more: the water bottle or the cup?', answer: 'water bottle' },
-            { id: 3, type: 'measure', prompt: 'Which is heavier: the pencil or the cat?', answer: 'cat' },
-            { id: 4, type: 'measure', prompt: 'Which is heavier: the bucket or the cup?', answer: 'bucket' },
-            { id: 5, type: 'measure', prompt: 'Which is heavier: the ruler or the pencil?', answer: 'ruler' },
-            { id: 6, type: 'measure', prompt: 'Which holds more: the tank or the spoon?', answer: 'tank' },
-            { id: 7, type: 'measure', prompt: 'Which is heavier: the pencil or the spoon?', answer: 'pencil' },
-            { id: 8, type: 'measure', prompt: 'Which is heavier: the crayon or the apple?', answer: 'apple' },
-            { id: 9, type: 'measure', prompt: 'Which holds more: the spoon or the cup?', answer: 'cup' },
-            { id: 10, type: 'measure', prompt: 'Which holds more: the cup or the bucket?', answer: 'bucket' },
-            { id: 11, type: 'measure', prompt: 'Which is longer: the ruler or the crayon?', answer: 'ruler' },
-            { id: 12, type: 'measure', prompt: 'Which is heavier: the pencil or the door?', answer: 'door' }
+            {"prompt":"Which is longer: the notebook or the door?","answer":"door","id":1,"type":"measure"},
+            {"prompt":"Which holds more: the water bottle or the cup?","answer":"water bottle","id":2,"type":"measure"},
+            {"prompt":"Which is heavier: the pencil or the cat?","answer":"cat","id":3,"type":"measure"},
+            {"prompt":"Which is heavier: the bucket or the cup?","answer":"bucket","id":4,"type":"measure"},
+            {"prompt":"Which is heavier: the ruler or the pencil?","answer":"ruler","id":5,"type":"measure"},
+            {"prompt":"Which holds more: the tank or the spoon?","answer":"tank","id":6,"type":"measure"},
+            {"prompt":"Which is heavier: the pencil or the spoon?","answer":"pencil","id":7,"type":"measure"},
+            {"prompt":"Which is heavier: the crayon or the apple?","answer":"apple","id":8,"type":"measure"},
+            {"prompt":"Which holds more: the spoon or the cup?","answer":"cup","id":9,"type":"measure"},
+            {"prompt":"Which holds more: the cup or the bucket?","answer":"bucket","id":10,"type":"measure"},
+            {"prompt":"Which is longer: the ruler or the crayon?","answer":"ruler","id":11,"type":"measure"},
+            {"prompt":"Which is heavier: the pencil or the door?","answer":"door","id":12,"type":"measure"},
         ]);
         // Year 1 (metricCap 0) never sees cm/metre items.
         for (const p of s) expect(p.prompt.includes(' cm')).toBe(false);
@@ -64,18 +64,18 @@ describe('measurement — Year 2 (adds cm + metre comparisons)', () => {
     it('matches the exact sheet', () => {
         const s = sheet(g2);
         expect(s).toEqual([
-            { id: 1, type: 'measure', prompt: 'Which is heavier: the door or the crayon?', answer: 'door' },
-            { id: 2, type: 'measure', prompt: 'Which is longer: the finger or the door?', answer: 'door' },
-            { id: 3, type: 'measure', prompt: 'A notebook is about 22 cm long. Is it longer or shorter than a metre?', answer: 'shorter' },
-            { id: 4, type: 'measure', prompt: 'Which is longer: the pencil or the notebook?', answer: 'notebook' },
-            { id: 5, type: 'measure', prompt: 'Which is heavier: the cup or the bucket?', answer: 'bucket' },
-            { id: 6, type: 'measure', prompt: 'Which holds more: the bucket or the water bottle?', answer: 'bucket' },
-            { id: 7, type: 'measure', prompt: 'Which holds more: the water bottle or the bucket?', answer: 'bucket' },
-            { id: 8, type: 'measure', prompt: 'A table is about 75 cm long. A pencil is about 15 cm long. About how many pencils long is a table?', answer: '5' },
-            { id: 9, type: 'measure', prompt: 'A finger is about 5 cm long. Is it longer or shorter than a metre?', answer: 'shorter' },
-            { id: 10, type: 'measure', prompt: 'Which is longer: the crayon or the pencil?', answer: 'pencil' },
-            { id: 11, type: 'measure', prompt: 'Which is heavier: the ruler or the door?', answer: 'door' },
-            { id: 12, type: 'measure', prompt: 'Which is longer: the ruler or the finger?', answer: 'ruler' }
+            {"prompt":"Which is heavier: the door or the crayon?","answer":"door","id":1,"type":"measure"},
+            {"prompt":"Which is longer: the finger or the door?","answer":"door","id":2,"type":"measure"},
+            {"prompt":"A notebook is about 22 cm long. Is it longer or shorter than a metre?","answer":"shorter","id":3,"type":"measure"},
+            {"prompt":"Which is longer: the pencil or the notebook?","answer":"notebook","id":4,"type":"measure"},
+            {"prompt":"Which is heavier: the cup or the bucket?","answer":"bucket","id":5,"type":"measure"},
+            {"prompt":"Which holds more: the bucket or the water bottle?","answer":"bucket","id":6,"type":"measure"},
+            {"prompt":"Which holds more: the water bottle or the bucket?","answer":"bucket","id":7,"type":"measure"},
+            {"prompt":"A table is about 75 cm long. A pencil is about 15 cm long. About how many pencils long is a table?","answer":"5","id":8,"type":"measure"},
+            {"prompt":"A finger is about 5 cm long. Is it longer or shorter than a metre?","answer":"shorter","id":9,"type":"measure"},
+            {"prompt":"Which is longer: the crayon or the pencil?","answer":"pencil","id":10,"type":"measure"},
+            {"prompt":"Which is heavier: the ruler or the door?","answer":"door","id":11,"type":"measure"},
+            {"prompt":"Which is longer: the ruler or the finger?","answer":"ruler","id":12,"type":"measure"},
         ]);
     });
 });

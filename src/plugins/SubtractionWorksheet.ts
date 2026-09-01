@@ -25,6 +25,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem, Rng, WorksheetSpec } from '../framework';
+import { sampleUnique } from '../framework';
 
 // Difficulty is read from two caps:
 //   - caps.opCap     — the "within N" ceiling for the minuend;
@@ -32,26 +33,30 @@ import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem
 //                      addendCap addends, so subtraction uses up to
 //                      (addendCap - 1) subtrahends (2 => classic a - b pairs,
 //                      3 => a - b - c from Year 4, 4 => a - b - c - d in Y6).
+//
+// NON-REPEATING SAMPLING: the whole question passes through sampleUnique
+// keyed on the printed prompt, so a document holds each distinct problem
+// line once before the space cycles.
 function generateSubtraction(rng: Rng, caps: Caps, count: number): RawProblem[] {
-    const out: RawProblem[] = [];
     // Max subtrahends for this grade: the pair grades (addendCap 2) stay
     // single-subtraction; 0/undefined (unimplemented grades) behaves the same.
     const maxSubtrahends = Math.max(1, (caps.addendCap || 2) - 1);
-    for (let i = 0; i < count; i++) {
-        // Roll THIS question's subtrahend count — but only when the grade
-        // allows more than one. Grades 0..2 (addendCap 2) take no extra RNG
-        // draw, so the legacy pair stream (and the pinned Prep/Y1/Y2 sheets)
-        // is preserved byte-for-byte.
-        const s = maxSubtrahends > 1 ? rng.int(1, maxSubtrahends) : 1;
-        if (s === 1) {
-            // PAIRS — the original within-opCap recipe: b is chosen strictly
-            // below a so every answer is a positive whole number (no negative
-            // results, no trivial "x - x = 0").
-            const aMax = Math.max(2, caps.opCap);
-            const a = rng.int(2, aMax);
-            const b = rng.int(0, a - 1); // b < a  =>  a - b >= 1
-            out.push({ prompt: `${a} - ${b} = __`, answer: `${a - b}` });
-        } else {
+    return sampleUnique(
+        count,
+        () => {
+            // Roll THIS question's subtrahend count — but only when the grade
+            // allows more than one. Grades 0..2 (addendCap 2) take no extra
+            // RNG draw.
+            const s = maxSubtrahends > 1 ? rng.int(1, maxSubtrahends) : 1;
+            if (s === 1) {
+                // PAIRS — the original within-opCap recipe: b is chosen strictly
+                // below a so every answer is a positive whole number (no negative
+                // results, no trivial "x - x = 0").
+                const aMax = Math.max(2, caps.opCap);
+                const a = rng.int(2, aMax);
+                const b = rng.int(0, a - 1); // b < a  =>  a - b >= 1
+                return { prompt: `${a} - ${b} = __`, answer: `${a - b}` };
+            }
             // MULTI-SUBTRAHEND — the minuend is drawn first, large enough
             // that every subtrahend can be >= 1 AND the final answer >= 1
             // (so no negatives and no trivial "x - x = 0"). Each subtrahend
@@ -66,14 +71,11 @@ function generateSubtraction(rng: Rng, caps: Caps, count: number): RawProblem[] 
                 parts.push(v);
                 remaining -= v;
             }
-            out.push({
-                prompt: `${a} - ${parts.join(' - ')} = __`,
-                // What is left after every subtraction IS the answer.
-                answer: `${remaining}`
-            });
-        }
-    }
-    return out;
+            // What is left after every subtraction IS the answer.
+            return { prompt: `${a} - ${parts.join(' - ')} = __`, answer: `${remaining}` };
+        },
+        (p) => p.prompt
+    );
 }
 
 // The plugin's declarative spec (exported for its own tests).

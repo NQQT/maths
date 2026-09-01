@@ -16,41 +16,49 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem, Rng, WorksheetSpec } from '../framework';
+import { sampleUnique } from '../framework';
 
 // Place value (V9 AC9M1N02/AC9M2N02 partitions into tens & ones; Y1 range is
 // at most 20, Y2 up to pvCap=99). Four forms: decompose a number, compose a
 // number from tens/ones, "how many tens in N", "how many ones in N".
+//
+// NON-REPEATING SAMPLING: the whole question passes through sampleUnique
+// keyed on the printed prompt, so a document holds each distinct question
+// line once before the space cycles.
 function generatePlaceValue(rng: Rng, caps: Caps, count: number): RawProblem[] {
-    const out: RawProblem[] = [];
     const cap = Math.max(10, caps.pvCap);
     // "1 ten" / "1 one" (singular) vs "4 tens" / "5 ones".
     const words = (t: number) => (t === 1 ? 'ten' : 'tens');
     const onesWord = (o: number) => (o === 1 ? 'one' : 'ones');
-    for (let i = 0; i < count; i++) {
-        const r = rng.next();
-        if (r < 0.35) {
-            // Decompose: N = t tens and o ones.
-            const n = rng.int(10, cap);
-            const t = Math.floor(n / 10);
-            out.push({ prompt: `How many tens and ones make ${n}?`, answer: `${t} ${words(t)} and ${n % 10} ${onesWord(n % 10)}` });
-        } else if (r < 0.6) {
-            // Compose: "what number is t tens and o ones?" The ones must be a
-            // DIGIT (0..9) and the total must stay within the cap, so at the
-            // top tens row only trailing zeros are allowed.
-            const t = rng.int(1, Math.floor(cap / 10));
-            const o = rng.int(0, Math.min(9, cap - t * 10));
-            out.push({ prompt: `What number is ${t} ${words(t)} and ${o} ${onesWord(o)}?`, answer: `${t * 10 + o}` });
-        } else if (r < 0.8) {
-            // Tens digit of N.
-            const n = rng.int(10, cap);
-            out.push({ prompt: `How many tens are in ${n}?`, answer: `${Math.floor(n / 10)}` });
-        } else {
+    return sampleUnique(
+        count,
+        () => {
+            const r = rng.next();
+            if (r < 0.35) {
+                // Decompose: N = t tens and o ones.
+                const n = rng.int(10, cap);
+                const t = Math.floor(n / 10);
+                return { prompt: `How many tens and ones make ${n}?`, answer: `${t} ${words(t)} and ${n % 10} ${onesWord(n % 10)}` };
+            }
+            if (r < 0.6) {
+                // Compose: "what number is t tens and o ones?" The ones must be a
+                // DIGIT (0..9) and the total must stay within the cap, so at the
+                // top tens row only trailing zeros are allowed.
+                const t = rng.int(1, Math.floor(cap / 10));
+                const o = rng.int(0, Math.min(9, cap - t * 10));
+                return { prompt: `What number is ${t} ${words(t)} and ${o} ${onesWord(o)}?`, answer: `${t * 10 + o}` };
+            }
+            if (r < 0.8) {
+                // Tens digit of N.
+                const n = rng.int(10, cap);
+                return { prompt: `How many tens are in ${n}?`, answer: `${Math.floor(n / 10)}` };
+            }
             // Ones digit of N (legitimately 0 for round tens like 20).
             const n = rng.int(10, cap);
-            out.push({ prompt: `How many ones are in ${n}?`, answer: `${n % 10}` });
-        }
-    }
-    return out;
+            return { prompt: `How many ones are in ${n}?`, answer: `${n % 10}` };
+        },
+        (p) => p.prompt
+    );
 }
 
 // The plugin's declarative spec (exported for its own tests).

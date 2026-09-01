@@ -40,22 +40,22 @@ describe('shapes — Year 1 (everyday 2-D + 3-D set)', () => {
     it('matches the exact sheet (2-D sides/corners + 3-D flat faces)', () => {
         const s = sheet(g1);
         expect(s).toEqual([
-            { id: 1, type: 'shapes', prompt: 'Which of these 3-D objects has only flat faces? (cube, cylinder, sphere)', answer: 'cube' },
-            { id: 2, type: 'shapes', prompt: 'Which of these 3-D objects has only flat faces? (cube, sphere, cylinder)', answer: 'cube' },
-            { id: 3, type: 'shapes', prompt: 'How many sides does a triangle have?', answer: '3' },
-            { id: 4, type: 'shapes', prompt: 'Which of these 3-D objects has only flat faces? (cube, sphere, cylinder)', answer: 'cube' },
-            { id: 5, type: 'shapes', prompt: 'How many corners does a rectangle have?', answer: '4' },
-            { id: 6, type: 'shapes', prompt: 'How many corners does a square have?', answer: '4' },
-            { id: 7, type: 'shapes', prompt: 'How many corners does a triangle have?', answer: '3' },
-            { id: 8, type: 'shapes', prompt: 'How many sides does a triangle have?', answer: '3' },
-            { id: 9, type: 'shapes', prompt: 'How many corners does an oval have?', answer: '0' },
-            { id: 10, type: 'shapes', prompt: 'How many sides does a rectangle have?', answer: '4' },
-            { id: 11, type: 'shapes', prompt: 'How many corners does a triangle have?', answer: '3' },
-            { id: 12, type: 'shapes', prompt: 'Which of these 3-D objects has only flat faces? (cube, cylinder, sphere)', answer: 'cube' },
-            { id: 13, type: 'shapes', prompt: 'How many corners does a triangle have?', answer: '3' },
-            { id: 14, type: 'shapes', prompt: 'Which of these 3-D objects has only flat faces? (cube, cylinder, sphere)', answer: 'cube' },
-            { id: 15, type: 'shapes', prompt: 'Which 2-D shape has 0 corners? (triangle, circle, square)', answer: 'circle' },
-            { id: 16, type: 'shapes', prompt: 'How many corners does a triangle have?', answer: '3' }
+            {"prompt":"Which of these 3-D objects has only flat faces? (cube, cylinder, sphere)","answer":"cube","id":1,"type":"shapes"},
+            {"prompt":"Which of these 3-D objects has only flat faces? (cube, sphere, cylinder)","answer":"cube","id":2,"type":"shapes"},
+            {"prompt":"How many sides does a triangle have?","answer":"3","id":3,"type":"shapes"},
+            {"prompt":"How many corners does a rectangle have?","answer":"4","id":4,"type":"shapes"},
+            {"prompt":"How many corners does a square have?","answer":"4","id":5,"type":"shapes"},
+            {"prompt":"How many corners does a triangle have?","answer":"3","id":6,"type":"shapes"},
+            {"prompt":"How many corners does an oval have?","answer":"0","id":7,"type":"shapes"},
+            {"prompt":"How many sides does a rectangle have?","answer":"4","id":8,"type":"shapes"},
+            {"prompt":"Which 2-D shape has 0 corners? (triangle, circle, square)","answer":"circle","id":9,"type":"shapes"},
+            {"prompt":"Which 2-D shape has 4 corners? (oval, square, circle)","answer":"square","id":10,"type":"shapes"},
+            {"prompt":"How many flat faces does a sphere have?","answer":"0","id":11,"type":"shapes"},
+            {"prompt":"How many flat faces does a cube have?","answer":"6","id":12,"type":"shapes"},
+            {"prompt":"How many flat faces does a cylinder have?","answer":"2","id":13,"type":"shapes"},
+            {"prompt":"Which 2-D shape has 4 corners? (triangle, square, circle)","answer":"square","id":14,"type":"shapes"},
+            {"prompt":"Which 2-D shape has 3 corners? (rectangle, triangle, oval)","answer":"triangle","id":15,"type":"shapes"},
+            {"prompt":"How many sides does a square have?","answer":"4","id":16,"type":"shapes"},
         ]);
         // Year 1's shape set has exactly one all-flat 3-D object (the cube), so
         // every "only flat faces" answer in a Y1 sheet must be the cube.
@@ -69,22 +69,22 @@ describe('shapes — Year 2 (adds hexagon, prism, pyramid, cone)', () => {
     it('matches the exact sheet', () => {
         const s = sheet(g2);
         expect(s).toEqual([
-            { id: 1, type: 'shapes', prompt: 'How many sides does a rectangle have?', answer: '4' },
-            { id: 2, type: 'shapes', prompt: 'Which of these 3-D objects has only flat faces? (pyramid, prism, cube)', answer: 'pyramid' },
-            { id: 3, type: 'shapes', prompt: 'How many flat faces does a sphere have?', answer: '0' },
-            { id: 4, type: 'shapes', prompt: 'How many sides does a hexagon have?', answer: '6' },
-            { id: 5, type: 'shapes', prompt: 'Which 2-D shape has 0 corners? (square, oval, rectangle)', answer: 'oval' },
-            { id: 6, type: 'shapes', prompt: 'How many sides does a triangle have?', answer: '3' },
-            { id: 7, type: 'shapes', prompt: 'How many corners does a triangle have?', answer: '3' },
-            { id: 8, type: 'shapes', prompt: 'How many sides does a triangle have?', answer: '3' },
-            { id: 9, type: 'shapes', prompt: 'Which of these 3-D objects has only flat faces? (cube, pyramid, prism)', answer: 'cube' },
-            { id: 10, type: 'shapes', prompt: 'Which 2-D shape has 3 corners? (hexagon, triangle, square)', answer: 'triangle' },
-            { id: 11, type: 'shapes', prompt: 'Which of these 3-D objects has only flat faces? (prism, pyramid, sphere)', answer: 'prism' },
-            { id: 12, type: 'shapes', prompt: 'Which 2-D shape has 0 corners? (rectangle, oval, triangle)', answer: 'oval' },
-            { id: 13, type: 'shapes', prompt: 'How many sides does a triangle have?', answer: '3' },
-            { id: 14, type: 'shapes', prompt: 'How many corners does a rectangle have?', answer: '4' },
-            { id: 15, type: 'shapes', prompt: 'How many sides does a hexagon have?', answer: '6' },
-            { id: 16, type: 'shapes', prompt: 'How many corners does an oval have?', answer: '0' }
+            {"prompt":"How many sides does a rectangle have?","answer":"4","id":1,"type":"shapes"},
+            {"prompt":"Which of these 3-D objects has only flat faces? (pyramid, prism, cube)","answer":"pyramid","id":2,"type":"shapes"},
+            {"prompt":"How many flat faces does a sphere have?","answer":"0","id":3,"type":"shapes"},
+            {"prompt":"How many sides does a hexagon have?","answer":"6","id":4,"type":"shapes"},
+            {"prompt":"Which 2-D shape has 0 corners? (square, oval, rectangle)","answer":"oval","id":5,"type":"shapes"},
+            {"prompt":"How many sides does a triangle have?","answer":"3","id":6,"type":"shapes"},
+            {"prompt":"How many corners does a triangle have?","answer":"3","id":7,"type":"shapes"},
+            {"prompt":"Which of these 3-D objects has only flat faces? (cube, pyramid, prism)","answer":"cube","id":8,"type":"shapes"},
+            {"prompt":"Which 2-D shape has 3 corners? (hexagon, triangle, square)","answer":"triangle","id":9,"type":"shapes"},
+            {"prompt":"Which of these 3-D objects has only flat faces? (prism, pyramid, sphere)","answer":"prism","id":10,"type":"shapes"},
+            {"prompt":"Which 2-D shape has 0 corners? (rectangle, oval, triangle)","answer":"oval","id":11,"type":"shapes"},
+            {"prompt":"How many corners does a rectangle have?","answer":"4","id":12,"type":"shapes"},
+            {"prompt":"How many corners does an oval have?","answer":"0","id":13,"type":"shapes"},
+            {"prompt":"Which 2-D shape has 4 corners? (triangle, square, circle)","answer":"square","id":14,"type":"shapes"},
+            {"prompt":"How many flat faces does a cylinder have?","answer":"2","id":15,"type":"shapes"},
+            {"prompt":"Which of these 3-D objects has only flat faces? (cube, cylinder, prism)","answer":"cube","id":16,"type":"shapes"},
         ]);
         // "Only flat faces" answers are exactly the non-curved 3-D solids.
         for (const p of s) {

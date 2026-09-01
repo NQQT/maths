@@ -18,6 +18,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem, Rng, WorksheetSpec } from '../framework';
+import { sampleUnique } from '../framework';
 
 // Measurement items with reference values (V8 informal units + cm). `len` is
 // length in cm, `mass` in grams, `cap` capacity in mL; 0 = not used for that
@@ -69,50 +70,57 @@ const MEASURE_RATIO_PAIRS: MeasurePair[] = (() => {
 // length/mass/capacity, count how many small units make a big one (uniform
 // informal units), and — Year 2 only (metricCap > 0) — compare a measured
 // length to a metre.
+//
+// NON-REPEATING SAMPLING: the whole question passes through sampleUnique
+// keyed on the printed prompt, so the same comparison pair never prints
+// twice in a row and the (category x item pair x ratio) space is spread
+// evenly before any repeats.
 function generateMeasure(rng: Rng, caps: Caps, count: number): RawProblem[] {
-    const out: RawProblem[] = [];
     const metric = caps.metricCap > 0;
     const cats: MeasureCategory[] = ['length', 'mass', 'capacity'];
-    for (let i = 0; i < count; i++) {
-        // Comparison items are always available; the two metric items only for
-        // grades with metricCap > 0 (Year 2).
-        const kinds: string[] = metric ? ['compare', 'compare', 'compare', 'ratio', 'metre'] : ['compare'];
-        const kind = rng.pick(kinds);
-        if (kind === 'compare') {
-            const cat = rng.pick(cats);
-            // `field` resolves to 'len' | 'mass' | 'cap' (numeric keys only),
-            // so item comparisons below are number-vs-number.
-            const field: 'len' | 'mass' | 'cap' = MEASURE_CATEGORIES[cat].field;
-            const pool = MEASURE_ITEMS.filter((it) => it[field] > 0);
-            const a = rng.pick(pool);
-            // Pick a distinct item with a DIFFERENT value so the answer is
-            // never a tie.
-            let b = rng.pick(pool);
-            while (b === a || b[field] === a[field]) b = rng.pick(pool);
-            const bigger = a[field] > b[field] ? a : b;
-            // Per-category question sentence (capacity reads "holds more", not
-            // "is holds more").
-            out.push({ prompt: MEASURE_CATEGORIES[cat].ask(a.name, b.name), answer: bigger.name });
-        } else if (kind === 'ratio') {
-            // Uniform informal units: "about how many <small> long is the <big>"
-            // (only pairs with an integer ratio 2..5, precomputed at module load).
-            const p = rng.pick(MEASURE_RATIO_PAIRS);
-            const r = p.big.len / p.small.len;
-            out.push({
-                prompt: `A ${p.big.name} is about ${p.big.len} cm long. A ${p.small.name} is about ${p.small.len} cm long. About how many ${p.small.name}s long is a ${p.big.name}?`,
-                answer: `${r}`
-            });
-        } else {
+    return sampleUnique(
+        count,
+        () => {
+            // Comparison items are always available; the two metric items only for
+            // grades with metricCap > 0 (Year 2).
+            const kinds: string[] = metric ? ['compare', 'compare', 'compare', 'ratio', 'metre'] : ['compare'];
+            const kind = rng.pick(kinds);
+            if (kind === 'compare') {
+                const cat = rng.pick(cats);
+                // `field` resolves to 'len' | 'mass' | 'cap' (numeric keys only),
+                // so item comparisons below are number-vs-number.
+                const field: 'len' | 'mass' | 'cap' = MEASURE_CATEGORIES[cat].field;
+                const pool = MEASURE_ITEMS.filter((it) => it[field] > 0);
+                const a = rng.pick(pool);
+                // Pick a distinct item with a DIFFERENT value so the answer is
+                // never a tie.
+                let b = rng.pick(pool);
+                while (b === a || b[field] === a[field]) b = rng.pick(pool);
+                const bigger = a[field] > b[field] ? a : b;
+                // Per-category question sentence (capacity reads "holds more", not
+                // "is holds more").
+                return { prompt: MEASURE_CATEGORIES[cat].ask(a.name, b.name), answer: bigger.name };
+            }
+            if (kind === 'ratio') {
+                // Uniform informal units: "about how many <small> long is the <big>"
+                // (only pairs with an integer ratio 2..5, precomputed at module load).
+                const p = rng.pick(MEASURE_RATIO_PAIRS);
+                const r = p.big.len / p.small.len;
+                return {
+                    prompt: `A ${p.big.name} is about ${p.big.len} cm long. A ${p.small.name} is about ${p.small.len} cm long. About how many ${p.small.name}s long is a ${p.big.name}?`,
+                    answer: `${r}`
+                };
+            }
             // Year 2: compare a measured length to a metre (100 cm).
             const pool = MEASURE_ITEMS.filter((it) => it.len > 0);
             const it = rng.pick(pool);
-            out.push({
+            return {
                 prompt: `A ${it.name} is about ${it.len} cm long. Is it longer or shorter than a metre?`,
                 answer: it.len < 100 ? 'shorter' : 'longer'
-            });
-        }
-    }
-    return out;
+            };
+        },
+        (p) => p.prompt
+    );
 }
 
 // The plugin's declarative spec (exported for its own tests).

@@ -39,22 +39,22 @@ describe('missing number — Year 1', () => {
     it('matches the exact sheet (hidden addend always >= 0)', () => {
         const s = sheet(g1);
         expect(s).toEqual([
-            { id: 1, type: 'missing', prompt: '1 + __ = 5', answer: '4' },
-            { id: 2, type: 'missing', prompt: '2 + __ = 3', answer: '1' },
-            { id: 3, type: 'missing', prompt: '__ + 3 = 7', answer: '4' },
-            { id: 4, type: 'missing', prompt: '10 + __ = 19', answer: '9' },
-            { id: 5, type: 'missing', prompt: '__ + 16 = 19', answer: '3' },
-            { id: 6, type: 'missing', prompt: '14 + __ = 18', answer: '4' },
-            { id: 7, type: 'missing', prompt: '9 + __ = 18', answer: '9' },
-            { id: 8, type: 'missing', prompt: '1 + __ = 12', answer: '11' },
-            { id: 9, type: 'missing', prompt: '0 + __ = 6', answer: '6' },
-            { id: 10, type: 'missing', prompt: '__ + 12 = 14', answer: '2' },
-            { id: 11, type: 'missing', prompt: '12 + __ = 18', answer: '6' },
-            { id: 12, type: 'missing', prompt: '7 + __ = 13', answer: '6' },
-            { id: 13, type: 'missing', prompt: '9 + __ = 17', answer: '8' },
-            { id: 14, type: 'missing', prompt: '8 + __ = 14', answer: '6' },
-            { id: 15, type: 'missing', prompt: '1 + __ = 1', answer: '0' },
-            { id: 16, type: 'missing', prompt: '__ + 11 = 15', answer: '4' }
+            {"prompt":"1 + __ = 5","answer":"4","id":1,"type":"missing"},
+            {"prompt":"2 + __ = 3","answer":"1","id":2,"type":"missing"},
+            {"prompt":"__ + 3 = 7","answer":"4","id":3,"type":"missing"},
+            {"prompt":"10 + __ = 19","answer":"9","id":4,"type":"missing"},
+            {"prompt":"__ + 16 = 19","answer":"3","id":5,"type":"missing"},
+            {"prompt":"14 + __ = 18","answer":"4","id":6,"type":"missing"},
+            {"prompt":"9 + __ = 18","answer":"9","id":7,"type":"missing"},
+            {"prompt":"1 + __ = 12","answer":"11","id":8,"type":"missing"},
+            {"prompt":"0 + __ = 6","answer":"6","id":9,"type":"missing"},
+            {"prompt":"__ + 12 = 14","answer":"2","id":10,"type":"missing"},
+            {"prompt":"12 + __ = 18","answer":"6","id":11,"type":"missing"},
+            {"prompt":"7 + __ = 13","answer":"6","id":12,"type":"missing"},
+            {"prompt":"9 + __ = 17","answer":"8","id":13,"type":"missing"},
+            {"prompt":"8 + __ = 14","answer":"6","id":14,"type":"missing"},
+            {"prompt":"1 + __ = 1","answer":"0","id":15,"type":"missing"},
+            {"prompt":"__ + 11 = 15","answer":"4","id":16,"type":"missing"},
         ]);
         for (const p of s) expect(Number(p.answer)).toBeGreaterThanOrEqual(0);
     });

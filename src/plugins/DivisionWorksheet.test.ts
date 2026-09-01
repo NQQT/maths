@@ -43,18 +43,18 @@ describe('division — Year 2 (equal sharing within 100)', () => {
     it('matches the exact sheet (divisor >= 2)', () => {
         const s = sheet(g2);
         expect(s).toEqual([
-            { id: 1, type: 'division', prompt: 'There are 8 flowers. They are put into groups of 8. How many groups are there?', answer: '1' },
-            { id: 2, type: 'division', prompt: '35 ÷ 7 = __', answer: '5' },
-            { id: 3, type: 'division', prompt: '60 ÷ 10 = __', answer: '6' },
-            { id: 4, type: 'division', prompt: '70 ÷ 7 = __', answer: '10' },
-            { id: 5, type: 'division', prompt: 'Rae had 63 stickers. Rae shared them equally between 9 friends. How many stickers does each friend get?', answer: '7' },
-            { id: 6, type: 'division', prompt: 'There are 28 toys. They are put into groups of 4. How many groups are there?', answer: '7' },
-            { id: 7, type: 'division', prompt: 'There are 4 crayons. They are put into groups of 4. How many groups are there?', answer: '1' },
-            { id: 8, type: 'division', prompt: 'There are 45 balloons. They are put into groups of 5. How many groups are there?', answer: '9' },
-            { id: 9, type: 'division', prompt: '6 ÷ 6 = __', answer: '1' },
-            { id: 10, type: 'division', prompt: 'Tom had 16 stickers. Tom shared them equally between 4 friends. How many stickers does each friend get?', answer: '4' },
-            { id: 11, type: 'division', prompt: 'Zoe had 30 balloons. Zoe shared them equally between 5 friends. How many balloons does each friend get?', answer: '6' },
-            { id: 12, type: 'division', prompt: 'Leo had 54 apples. Leo shared them equally between 9 friends. How many apples does each friend get?', answer: '6' }
+            {"prompt":"There are 21 balloons. They are put into groups of 7. How many groups are there?","answer":"3","id":1,"type":"division"},
+            {"prompt":"There are 30 flowers. They are put into groups of 10. How many groups are there?","answer":"3","id":2,"type":"division"},
+            {"prompt":"Kai had 36 cars. Kai shared them equally between 4 friends. How many cars does each friend get?","answer":"9","id":3,"type":"division"},
+            {"prompt":"14 ÷ 2 = __","answer":"7","id":4,"type":"division"},
+            {"prompt":"There are 45 stickers. They are put into groups of 5. How many groups are there?","answer":"9","id":5,"type":"division"},
+            {"prompt":"Max had 12 crayons. Max shared them equally between 2 friends. How many crayons does each friend get?","answer":"6","id":6,"type":"division"},
+            {"prompt":"28 ÷ 7 = __","answer":"4","id":7,"type":"division"},
+            {"prompt":"24 ÷ 4 = __","answer":"6","id":8,"type":"division"},
+            {"prompt":"Sam had 30 balloons. Sam shared them equally between 5 friends. How many balloons does each friend get?","answer":"6","id":9,"type":"division"},
+            {"prompt":"There are 21 cars. They are put into groups of 3. How many groups are there?","answer":"7","id":10,"type":"division"},
+            {"prompt":"50 ÷ 5 = __","answer":"10","id":11,"type":"division"},
+            {"prompt":"2 ÷ 2 = __","answer":"1","id":12,"type":"division"},
         ]);
         // ÷-form lines: quotient × divisor = dividend, never a x ÷ 1.
         for (const p of s) {

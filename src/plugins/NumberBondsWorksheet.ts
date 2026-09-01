@@ -16,24 +16,31 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem, Rng, WorksheetSpec } from '../framework';
+import { sampleUnique } from '../framework';
 
 // Number bonds / part-part-whole (V9 AC9M1N02: "to 10" in Y1; Y2 bridges
 // through 10 and 20). The total is 10 when bondCap < 20, otherwise 10 or 20.
+//
+// NON-REPEATING SAMPLING: the whole question passes through sampleUnique
+// keyed on the printed prompt, so a document holds each distinct line once
+// before the space cycles.
 function generateBonds(rng: Rng, caps: Caps, count: number): RawProblem[] {
-    const out: RawProblem[] = [];
     const totals = caps.bondCap >= 20 ? [10, 20] : [Math.max(5, caps.bondCap)];
-    for (let i = 0; i < count; i++) {
-        const total = rng.pick(totals);
-        // Both parts of a bond are NON-ZERO (1..total-1) — a "10 + __ = 10"
-        // item teaches nothing and would confuse the part-part-whole idea.
-        const a = rng.int(1, total - 1);
-        const missing = total - a; // the hidden part, 1..total-1
-        const r = rng.next();
-        const prompt =
-            r < 0.4 ? `${a} + __ = ${total}` : r < 0.7 ? `__ + ${a} = ${total}` : `__ and ${a} make ${total}`;
-        out.push({ prompt, answer: `${missing}` });
-    }
-    return out;
+    return sampleUnique(
+        count,
+        () => {
+            const total = rng.pick(totals);
+            // Both parts of a bond are NON-ZERO (1..total-1) — a "10 + __ = 10"
+            // item teaches nothing and would confuse the part-part-whole idea.
+            const a = rng.int(1, total - 1);
+            const missing = total - a; // the hidden part, 1..total-1
+            const r = rng.next();
+            const prompt =
+                r < 0.4 ? `${a} + __ = ${total}` : r < 0.7 ? `__ + ${a} = ${total}` : `__ and ${a} make ${total}`;
+            return { prompt, answer: `${missing}` };
+        },
+        (p) => p.prompt
+    );
 }
 
 // The plugin's declarative spec (exported for its own tests).

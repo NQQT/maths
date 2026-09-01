@@ -17,6 +17,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem, Rng, WorksheetSpec } from '../framework';
+import { createDeck, sampleUnique } from '../framework';
 
 // Kid-friendly vocabulary (duplicated per plugin — plugins never import from
 // each other; singular forms pair index-aligned with the plurals for
@@ -28,51 +29,62 @@ const THINGS_SING = ['apple', 'toy', 'sticker', 'balloon', 'cookie', 'crayon', '
 // Data & tally (V8 ACMMG157-158 era; V9 AC9M1ST01/AC9M2ST01): count a classic
 // five-tally (4 strokes + slash) in groups of five, scale a picture graph (1
 // star = u things), or read the difference between two column-graph bars.
+//
+// NON-REPEATING SAMPLING: names and thing pairs are dealt from decks and the
+// whole question passes through sampleUnique keyed on the printed prompt, so
+// the same tally total with a different child/thing (or the same graph with
+// different counts) is a fresh question.
 function generateData(rng: Rng, caps: Caps, count: number): RawProblem[] {
-    const out: RawProblem[] = [];
     const cap = Math.max(5, caps.dataCap);
-    for (let i = 0; i < count; i++) {
-        const r = rng.next();
-        if (r < 0.45) {
-            // Tally: groups of five (|||/) plus a remainder of single strokes.
-            const total = rng.int(3, cap);
-            const marks: string[] = [];
-            const fives = Math.floor(total / 5);
-            for (let f = 0; f < fives; f++) marks.push('||||/');
-            const rest = total % 5;
-            for (let d = 0; d < rest; d++) marks.push('|');
-            out.push({ prompt: `Count the tallies: ${marks.join(' ')} — how many in all?`, answer: `${total}` });
-        } else if (r < 0.75) {
-            // Picture graph: each star counts for u things. Pick by index so we
-            // can pair the plural (the sentence) with the singular ("1 star =
-            // 1 apple") for grammatical counting language.
-            const u = rng.int(1, 3);
-            const k = rng.int(1, 6);
-            const idx = rng.int(0, THINGS.length - 1);
-            const plural = THINGS[idx];
-            const singular = THINGS_SING[idx];
-            const unit = u === 1 ? `1 ${singular}` : `${u} ${plural}`;
-            out.push({
-                prompt: `In a picture graph, 1 star = ${unit}. How many ${plural} do ${'★'.repeat(k)} show?`,
-                answer: `${k * u}`
-            });
-        } else {
+    const nameDeck = createDeck(rng, NAMES);
+    const thingDeck = createDeck(rng, THINGS.map((_, i) => i));
+    return sampleUnique(
+        count,
+        () => {
+            const r = rng.next();
+            if (r < 0.45) {
+                // Tally: groups of five (|||/) plus a remainder of single strokes.
+                const total = rng.int(3, cap);
+                const marks: string[] = [];
+                const fives = Math.floor(total / 5);
+                for (let f = 0; f < fives; f++) marks.push('||||/');
+                const rest = total % 5;
+                for (let d = 0; d < rest; d++) marks.push('|');
+                return { prompt: `Count the tallies: ${marks.join(' ')} — how many in all?`, answer: `${total}` };
+            }
+            if (r < 0.75) {
+                // Picture graph: each star counts for u things. Pick by index so we
+                // can pair the plural (the sentence) with the singular ("1 star =
+                // 1 apple") for grammatical counting language.
+                const u = rng.int(1, 3);
+                const k = rng.int(1, 6);
+                const idx = thingDeck.take();
+                const plural = THINGS[idx];
+                const singular = THINGS_SING[idx];
+                const unit = u === 1 ? `1 ${singular}` : `${u} ${plural}`;
+                return {
+                    prompt: `In a picture graph, 1 star = ${unit}. How many ${plural} do ${'★'.repeat(k)} show?`,
+                    answer: `${k * u}`
+                };
+            }
             // Column graph: each square is 1 vote; compare two bars. a >= 2 and
             // b in [1, a-1] keep the "how many more" difference strictly
             // positive (never a 0-difference trick question).
             const a = rng.int(2, Math.max(3, Math.floor(cap / 2)));
             const b = rng.int(1, a - 1);
             const squares = (n: number) => (n === 1 ? 'square' : 'squares');
-            const n1 = rng.pick(NAMES);
-            let n2 = rng.pick(NAMES);
-            if (n2 === n1) n2 = rng.pick(NAMES.filter((n) => n !== n1));
-            out.push({
+            const n1 = nameDeck.take();
+            // A second, different child (the deck of 8 keeps pairs distinct).
+            let n2 = nameDeck.take();
+            if (n2 === n1) n2 = nameDeck.take();
+            if (n2 === n1) n2 = NAMES.find((n) => n !== n1)!;
+            return {
                 prompt: `In a column graph, each square is 1 vote. ${n1}'s bar is ${a} ${squares(a)} tall and ${n2}'s bar is ${b} ${squares(b)} tall. How many more votes did ${n1} get?`,
                 answer: `${a - b}`
-            });
-        }
-    }
-    return out;
+            };
+        },
+        (p) => p.prompt
+    );
 }
 
 // The plugin's declarative spec (exported for its own tests).

@@ -16,30 +16,38 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem, Rng, WorksheetSpec } from '../framework';
+import { sampleUnique } from '../framework';
 
 // Doubles & near doubles (V9 AC9M2A02 / V8 "number facts to 20"): three forms
 // — an exact double (a + a), a near double (a + a+1), or the worded "double
 // of a". `doubleCap` bounds the base a (Y1: 10, Y2: 20).
+//
+// NON-REPEATING SAMPLING: the whole question passes through sampleUnique
+// keyed on the printed prompt, so a document holds each distinct line once
+// before the space cycles (the old free-draw loop repeated "5 + 5 = __"
+// twice within one page).
 function generateDoubles(rng: Rng, caps: Caps, count: number): RawProblem[] {
-    const out: RawProblem[] = [];
     const cap = Math.max(2, caps.doubleCap);
-    for (let i = 0; i < count; i++) {
-        const r = rng.next();
-        if (r < 0.4) {
-            // Exact double.
-            const a = rng.int(1, cap);
-            out.push({ prompt: `${a} + ${a} = __`, answer: `${a * 2}` });
-        } else if (r < 0.7) {
-            // Near double: a + (a+1) = 2a + 1. a+1 must stay within the cap.
-            const a = rng.int(1, cap - 1);
-            out.push({ prompt: `${a} + ${a + 1} = __`, answer: `${a + a + 1}` });
-        } else {
+    return sampleUnique(
+        count,
+        () => {
+            const r = rng.next();
+            if (r < 0.4) {
+                // Exact double.
+                const a = rng.int(1, cap);
+                return { prompt: `${a} + ${a} = __`, answer: `${a * 2}` };
+            }
+            if (r < 0.7) {
+                // Near double: a + (a+1) = 2a + 1. a+1 must stay within the cap.
+                const a = rng.int(1, cap - 1);
+                return { prompt: `${a} + ${a + 1} = __`, answer: `${a + a + 1}` };
+            }
             // Worded doubling (the verbal form teachers drill in Y1/Y2).
             const a = rng.int(1, cap);
-            out.push({ prompt: `What is double ${a}?`, answer: `${a * 2}` });
-        }
-    }
-    return out;
+            return { prompt: `What is double ${a}?`, answer: `${a * 2}` };
+        },
+        (p) => p.prompt
+    );
 }
 
 // The plugin's declarative spec (exported for its own tests).

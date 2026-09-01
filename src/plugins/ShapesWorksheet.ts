@@ -17,6 +17,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem, Rng, WorksheetSpec } from '../framework';
+import { sampleUnique } from '../framework';
 
 // Shape catalogue for the shapes generator (V8-aligned 2-D + 3-D set: V9 keeps
 // 3-D features for Year 3, but the app's Y2 already teaches V8-era content).
@@ -61,40 +62,48 @@ function shapeArticle(name: string): string {
 // question variant must pick from shapes the grade actually offers (shapeSet);
 // if a variant's candidate pool is empty the generator degrades to the next
 // simpler variant so Prep-sized shape sets still produce valid items.
+//
+// NON-REPEATING SAMPLING: the whole question passes through sampleUnique
+// keyed on the printed prompt, so the same MC option list never prints twice
+// in a row and the finite shape-bank space is spread evenly before repeats.
 function generateShapes(rng: Rng, caps: Caps, count: number): RawProblem[] {
-    const out: RawProblem[] = [];
     const shapes = shapesFor(caps);
     const twoD = shapes.filter((s) => s.kind === '2d');
     const threeD = shapes.filter((s) => s.kind === '3d');
-    for (let i = 0; i < count; i++) {
-        const r = rng.next();
-        if (r < 0.25) {
-            // "How many (straight) sides..." — only shapes that have them.
-            const pool = twoD.filter((s) => s.sides > 0);
-            const s = rng.pick(pool.length ? pool : twoD);
-            out.push({ prompt: `How many sides does ${shapeArticle(s.name)} ${s.name} have?`, answer: `${s.sides}` });
-        } else if (r < 0.45) {
-            // "How many corners..." — circles/ovals answer 0 (curved side).
-            const s = rng.pick(twoD);
-            out.push({ prompt: `How many corners does ${shapeArticle(s.name)} ${s.name} have?`, answer: `${s.corners}` });
-        } else if (r < 0.65 && threeD.length >= 3) {
-            // "How many flat faces..." — 3-D objects only.
-            const s = rng.pick(threeD);
-            out.push({ prompt: `How many flat faces does ${shapeArticle(s.name)} ${s.name} have?`, answer: `${s.flatFaces}` });
-        } else if (r < 0.8) {
-            // Multiple-choice on 2-D corners: the answer must be UNIQUE among
-            // the shown options, so distractors share no corner count with it.
-            let answer = rng.pick(twoD);
-            let distractors = twoD.filter((s) => s.name !== answer.name && s.corners !== answer.corners);
-            if (distractors.length < 2) {
-                // Deeper ambiguity (e.g. only circles+ovals offered) — fall
-                // back to a plain "how many corners" line instead.
-                answer = rng.pick(twoD);
-                out.push({
-                    prompt: `How many corners does ${shapeArticle(answer.name)} ${answer.name} have?`,
-                    answer: `${answer.corners}`
-                });
-            } else {
+    return sampleUnique(
+        count,
+        () => {
+            const r = rng.next();
+            if (r < 0.25) {
+                // "How many (straight) sides..." — only shapes that have them.
+                const pool = twoD.filter((s) => s.sides > 0);
+                const s = rng.pick(pool.length ? pool : twoD);
+                return { prompt: `How many sides does ${shapeArticle(s.name)} ${s.name} have?`, answer: `${s.sides}` };
+            }
+            if (r < 0.45) {
+                // "How many corners..." — circles/ovals answer 0 (curved side).
+                const s = rng.pick(twoD);
+                return { prompt: `How many corners does ${shapeArticle(s.name)} ${s.name} have?`, answer: `${s.corners}` };
+            }
+            if (r < 0.65 && threeD.length >= 3) {
+                // "How many flat faces..." — 3-D objects only.
+                const s = rng.pick(threeD);
+                return { prompt: `How many flat faces does ${shapeArticle(s.name)} ${s.name} have?`, answer: `${s.flatFaces}` };
+            }
+            if (r < 0.8) {
+                // Multiple-choice on 2-D corners: the answer must be UNIQUE among
+                // the shown options, so distractors share no corner count with it.
+                let answer = rng.pick(twoD);
+                let distractors = twoD.filter((s) => s.name !== answer.name && s.corners !== answer.corners);
+                if (distractors.length < 2) {
+                    // Deeper ambiguity (e.g. only circles+ovals offered) — fall
+                    // back to a plain "how many corners" line instead.
+                    answer = rng.pick(twoD);
+                    return {
+                        prompt: `How many corners does ${shapeArticle(answer.name)} ${answer.name} have?`,
+                        answer: `${answer.corners}`
+                    };
+                }
                 // Two distractors with different corner counts; the correct
                 // shape sits at a random position in the printed list.
                 const d1 = rng.pick(distractors);
@@ -102,12 +111,11 @@ function generateShapes(rng: Rng, caps: Caps, count: number): RawProblem[] {
                 const order = [answer, d1, d2];
                 const at = rng.int(0, 2);
                 const shown = [order[at], ...order.filter((s) => s !== order[at])];
-                out.push({
+                return {
                     prompt: `Which 2-D shape has ${answer.corners} corners? (${shown.map((s) => s.name).join(', ')})`,
                     answer: answer.name
-                });
+                };
             }
-        } else {
             // 3-D "only flat faces" identification — shapes with NO curved surface (cube
             // / prism / pyramid); cones & cylinders have a curved side and a
             // sphere none at all, so flatFaces>0 is the WRONG filter.
@@ -117,18 +125,17 @@ function generateShapes(rng: Rng, caps: Caps, count: number): RawProblem[] {
                 const others = threeD.filter((s) => s.name !== answer.name);
                 const d1 = rng.pick(others);
                 const d2 = rng.pick(others.filter((s) => s.name !== d1.name));
-                out.push({
+                return {
                     prompt: `Which of these 3-D objects has only flat faces? (${[answer, d1, d2].map((s) => s.name).join(', ')})`,
                     answer: answer.name
-                });
-            } else {
-                const curved = twoD.filter((s) => s.curved);
-                const answer = rng.pick(curved.length ? curved : twoD);
-                out.push({ prompt: `Does ${shapeArticle(answer.name)} ${answer.name} have a curved side?`, answer: answer.curved ? 'Yes' : 'No' });
+                };
             }
-        }
-    }
-    return out;
+            const curved = twoD.filter((s) => s.curved);
+            const answer = rng.pick(curved.length ? curved : twoD);
+            return { prompt: `Does ${shapeArticle(answer.name)} ${answer.name} have a curved side?`, answer: answer.curved ? 'Yes' : 'No' };
+        },
+        (p) => p.prompt
+    );
 }
 
 // The plugin's declarative spec (exported for its own tests).

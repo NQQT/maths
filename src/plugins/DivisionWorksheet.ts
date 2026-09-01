@@ -18,42 +18,57 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem, Rng, WorksheetSpec } from '../framework';
+import { createDeck, sampleUnique } from '../framework';
 
 // Kid-friendly vocabulary (duplicated per plugin — plugins never import from
-// each other).
+// each other). Singular forms pair index-aligned with the plurals so a count
+// of 1 reads grammatically ("1 cookie").
 const NAMES = ['Sam', 'Mia', 'Leo', 'Zoe', 'Tom', 'Max', 'Rae', 'Kai'] as const;
 const THINGS = ['apples', 'toys', 'stickers', 'balloons', 'cookies', 'crayons', 'flowers', 'cars'] as const;
+const THINGS_SING = ['apple', 'toy', 'sticker', 'balloon', 'cookie', 'crayon', 'flower', 'car'] as const;
+
+// Grammatical count phrase: "1 cookie", "2 cookies".
+const countOf = (n: number, idx: number) => `${n} ${n === 1 ? THINGS_SING[idx] : THINGS[idx]}`;
 
 // Division by equal sharing & grouping (V8 Y2 multiplication/division; V9
 // AC9M2N05). Three forms: the ÷ sign, a "share between friends" story, and a
 // "put into groups of d" story. Divisors are >= 2 to avoid trivial x ÷ 1, and
 // every dividend stays <= multCap * multCap (100 for Year 2). Only offered in
 // Year 2 (buildDocument checks grade.available through the spec first).
+//
+// NON-REPEATING SAMPLING: names and things are dealt from decks and the whole
+// question passes through sampleUnique keyed on the printed prompt — the
+// (divisor x quotient x form x name x thing) cross-product keeps a 100-page
+// document repeat-free.
 function generateDivision(rng: Rng, caps: Caps, count: number): RawProblem[] {
-    const out: RawProblem[] = [];
     const cap = Math.max(2, caps.multCap);
-    for (let i = 0; i < count; i++) {
-        const r = rng.next();
-        const d = rng.int(2, cap); // divisor / friends / group size
-        const q = rng.int(1, cap); // quotient
-        if (r < 0.4) {
-            out.push({ prompt: `${d * q} ÷ ${d} = __`, answer: `${q}` });
-        } else if (r < 0.7) {
-            const thing = rng.pick(THINGS);
-            const n = rng.pick(NAMES);
-            out.push({
-                prompt: `${n} had ${d * q} ${thing}. ${n} shared them equally between ${d} friends. How many ${thing} does each friend get?`,
+    const nameDeck = createDeck(rng, NAMES);
+    const thingDeck = createDeck(rng, THINGS.map((_, i) => i));
+    return sampleUnique(
+        count,
+        () => {
+            const r = rng.next();
+            const d = rng.int(2, cap); // divisor / friends / group size
+            const q = rng.int(1, cap); // quotient
+            const idx = thingDeck.take();
+            const thing = THINGS[idx];
+            if (r < 0.4) {
+                return { prompt: `${d * q} ÷ ${d} = __`, answer: `${q}` };
+            }
+            if (r < 0.7) {
+                const n = nameDeck.take();
+                return {
+                    prompt: `${n} had ${countOf(d * q, idx)}. ${n} shared them equally between ${d} friends. How many ${thing} does each friend get?`,
+                    answer: `${q}`
+                };
+            }
+            return {
+                prompt: `There are ${countOf(d * q, idx)}. They are put into groups of ${d}. How many groups are there?`,
                 answer: `${q}`
-            });
-        } else {
-            const thing = rng.pick(THINGS);
-            out.push({
-                prompt: `There are ${d * q} ${thing}. They are put into groups of ${d}. How many groups are there?`,
-                answer: `${q}`
-            });
-        }
-    }
-    return out;
+            };
+        },
+        (p) => p.prompt
+    );
 }
 
 // The plugin's declarative spec (exported for its own tests).

@@ -153,7 +153,7 @@ describe('MathsDashboard — math type selection (left)', () => {
         );
         const pageText = text(screen.getByTestId('sheet-preview-page1'));
         // Year 1 word, problem 1 (see WordProblemsWorksheet.test.ts).
-        expect(pageText).toContain('Sam had 11 cookies');
+        expect(pageText).toContain('Tom has 4 toys. Kai has 16 toys');
     });
 
     it('Grade 2 offers the Multiplication (times tables) worksheet', async () => {
@@ -254,8 +254,8 @@ describe('MathsDashboard — page count (unbounded −/n/+ stepper)', () => {
         // exact deterministic stream pinned in AdditionWorksheet.test.ts (the
         // page is now 24 rows, so page 2 starts at id 25 and page 3 at id 49).
         expect(text(screen.getByTestId('sheet-preview-page1'))).toContain('1.10 + 9 =');
-        expect(text(screen.getByTestId('sheet-preview-page2'))).toContain('25.12 + 2 =');
-        expect(text(screen.getByTestId('sheet-preview-page3'))).toContain('49.17 + 2 =');
+        expect(text(screen.getByTestId('sheet-preview-page2'))).toContain('25.17 + 2 =');
+        expect(text(screen.getByTestId('sheet-preview-page3'))).toContain('49.11 + 8 =');
         // Multi-page documents label every page (badge on screen, footer in print).
         expect(preview.textContent).toContain('Page 1 of 3');
         expect(preview.textContent).toContain('Page 3 of 3');
@@ -392,8 +392,8 @@ describe('MathsDashboard — print flow (native dialog, preview IS the preview)'
         const printPages = document.querySelectorAll('.print-page');
         expect(printPages.length).toBe(5);
         // Each block carries its worksheet page; page 2 is the pinned
-        // continuation row ("12 + 2 =" first, id 25 at the 24-per-page count).
-        expect(printPages[1].textContent).toContain('12 + 2 =');
+        // continuation row ("17 + 2 =" first, id 25 at the 24-per-page count).
+        expect(printPages[1].textContent).toContain('17 + 2 =');
         expect(printPages[1].textContent).toContain('Page 2 of 5');
         // The on-screen preview (the print preview) shows the same 5 pages.
         expect(screen.getByTestId('sheet-preview-page5')).toBeDefined();

@@ -17,6 +17,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem, Rng, WorksheetSpec } from '../framework';
+import { createDeck, sampleUnique } from '../framework';
 
 // Calendar vocabulary for the time generator (V8 ACMMG168-170: days of the
 // week, months and seasons in Y1; hour & half-past clock time in Y2).
@@ -34,81 +35,85 @@ const TIME_FACTS: readonly [string, string][] = [
 // day-after/before, yesterday/tomorrow, days-until, month-after, season-after,
 // calendar facts — plus clock forms (o'clock + hours-later, half-past + one
 // hour later) which only appear when clockCap > 0 (i.e. Year 2).
+//
+// NON-REPEATING SAMPLING: days, months and seasons are dealt from decks (the
+// finite calendar vocabularies each appear once per cycle) and every question
+// passes through sampleUnique keyed on the printed prompt. The days-until,
+// month, clock and half kinds are PROCEDURAL (ranges of starts/offsets), so
+// the space stays far deeper than the 3 calendar facts — a 100-page document
+// only ever repeats a fact line.
 function generateTime(rng: Rng, caps: Caps, count: number): RawProblem[] {
-    const out: RawProblem[] = [];
     const clock = caps.clockCap > 0;
-    for (let i = 0; i < count; i++) {
-        const kinds: string[] = ['after', 'before', 'yesterday', 'tomorrow', 'until', 'month', 'season', 'fact'];
-        if (clock) kinds.push('clock', 'half');
-        const kind = rng.pick(kinds);
-        switch (kind) {
-            case 'after': {
-                const d = rng.pick(DAYS);
-                const j = DAYS.indexOf(d);
-                out.push({ prompt: `What day comes after ${d}?`, answer: DAYS[(j + 1) % 7] });
-                break;
+    const dayDeck = createDeck(rng, DAYS);
+    const monthDeck = createDeck(rng, MONTHS);
+    const seasonDeck = createDeck(rng, SEASONS);
+    const factDeck = createDeck(rng, TIME_FACTS);
+    return sampleUnique(
+        count,
+        () => {
+            const kinds: string[] = ['after', 'before', 'yesterday', 'tomorrow', 'until', 'month', 'season', 'fact'];
+            if (clock) kinds.push('clock', 'half');
+            const kind = rng.pick(kinds);
+            switch (kind) {
+                case 'after': {
+                    const d = dayDeck.take();
+                    const j = DAYS.indexOf(d);
+                    return { prompt: `What day comes after ${d}?`, answer: DAYS[(j + 1) % 7] };
+                }
+                case 'before': {
+                    const d = dayDeck.take();
+                    const j = DAYS.indexOf(d);
+                    return { prompt: `What day comes before ${d}?`, answer: DAYS[(j + 6) % 7] };
+                }
+                case 'yesterday': {
+                    const d = dayDeck.take();
+                    const j = DAYS.indexOf(d);
+                    return { prompt: `If today is ${d}, what day was yesterday?`, answer: DAYS[(j + 6) % 7] };
+                }
+                case 'tomorrow': {
+                    const d = dayDeck.take();
+                    const j = DAYS.indexOf(d);
+                    return { prompt: `If today is ${d}, what day is tomorrow?`, answer: DAYS[(j + 1) % 7] };
+                }
+                case 'until': {
+                    // Start Mon-Fri, target strictly later the same week.
+                    const i1 = rng.int(0, 4);
+                    const i2 = rng.int(i1 + 1, 6);
+                    return {
+                        prompt: `If today is ${DAYS[i1]}, how many days is it until ${DAYS[i2]}?`,
+                        answer: `${i2 - i1}`
+                    };
+                }
+                case 'month': {
+                    const m = monthDeck.take();
+                    const mi = MONTHS.indexOf(m);
+                    return { prompt: `What month comes after ${m}?`, answer: MONTHS[(mi + 1) % 12] };
+                }
+                case 'season': {
+                    const s = seasonDeck.take();
+                    const k = SEASONS.indexOf(s);
+                    return { prompt: `What season comes after ${s}?`, answer: SEASONS[(k + 1) % 4] };
+                }
+                case 'fact': {
+                    const [prompt, answer] = factDeck.take();
+                    return { prompt, answer };
+                }
+                case 'clock': {
+                    // O'clock now, k (1-2) hours later; answer wraps at 12.
+                    const h = rng.int(1, 12);
+                    const k = rng.int(1, 2);
+                    const h2 = ((h - 1 + k) % 12) + 1;
+                    return { prompt: `It is ${h} o'clock now. What time is it ${k} ${k === 1 ? 'hour' : 'hours'} later?`, answer: `${h2} o'clock` };
+                }
+                default: {
+                    // 'half': half-past h now, one hour later (half past 12 wraps back to 1).
+                    const h = rng.int(1, 12);
+                    return { prompt: `It is half past ${h} now. What time is it one hour later?`, answer: `half past ${(h % 12) + 1}` };
+                }
             }
-            case 'before': {
-                const d = rng.pick(DAYS);
-                const j = DAYS.indexOf(d);
-                out.push({ prompt: `What day comes before ${d}?`, answer: DAYS[(j + 6) % 7] });
-                break;
-            }
-            case 'yesterday': {
-                const d = rng.pick(DAYS);
-                const j = DAYS.indexOf(d);
-                out.push({ prompt: `If today is ${d}, what day was yesterday?`, answer: DAYS[(j + 6) % 7] });
-                break;
-            }
-            case 'tomorrow': {
-                const d = rng.pick(DAYS);
-                const j = DAYS.indexOf(d);
-                out.push({ prompt: `If today is ${d}, what day is tomorrow?`, answer: DAYS[(j + 1) % 7] });
-                break;
-            }
-            case 'until': {
-                // Start Mon-Fri, target strictly later the same week.
-                const i1 = rng.int(0, 4);
-                const i2 = rng.int(i1 + 1, 6);
-                out.push({
-                    prompt: `If today is ${DAYS[i1]}, how many days is it until ${DAYS[i2]}?`,
-                    answer: `${i2 - i1}`
-                });
-                break;
-            }
-            case 'month': {
-                const m = rng.int(0, 11);
-                out.push({ prompt: `What month comes after ${MONTHS[m]}?`, answer: MONTHS[(m + 1) % 12] });
-                break;
-            }
-            case 'season': {
-                const s = rng.pick(SEASONS);
-                const k = SEASONS.indexOf(s);
-                out.push({ prompt: `What season comes after ${s}?`, answer: SEASONS[(k + 1) % 4] });
-                break;
-            }
-            case 'fact': {
-                const [prompt, answer] = rng.pick(TIME_FACTS);
-                out.push({ prompt, answer });
-                break;
-            }
-            case 'clock': {
-                // O'clock now, k (1-2) hours later; answer wraps at 12.
-                const h = rng.int(1, 12);
-                const k = rng.int(1, 2);
-                const h2 = ((h - 1 + k) % 12) + 1;
-                out.push({ prompt: `It is ${h} o'clock now. What time is it ${k} ${k === 1 ? 'hour' : 'hours'} later?`, answer: `${h2} o'clock` });
-                break;
-            }
-            default: {
-                // 'half': half-past h now, one hour later (half past 12 wraps back to 1).
-                const h = rng.int(1, 12);
-                out.push({ prompt: `It is half past ${h} now. What time is it one hour later?`, answer: `half past ${(h % 12) + 1}` });
-                break;
-            }
-        }
-    }
-    return out;
+        },
+        (p) => p.prompt
+    );
 }
 
 // The plugin's declarative spec (exported for its own tests).
