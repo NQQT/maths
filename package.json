@@ -1,6 +1,6 @@
 {
     "name": "@distribution/maths",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "description": "Maths distribution - Vite + React app deployable to GitHub Pages",
     "type": "module",
     "main": "src/main.tsx",
