@@ -1,23 +1,23 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// Plugin LOADER tests — the "dashboard first, plugins one by one" contract.
+﻿// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Plugin LOADER tests â€” the "dashboard first, plugins one by one" contract.
 //
 // These pin the loading order fix: PLUGINS used to invoke every factory at
 // MODULE LOAD time, constructing all 18 plugins before the dashboard ever
 // rendered. Now the loader:
 //
 //   1. loads the FIRST plugin with the dashboard's first render (useState
-//      initializer — the shell + default worksheet are in the first paint);
+//      initializer â€” the shell + default worksheet are in the first paint);
 //   2. loads the remaining factories ONE BY ONE after mount, in factory
 //      order, yielding to the browser between loads (macrotask);
 //   3. reports `done` only once every factory has been loaded;
-//   4. is IDEMPOTENT under StrictMode's simulated unmount/remount — no
+//   4. is IDEMPOTENT under StrictMode's simulated unmount/remount â€” no
 //      factory is ever loaded twice into the loaded list;
 //   5. handles the empty factory list (nothing to load, done immediately).
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 import React from 'react';
 import { render, screen, waitFor, cleanup } from '@testing-library/react';
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import {
     DashboardContextProvider,
     usePluginLoader,
@@ -34,7 +34,7 @@ afterEach(() => {
 });
 
 // A minimal plugin factory wrapper: records the invocation in `loadedOrder`
-// (the LOADING order — what this suite is about) and returns a throwaway
+// (the LOADING order â€” what this suite is about) and returns a throwaway
 // plugin satisfying the DashboardPlugin contract (page required).
 function makeFactory(id: string, loadedOrder: string[]): PluginFactory {
     return (dashboard: DashboardFramework): DashboardPlugin => {
@@ -70,7 +70,13 @@ function mountLoader(factories: PluginFactory[], onResult: (r: PluginLoaderResul
     );
 }
 
-describe('usePluginLoader — dashboard first, plugins one by one', () => {
+// Generous TEST timeout: the loader yields between plugins via macrotasks
+// (scriptPause(0), see loader.ts), and under full-workspace parallel load
+// (turbo run test) those macrotasks can be delayed well past vitest's 5s
+// default â€” a scheduling flake, not a regression. 30s keeps it deterministic.
+vi.setConfig({ testTimeout: 30_000, hookTimeout: 30_000 });
+
+describe('usePluginLoader â€” dashboard first, plugins one by one', () => {
     it('loads the first plugin with the first render, the rest one by one in factory order', async () => {
         const loadedOrder: string[] = [];
         const results: PluginLoaderResult[] = [];
@@ -80,7 +86,7 @@ describe('usePluginLoader — dashboard first, plugins one by one', () => {
 
         // The FIRST factory already ran during the first render (stage 1);
         // the mount effect flushed the SECOND one synchronously inside
-        // render()'s act() — everything AFTER that waits on macrotasks, so
+        // render()'s act() â€” everything AFTER that waits on macrotasks, so
         // exactly two plugins are loaded at this instant.
         expect(loadedOrder).toEqual(['alpha', 'beta']);
         expect(screen.getByTestId('loaded-count').textContent).toBe('2');
@@ -91,7 +97,7 @@ describe('usePluginLoader — dashboard first, plugins one by one', () => {
             () => {
                 expect(screen.getByTestId('loaded-count').textContent).toBe('3');
             },
-            { timeout: 5000 }
+            { timeout: 20_000 }
         );
         expect(loadedOrder).toEqual(['alpha', 'beta', 'gamma']);
         // `done` flips only when the LAST factory has been loaded.
@@ -109,7 +115,7 @@ describe('usePluginLoader — dashboard first, plugins one by one', () => {
             () => {
                 expect(screen.getByTestId('loaded-count').textContent).toBe('8');
             },
-            { timeout: 5000 }
+            { timeout: 20_000 }
         );
         expect(loadedOrder).toEqual(ids);
     });
@@ -126,7 +132,7 @@ describe('usePluginLoader — dashboard first, plugins one by one', () => {
         expect(loadedOrder).toEqual(['only']);
         expect(screen.getByTestId('loaded-count').textContent).toBe('1');
         // StrictMode/act note: the mount effect runs inside render()'s act
-        // flush, but loadFrom(1) is out of range — nothing more to load, so
+        // flush, but loadFrom(1) is out of range â€” nothing more to load, so
         // the loader is already done here.
         expect(last!.done).toBe(true);
     });
@@ -160,12 +166,12 @@ describe('usePluginLoader — dashboard first, plugins one by one', () => {
             () => {
                 expect(screen.getByTestId('loaded-count').textContent).toBe('3');
             },
-            { timeout: 5000 }
+            { timeout: 20_000 }
         );
 
         // The pure first-plugin initializer may be double-INVOKED by
         // StrictMode (dev-only, discarded duplicate), but 'beta' and 'gamma'
-        // — the background loads — must each have run EXACTLY once.
+        // â€” the background loads â€” must each have run EXACTLY once.
         expect(loadedOrder.filter((id) => id === 'beta')).toEqual(['beta']);
         expect(loadedOrder.filter((id) => id === 'gamma')).toEqual(['gamma']);
 

@@ -39,6 +39,13 @@ import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { MathsDashboard } from './MathsDashboard';
 
+// Generous TEST timeout for this file: the plugin loads are chained
+// macrotasks (one per plugin, see framework/loader.ts), and when the whole
+// workspace test suite runs in parallel (turbo run test) the event loop can
+// be starved long enough to blow past vitest's 5s default — a flake, not a
+// regression. 30s per test keeps the suite deterministic under load.
+vi.setConfig({ testTimeout: 30_000, hookTimeout: 30_000 });
+
 // Each test renders a fresh dashboard (initially on Year 1 + Addition, 1 page).
 beforeEach(() => {
     render(<MathsDashboard />);
@@ -82,8 +89,10 @@ function text(el: Element | null | undefined) {
 // hidden on Year 1, so their load state never affects these assertions.)
 function allVisiblePluginsLoaded() {
     // Generous timeout: the loads are chained macrotasks (one per plugin), so
-    // a cold test run under load can take longer than waitFor's 1s default.
-    return screen.findByRole('button', { name: 'Data & Tally' }, { timeout: 5000 });
+    // a cold test run under full-workspace parallel load can take far longer
+    // than waitFor's 1s default. 20s keeps this deterministic under load
+    // (the per-test timeout is 30s — see vi.setConfig above).
+    return screen.findByRole('button', { name: 'Data & Tally' }, { timeout: 20_000 });
 }
 
 describe('MathsDashboard — layout', () => {
@@ -137,7 +146,7 @@ describe('MathsDashboard — math type selection (left)', () => {
 
         // Pick Subtraction (awaited — plugins load one by one after mount).
         fireEvent.click(
-            await screen.findByRole('button', { name: 'Subtraction' }, { timeout: 5000 })
+            await screen.findByRole('button', { name: 'Subtraction' }, { timeout: 20_000 })
         );
 
         // Preview now reflects the (Year 1, Subtraction) sheet; first row "6 - 4 =".
@@ -149,7 +158,7 @@ describe('MathsDashboard — math type selection (left)', () => {
     it('Word Problems switches the sheet to prose questions', async () => {
         // Awaited — plugins load one by one after the dashboard renders.
         fireEvent.click(
-            await screen.findByRole('button', { name: 'Word Problems' }, { timeout: 5000 })
+            await screen.findByRole('button', { name: 'Word Problems' }, { timeout: 20_000 })
         );
         const pageText = text(screen.getByTestId('sheet-preview-page1'));
         // Year 1 word, problem 1 (see WordProblemsWorksheet.test.ts).
@@ -164,7 +173,7 @@ describe('MathsDashboard — math type selection (left)', () => {
         const multiplication = await screen.findByRole(
             'button',
             { name: 'Multiplication' },
-            { timeout: 5000 }
+            { timeout: 20_000 }
         );
 
         // Pick it; the sheet matches the pinned Grade 2 times-tables stream

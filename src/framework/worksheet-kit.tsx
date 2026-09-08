@@ -407,7 +407,7 @@ const PageStepButton = styledComponent<{ dimmed: boolean; atMin: boolean }>('but
 
 // The page count, editable by typing. styledComponent's typed surface is
 // HTMLAttributes<HTMLElement> (no `type`/input-event props), so cast to the
-// InputHTMLAttributes surface (TwoColumnDashboard pattern in @react/headless).
+// InputHTMLAttributes surface (TwoColumnDashboard pattern in @reloaded/headless).
 const PageInput = styledComponent('input', {
     width: '48px',
     height: '28px',

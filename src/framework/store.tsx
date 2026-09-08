@@ -2,11 +2,11 @@
 // Dashboard plugin store — the reactive state shared by the framework and the
 // worksheet plugins.
 //
-// WHY NOT @presource/react's localContextStore / @react/design here?
+// WHY NOT @presource/react's localContextStore / @reloaded/design here?
 //   - localContextStore flushes subscriber re-renders on a setTimeout
 //     (macrotask). The dashboard's interactive tests (and the snappy UI feel
 //     they pin) assert DOM state IMMEDIATELY after a click, so updates must
-//     be synchronous. @react/design additionally never unregisters controls
+//     be synchronous. @reloaded/design additionally never unregisters controls
 //     (documented limitation), which conflicts with the delete-a-plugin
 //     isolation requirement.
 //   - signalState refreshes synchronously but is MODULE-GLOBAL: every test
