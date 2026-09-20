@@ -71,11 +71,12 @@ describe('grade catalogue', () => {
         );
     });
 
-    it('grade 1 offers the full original catalogue plus the eight extension types', () => {
+    it('grade 1 offers the full original catalogue plus the ten extension types', () => {
         expect([...g1.available].sort()).toEqual(
             [
                 'addition',
                 'bonds',
+                'compass',
                 'comparison',
                 'counting',
                 'data',
@@ -87,26 +88,30 @@ describe('grade catalogue', () => {
                 'shapes',
                 'skip',
                 'subtraction',
+                'temperature',
                 'time',
                 'word'
             ].sort()
         );
     });
 
-    it('grade 2 adds times tables, division and Australian coins (19 types total)', () => {
+    it('grade 2 adds times tables, division and Australian coins (21 types total)', () => {
         // Year 2 is the first grade with times tables AND the only grade with
         // division / coins & money (V8-aligned money: coins to about $1).
         // It is also the only grade with clock faces (reading + drawing hands).
+        // Compass Directions and Temperature carry over from Year 1 (the
+        // compass space is unchanged; the temperature range widens to 40°C).
         expect([...g2.available].sort()).toEqual(
             [
                 'addition',
                 'bonds',
                 'clock',
+                'compass',
                 'comparison',
                 'counting',
                 'data',
-                'doubles',
                 'division',
+                'doubles',
                 'measure',
                 'missing',
                 'money',
@@ -116,6 +121,7 @@ describe('grade catalogue', () => {
                 'shapes',
                 'skip',
                 'subtraction',
+                'temperature',
                 'time',
                 'word'
             ].sort()
@@ -126,7 +132,8 @@ describe('grade catalogue', () => {
         expect(g1.available).not.toContain('division');
         expect(g1.available).not.toContain('money');
         // The times-tables cap is set to 10 only for grade 2; the extension
-        // caps are also grade-specific (Y2 doubles to 20, coins to 100c).
+        // caps are also grade-specific (Y2 doubles to 20, coins to 100c,
+        // temperature to 40°C while Year 1 keeps its within-20 sheet).
         expect(g2.caps.multCap).toBe(10);
         expect(g1.caps.multCap).toBe(0);
         expect(g2.caps.doubleCap).toBe(20);
@@ -135,5 +142,8 @@ describe('grade catalogue', () => {
         expect(g1.caps.clockCap).toBe(0);
         expect(g2.caps.coinCap).toBe(100);
         expect(g1.caps.coinCap).toBe(0);
+        expect(g2.caps.tempCap).toBe(40);
+        expect(g1.caps.tempCap).toBe(20);
+        expect(g0.caps.tempCap).toBe(0);
     });
 });

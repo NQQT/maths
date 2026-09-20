@@ -8,7 +8,7 @@ export default defineConfig({
         globals: true,
         include: ['src/**/*.{test,spec}.{ts,tsx}'],
         passWithNoTests: true,
-        // The dashboard loads its 19 worksheet plugins ONE BY ONE after mount
+        // The dashboard loads its 21 worksheet plugins ONE BY ONE after mount
         // (chained macrotasks, framework/loader.ts). Tests that await the
         // FULL rail (allVisiblePluginsLoaded in MathsDashboard.test.tsx) sit
         // on that whole chain — when the monorepo test run goes wide

@@ -16,7 +16,7 @@
 //      line is safe by construction.
 //   4. SELECTION FALLBACK: a stale selection pointing at a deleted plugin
 //      snaps back to the first remaining plugin.
-//   5. THE REAL WORKSHEETS: the 19 per-type plugins (AdditionWorksheet,
+//   5. THE REAL WORKSHEETS: the 21 per-type plugins (AdditionWorksheet,
 //      SubtractionWorksheet, ...) load through the same pipeline the
 //      framework uses (the PLUGINS factory list, loaded one by one by
 //      usePluginLoader after the dashboard renders), share the dashboard
@@ -291,9 +291,11 @@ const EXPECTED_WORKSHEET_IDS = [
     'bonds',
     'patterns',
     'shapes',
+    'compass',
     'time',
     'clock',
     'measure',
+    'temperature',
     'placevalue',
     'data',
     'division',

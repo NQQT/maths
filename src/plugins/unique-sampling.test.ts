@@ -11,16 +11,16 @@
 //   - the FIRST `capacity` questions are all distinct (duplicates may only
 //     appear in the fallback tail once the space is exhausted);
 //   - the arithmetic ladder (addition/subtraction Years 2..6), word problems,
-//     counting (Year 2), patterns (Year 2), data and division clear the
-//     100-PAGE BAR — their whole 100-page document prints with ZERO repeated
-//     questions.
+//     counting (Year 2), patterns (Year 2), data, division and temperature
+//     clear the 100-PAGE BAR — their whole 100-page document prints with ZERO
+//     repeated questions.
 //   - The remaining types are FINITE-FACT-SPACE worksheets: within-10/20
 //     arithmetic has literally only 45/190 distinct addition pairs; times
 //     tables have 100 facts; doubles/bonds/calendar/clock/money/shapes/measure
-//     have small curated fact sets. For these the capacity is the whole space
-//     — sampleUnique deals every distinct question once before the first
-//     repeat, and the deck spreads the repeats evenly (no clumping) through
-//     the fallback tail.
+//     /compass have small curated fact sets. For these the capacity is the
+//     whole space — sampleUnique deals every distinct question once before
+//     the first repeat, and the deck spreads the repeats evenly (no
+//     clumping) through the fallback tail.
 //
 // If a generator, range or bank changes, these exact capacities move — which
 // is what we want: a silent shrink of a worksheet's question space can't
@@ -40,9 +40,11 @@ import { doublesSpec } from './DoublesWorksheet';
 import { bondsSpec } from './NumberBondsWorksheet';
 import { patternsSpec } from './PatternsWorksheet';
 import { shapesSpec } from './ShapesWorksheet';
+import { compassSpec } from './CompassWorksheet';
 import { timeSpec } from './TimeWorksheet';
 import { clockSpec } from './ClockWorksheet';
 import { measureSpec } from './MeasurementWorksheet';
+import { temperatureSpec } from './TemperatureWorksheet';
 import { placeValueSpec } from './PlaceValueWorksheet';
 import { dataSpec } from './DataWorksheet';
 import { divisionSpec } from './DivisionWorksheet';
@@ -91,15 +93,23 @@ const CAPACITIES: { spec: WorksheetSpec; gradeId: number; capacity: number }[] =
     { spec: countingSpec, gradeId: 2, capacity: 1800 },
     { spec: patternsSpec, gradeId: 1, capacity: 1458 },
     { spec: patternsSpec, gradeId: 2, capacity: 1600 },
+    // Temperature: procedural comparisons/orderings over the tempCap range —
+    // deep enough to print 100 pages repeat-free at both offered grades.
+    { spec: temperatureSpec, gradeId: 1, capacity: 1200 },
+    { spec: temperatureSpec, gradeId: 2, capacity: 1200 },
     // ── Finite-fact-space types (doubles, bonds, shapes, time, clock, ──────
-    // measure, place value, money): the capacity IS the curated space — every
-    // distinct question prints once before the first repeat.
+    // measure, compass, place value, money): the capacity IS the curated
+    // space — every distinct question prints once before the first repeat.
+    // Compass = 62 prompts (6 turn/side kinds x 4 facings + 3 map edges +
+    // 8 walk names x 4 facings + 3 facts), identical at both grades.
     { spec: doublesSpec, gradeId: 1, capacity: 48 },
     { spec: doublesSpec, gradeId: 2, capacity: 98 },
     { spec: bondsSpec, gradeId: 1, capacity: 36 },
     { spec: bondsSpec, gradeId: 2, capacity: 112 },
     { spec: shapesSpec, gradeId: 1, capacity: 85 },
     { spec: shapesSpec, gradeId: 2, capacity: 252 },
+    { spec: compassSpec, gradeId: 1, capacity: 62 },
+    { spec: compassSpec, gradeId: 2, capacity: 62 },
     { spec: timeSpec, gradeId: 1, capacity: 79 },
     { spec: timeSpec, gradeId: 2, capacity: 115 },
     { spec: clockSpec, gradeId: 2, capacity: 146 },
@@ -138,7 +148,7 @@ describe('unique sampling — per-worksheet question capacity', () => {
         expect(cleared.sort()).toEqual(
             [
                 'addition', 'subtraction', 'comparison', 'counting', 'data',
-                'division', 'missing', 'patterns', 'word'
+                'division', 'missing', 'patterns', 'temperature', 'word'
             ].sort()
         );
         // The arithmetic ladder clears the bar from Year 2 upwards (within

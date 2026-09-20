@@ -12,15 +12,17 @@ import { seedFrom, getGradeConfig, generateSheet, generateDocument } from '../sr
 import {
     additionSpec, subtractionSpec, multiplicationSpec, missingSpec,
     comparisonSpec, skipSpec, wordSpec, countingSpec, doublesSpec,
-    bondsSpec, patternsSpec, shapesSpec, timeSpec, clockSpec,
-    measureSpec, placeValueSpec, dataSpec, divisionSpec, moneySpec
+    bondsSpec, patternsSpec, shapesSpec, compassSpec, timeSpec, clockSpec,
+    measureSpec, temperatureSpec, placeValueSpec, dataSpec, divisionSpec,
+    moneySpec
 } from '../src/plugins/pins';
 
 const SPECS = [
     additionSpec, subtractionSpec, multiplicationSpec, missingSpec,
     comparisonSpec, skipSpec, wordSpec, countingSpec, doublesSpec,
-    bondsSpec, patternsSpec, shapesSpec, timeSpec, clockSpec,
-    measureSpec, placeValueSpec, dataSpec, divisionSpec, moneySpec
+    bondsSpec, patternsSpec, shapesSpec, compassSpec, timeSpec, clockSpec,
+    measureSpec, temperatureSpec, placeValueSpec, dataSpec, divisionSpec,
+    moneySpec
 ];
 
 // Grades that list each spec id (its offered grades).

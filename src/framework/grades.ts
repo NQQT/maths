@@ -70,6 +70,11 @@ export type GradeConfig = {
         dataCap: number;
         // Max amount in cents for coins/money items (0 => no money items)
         coinCap: number;
+        // Max temperature in °C for the temperature worksheet (0 => not
+        // offered). Grade 1 reads/compares within 20°C (matching its
+        // within-20 number scope); grade 2 extends to 40°C (real-world
+        // weather range).
+        tempCap: number;
     };
 };
 
@@ -111,7 +116,8 @@ const unimplementedGrade = (id: number): GradeConfig => ({
         metricCap: 0,
         pvCap: 0,
         dataCap: 0,
-        coinCap: 0
+        coinCap: 0,
+        tempCap: 0
     }
 });
 
@@ -147,7 +153,8 @@ const arithmeticLadderGrade = (id: number): GradeConfig => ({
         metricCap: 0,
         pvCap: 0,
         dataCap: 0,
-        coinCap: 0
+        coinCap: 0,
+        tempCap: 0
     }
 });
 
@@ -177,7 +184,8 @@ const CONFIGS: GradeConfig[] = [
             metricCap: 0,
             pvCap: 10,
             dataCap: 10,
-            coinCap: 0
+            coinCap: 0,
+            tempCap: 0
         },
     },
     {
@@ -187,7 +195,8 @@ const CONFIGS: GradeConfig[] = [
         implemented: true,
         // Year 1 gets the full extension catalogue (within 20): number bonds to
         // 10, doubles to 10, patterns (steps 1/2/5/10), 2-D & 3-D shapes,
-        // days/months/seasons (no clocks), informal measurement (no cm),
+        // compass directions N/S/E/W (spatial sense), days/months/seasons (no
+        // clocks), informal measurement (no cm), temperatures within 20°C,
         // tens & ones to 20, tallies/picture & column graphs.
         available: [
             'counting',
@@ -201,8 +210,10 @@ const CONFIGS: GradeConfig[] = [
             'bonds',
             'patterns',
             'shapes',
+            'compass',
             'time',
             'measure',
+            'temperature',
             'placevalue',
             'data'
         ],
@@ -222,7 +233,10 @@ const CONFIGS: GradeConfig[] = [
             metricCap: 0,
             pvCap: 20,
             dataCap: 20,
-            coinCap: 0
+            coinCap: 0,
+            // Grade-1 temperature: friendly 1..20°C read/compare range (the
+            // same within-20 scope as every other Year 1 number sheet).
+            tempCap: 20
         },
     },
     {
@@ -237,7 +251,8 @@ const CONFIGS: GradeConfig[] = [
         // clock-faces sheet (reading + drawing hands, quarter past/to),
         // cm measurement up to a metre, bonds to 10 & 20, doubles to 20,
         // patterns with 3s & 4s steps, hexagons & extra 3-D shapes, tens &
-        // ones to 99, and bigger data counts.
+        // ones to 99, and bigger data counts. The Year-1 compass sheet
+        // carries over unchanged; the temperature sheet widens to 40°C.
         available: [
             'counting',
             'comparison',
@@ -251,9 +266,11 @@ const CONFIGS: GradeConfig[] = [
             'bonds',
             'patterns',
             'shapes',
+            'compass',
             'time',
             'clock',
             'measure',
+            'temperature',
             'placevalue',
             'data',
             'division',
@@ -276,7 +293,9 @@ const CONFIGS: GradeConfig[] = [
             metricCap: 100,
             pvCap: 99,
             dataCap: 40,
-            coinCap: 100
+            coinCap: 100,
+            // Year-2 temperature reaches the full everyday weather range.
+            tempCap: 40
         },
     },
     // Grades 3..6 — the arithmetic ladder (only Addition + Subtraction).

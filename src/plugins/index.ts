@@ -31,7 +31,10 @@
 // the left rail in this sequence (grade-gated), the first plugin's entry is
 // the default selection AND the first plugin loaded with the dashboard's
 // first render. The order mirrors the curriculum catalogue (Addition first,
-// Coins & Money last).
+// Coins & Money last); Compass Directions sits with the spatial cluster
+// (after Shapes) and Temperature with the measurement cluster (after
+// Measurement), and both stay ahead of Data & Tally — the LAST entry visible
+// on Year 1 (the dashboard tests await it to know the full rail is loaded).
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { PluginFactory } from '../framework';
@@ -47,9 +50,11 @@ import { DoublesWorksheet } from './DoublesWorksheet';
 import { NumberBondsWorksheet } from './NumberBondsWorksheet';
 import { PatternsWorksheet } from './PatternsWorksheet';
 import { ShapesWorksheet } from './ShapesWorksheet';
+import { CompassWorksheet } from './CompassWorksheet';
 import { TimeWorksheet } from './TimeWorksheet';
 import { ClockWorksheet } from './ClockWorksheet';
 import { MeasurementWorksheet } from './MeasurementWorksheet';
+import { TemperatureWorksheet } from './TemperatureWorksheet';
 import { PlaceValueWorksheet } from './PlaceValueWorksheet';
 import { DataWorksheet } from './DataWorksheet';
 import { DivisionWorksheet } from './DivisionWorksheet';
@@ -73,9 +78,11 @@ export const PLUGINS: PluginFactory[] = [
     NumberBondsWorksheet,
     PatternsWorksheet,
     ShapesWorksheet,
+    CompassWorksheet,
     TimeWorksheet,
     ClockWorksheet,
     MeasurementWorksheet,
+    TemperatureWorksheet,
     PlaceValueWorksheet,
     DataWorksheet,
     DivisionWorksheet,
