@@ -13,7 +13,7 @@
 // DashboardPlugin). The dashboard renders its shell + the first plugin
 // immediately, then loads the remaining factories ONE BY ONE after mount —
 // see framework/loader.ts (usePluginLoader). Previously every factory was
-// invoked right here at module load time, which constructed all 18 plugins
+// invoked right here at module load time, which constructed all 21 plugins
 // before the dashboard ever rendered.
 //
 // This is the ONLY file that changes when adding or removing a worksheet
