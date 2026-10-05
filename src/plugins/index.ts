@@ -32,7 +32,7 @@
 // the default selection AND the first plugin loaded with the dashboard's
 // first render. The order mirrors the curriculum catalogue (Addition first,
 // Coins & Money last); Compass Directions sits with the spatial cluster
-// (after Shapes) and Temperature with the measurement cluster (after
+// (after Shapes and Shape Transformations) and Temperature with the measurement cluster (after
 // Measurement), and both stay ahead of Data & Tally — the LAST entry visible
 // on Year 1 (the dashboard tests await it to know the full rail is loaded).
 // ─────────────────────────────────────────────────────────────────────────────
@@ -50,6 +50,7 @@ import { DoublesWorksheet } from './DoublesWorksheet';
 import { NumberBondsWorksheet } from './NumberBondsWorksheet';
 import { PatternsWorksheet } from './PatternsWorksheet';
 import { ShapesWorksheet } from './ShapesWorksheet';
+import { ShapeTransformationsWorksheet } from './ShapeTransformationsWorksheet';
 import { CompassWorksheet } from './CompassWorksheet';
 import { TimeWorksheet } from './TimeWorksheet';
 import { ClockWorksheet } from './ClockWorksheet';
@@ -78,6 +79,9 @@ export const PLUGINS: PluginFactory[] = [
     NumberBondsWorksheet,
     PatternsWorksheet,
     ShapesWorksheet,
+    // Keep Year 3's visual flips/turns separate from lower-grade recognition;
+    // plugins.test.tsx pins this spatial cluster and progressive load order.
+    ShapeTransformationsWorksheet,
     CompassWorksheet,
     TimeWorksheet,
     ClockWorksheet,

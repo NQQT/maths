@@ -11,9 +11,10 @@
 // primary scope, ACARA F-10, V8-era: Y1 within 20, Y2 within 100 + times
 // tables to 10 + coins). Grades 3..6 continue with the ARITHMETIC LADDER:
 // Addition + Subtraction, scaling one digit per year (within 1 000 →
-// 1 000 000, multi-term questions from Year 4). Grades 7..12 render a
-// "coming soon" placeholder — addition and subtraction (like every other
-// type) are finished by Year 6.
+// 1 000 000, multi-term questions from Year 4). Year 3 also offers times
+// tables to 10, cardinal NSWE and separate shape flips / 90-degree rotations.
+// Grades 7..12 render a "coming soon" placeholder: addition and subtraction
+// (like every other type) are finished by Year 6.
 //
 // `caps` drives the worksheet generators — see the per-cap comments.
 // `available` lists the worksheet plugin ids (plugins/AdditionWorksheet.ts
@@ -50,7 +51,8 @@ export type GradeConfig = {
         skipCap: number;
         // Which skip intervals (count-by) are enabled for the grade
         skipSet: readonly number[];
-        // Max operand for times-tables (grade 2 => 10, products to 100); bounds division
+        // Max operand for times-tables (Years 2 and 3 => 10, products to 100);
+        // also bounds division where that separate worksheet is offered (Year 2).
         multCap: number;
         // Max base `a` for doubles questions (a + a / a + a+1)
         doubleCap: number;
@@ -83,8 +85,8 @@ export type Caps = GradeConfig['caps'];
 
 // Grade 0 (Prep) through 2 are fully covered; Grade 2 extends the same
 // generators to bigger numbers (within 100). Grades 3..6 offer the arithmetic
-// ladder only; grades 7..12 are listed so the selector is complete but
-// flagged `implemented: false`.
+// ladder, with times tables and spatial extensions only in Year 3; grades
+// 7..12 complete the selector but are flagged `implemented: false`.
 //
 // Shape sets per grade (V8-aligned 2-D + 3-D recognition): Year 1 knows the
 // everyday set (circles, ovals, triangles, quadrilaterals + cube/cylinder/
@@ -121,20 +123,27 @@ const unimplementedGrade = (id: number): GradeConfig => ({
     }
 });
 
-// Grades 3..6 — the ARITHMETIC LADDER. Only Addition + Subtraction are
-// offered; the operand cap scales one digit per year (Y3 = within 1 000 ...
-// Y6 = within 1 000 000) and multi-term questions join from Year 4 (3 terms
+// Grades 3..6 - the ARITHMETIC LADDER. The operand cap scales one digit per
+// year (Y3 = within 1 000 ... Y6 = within 1 000 000). Multi-term questions
+// join from Year 4 (3 terms
 // in addition / 2 subtrahends in subtraction) and Year 6 (4 addends /
 // 3 subtrahends) — see plugins/AdditionWorksheet.ts and
-// plugins/SubtractionWorksheet.ts. Every other cap stays zeroed: no other
-// worksheet type is offered for these grades, and a zero cap would keep an
-// accidental gate change from producing content.
+// plugins/SubtractionWorksheet.ts. Year 3 alone also reuses
+// plugins/MultiplicationWorksheet.ts (tables to 10) and
+// plugins/CompassWorksheet.ts (cardinal NSWE, internally clockwise N/E/S/W).
+// The separate 'transformations' plugin handles shape flips / 90-degree
+// rotations, not the 'shapes' recognition sheet or a second compass plugin.
+// Years 4..6 remain arithmetic-only; all caps except opCap, addendCap and
+// Year 3's multCap stay zero/empty. Exact catalogue order and later-grade
+// configurations are pinned in grades.test.ts.
 const arithmeticLadderGrade = (id: number): GradeConfig => ({
     id,
     short: String(id),
     label: `Year ${id}`,
     implemented: true,
-    available: ['addition', 'subtraction'],
+    available: id === 3
+        ? ['addition', 'subtraction', 'mult', 'transformations', 'compass']
+        : ['addition', 'subtraction'],
     caps: {
         // One more digit each year: 10^3 (Y3) ... 10^6 (Y6).
         opCap: 10 ** id,
@@ -144,7 +153,8 @@ const arithmeticLadderGrade = (id: number): GradeConfig => ({
         wordCap: 0,
         skipCap: 0,
         skipSet: [],
-        multCap: 0,
+        // Retain Year 2's tables to 10 in Year 3; do not scale with opCap.
+        multCap: id === 3 ? 10 : 0,
         doubleCap: 0,
         bondCap: 0,
         patSet: [],
@@ -298,7 +308,7 @@ const CONFIGS: GradeConfig[] = [
             tempCap: 40
         },
     },
-    // Grades 3..6 — the arithmetic ladder (only Addition + Subtraction).
+    // Grades 3..6 - arithmetic ladder, plus Year 3's explicit extensions above.
     ...[3, 4, 5, 6].map(arithmeticLadderGrade),
     // Grades 7..12 — selector entries only; no content generated yet
     // (addition and subtraction, like every other type, are finished by

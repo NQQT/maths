@@ -23,6 +23,7 @@ import React, { Fragment } from 'react';
 import { styledComponent } from '@presource/react';
 import type { Problem } from './document';
 import type { ClockFigure } from './types';
+import { ShapeTransformationDiagram } from './ShapeTransformationDiagram';
 
 export type PrintableSheetProps = {
     // Large heading, e.g. "Year 1 — Addition".
@@ -144,8 +145,17 @@ const ProblemIndex = styledComponent('span', {
     paddingTop: '3px'
 });
 
-const ProblemText = styledComponent('span', {
-    whiteSpace: 'pre-wrap'
+// ShapeTransformationsWorksheet's six illustrated rows need compact prose and
+// the full remaining row width (types.ts ShapeTransformationFigure). Undefined
+// overrides preserve the inherited font/layout of existing text and clocks;
+// strings also avoid styledComponent converting unitless values into rem.
+const ProblemText = styledComponent<{ illustrated: boolean }>('span', {
+    whiteSpace: 'pre-wrap',
+    fontSize: ({ illustrated }) => (illustrated ? '16px' : undefined),
+    lineHeight: ({ illustrated }) => (illustrated ? '1.35' : undefined),
+    display: ({ illustrated }) => (illustrated ? 'block' : undefined),
+    minWidth: ({ illustrated }) => (illustrated ? '0px' : undefined),
+    flex: ({ illustrated }) => (illustrated ? '1' : undefined)
 });
 
 // Full-width fill-in line printed BELOW a prompt flagged `answerLine` — the
@@ -341,8 +351,11 @@ export function PrintableSheet({ title, subtitle, problems, pageLabel, single, t
                         {/* Optional analog-clock figure printed before the
                             question text (reading / draw-the-hands items). */}
                         {p.clock && <ClockFace clock={p.clock} />}
-                        <ProblemText>
+                        <ProblemText illustrated={p.shapeTransformation !== undefined}>
                             <PromptText prompt={p.prompt} wide={p.wideBlanks ?? false} />
+                            {/* Shape figures follow the prompt and its inline
+                                letter blank; answers stay in problem data. */}
+                            {p.shapeTransformation && <ShapeTransformationDiagram figure={p.shapeTransformation} />}
                             {/* Bottom writing space for answerLine prompts
                                 (their prompts carry no inline "__" blanks). */}
                             {p.answerLine && <AnswerLine />}

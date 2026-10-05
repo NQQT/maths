@@ -16,7 +16,7 @@
 //      line is safe by construction.
 //   4. SELECTION FALLBACK: a stale selection pointing at a deleted plugin
 //      snaps back to the first remaining plugin.
-//   5. THE REAL WORKSHEETS: the 21 per-type plugins (AdditionWorksheet,
+//   5. THE REAL WORKSHEETS: the 22 per-type plugins (AdditionWorksheet,
 //      SubtractionWorksheet, ...) load through the same pipeline the
 //      framework uses (the PLUGINS factory list, loaded one by one by
 //      usePluginLoader after the dashboard renders), share the dashboard
@@ -28,6 +28,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import React from 'react';
+import { arrayCreate } from '@presource/core';
 import { render, screen, fireEvent, waitFor, cleanup, act } from '@testing-library/react';
 import { describe, it, expect, afterEach } from 'vitest';
 import {
@@ -291,6 +292,7 @@ const EXPECTED_WORKSHEET_IDS = [
     'bonds',
     'patterns',
     'shapes',
+    'transformations',
     'compass',
     'time',
     'clock',
@@ -357,6 +359,54 @@ describe('the real worksheet plugins — register through the same pipeline', ()
         });
         expect(screen.queryByRole('button', { name: 'Multiplication' })).toBeNull();
         expect(screen.getByTestId('sheet-preview-page1')).toBeDefined();
+    });
+
+    it('Year 3 offers exactly the requested arithmetic and spatial plugins; Year 4 stays arithmetic-only', () => {
+        mountHost(WORKSHEETS);
+        act(() => {
+            probeStore!.session.gradeId = 3;
+        });
+        // Registry order remains addition first, transformations beside shapes,
+        // compass last among Year-3 entries (plugins/index.ts / grades.test.ts).
+        const rail = screen.getByTestId('rail-slot');
+        expect(arrayCreate(({ index }) => rail.querySelectorAll('button')[index]?.getAttribute('aria-label')))
+            .toEqual(['Addition', 'Subtraction', 'Multiplication', 'Shape Transformations', 'Compass Directions']);
+        fireEvent.click(screen.getByRole('button', { name: 'Shape Transformations' }));
+        expect(probeStore!.active).toEqual({ pluginId: 'transformations', entryId: 'transformations' });
+        expect(screen.getByTestId('toolbar-title').textContent).toBe('Year 3 — Shape Transformations');
+
+        // A now-hidden selection must reconcile to Addition rather than leave
+        // stale Year-3 diagrams on an arithmetic-only grade (host.tsx).
+        act(() => {
+            probeStore!.session.gradeId = 4;
+        });
+        expect(arrayCreate(({ index }) => rail.querySelectorAll('button')[index]?.getAttribute('aria-label')))
+            .toEqual(['Addition', 'Subtraction']);
+        expect(probeStore!.active).toEqual({ pluginId: 'addition', entryId: 'addition' });
+        expect(screen.getByTestId('toolbar-title').textContent).toBe('Year 4 — Addition');
+    });
+
+    it('Shape Transformations renders one original and four neutral lettered choices per item', () => {
+        mountHost(WORKSHEETS);
+        act(() => {
+            probeStore!.session.gradeId = 3;
+        });
+        fireEvent.click(screen.getByRole('button', { name: 'Shape Transformations' }));
+        const page = screen.getByTestId('sheet-preview-page1');
+        const images = page.querySelectorAll('svg');
+        // Exact names identify geometry, not which letter is correct. The
+        // plugin's full vertex/answer pins live in its adjacent unit tests.
+        expect(images.length).toBe(30);
+        expect(arrayCreate(({ index }) => images[index]?.getAttribute('aria-label'))).toEqual([
+            'Original pentagon 4', 'Option A', 'Option B', 'Option C', 'Option D',
+            'Original triangle 1', 'Option A', 'Option B', 'Option C', 'Option D',
+            'Original L-shape 1', 'Option A', 'Option B', 'Option C', 'Option D',
+            'Original pentagon 1', 'Option A', 'Option B', 'Option C', 'Option D',
+            'Original L-shape 4', 'Option A', 'Option B', 'Option C', 'Option D',
+            'Original pentagon 4', 'Option A', 'Option B', 'Option C', 'Option D'
+        ]);
+        const guides = page.querySelectorAll('line, circle');
+        expect(arrayCreate(({ index }) => guides[index]?.tagName)).toEqual(['line', 'line', 'circle', 'line', 'line', 'line']);
     });
 
     it('worksheet plugins share the dashboard session (page count persists across worksheets)', () => {

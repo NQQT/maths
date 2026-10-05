@@ -35,7 +35,8 @@
 // entry when an assertion needs the FULL rail.
 
 import React from 'react';
-import { render, screen, fireEvent, cleanup } from '@testing-library/react';
+import { arrayCreate, arrayEach } from '@presource/core';
+import { render, screen, fireEvent, cleanup, within } from '@testing-library/react';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { MathsDashboard } from './MathsDashboard';
 
@@ -182,6 +183,36 @@ describe('MathsDashboard — math type selection (left)', () => {
         expect(screen.getByTestId('toolbar-title').textContent).toBe('Year 2 — Multiplication');
         expect(text(screen.getByTestId('sheet-preview-page1'))).toContain('1.5 ×');
     });
+
+    // Year 3 reuses the tables-to-10 plugin. plugins/MultiplicationWorksheet.test.ts
+    // pins "7 × __ = 35"; PrintableSheet's empty blank must retain both spaces,
+    // rather than turning this missing-factor question into a product question.
+    it('Year 3 activates Multiplication with the exact missing-factor first row', async () => {
+        fireEvent.click(gradeRadio('3'));
+        fireEvent.click(
+            await screen.findByRole('button', { name: 'Multiplication' }, { timeout: 20_000 })
+        );
+
+        const page = screen.getByTestId('sheet-preview-page1');
+        expect(screen.getByTestId('toolbar-title').textContent).toBe('Year 3 \u2014 Multiplication');
+        expect(text(within(page).getByText('1.').parentElement)).toBe('1.7 ×  = 35');
+    });
+
+    // NSWE uses the existing Compass plugin, not a second directions entry.
+    // plugins/CompassWorksheet.test.ts pins this Year 3 prompt; it is currently
+    // prose only, so an answer line or an inline blank would change the row DOM.
+    it('Year 3 activates Compass Directions with the exact prose first row', async () => {
+        fireEvent.click(gradeRadio('3'));
+        fireEvent.click(
+            await screen.findByRole('button', { name: 'Compass Directions' }, { timeout: 20_000 })
+        );
+
+        const page = screen.getByTestId('sheet-preview-page1');
+        const row = within(page).getByText('1.').parentElement!;
+        expect(screen.getByTestId('toolbar-title').textContent).toBe('Year 3 \u2014 Compass Directions');
+        expect(text(row)).toBe('1.You are facing West. What direction is on your left?');
+        expect(row.lastElementChild!.children.length).toBe(0);
+    });
 });
 
 describe('MathsDashboard — grade selection (top-right)', () => {
@@ -199,8 +230,8 @@ describe('MathsDashboard — grade selection (top-right)', () => {
     });
 
     it('shows a coming-soon placeholder for an unimplemented grade (Year 7)', () => {
-        // Grades 0..6 are implemented (0..2 full catalogue, 3..6 the addition
-        // ladder); Year 7 is the first grade with no content at all.
+        // Grades 0..6 are implemented (0..2 full catalogue, 3..6 arithmetic
+        // ladder plus Year 3 extensions); Year 7 has no content at all.
         fireEvent.click(gradeRadio('7'));
         // The canvas empty state announces the grade is not implemented yet.
         expect(screen.getByText(/coming soon/i)).toBeDefined();
@@ -209,22 +240,96 @@ describe('MathsDashboard — grade selection (top-right)', () => {
         expect(screen.queryByTestId('sheet-preview')).toBeNull();
     });
 
-    it('grades 3..6 offer the arithmetic ladder (Year 3 within 1000)', () => {
-        // The ladder grades list exactly two rail entries — Addition and
-        // Subtraction — and the canvas renders the progressively harder
-        // sheets straight away.
+    it('Year 3 offers its exact five-entry rail without changing the arithmetic streams', async () => {
+        // Compass is the LAST Year 3 entry in plugins/index.ts. Await it before
+        // pinning the whole rail: framework/loader.test.tsx covers the chained
+        // loading, while plugin tests pin each entry's own grade gate.
         fireEvent.click(gradeRadio('3'));
-        expect(screen.getByRole('button', { name: 'Addition' })).toBeDefined();
-        expect(screen.getByRole('button', { name: 'Subtraction' })).toBeDefined();
-        expect(screen.queryByRole('button', { name: 'Multiplication' })).toBeNull();
-        // Year 3 addition first row is "53 + 942 =" (within 1000).
-        expect(text(screen.getByTestId('sheet-preview-page1'))).toContain('1.53 + 942 =');
-        expect(screen.getByTestId('toolbar-title').textContent).toBe('Year 3 — Addition');
-        // Picking Subtraction swaps to its Year 3 sheet (first row pinned in
-        // SubtractionWorksheet.test.ts).
-        fireEvent.click(screen.getByRole('button', { name: 'Subtraction' }));
-        expect(text(screen.getByTestId('sheet-preview-page1'))).toContain('1.990 - 175 =');
-        expect(screen.getByTestId('toolbar-title').textContent).toBe('Year 3 — Subtraction');
+        const rail = screen.getByRole('heading', { name: 'Math Type' }).parentElement!;
+        await within(rail).findByRole('button', { name: 'Compass Directions' }, { timeout: 20_000 });
+        const buttons = within(rail).getAllByRole('button');
+        expect(arrayCreate(({ index }) => buttons[index]?.lastElementChild?.textContent)).toEqual([
+            'Addition', 'Subtraction', 'Multiplication', 'Shape Transformations', 'Compass Directions'
+        ]);
+
+        // New spatial entries must not alter the arithmetic seeds. The exact
+        // first rows remain pinned in plugins/AdditionWorksheet.test.ts and
+        // plugins/SubtractionWorksheet.test.ts, including the rendered blank.
+        const page = screen.getByTestId('sheet-preview-page1');
+        expect(text(within(page).getByText('1.').parentElement)).toBe('1.53 + 942 = ');
+        expect(screen.getByTestId('toolbar-title').textContent).toBe('Year 3 \u2014 Addition');
+        fireEvent.click(
+            await within(rail).findByRole('button', { name: 'Subtraction' }, { timeout: 20_000 })
+        );
+        expect(text(within(screen.getByTestId('sheet-preview-page1')).getByText('1.').parentElement))
+            .toBe('1.990 - 175 = ');
+        expect(screen.getByTestId('toolbar-title').textContent).toBe('Year 3 \u2014 Subtraction');
+    });
+
+    // Await the Year 1 catalogue BEFORE switching: every Year 3 extension is
+    // then loaded, so missing later-grade buttons prove gating, not a race.
+    // See plugins/index.ts and the unchanged pins in AdditionWorksheet.test.ts.
+    it.each([
+        { grade: '4', firstRow: '1.790 + 1541 + 2805 = ' },
+        { grade: '5', firstRow: '1.32798 + 52862 + 1006 = ' },
+        { grade: '6', firstRow: '1.536401 + 83342 = ' }
+    ])('Year $grade remains arithmetic-only', async ({ grade, firstRow }) => {
+        await allVisiblePluginsLoaded();
+        fireEvent.click(gradeRadio(grade));
+        const rail = screen.getByRole('heading', { name: 'Math Type' }).parentElement!;
+        await within(rail).findByRole('button', { name: 'Subtraction' }, { timeout: 20_000 });
+        const buttons = within(rail).getAllByRole('button');
+        expect(arrayCreate(({ index }) => buttons[index]?.lastElementChild?.textContent))
+            .toEqual(['Addition', 'Subtraction']);
+        expect(screen.getByTestId('toolbar-title').textContent).toBe(`Year ${grade} \u2014 Addition`);
+        expect(text(within(screen.getByTestId('sheet-preview-page1')).getByText('1.').parentElement))
+            .toBe(firstRow);
+    });
+
+    // ShapeTransformationsWorksheet.test.ts excludes Year 2. Await Compass,
+    // the last Year 3 entry in plugins/index.ts, so the later rail pin tests
+    // gating, not loading. The host must fall back to Addition without resetting
+    // the shared page count (framework/host.tsx and worksheet-kit.tsx).
+    it('falls back from transformations to Year 2 Addition, preserving pages into Year 4', async () => {
+        fireEvent.click(gradeRadio('3'));
+        const rail = screen.getByRole('heading', { name: 'Math Type' }).parentElement!;
+        fireEvent.click(
+            await within(rail).findByRole('button', { name: 'Shape Transformations' }, { timeout: 20_000 })
+        );
+        await within(rail).findByRole('button', { name: 'Compass Directions' }, { timeout: 20_000 });
+        fireEvent.change(screen.getByTestId('page-count'), { target: { value: '2' } });
+        expect(screen.getByTestId('toolbar-title').textContent).toBe('Year 3 \u2014 Shape Transformations');
+
+        fireEvent.click(gradeRadio('2'));
+        await within(rail).findByRole('button', { name: 'Addition' }, { timeout: 20_000 });
+        expect(within(rail).queryByRole('button', { name: 'Shape Transformations' })).toBe(null);
+        expect(screen.getByTestId('toolbar-title').textContent).toBe('Year 2 \u2014 Addition');
+        expect(text(within(screen.getByTestId('sheet-preview-page1')).getByText('1.').parentElement))
+            .toBe('1.45 + 41 = ');
+        expect((screen.getByTestId('page-count') as HTMLInputElement).value).toBe('2');
+        expect(screen.getByTestId('sheet-preview').querySelectorAll('[data-testid^="sheet-preview-page"]').length)
+            .toBe(2);
+        expect(document.querySelectorAll('.print-page').length).toBe(2);
+
+        // Year 4 must not inherit the spatial or tables entries, nor disable
+        // valid arithmetic controls after fallback. AdditionWorksheet.test.ts
+        // pins this multi-addend first row; both pages must still be printable.
+        fireEvent.click(gradeRadio('4'));
+        await within(rail).findByRole('button', { name: 'Subtraction' }, { timeout: 20_000 });
+        const buttons = within(rail).getAllByRole('button');
+        expect(arrayCreate(({ index }) => buttons[index]?.lastElementChild?.textContent))
+            .toEqual(['Addition', 'Subtraction']);
+        expect(screen.getByTestId('toolbar-title').textContent).toBe('Year 4 \u2014 Addition');
+        expect(text(within(screen.getByTestId('sheet-preview-page1')).getByText('1.').parentElement))
+            .toBe('1.790 + 1541 + 2805 = ');
+        expect((screen.getByTestId('page-count') as HTMLInputElement).value).toBe('2');
+        expect(screen.getByTestId('sheet-preview').querySelectorAll('[data-testid^="sheet-preview-page"]').length)
+            .toBe(2);
+        expect(document.querySelectorAll('.print-page').length).toBe(2);
+        expect(randomizeButton().getAttribute('aria-disabled')).toBe(null);
+        expect(toolbarPrint().getAttribute('aria-disabled')).toBe(null);
+        expect(screen.getByRole('button', { name: 'Decrease pages' }).getAttribute('aria-disabled')).toBe(null);
+        expect(screen.getByRole('button', { name: 'Increase pages' }).getAttribute('aria-disabled')).toBe(null);
     });
 });
 
@@ -343,6 +448,126 @@ describe('MathsDashboard — zoom control', () => {
 });
 
 describe('MathsDashboard — print flow (native dialog, preview IS the preview)', () => {
+    // The plugin snapshot pins the seeded prose/figures; this host pin guards
+    // activation, six original-plus-four-choice rows and the separate native
+    // print mount (plugins/ShapeTransformationsWorksheet.test.ts and
+    // framework/ShapeTransformationDiagram.test.tsx own the underlying maths).
+    it('Year 3 Shape Transformations keeps exact text and geometry identical across two printed pages', async () => {
+        fireEvent.click(gradeRadio('3'));
+        fireEvent.click(
+            await screen.findByRole('button', { name: 'Shape Transformations' }, { timeout: 20_000 })
+        );
+
+        const title = 'Year 3 \u2014 Shape Transformations';
+        const subtitle = 'Shape Transformations \u2014 flips & 90\u00b0 turns';
+        const page = screen.getByTestId('sheet-preview-page1');
+        const grid = within(page).getByText('1.').parentElement!.parentElement!;
+        expect(screen.getByTestId('toolbar-title').textContent).toBe(title);
+        expect(text(screen.getByTestId('toolbar-title').nextElementSibling)).toBe(subtitle);
+        expect(within(page).getByRole('heading', { level: 1 }).textContent).toBe(title);
+        expect(text(page.querySelector('p'))).toBe(subtitle);
+        expect(text(grid.children[0])).toBe(
+            '1.Flip pentagon 4 left to right across the dashed vertical line. Which option matches? OriginalABCD'
+        );
+        expect(grid.children.length).toBe(6);
+        expect(page.querySelectorAll('svg').length).toBe(30);
+        expect(arrayCreate(({ index }) => grid.children[index]?.querySelectorAll('svg').length))
+            .toEqual([5, 5, 5, 5, 5, 5]);
+
+        // Pin the original and candidate order independently of preview/print
+        // equality: two equally wrong surfaces must not pass. These vertices
+        // come from the first-sheet ShapeTransformationsWorksheet snapshot.
+        const firstPolygons = grid.children[0].querySelectorAll('polygon');
+        expect(arrayCreate(({ index }) => firstPolygons[index]?.getAttribute('points'))).toEqual([
+            '-2,3 -2,-1 0,-3 3,-1 1,3',
+            '-2,3 -2,-1 0,-3 3,-1 1,3',
+            '-2,-3 -2,1 0,3 3,1 1,-3',
+            '2,3 2,-1 0,-3 -3,-1 -1,3',
+            '-3,-2 1,-2 3,0 1,3 -3,1'
+        ]);
+
+        // Page 2 continues ids 7..12, not a second copy of page 1. Exact row
+        // arrays mirror both snapshots in ShapeTransformationsWorksheet.test.ts;
+        // the empty answer span disappears from textContent, not the diagrams.
+        const expectedRows = [
+            [
+                '1.Flip pentagon 4 left to right across the dashed vertical line. Which option matches? OriginalABCD',
+                '2.Flip triangle 1 top to bottom across the dashed horizontal line. Which option matches? OriginalABCD',
+                '3.Rotate L-shape 1 90\u00b0 anticlockwise (a quarter turn left) around the dot. Which option matches? OriginalABCD',
+                '4.Flip pentagon 1 top to bottom across the dashed horizontal line. Which option matches? OriginalABCD',
+                '5.Flip L-shape 4 top to bottom across the dashed horizontal line. Which option matches? OriginalABCD',
+                '6.Flip pentagon 4 top to bottom across the dashed horizontal line. Which option matches? OriginalABCD'
+            ],
+            [
+                '7.Rotate pentagon 2 90\u00b0 clockwise (a quarter turn right) around the dot. Which option matches? OriginalABCD',
+                '8.Flip triangle 3 top to bottom across the dashed horizontal line. Which option matches? OriginalABCD',
+                '9.Flip triangle 4 top to bottom across the dashed horizontal line. Which option matches? OriginalABCD',
+                '10.Rotate L-shape 2 90\u00b0 clockwise (a quarter turn right) around the dot. Which option matches? OriginalABCD',
+                '11.Flip triangle 4 left to right across the dashed vertical line. Which option matches? OriginalABCD',
+                '12.Flip triangle 2 left to right across the dashed vertical line. Which option matches? OriginalABCD'
+            ]
+        ];
+        fireEvent.change(screen.getByTestId('page-count'), { target: { value: '2' } });
+        const shells = screen.getByTestId('sheet-preview').querySelectorAll('[data-testid^="sheet-preview-page"]');
+        const printDoc = document.querySelector('.print-doc')!;
+        const printPages = printDoc.querySelectorAll('.print-page');
+        const previewSheets: Element[] = arrayCreate(({ index }) => shells[index]?.firstElementChild?.firstElementChild);
+        const printSheets: Element[] = arrayCreate(({ index }) => printPages[index]?.firstElementChild);
+        expect((screen.getByTestId('page-count') as HTMLInputElement).value).toBe('2');
+        expect(previewSheets.length).toBe(2);
+        expect(printSheets.length).toBe(2);
+        arrayEach(previewSheets, ({ value: sheet, index }) => {
+            const rows = sheet.children[2].children;
+            expect(arrayCreate(({ index: rowIndex }) => rows[rowIndex]?.textContent)).toEqual(expectedRows[index]);
+            expect(arrayCreate(({ index: rowIndex }) => rows[rowIndex]?.querySelectorAll('svg').length))
+                .toEqual([5, 5, 5, 5, 5, 5]);
+        });
+
+        // Compare worksheet roots, not PageStack's screen-only page badges.
+        // Full polygon/guide markup also catches guide coordinates or dash
+        // styling diverging between mounts (ShapeTransformationDiagram.test.tsx).
+        function content(sheets: Element[]) {
+            return arrayCreate(({ index }) => {
+                const sheet = sheets[index];
+                if (!sheet) return undefined;
+                const polygons = sheet.querySelectorAll('polygon');
+                const guides = sheet.querySelectorAll('line, circle');
+                return {
+                    text: text(sheet),
+                    polygons: arrayCreate(({ index: polygonIndex }) => polygons[polygonIndex]?.outerHTML),
+                    guides: arrayCreate(({ index: guideIndex }) => guides[guideIndex]?.outerHTML)
+                };
+            });
+        }
+        const previewContent = content(previewSheets);
+        expect(content(printSheets)).toEqual(previewContent);
+        const header = `${title}${subtitle}Name: Date: `;
+        expect(arrayCreate(({ index }) => previewContent[index]?.text)).toEqual([
+            `${header}${expectedRows[0].join('')}Maths SheetsPage 1 of 2`,
+            `${header}${expectedRows[1].join('')}Maths SheetsPage 2 of 2`
+        ]);
+        expect(arrayCreate(({ index }) => previewContent[index]?.polygons.length)).toEqual([30, 30]);
+        const vertical = '<line x1="0" y1="-4" x2="0" y2="4" stroke="#1a1a1a" stroke-width="0.12" stroke-dasharray="0.4 0.3"></line>';
+        const horizontal = '<line x1="-4" y1="0" x2="4" y2="0" stroke="#1a1a1a" stroke-width="0.12" stroke-dasharray="0.4 0.3"></line>';
+        const centre = '<circle cx="0" cy="0" r="0.2" fill="#1a1a1a"></circle>';
+        expect(arrayCreate(({ index }) => previewContent[index]?.guides)).toEqual([
+            [vertical, horizontal, centre, horizontal, horizontal, horizontal],
+            [centre, horizontal, horizontal, centre, vertical, vertical]
+        ]);
+
+        // worksheet-kit.tsx marks the native print tree screen-hidden. It must
+        // stay outside .app-chrome or print media would hide every shape page;
+        // the enabled Print action must still reach window.print immediately.
+        expect(printDoc.getAttribute('aria-hidden')).toBe('true');
+        expect(printDoc.closest('.app-chrome')).toBe(null);
+        expect(toolbarPrint().getAttribute('aria-disabled')).toBe(null);
+        const printSpy = vi.fn();
+        window.print = printSpy;
+        fireEvent.click(toolbarPrint());
+        expect(printSpy.mock.calls.length).toBe(1);
+        expect(content(printSheets)).toEqual(previewContent);
+    });
+
     it('Print fires window.print immediately and leaves the content view in place', () => {
         // window.print is a jsdom no-op — replace it with a spy we can assert on.
         const printSpy = vi.fn();

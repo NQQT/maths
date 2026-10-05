@@ -17,13 +17,13 @@
 
 import { createRng } from './rng';
 import type { GradeConfig } from './grades';
-import type { ClockFigure, RawProblem, WorksheetSpec } from './types';
+import type { ClockFigure, ShapeTransformationFigure, RawProblem, WorksheetSpec } from './types';
 
 // A problem as printed: the plugin's prompt/answer plus the framework-assigned
 // document position (1-based, continuous across pages) and the owning
-// worksheet's id as the type tag. The optional clock figure rides along
+// worksheet's id as the type tag. Optional clock and shape figures ride along
 // verbatim (buildDocument spreads the raw problem), so preview + print render
-// the exact same clock faces the generator produced.
+// the exact same figures the generator produced (document.test.ts pins both).
 export type Problem = {
     // 1-based position on the sheet (assigned by buildDocument).
     id: number;
@@ -33,6 +33,9 @@ export type Problem = {
     answer: string;
     // Optional analog-clock figure (see types.ts ClockFigure).
     clock?: ClockFigure;
+    // Optional shape choices and mirror/turn guide (types.ts); no geometry is
+    // recomputed while stamping ids or chunking pages.
+    shapeTransformation?: ShapeTransformationFigure;
     // true = the prompt's "__" blanks print as wide fill-in lines.
     wideBlanks?: boolean;
     // true = a full-width fill-in line prints BELOW the prompt.

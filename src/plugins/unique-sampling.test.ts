@@ -40,6 +40,7 @@ import { doublesSpec } from './DoublesWorksheet';
 import { bondsSpec } from './NumberBondsWorksheet';
 import { patternsSpec } from './PatternsWorksheet';
 import { shapesSpec } from './ShapesWorksheet';
+import { shapeTransformationsSpec } from './ShapeTransformationsWorksheet';
 import { compassSpec } from './CompassWorksheet';
 import { timeSpec } from './TimeWorksheet';
 import { clockSpec } from './ClockWorksheet';
@@ -75,6 +76,8 @@ const CAPACITIES: { spec: WorksheetSpec; gradeId: number; capacity: number }[] =
     // Times tables to 10 = exactly 100 facts x 3 prompt forms (product,
     // first factor, second factor unknown) = 300 distinct questions.
     { spec: multiplicationSpec, gradeId: 2, capacity: 300 },
+    // Third grade reuses the same 1..10 factors, not its addition opCap.
+    { spec: multiplicationSpec, gradeId: 3, capacity: 300 },
     { spec: wordSpec, gradeId: 1, capacity: 1000 },
     { spec: wordSpec, gradeId: 2, capacity: 1000 },
     { spec: dataSpec, gradeId: 1, capacity: 1800 },
@@ -101,15 +104,19 @@ const CAPACITIES: { spec: WorksheetSpec; gradeId: number; capacity: number }[] =
     // measure, compass, place value, money): the capacity IS the curated
     // space — every distinct question prints once before the first repeat.
     // Compass = 62 prompts (6 turn/side kinds x 4 facings + 3 map edges +
-    // 8 walk names x 4 facings + 3 facts), identical at both grades.
+    // 8 walk names x 4 facings + 3 facts), identical through Year 3.
     { spec: doublesSpec, gradeId: 1, capacity: 48 },
     { spec: doublesSpec, gradeId: 2, capacity: 98 },
     { spec: bondsSpec, gradeId: 1, capacity: 36 },
     { spec: bondsSpec, gradeId: 2, capacity: 112 },
     { spec: shapesSpec, gradeId: 1, capacity: 85 },
     { spec: shapesSpec, gradeId: 2, capacity: 252 },
+    // 3 asymmetric outlines × 4 orientations × 4 flips/quarter-turns; names
+    // distinguish diagrams so prompt-keyed uniqueness keeps the full bank.
+    { spec: shapeTransformationsSpec, gradeId: 3, capacity: 48 },
     { spec: compassSpec, gradeId: 1, capacity: 62 },
     { spec: compassSpec, gradeId: 2, capacity: 62 },
+    { spec: compassSpec, gradeId: 3, capacity: 62 },
     { spec: timeSpec, gradeId: 1, capacity: 79 },
     { spec: timeSpec, gradeId: 2, capacity: 115 },
     { spec: clockSpec, gradeId: 2, capacity: 146 },

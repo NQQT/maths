@@ -7,10 +7,11 @@
 // answers per grade) are pinned in each worksheet plugin's own test file.
 
 import { describe, it, expect } from 'vitest';
+import { arrayCreate } from '@presource/core';
 import { createRng, type Rng } from './rng';
 import { getGradeConfig } from './grades';
 import { buildDocument, generateDocument, generateSheet, type Problem } from './document';
-import type { WorksheetSpec } from './types';
+import type { ShapeTransformationFigure, WorksheetSpec } from './types';
 
 const g1 = getGradeConfig(1);
 
@@ -115,5 +116,43 @@ describe('buildDocument — multi-page worksheets', () => {
         // i 24, even => drawn-hands variant { hour: 25, minute: 30 }).
         expect(doc.pages[1][0].clock).toEqual({ hour: 25, minute: 30 });
         expect(doc.pages[1][0].id).toBe(25);
+    });
+
+    it('preserves shape vertices, guide and option order across page boundaries', () => {
+        // Figure data belongs to the plugin, not the chunker. Two-question
+        // pages expose both continuous ids and unchanged figure metadata;
+        // ShapeTransformationDiagram.test.tsx covers the rendering contract.
+        const figure: ShapeTransformationFigure = {
+            name: 'triangle',
+            original: [[-2, -2], [2, -2], [-2, 1]],
+            guide: 'vertical',
+            options: [
+                { label: 'A', points: [[2, -2], [-2, -2], [2, 1]] },
+                { label: 'B', points: [[-2, -2], [2, -2], [-2, 1]] }
+            ]
+        };
+        const shapeSpec: WorksheetSpec = {
+            ...fakeSpec,
+            id: 'shape-figure',
+            perPage: 2,
+            generate: (_rng, _caps, count) => arrayCreate(({ index }) => index < count ? {
+                prompt: `Flip triangle ${index + 1}. __`,
+                answer: 'A',
+                shapeTransformation: figure
+            } : undefined)
+        };
+        expect(generateDocument(shapeSpec, g1, 42, 2)).toEqual({
+            pages: [
+                [
+                    { id: 1, type: 'shape-figure', prompt: 'Flip triangle 1. __', answer: 'A', shapeTransformation: figure },
+                    { id: 2, type: 'shape-figure', prompt: 'Flip triangle 2. __', answer: 'A', shapeTransformation: figure }
+                ],
+                [
+                    { id: 3, type: 'shape-figure', prompt: 'Flip triangle 3. __', answer: 'A', shapeTransformation: figure },
+                    { id: 4, type: 'shape-figure', prompt: 'Flip triangle 4. __', answer: 'A', shapeTransformation: figure }
+                ]
+            ],
+            total: 4
+        });
     });
 });

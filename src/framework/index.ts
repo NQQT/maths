@@ -17,6 +17,8 @@ export * from './document';
 export * from './page-scale';
 export * from './PageStack';
 export * from './PrintableSheet';
+// Data-only shape figures are shared by preview/print, not coupled to a plugin.
+export * from './ShapeTransformationDiagram';
 export * from './ZoomControl';
 export * from './GradeSelector';
 export * from './store';

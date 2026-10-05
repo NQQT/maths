@@ -152,6 +152,28 @@ export type ClockFigure = {
     hands?: boolean;
 };
 
+// Shape coordinates are local to the printed diagram's centre (0, 0), with
+// positive y DOWN as in SVG. The transformation plugin owns the maths;
+// ShapeTransformationDiagram.tsx only draws these exact integer vertices.
+export type ShapePoint = readonly [x: number, y: number];
+
+// A labelled candidate outline, not a transform instruction: preview and print
+// must not calculate their own answers or disagree about option placement.
+export type ShapeOption = {
+    label: string;
+    points: readonly ShapePoint[];
+};
+
+// Optional shape question figure alongside ClockFigure. The dashed mirror line
+// or centre dot appears on the ORIGINAL only; answers remain private problem
+// data, just as clock answers do (plugins/ShapeTransformationsWorksheet.ts).
+export type ShapeTransformationFigure = {
+    name: string;
+    original: readonly ShapePoint[];
+    options: readonly ShapeOption[];
+    guide: 'vertical' | 'horizontal' | 'centre';
+};
+
 // A problem as a plugin's generator produces it (before the framework assigns
 // ids and the type tag while chunking pages).
 export type RawProblem = {
@@ -161,6 +183,9 @@ export type RawProblem = {
     answer: string;
     // Optional analog-clock figure rendered before the prompt (see above).
     clock?: ClockFigure;
+    // Optional original outline and lettered transformation choices; the same
+    // figure is preserved by document.ts and drawn by PrintableSheet.tsx.
+    shapeTransformation?: ShapeTransformationFigure;
     // true = the prompt's "__" blanks print as WIDE fill-in lines (the
     // name/date size), for handwritten answers that do not fit the default
     // short blank — e.g. the clock sheets' "quarter past 11" word answers.

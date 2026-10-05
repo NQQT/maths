@@ -11,13 +11,14 @@ import { getGradeConfig } from './grades';
 const g0 = getGradeConfig(0);
 const g1 = getGradeConfig(1);
 const g2 = getGradeConfig(2);
+const g3 = getGradeConfig(3);
 
 describe('grade catalogue', () => {
     it('lists grades 0..12 with Prep / Year N labels', () => {
         const labels = getGradeConfig(0).label + '|' + getGradeConfig(12).label;
         expect(labels).toBe('Prep|Year 12');
-        // Grades 0..6 have real content (0..2 full catalogue, 3..6 the
-        // addition ladder); grade 7 and above are not implemented yet.
+        // Grades 0..6 have real content (0..2 full catalogue, Year 3's
+        // extensions and the 3..6 arithmetic ladder); 7+ is not implemented.
         expect(g0.implemented).toBe(true);
         expect(g1.implemented).toBe(true);
         expect(g2.implemented).toBe(true);
@@ -27,33 +28,71 @@ describe('grade catalogue', () => {
         expect(getGradeConfig(12).implemented).toBe(false);
     });
 
-    it('grades 3..6 form the arithmetic ladder (only +/-, one digit per year)', () => {
-        // Only Addition + Subtraction are offered from Year 3 to Year 6 —
-        // every other type (and these two themselves from Year 7) is
-        // finished/absent.
-        for (const id of [3, 4, 5, 6]) {
-            const grade = getGradeConfig(id);
-            expect(grade.available).toEqual(['addition', 'subtraction']);
-        }
-        // The operand cap scales exactly one digit per year...
-        expect(getGradeConfig(3).caps.opCap).toBe(1000);
-        expect(getGradeConfig(4).caps.opCap).toBe(10000);
-        expect(getGradeConfig(5).caps.opCap).toBe(100000);
-        expect(getGradeConfig(6).caps.opCap).toBe(1000000);
-        // ...while multi-addend questions phase in: pairs through Y3,
-        // 3 addends from Y4, 4 addends in Y6.
-        expect(getGradeConfig(3).caps.addendCap).toBe(2);
-        expect(getGradeConfig(4).caps.addendCap).toBe(3);
-        expect(getGradeConfig(5).caps.addendCap).toBe(3);
-        expect(getGradeConfig(6).caps.addendCap).toBe(4);
-        // All other generators are capped out for these grades.
-        for (const id of [3, 4, 5, 6]) {
-            const caps = getGradeConfig(id).caps;
-            expect(caps.numCap).toBe(0);
-            expect(caps.multCap).toBe(0);
-            expect(caps.coinCap).toBe(0);
-            expect(caps.shapeSet).toEqual([]);
-        }
+    it('grade 3 offers the exact ordered arithmetic and spatial catalogue', () => {
+        // Reuse MultiplicationWorksheet and CompassWorksheet; 'transformations'
+        // is the separate shape-flip / 90-degree rotation plugin, not 'shapes'.
+        // CompassWorksheet.test.ts pins the existing clockwise N/E/S/W turns.
+        expect(g3).toEqual({
+            id: 3,
+            short: '3',
+            label: 'Year 3',
+            implemented: true,
+            available: ['addition', 'subtraction', 'mult', 'transformations', 'compass'],
+            caps: {
+                opCap: 1000,
+                addendCap: 2,
+                numCap: 0,
+                wordCap: 0,
+                skipCap: 0,
+                skipSet: [],
+                multCap: 10,
+                doubleCap: 0,
+                bondCap: 0,
+                patSet: [],
+                shapeSet: [],
+                clockCap: 0,
+                metricCap: 0,
+                pvCap: 0,
+                dataCap: 0,
+                coinCap: 0,
+                tempCap: 0
+            }
+        });
+    });
+
+    it.each([
+        [4, 10000, 3],
+        [5, 100000, 3],
+        [6, 1000000, 4]
+    ])('grade %i preserves its complete arithmetic-only configuration', (id, opCap, addendCap) => {
+        // Year 3's extra ids and multCap must not leak through the shared
+        // arithmeticLadderGrade helper; every later-grade cap stays pinned.
+        expect(getGradeConfig(id)).toEqual({
+            id,
+            short: String(id),
+            label: `Year ${id}`,
+            implemented: true,
+            available: ['addition', 'subtraction'],
+            caps: {
+                opCap,
+                addendCap,
+                numCap: 0,
+                wordCap: 0,
+                skipCap: 0,
+                skipSet: [],
+                multCap: 0,
+                doubleCap: 0,
+                bondCap: 0,
+                patSet: [],
+                shapeSet: [],
+                clockCap: 0,
+                metricCap: 0,
+                pvCap: 0,
+                dataCap: 0,
+                coinCap: 0,
+                tempCap: 0
+            }
+        });
     });
 
     it('grade 7 and above offer nothing (addition ends at Year 6)', () => {
@@ -131,10 +170,11 @@ describe('grade catalogue', () => {
         expect(g0.available).not.toContain('mult');
         expect(g1.available).not.toContain('division');
         expect(g1.available).not.toContain('money');
-        // The times-tables cap is set to 10 only for grade 2; the extension
+        // Years 2 and 3 retain the same tables to 10; the other extension
         // caps are also grade-specific (Y2 doubles to 20, coins to 100c,
         // temperature to 40°C while Year 1 keeps its within-20 sheet).
         expect(g2.caps.multCap).toBe(10);
+        expect(g3.caps.multCap).toBe(10);
         expect(g1.caps.multCap).toBe(0);
         expect(g2.caps.doubleCap).toBe(20);
         expect(g1.caps.doubleCap).toBe(10);
