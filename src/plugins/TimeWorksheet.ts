@@ -104,15 +104,26 @@ function generateTime(rng: Rng, caps: Caps, count: number): RawProblem[] {
                 }
                 case 'clock': {
                     // O'clock now, k (1-2) hours later; answer wraps at 12.
+                    // The clock figure (framework ClockFigure, drawn by
+                    // PrintableSheet's ClockFace) shows the GIVEN "now" face with
+                    // hands — the later answer time is never drawn.
                     const h = rng.int(1, 12);
                     const k = rng.int(1, 2);
                     const h2 = ((h - 1 + k) % 12) + 1;
-                    return { prompt: `It is ${h} o'clock now. What time is it ${k} ${k === 1 ? 'hour' : 'hours'} later?`, answer: `${h2} o'clock` };
+                    return {
+                        prompt: `It is ${h} o'clock now. What time is it ${k} ${k === 1 ? 'hour' : 'hours'} later?`,
+                        answer: `${h2} o'clock`,
+                        clock: { hour: h, minute: 0 }
+                    };
                 }
                 default: {
                     // 'half': half-past h now, one hour later (half past 12 wraps back to 1).
                     const h = rng.int(1, 12);
-                    return { prompt: `It is half past ${h} now. What time is it one hour later?`, answer: `half past ${(h % 12) + 1}` };
+                    return {
+                        prompt: `It is half past ${h} now. What time is it one hour later?`,
+                        answer: `half past ${(h % 12) + 1}`,
+                        clock: { hour: h, minute: 30 }
+                    };
                 }
             }
         },

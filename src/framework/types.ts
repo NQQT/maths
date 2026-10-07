@@ -174,6 +174,105 @@ export type ShapeTransformationFigure = {
     guide: 'vertical' | 'horizontal' | 'centre';
 };
 
+// Optional row/column grid figure alongside ClockFigure (types.ts). The
+// generator owns the row/column math (totals, missing columns, products);
+// RowsColumnsDiagram.tsx only draws this exact r × c lattice of squares in
+// preview AND print. Answers stay private problem data, like the clock's.
+export type RowsColumnsFigure = {
+    // Number of horizontal grid rows (the "how many rows?" answer).
+    rows: number;
+    // Number of vertical grid columns (the "how many columns?" answer).
+    cols: number;
+};
+
+// ── Data & Tally figure (DataWorksheet) ───────────────────────────────────────
+// The three printed data forms, drawn by framework/DataDiagram.tsx. The
+// generator owns every count; the renderer NEVER prints a total, difference
+// or unit scale — answers stay private problem data.
+export type DataFigure =
+    // Classic grouped tallies: floor(total/5) five-groups + (total % 5) strokes.
+    | { kind: 'tally'; total: number }
+    // Picture graph: one star per counted unit (the star → thing scale lives in
+    // the prompt text, "1 star = u things"; the figure is the stars only).
+    | { kind: 'picture'; stars: number }
+    // Column graph: two named bars, value = number of squares (1 square = 1
+    // vote). The "how many more" difference is the PRIVATE answer.
+    | { kind: 'column'; leftName: string; rightName: string; left: number; right: number };
+
+// ── Shapes figure (ShapesWorksheet) ────────────────────────────────────────────
+// One labelled 2-D/3-D shape the question shows (framework/ShapeFigure.tsx
+// draws the geometrically accurate outline + its label). Multiple entries
+// are the printed multiple-choice candidates, in the prompt's option order.
+export type ShapeFigure = {
+    // Shape name from the plugin's catalogue (also the printed card label).
+    name: string;
+    // '2d' outlines vs '3d' solids — the renderer picks the shape library.
+    kind: '2d' | '3d';
+};
+
+// ── Number bond figure (NumberBondsWorksheet) ─────────────────────────────────
+// Part-part-whole diagram (framework/BondDiagram.tsx): the whole circle and
+// the GIVEN part circle print their values; the REQUESTED part prints as a
+// blank circle (null) — the missing answer is never written into the figure.
+export type BondFigure = {
+    // The part-part-whole total (10, or 10/20 in Year 2).
+    whole: number;
+    // Given left part, or null = the requested (blank) part.
+    left: number | null;
+    // Given right part, or null = the requested (blank) part.
+    right: number | null;
+};
+
+// ── Compass figure (CompassWorksheet) ─────────────────────────────────────────
+// Reference rose/map (framework/CompassDiagram.tsx): a compass rose with the
+// four cardinals, or a N-at-top map square. `facing` marks the direction the
+// student IS facing (given by the prompt) and `turn` draws the instructed
+// quarter/half-turn arrow — the direction LANDING on (the answer) is never
+// labelled.
+export type CompassCardinal = 'North' | 'East' | 'South' | 'West';
+export type CompassFigure = {
+    // true = print the N-at-top map square (map-orientation items) instead of
+    // the rose.
+    map: boolean;
+    // The GIVEN facing only (turn/side/opposite/walk items).
+    facing?: CompassCardinal;
+    // The instructed turn for turn items: the arrow shows the instruction
+    // (the prompt's words, visually), never the result.
+    turn?: 'right' | 'left' | 'half';
+};
+
+// ── Money figure (MoneyWorksheet) ─────────────────────────────────────────────
+// GIVEN coins/notes only (framework/MoneyDiagram.tsx): each entry is a cents
+// value, < 100 prints as a coin ("5c"), >= 100 as a note ("$1"/"$2"/"$5").
+// Form 0 ("what coins make X?") attaches NO figure — drawing the coin set
+// would print the answer; equivalence/jar/note items draw their GIVEN money.
+export type MoneyFigure = {
+    // The GIVEN values only, in printed order.
+    given: number[];
+};
+
+// ── Division figure (DivisionWorksheet) ───────────────────────────────────────
+// Visible equal-group models for the story forms (framework/DivisionDiagram.tsx):
+// the items and buckets are drawn, the quotient / "how many" result is NEVER
+// labelled. The ÷-sign fact form carries no figure.
+export type DivisionFigure =
+    // "Share among friends": `friends` buckets, each holding total/friends dots.
+    | { kind: 'share'; friends: number; total: number }
+    // "Put into groups of size": total/size buckets, each with `size` dots.
+    | { kind: 'groupsOf'; size: number; total: number };
+
+// ── Vertical column figure (Addition/Subtraction, Year 3 multi-digit) ─────────
+// Right-aligned vertical layout (framework/ColumnDiagram.tsx): the terms print
+// as rows with the operator before the last row and a result rule below — the
+// SUM/RESULT IS NEVER PRINTED. Year 3 only (the spec gates on caps.opCap ===
+// 1000) so lower-grade fact recall keeps its plain inline prompts.
+export type ColumnFigure = {
+    // Printed top to bottom; the operator goes before the LAST row.
+    terms: number[];
+    // '+' = addition sheet, '-' = subtraction sheet.
+    op: '+' | '-';
+};
+
 // A problem as a plugin's generator produces it (before the framework assigns
 // ids and the type tag while chunking pages).
 export type RawProblem = {
@@ -186,6 +285,30 @@ export type RawProblem = {
     // Optional original outline and lettered transformation choices; the same
     // figure is preserved by document.ts and drawn by PrintableSheet.tsx.
     shapeTransformation?: ShapeTransformationFigure;
+    // Optional rows × columns grid figure (rows/cols counts only); the same
+    // figure is preserved by document.ts and drawn by PrintableSheet.tsx.
+    rowsColumns?: RowsColumnsFigure;
+    // Optional grouped tally / picture graph / column graph figure
+    // (DataWorksheet); drawn by DataDiagram.tsx after the prompt.
+    data?: DataFigure;
+    // Optional labelled shape outlines — a single recognised shape (sides,
+    // corners, flat faces, curved-side items) or the printed multiple-choice
+    // candidates in option order; drawn by ShapeFigure.tsx.
+    shapes?: ShapeFigure[];
+    // Optional part-part-whole diagram with the requested part blank
+    // (NumberBondsWorksheet); drawn by BondDiagram.tsx.
+    bond?: BondFigure;
+    // Optional compass rose / map with the given facing (CompassWorksheet);
+    // drawn by CompassDiagram.tsx.
+    compass?: CompassFigure;
+    // Optional given coins/notes (MoneyWorksheet); drawn by MoneyDiagram.tsx.
+    money?: MoneyFigure;
+    // Optional equal-group model for division stories (DivisionWorksheet);
+    // drawn by DivisionDiagram.tsx.
+    division?: DivisionFigure;
+    // Optional right-aligned vertical layout for multi-digit pairs
+    // (Addition/Subtraction Year 3); drawn by ColumnDiagram.tsx.
+    column?: ColumnFigure;
     // true = the prompt's "__" blanks print as WIDE fill-in lines (the
     // name/date size), for handwritten answers that do not fit the default
     // short blank — e.g. the clock sheets' "quarter past 11" word answers.

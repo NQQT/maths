@@ -207,9 +207,12 @@ const CONFIGS: GradeConfig[] = [
         // 10, doubles to 10, patterns (steps 1/2/5/10), 2-D & 3-D shapes,
         // compass directions N/S/E/W (spatial sense), days/months/seasons (no
         // clocks), informal measurement (no cm), temperatures within 20°C,
-        // tens & ones to 20, tallies/picture & column graphs.
+        // tens & ones to 20, tallies/picture & column graphs, and the rows &
+        // columns counting sheet (4 × 5 grids at most, the repeated-addition
+        // bridge to multiplication — plugins/RowsColumnsWorksheet.ts).
         available: [
             'counting',
+            'rowscolumns',
             'comparison',
             'missing',
             'addition',
@@ -261,10 +264,14 @@ const CONFIGS: GradeConfig[] = [
         // clock-faces sheet (reading + drawing hands, quarter past/to),
         // cm measurement up to a metre, bonds to 10 & 20, doubles to 20,
         // patterns with 3s & 4s steps, hexagons & extra 3-D shapes, tens &
-        // ones to 99, and bigger data counts. The Year-1 compass sheet
-        // carries over unchanged; the temperature sheet widens to 40°C.
+        // ones to 99, and bigger data counts. The rows-columns sheet widens
+        // to 5 × 5 grids AND gains the r × c product form (its multCap is 10,
+        // so the multiplication bridge is grade-appropriate). The Year-1
+        // compass sheet carries over unchanged; the temperature sheet widens
+        // to 40°C.
         available: [
             'counting',
+            'rowscolumns',
             'comparison',
             'missing',
             'addition',

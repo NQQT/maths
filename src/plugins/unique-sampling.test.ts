@@ -80,8 +80,11 @@ const CAPACITIES: { spec: WorksheetSpec; gradeId: number; capacity: number }[] =
     { spec: multiplicationSpec, gradeId: 3, capacity: 300 },
     { spec: wordSpec, gradeId: 1, capacity: 1000 },
     { spec: wordSpec, gradeId: 2, capacity: 1000 },
-    { spec: dataSpec, gradeId: 1, capacity: 1800 },
-    { spec: dataSpec, gradeId: 2, capacity: 1800 },
+    // Ten per page (each row carries a DataDiagram, see DataWorksheet.ts)
+    // makes the 100-page ask 1000 — the tally/graph prompt space is deeper,
+    // so a full 100-page document stays repeat-free.
+    { spec: dataSpec, gradeId: 1, capacity: 1000 },
+    { spec: dataSpec, gradeId: 2, capacity: 1000 },
     { spec: divisionSpec, gradeId: 2, capacity: 1200 },
     // ── Missing number / comparison / skip / counting / patterns ──────────
     { spec: missingSpec, gradeId: 1, capacity: 460 },
@@ -110,7 +113,11 @@ const CAPACITIES: { spec: WorksheetSpec; gradeId: number; capacity: number }[] =
     { spec: bondsSpec, gradeId: 1, capacity: 36 },
     { spec: bondsSpec, gradeId: 2, capacity: 112 },
     { spec: shapesSpec, gradeId: 1, capacity: 85 },
-    { spec: shapesSpec, gradeId: 2, capacity: 252 },
+    // Year 2's "only flat faces" variant now draws its two distractors only
+    // from the curved-surface solids (cylinder/cone/sphere) so the answer is
+    // unique among the printed choices: 3 all-flat answers x 6 ordered
+    // curved distractor pairs = 18 questions, down from 60 (252 - 42 = 210).
+    { spec: shapesSpec, gradeId: 2, capacity: 210 },
     // 3 asymmetric outlines × 4 orientations × 4 flips/quarter-turns; names
     // distinguish diagrams so prompt-keyed uniqueness keeps the full bank.
     { spec: shapeTransformationsSpec, gradeId: 3, capacity: 48 },

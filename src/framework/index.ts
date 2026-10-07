@@ -19,6 +19,18 @@ export * from './PageStack';
 export * from './PrintableSheet';
 // Data-only shape figures are shared by preview/print, not coupled to a plugin.
 export * from './ShapeTransformationDiagram';
+// The rows/columns grid figure is data the generators own (dimensions only);
+// this renderer never computes totals or answers.
+export * from './RowsColumnsDiagram';
+// The remaining family figure renderers share the same contract: draw the
+// plugin-supplied data only; answers stay private problem data (PrintableSheet).
+export * from './DataDiagram';
+export * from './ShapeFigure';
+export * from './BondDiagram';
+export * from './CompassDiagram';
+export * from './MoneyDiagram';
+export * from './DivisionDiagram';
+export * from './ColumnDiagram';
 export * from './ZoomControl';
 export * from './GradeSelector';
 export * from './store';

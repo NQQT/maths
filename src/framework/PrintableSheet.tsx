@@ -23,7 +23,17 @@ import React, { Fragment } from 'react';
 import { styledComponent } from '@presource/react';
 import type { Problem } from './document';
 import type { ClockFigure } from './types';
+import { RowsColumnsDiagram } from './RowsColumnsDiagram';
 import { ShapeTransformationDiagram } from './ShapeTransformationDiagram';
+// Family figure renderers (framework/*.tsx): each draws ONLY the problem's
+// attached figure data — private answers never enter any SVG.
+import { BondDiagram } from './BondDiagram';
+import { ColumnDiagram } from './ColumnDiagram';
+import { CompassDiagram } from './CompassDiagram';
+import { DataDiagram } from './DataDiagram';
+import { DivisionDiagram } from './DivisionDiagram';
+import { MoneyDiagram } from './MoneyDiagram';
+import { ShapeFigures } from './ShapeFigure';
 
 export type PrintableSheetProps = {
     // Large heading, e.g. "Year 1 — Addition".
@@ -145,10 +155,13 @@ const ProblemIndex = styledComponent('span', {
     paddingTop: '3px'
 });
 
-// ShapeTransformationsWorksheet's six illustrated rows need compact prose and
-// the full remaining row width (types.ts ShapeTransformationFigure). Undefined
-// overrides preserve the inherited font/layout of existing text and clocks;
-// strings also avoid styledComponent converting unitless values into rem.
+// Illustrated worksheets (ShapeTransformationsWorksheet's six shape rows,
+// RowsColumnsWorksheet's six grid rows, and the family figures below — data /
+// shapes / bonds / compass / money / division / column) need compact prose and
+// the full remaining row width (types.ts figure types). A problem carrying ANY
+// figure switches the text column to that compact layout. Undefined overrides
+// preserve the inherited font/layout of existing text and clocks; strings also
+// avoid styledComponent converting unitless values into rem.
 const ProblemText = styledComponent<{ illustrated: boolean }>('span', {
     whiteSpace: 'pre-wrap',
     fontSize: ({ illustrated }) => (illustrated ? '16px' : undefined),
@@ -325,6 +338,23 @@ function PromptText({ prompt, wide }: { prompt: string; wide: boolean }) {
     );
 }
 
+// A problem is "illustrated" when it carries ANY figure (the compact block
+// typography + full row width in ProblemText). All figure fields are
+// renderer-owned data — their presence, not their content, drives layout.
+function hasFigure(problem: Problem): boolean {
+    return (
+        problem.shapeTransformation !== undefined ||
+        problem.rowsColumns !== undefined ||
+        problem.data !== undefined ||
+        problem.shapes !== undefined ||
+        problem.bond !== undefined ||
+        problem.compass !== undefined ||
+        problem.money !== undefined ||
+        problem.division !== undefined ||
+        problem.column !== undefined
+    );
+}
+
 export function PrintableSheet({ title, subtitle, problems, pageLabel, single, testId }: PrintableSheetProps) {
     return (
         <SheetRoot data-testid={testId}>
@@ -351,11 +381,25 @@ export function PrintableSheet({ title, subtitle, problems, pageLabel, single, t
                         {/* Optional analog-clock figure printed before the
                             question text (reading / draw-the-hands items). */}
                         {p.clock && <ClockFace clock={p.clock} />}
-                        <ProblemText illustrated={p.shapeTransformation !== undefined}>
+                        <ProblemText illustrated={hasFigure(p)}>
                             <PromptText prompt={p.prompt} wide={p.wideBlanks ?? false} />
                             {/* Shape figures follow the prompt and its inline
                                 letter blank; answers stay in problem data. */}
                             {p.shapeTransformation && <ShapeTransformationDiagram figure={p.shapeTransformation} />}
+                            {/* Rows/columns grids follow the prompt text the
+                                same way; the renderer draws dimensions only
+                                and never prints an answer. */}
+                            {p.rowsColumns && <RowsColumnsDiagram figure={p.rowsColumns} />}
+                            {/* The family figures follow the prompt in a fixed
+                                order; each renderer draws ONLY the attached
+                                figure data (private answers stay out of DOM). */}
+                            {p.data && <DataDiagram figure={p.data} />}
+                            {p.shapes && <ShapeFigures shapes={p.shapes} />}
+                            {p.bond && <BondDiagram figure={p.bond} />}
+                            {p.compass && <CompassDiagram figure={p.compass} />}
+                            {p.money && <MoneyDiagram figure={p.money} />}
+                            {p.division && <DivisionDiagram figure={p.division} />}
+                            {p.column && <ColumnDiagram figure={p.column} />}
                             {/* Bottom writing space for answerLine prompts
                                 (their prompts carry no inline "__" blanks). */}
                             {p.answerLine && <AnswerLine />}

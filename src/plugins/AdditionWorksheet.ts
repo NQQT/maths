@@ -45,6 +45,12 @@ function generateAddition(rng: Rng, caps: Caps, count: number): RawProblem[] {
     return sampleUnique(
         count,
         () => {
+            // Year 3 (caps.opCap === 1000) is the multi-digit pair grade: its
+            // items print a right-aligned vertical column (framework/
+            // ColumnDiagram.tsx) so kids line up digits. Lower grades keep plain
+            // inline prompts, and Year 4+ keeps its established behaviour —
+            // only opCap 1000 gets the figure (grades.ts ladder).
+            const vertical = caps.opCap === 1000;
             const k = maxAddends > 2 ? rng.int(2, maxAddends) : 2;
             if (k === 2) {
                 // PAIRS — the original within-opCap recipe: a is never the full
@@ -54,7 +60,11 @@ function generateAddition(rng: Rng, caps: Caps, count: number): RawProblem[] {
                 const a = rng.int(1, aMax);
                 const bMax = caps.opCap - a; // >= 1 because a <= opCap-1
                 const b = bMax >= 1 ? rng.int(1, bMax) : 0;
-                return { prompt: `${a} + ${b} = __`, answer: `${a + b}` };
+                return {
+                    prompt: `${a} + ${b} = __`,
+                    answer: `${a + b}`,
+                    ...(vertical ? { column: { terms: [a, b], op: '+' as const } } : {})
+                };
             }
             // MULTI-ADDEND — draw the question's TOTAL first (anywhere within
             // the cap, at least k so every addend can be >= 1), then split it

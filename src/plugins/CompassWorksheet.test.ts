@@ -37,7 +37,9 @@ describe('compass plugin — declarative spec', () => {
         expect(compassSpec.label).toBe('Compass Directions');
         expect(compassSpec.icon).toBe('✥');
         expect(compassSpec.singleColumn).toBe(true);
-        expect(compassSpec.perPage).toBe(12);
+        // Nine per A4: each item now carries a compass-rose figure
+        // (framework/CompassDiagram.tsx) and the prose stays single-column.
+        expect(compassSpec.perPage).toBe(9);
     });
 
     it('describes its scope from the grade caps (identical at every offered grade)', () => {
@@ -72,7 +74,7 @@ describe('compass plugin — declarative spec', () => {
 describe('compass — availability gating', () => {
     it('Prep does not offer the extension type (empty sheet); Year 1 does', () => {
         expect(sheet(g0)).toEqual([]);
-        expect(sheet(g1)).toHaveLength(12);
+        expect(sheet(g1)).toHaveLength(9);
     });
 
     it('offers Years 1..3 through the sidebar gate without enabling later grades', () => {
@@ -117,45 +119,42 @@ describe('compass - Year 3 (existing cardinal NSWE space)', () => {
         // relies on North/East/South/West for quarter turns and left/right sides.
         // Complete prompt/answer pins also fix the cardinal vocabulary exactly.
         const s = sheet(g3);
+        // Each problem now pins its compass figure (framework/CompassDiagram.tsx
+        // draws the rose; `facing`/`turn`/`map` are NEUTRAL — the answer
+        // direction is never drawn).
         expect(s).toEqual([
-            {"prompt":"You are facing West. What direction is on your left?","answer":"South","id":1,"type":"compass"},
-            {"prompt":"You are facing South. What direction is on your left?","answer":"East","id":2,"type":"compass"},
-            {"prompt":"Leo walks to school towards the East. On the way home, what direction is Leo walking?","answer":"West","id":3,"type":"compass"},
-            {"prompt":"You are facing North. What direction is on your left?","answer":"West","id":4,"type":"compass"},
-            {"prompt":"You are facing East. You make a half turn. What direction are you facing now?","answer":"West","id":5,"type":"compass"},
-            {"prompt":"You are facing North. You make a quarter turn to the left. What direction are you facing now?","answer":"West","id":6,"type":"compass"},
-            {"prompt":"On a map, North is at the top. What direction is at the right of the map?","answer":"East","id":7,"type":"compass"},
-            {"prompt":"You are facing West. You make a quarter turn to the left. What direction are you facing now?","answer":"South","id":8,"type":"compass"},
-            {"prompt":"On a map, North is at the top. What direction is at the bottom of the map?","answer":"South","id":9,"type":"compass"},
-            {"prompt":"What direction is the opposite of South?","answer":"North","id":10,"type":"compass"},
-            {"prompt":"You are facing North. You make a quarter turn to the right. What direction are you facing now?","answer":"East","id":11,"type":"compass"},
-            {"prompt":"You are facing East. What direction is on your left?","answer":"North","id":12,"type":"compass"},
+            {"prompt":"You are facing West. What direction is on your left?","answer":"South","compass":{"map":false,"facing":"West"},"id":1,"type":"compass"},
+            {"prompt":"You are facing South. What direction is on your left?","answer":"East","compass":{"map":false,"facing":"South"},"id":2,"type":"compass"},
+            {"prompt":"Leo walks to school towards the East. On the way home, what direction is Leo walking?","answer":"West","compass":{"map":false,"facing":"East"},"id":3,"type":"compass"},
+            {"prompt":"You are facing North. What direction is on your left?","answer":"West","compass":{"map":false,"facing":"North"},"id":4,"type":"compass"},
+            {"prompt":"You are facing East. You make a half turn. What direction are you facing now?","answer":"West","compass":{"map":false,"facing":"East","turn":"half"},"id":5,"type":"compass"},
+            {"prompt":"You are facing North. You make a quarter turn to the left. What direction are you facing now?","answer":"West","compass":{"map":false,"facing":"North","turn":"left"},"id":6,"type":"compass"},
+            {"prompt":"On a map, North is at the top. What direction is at the right of the map?","answer":"East","compass":{"map":true},"id":7,"type":"compass"},
+            {"prompt":"You are facing West. You make a quarter turn to the left. What direction are you facing now?","answer":"South","compass":{"map":false,"facing":"West","turn":"left"},"id":8,"type":"compass"},
+            {"prompt":"On a map, North is at the top. What direction is at the bottom of the map?","answer":"South","compass":{"map":true},"id":9,"type":"compass"},
         ]);
     });
 
     it('continues the exact stream on page 2 with unique prompts and continuous ids', () => {
         const seed = seedFrom([3, 'compass', 0]);
         const doc = generateDocument(compassSpec, g3, seed, 2);
-        expect(doc.total).toBe(24);
-        expect(doc.pages.map((page) => page.length)).toEqual([12, 12]);
+        expect(doc.total).toBe(18);
+        expect(doc.pages.map((page) => page.length)).toEqual([9, 9]);
         expect(doc.pages[0]).toEqual(sheet(g3));
         expect(doc.pages[1]).toEqual([
-            {"prompt":"You are facing East. You make a quarter turn to the right. What direction are you facing now?","answer":"South","id":13,"type":"compass"},
-            {"prompt":"On a map, North is at the top. What direction is at the left of the map?","answer":"West","id":14,"type":"compass"},
-            {"prompt":"In which direction does the sun set?","answer":"West","id":15,"type":"compass"},
-            {"prompt":"You are facing West. You make a half turn. What direction are you facing now?","answer":"East","id":16,"type":"compass"},
-            {"prompt":"You are facing North. What direction is on your right?","answer":"East","id":17,"type":"compass"},
-            {"prompt":"You are facing South. What direction is on your right?","answer":"West","id":18,"type":"compass"},
-            {"prompt":"In which direction does the sun rise?","answer":"East","id":19,"type":"compass"},
-            {"prompt":"Rae walks to school towards the South. On the way home, what direction is Rae walking?","answer":"North","id":20,"type":"compass"},
-            {"prompt":"Which direction does a compass needle always point?","answer":"North","id":21,"type":"compass"},
-            {"prompt":"You are facing West. You make a quarter turn to the right. What direction are you facing now?","answer":"North","id":22,"type":"compass"},
-            {"prompt":"Tom walks to school towards the North. On the way home, what direction is Tom walking?","answer":"South","id":23,"type":"compass"},
-            {"prompt":"Zoe walks to school towards the West. On the way home, what direction is Zoe walking?","answer":"East","id":24,"type":"compass"},
+            {"prompt":"What direction is the opposite of South?","answer":"North","compass":{"map":false,"facing":"South"},"id":10,"type":"compass"},
+            {"prompt":"You are facing North. You make a quarter turn to the right. What direction are you facing now?","answer":"East","compass":{"map":false,"facing":"North","turn":"right"},"id":11,"type":"compass"},
+            {"prompt":"You are facing East. What direction is on your left?","answer":"North","compass":{"map":false,"facing":"East"},"id":12,"type":"compass"},
+            {"prompt":"You are facing East. You make a quarter turn to the right. What direction are you facing now?","answer":"South","compass":{"map":false,"facing":"East","turn":"right"},"id":13,"type":"compass"},
+            {"prompt":"On a map, North is at the top. What direction is at the left of the map?","answer":"West","compass":{"map":true},"id":14,"type":"compass"},
+            {"prompt":"In which direction does the sun set?","answer":"West","compass":{"map":false},"id":15,"type":"compass"},
+            {"prompt":"You are facing West. You make a half turn. What direction are you facing now?","answer":"East","compass":{"map":false,"facing":"West","turn":"half"},"id":16,"type":"compass"},
+            {"prompt":"You are facing North. What direction is on your right?","answer":"East","compass":{"map":false,"facing":"North"},"id":17,"type":"compass"},
+            {"prompt":"You are facing South. What direction is on your right?","answer":"West","compass":{"map":false,"facing":"South"},"id":18,"type":"compass"},
         ]);
-        // The arrayCreate factory stops at undefined, yielding exactly ids 1..24.
-        expect(doc.pages.flat().map((p) => p.id)).toEqual(arrayCreate(({ index }) => index < 24 ? index + 1 : undefined));
-        expect(new Set(doc.pages.flat().map((p) => p.prompt)).size).toBe(24);
+        // The arrayCreate factory stops at undefined, yielding exactly ids 1..18.
+        expect(doc.pages.flat().map((p) => p.id)).toEqual(arrayCreate(({ index }) => index < 18 ? index + 1 : undefined));
+        expect(new Set(doc.pages.flat().map((p) => p.prompt)).size).toBe(18);
         expect(generateDocument(compassSpec, g3, seed, 3).pages.slice(0, 2)).toEqual(doc.pages);
     });
 
@@ -166,11 +165,11 @@ describe('compass - Year 3 (existing cardinal NSWE space)', () => {
         const refreshed = generateDocument(compassSpec, g3, refreshedSeed, 2);
         expect(generateDocument(compassSpec, g3, seed, 2)).toEqual(doc);
         expect(refreshed.pages[0].slice(0, 3)).toEqual([
-            {"prompt":"Max walks to school towards the North. On the way home, what direction is Max walking?","answer":"South","id":1,"type":"compass"},
-            {"prompt":"Leo walks to school towards the South. On the way home, what direction is Leo walking?","answer":"North","id":2,"type":"compass"},
-            {"prompt":"Which direction does a compass needle always point?","answer":"North","id":3,"type":"compass"},
+            {"prompt":"Max walks to school towards the North. On the way home, what direction is Max walking?","answer":"South","compass":{"map":false,"facing":"North"},"id":1,"type":"compass"},
+            {"prompt":"Leo walks to school towards the South. On the way home, what direction is Leo walking?","answer":"North","compass":{"map":false,"facing":"South"},"id":2,"type":"compass"},
+            {"prompt":"Which direction does a compass needle always point?","answer":"North","compass":{"map":false},"id":3,"type":"compass"},
         ]);
-        expect(refreshed.total).toBe(24);
+        expect(refreshed.total).toBe(18);
         expect(refreshed).not.toEqual(doc);
         expect(generateDocument(compassSpec, g3, refreshedSeed, 2)).toEqual(refreshed);
         // The existing generator ignores numeric caps. Reusing Year 2 with
@@ -183,18 +182,15 @@ describe('compass — Year 1 (quarter/half turns, opposites, sides, walks)', () 
     it('matches the exact sheet', () => {
         const s = sheet(g1);
         expect(s).toEqual([
-            {"prompt":"In which direction does the sun set?","answer":"West","id":1,"type":"compass"},
-            {"prompt":"You are facing East. You make a half turn. What direction are you facing now?","answer":"West","id":2,"type":"compass"},
-            {"prompt":"What direction is the opposite of North?","answer":"South","id":3,"type":"compass"},
-            {"prompt":"You are facing South. You make a quarter turn to the left. What direction are you facing now?","answer":"East","id":4,"type":"compass"},
-            {"prompt":"You are facing West. What direction is on your left?","answer":"South","id":5,"type":"compass"},
-            {"prompt":"You are facing North. What direction is on your right?","answer":"East","id":6,"type":"compass"},
-            {"prompt":"Max walks to school towards the South. On the way home, what direction is Max walking?","answer":"North","id":7,"type":"compass"},
-            {"prompt":"You are facing East. What direction is on your right?","answer":"South","id":8,"type":"compass"},
-            {"prompt":"You are facing West. You make a quarter turn to the left. What direction are you facing now?","answer":"South","id":9,"type":"compass"},
-            {"prompt":"Which direction does a compass needle always point?","answer":"North","id":10,"type":"compass"},
-            {"prompt":"You are facing South. What direction is on your right?","answer":"West","id":11,"type":"compass"},
-            {"prompt":"In which direction does the sun rise?","answer":"East","id":12,"type":"compass"},
+            {"prompt":"In which direction does the sun set?","answer":"West","compass":{"map":false},"id":1,"type":"compass"},
+            {"prompt":"You are facing East. You make a half turn. What direction are you facing now?","answer":"West","compass":{"map":false,"facing":"East","turn":"half"},"id":2,"type":"compass"},
+            {"prompt":"What direction is the opposite of North?","answer":"South","compass":{"map":false,"facing":"North"},"id":3,"type":"compass"},
+            {"prompt":"You are facing South. You make a quarter turn to the left. What direction are you facing now?","answer":"East","compass":{"map":false,"facing":"South","turn":"left"},"id":4,"type":"compass"},
+            {"prompt":"You are facing West. What direction is on your left?","answer":"South","compass":{"map":false,"facing":"West"},"id":5,"type":"compass"},
+            {"prompt":"You are facing North. What direction is on your right?","answer":"East","compass":{"map":false,"facing":"North"},"id":6,"type":"compass"},
+            {"prompt":"Max walks to school towards the South. On the way home, what direction is Max walking?","answer":"North","compass":{"map":false,"facing":"South"},"id":7,"type":"compass"},
+            {"prompt":"You are facing East. What direction is on your right?","answer":"South","compass":{"map":false,"facing":"East"},"id":8,"type":"compass"},
+            {"prompt":"You are facing West. You make a quarter turn to the left. What direction are you facing now?","answer":"South","compass":{"map":false,"facing":"West","turn":"left"},"id":9,"type":"compass"},
         ]);
         // Soundness pin: every answer is one of the four cardinal points
         // (never an intercardinal like "North-East" on the grade-1 sheet).
@@ -208,18 +204,15 @@ describe('compass — Year 2 (same N/S/E/W space, freshly dealt sheet)', () => {
     it('matches the exact sheet', () => {
         const s = sheet(g2);
         expect(s).toEqual([
-            {"prompt":"You are facing South. You make a quarter turn to the right. What direction are you facing now?","answer":"West","id":1,"type":"compass"},
-            {"prompt":"In which direction does the sun set?","answer":"West","id":2,"type":"compass"},
-            {"prompt":"What direction is the opposite of North?","answer":"South","id":3,"type":"compass"},
-            {"prompt":"On a map, North is at the top. What direction is at the bottom of the map?","answer":"South","id":4,"type":"compass"},
-            {"prompt":"On a map, North is at the top. What direction is at the left of the map?","answer":"West","id":5,"type":"compass"},
-            {"prompt":"You are facing East. You make a quarter turn to the right. What direction are you facing now?","answer":"South","id":6,"type":"compass"},
-            {"prompt":"You are facing West. You make a quarter turn to the left. What direction are you facing now?","answer":"South","id":7,"type":"compass"},
-            {"prompt":"Max walks to school towards the East. On the way home, what direction is Max walking?","answer":"West","id":8,"type":"compass"},
-            {"prompt":"What direction is the opposite of South?","answer":"North","id":9,"type":"compass"},
-            {"prompt":"You are facing North. You make a quarter turn to the left. What direction are you facing now?","answer":"West","id":10,"type":"compass"},
-            {"prompt":"Mia walks to school towards the East. On the way home, what direction is Mia walking?","answer":"West","id":11,"type":"compass"},
-            {"prompt":"You are facing North. What direction is on your right?","answer":"East","id":12,"type":"compass"},
+            {"prompt":"You are facing South. You make a quarter turn to the right. What direction are you facing now?","answer":"West","compass":{"map":false,"facing":"South","turn":"right"},"id":1,"type":"compass"},
+            {"prompt":"In which direction does the sun set?","answer":"West","compass":{"map":false},"id":2,"type":"compass"},
+            {"prompt":"What direction is the opposite of North?","answer":"South","compass":{"map":false,"facing":"North"},"id":3,"type":"compass"},
+            {"prompt":"On a map, North is at the top. What direction is at the bottom of the map?","answer":"South","compass":{"map":true},"id":4,"type":"compass"},
+            {"prompt":"On a map, North is at the top. What direction is at the left of the map?","answer":"West","compass":{"map":true},"id":5,"type":"compass"},
+            {"prompt":"You are facing East. You make a quarter turn to the right. What direction are you facing now?","answer":"South","compass":{"map":false,"facing":"East","turn":"right"},"id":6,"type":"compass"},
+            {"prompt":"You are facing West. You make a quarter turn to the left. What direction are you facing now?","answer":"South","compass":{"map":false,"facing":"West","turn":"left"},"id":7,"type":"compass"},
+            {"prompt":"Max walks to school towards the East. On the way home, what direction is Max walking?","answer":"West","compass":{"map":false,"facing":"East"},"id":8,"type":"compass"},
+            {"prompt":"What direction is the opposite of South?","answer":"North","compass":{"map":false,"facing":"South"},"id":9,"type":"compass"},
         ]);
         for (const p of s) {
             expect(['North', 'East', 'South', 'West']).toContain(p.answer);

@@ -10,6 +10,7 @@ export { comparisonSpec } from './CompareWorksheet';
 export { skipSpec } from './SkipCountingWorksheet';
 export { wordSpec } from './WordProblemsWorksheet';
 export { countingSpec } from './CountingWorksheet';
+export { rowsColumnsSpec } from './RowsColumnsWorksheet';
 export { doublesSpec } from './DoublesWorksheet';
 export { bondsSpec } from './NumberBondsWorksheet';
 export { patternsSpec } from './PatternsWorksheet';

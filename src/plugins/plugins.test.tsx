@@ -16,7 +16,7 @@
 //      line is safe by construction.
 //   4. SELECTION FALLBACK: a stale selection pointing at a deleted plugin
 //      snaps back to the first remaining plugin.
-//   5. THE REAL WORKSHEETS: the 22 per-type plugins (AdditionWorksheet,
+//   5. THE REAL WORKSHEETS: the 23 per-type plugins (AdditionWorksheet,
 //      SubtractionWorksheet, ...) load through the same pipeline the
 //      framework uses (the PLUGINS factory list, loaded one by one by
 //      usePluginLoader after the dashboard renders), share the dashboard
@@ -288,6 +288,9 @@ const EXPECTED_WORKSHEET_IDS = [
     'skip',
     'word',
     'counting',
+    // Rows & Columns (the Y1/Y2 multiplication-foundation grid sheet) sits
+    // with the counting cluster and stays ahead of Data (the Y1 rail last).
+    'rowscolumns',
     'doubles',
     'bonds',
     'patterns',
@@ -418,6 +421,38 @@ describe('the real worksheet plugins — register through the same pipeline', ()
         fireEvent.click(screen.getByRole('button', { name: 'Subtraction' }));
         expect((screen.getByTestId('page-count') as HTMLInputElement).value).toBe('3');
         expect(screen.getByTestId('sheet-preview-page3')).toBeDefined();
+    });
+
+    it('Rows & Columns joins the Year 1/2 counting rail, renders six grids, and hides on Year 3', () => {
+        mountHost(WORKSHEETS);
+        const rail = screen.getByTestId('rail-slot');
+        const railLabels = () =>
+            arrayCreate(({ index }) => rail.querySelectorAll('button')[index]?.getAttribute('aria-label'));
+
+        // The default Year 1: the entry sits right after Counting & Numbers
+        // (counting cluster) and Data & Tally stays the LAST Year-1 entry —
+        // the dashboard tests await that button to know the rail is loaded.
+        expect(railLabels().indexOf('Rows & Columns')).toBe(railLabels().indexOf('Counting & Numbers') + 1);
+        fireEvent.click(screen.getByRole('button', { name: 'Rows & Columns' }));
+        expect(probeStore!.active).toEqual({ pluginId: 'rowscolumns', entryId: 'rowscolumns' });
+        expect(screen.getByTestId('toolbar-title').textContent).toBe('Year 1 — Rows & Columns');
+        // Six illustrated items: one neutral grid SVG per question, no
+        // printed answers (the prompts alone carry the question text).
+        const page = screen.getByTestId('sheet-preview-page1');
+        expect(page.querySelectorAll('svg')).toHaveLength(6);
+
+        // Year 2 widens the same entry to 5 × 5 grids + product forms.
+        act(() => {
+            probeStore!.session.gradeId = 2;
+        });
+        expect(screen.getByRole('button', { name: 'Rows & Columns' })).toBeDefined();
+
+        // Year 3's arithmetic ladder hides it (the rail test above pins the
+        // exact remaining Year-3 entries).
+        act(() => {
+            probeStore!.session.gradeId = 3;
+        });
+        expect(screen.queryByRole('button', { name: 'Rows & Columns' })).toBeNull();
     });
 
     it('Clock Faces renders an SVG analog clock per clock item on the preview (Year 2)', () => {

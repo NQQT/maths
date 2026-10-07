@@ -11,7 +11,7 @@ import { arrayCreate } from '@presource/core';
 import { createRng, type Rng } from './rng';
 import { getGradeConfig } from './grades';
 import { buildDocument, generateDocument, generateSheet, type Problem } from './document';
-import type { ShapeTransformationFigure, WorksheetSpec } from './types';
+import type { RowsColumnsFigure, ShapeTransformationFigure, WorksheetSpec } from './types';
 
 const g1 = getGradeConfig(1);
 
@@ -150,6 +150,36 @@ describe('buildDocument — multi-page worksheets', () => {
                 [
                     { id: 3, type: 'shape-figure', prompt: 'Flip triangle 3. __', answer: 'A', shapeTransformation: figure },
                     { id: 4, type: 'shape-figure', prompt: 'Flip triangle 4. __', answer: 'A', shapeTransformation: figure }
+                ]
+            ],
+            total: 4
+        });
+    });
+
+    it('carries a rows/columns grid figure verbatim across page boundaries', () => {
+        // The grid dimensions belong to the plugin (RowsColumnsWorksheet.ts);
+        // the chunker must not recompute, round or drop them — same contract
+        // as the clock figure above.
+        const figure: RowsColumnsFigure = { rows: 3, cols: 4 };
+        const gridSpec: WorksheetSpec = {
+            ...fakeSpec,
+            id: 'grid-figure',
+            perPage: 2,
+            generate: (_rng, _caps, count) => arrayCreate(({ index }) => index < count ? {
+                prompt: `Grid ${index + 1}. __`,
+                answer: '12',
+                rowsColumns: figure
+            } : undefined)
+        };
+        expect(generateDocument(gridSpec, g1, 42, 2)).toEqual({
+            pages: [
+                [
+                    { id: 1, type: 'grid-figure', prompt: 'Grid 1. __', answer: '12', rowsColumns: { rows: 3, cols: 4 } },
+                    { id: 2, type: 'grid-figure', prompt: 'Grid 2. __', answer: '12', rowsColumns: { rows: 3, cols: 4 } }
+                ],
+                [
+                    { id: 3, type: 'grid-figure', prompt: 'Grid 3. __', answer: '12', rowsColumns: { rows: 3, cols: 4 } },
+                    { id: 4, type: 'grid-figure', prompt: 'Grid 4. __', answer: '12', rowsColumns: { rows: 3, cols: 4 } }
                 ]
             ],
             total: 4

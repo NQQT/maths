@@ -123,37 +123,42 @@ describe('subtraction — Year 2', () => {
 describe('subtraction — Year 3 (three-digit pairs)', () => {
     it('matches the exact sheet (within 1000, still classic pairs)', () => {
         const s = sheet(g3);
+        // Year 3 is the vertical-column grade (caps.opCap === 1000): every
+        // pair prints a right-aligned column figure (framework/ColumnDiagram.tsx)
+        // with the "−" marker before the subtrahend — the answer is never drawn.
         expect(s).toEqual([
-            {"prompt":"990 - 175 = __","answer":"815","id":1,"type":"subtraction"},
-            {"prompt":"608 - 89 = __","answer":"519","id":2,"type":"subtraction"},
-            {"prompt":"952 - 528 = __","answer":"424","id":3,"type":"subtraction"},
-            {"prompt":"235 - 23 = __","answer":"212","id":4,"type":"subtraction"},
-            {"prompt":"605 - 286 = __","answer":"319","id":5,"type":"subtraction"},
-            {"prompt":"530 - 478 = __","answer":"52","id":6,"type":"subtraction"},
-            {"prompt":"26 - 16 = __","answer":"10","id":7,"type":"subtraction"},
-            {"prompt":"306 - 173 = __","answer":"133","id":8,"type":"subtraction"},
-            {"prompt":"939 - 195 = __","answer":"744","id":9,"type":"subtraction"},
-            {"prompt":"557 - 336 = __","answer":"221","id":10,"type":"subtraction"},
-            {"prompt":"789 - 178 = __","answer":"611","id":11,"type":"subtraction"},
-            {"prompt":"257 - 98 = __","answer":"159","id":12,"type":"subtraction"},
-            {"prompt":"373 - 107 = __","answer":"266","id":13,"type":"subtraction"},
-            {"prompt":"480 - 311 = __","answer":"169","id":14,"type":"subtraction"},
-            {"prompt":"174 - 145 = __","answer":"29","id":15,"type":"subtraction"},
-            {"prompt":"682 - 190 = __","answer":"492","id":16,"type":"subtraction"},
-            {"prompt":"325 - 57 = __","answer":"268","id":17,"type":"subtraction"},
-            {"prompt":"264 - 88 = __","answer":"176","id":18,"type":"subtraction"},
-            {"prompt":"839 - 291 = __","answer":"548","id":19,"type":"subtraction"},
-            {"prompt":"80 - 35 = __","answer":"45","id":20,"type":"subtraction"},
-            {"prompt":"156 - 111 = __","answer":"45","id":21,"type":"subtraction"},
-            {"prompt":"356 - 176 = __","answer":"180","id":22,"type":"subtraction"},
-            {"prompt":"746 - 366 = __","answer":"380","id":23,"type":"subtraction"},
-            {"prompt":"72 - 57 = __","answer":"15","id":24,"type":"subtraction"},
+            {"prompt":"990 - 175 = __","answer":"815","column":{"terms":[990,175],"op":"-"},"id":1,"type":"subtraction"},
+            {"prompt":"608 - 89 = __","answer":"519","column":{"terms":[608,89],"op":"-"},"id":2,"type":"subtraction"},
+            {"prompt":"952 - 528 = __","answer":"424","column":{"terms":[952,528],"op":"-"},"id":3,"type":"subtraction"},
+            {"prompt":"235 - 23 = __","answer":"212","column":{"terms":[235,23],"op":"-"},"id":4,"type":"subtraction"},
+            {"prompt":"605 - 286 = __","answer":"319","column":{"terms":[605,286],"op":"-"},"id":5,"type":"subtraction"},
+            {"prompt":"530 - 478 = __","answer":"52","column":{"terms":[530,478],"op":"-"},"id":6,"type":"subtraction"},
+            {"prompt":"26 - 16 = __","answer":"10","column":{"terms":[26,16],"op":"-"},"id":7,"type":"subtraction"},
+            {"prompt":"306 - 173 = __","answer":"133","column":{"terms":[306,173],"op":"-"},"id":8,"type":"subtraction"},
+            {"prompt":"939 - 195 = __","answer":"744","column":{"terms":[939,195],"op":"-"},"id":9,"type":"subtraction"},
+            {"prompt":"557 - 336 = __","answer":"221","column":{"terms":[557,336],"op":"-"},"id":10,"type":"subtraction"},
+            {"prompt":"789 - 178 = __","answer":"611","column":{"terms":[789,178],"op":"-"},"id":11,"type":"subtraction"},
+            {"prompt":"257 - 98 = __","answer":"159","column":{"terms":[257,98],"op":"-"},"id":12,"type":"subtraction"},
+            {"prompt":"373 - 107 = __","answer":"266","column":{"terms":[373,107],"op":"-"},"id":13,"type":"subtraction"},
+            {"prompt":"480 - 311 = __","answer":"169","column":{"terms":[480,311],"op":"-"},"id":14,"type":"subtraction"},
+            {"prompt":"174 - 145 = __","answer":"29","column":{"terms":[174,145],"op":"-"},"id":15,"type":"subtraction"},
+            {"prompt":"682 - 190 = __","answer":"492","column":{"terms":[682,190],"op":"-"},"id":16,"type":"subtraction"},
+            {"prompt":"325 - 57 = __","answer":"268","column":{"terms":[325,57],"op":"-"},"id":17,"type":"subtraction"},
+            {"prompt":"264 - 88 = __","answer":"176","column":{"terms":[264,88],"op":"-"},"id":18,"type":"subtraction"},
+            {"prompt":"839 - 291 = __","answer":"548","column":{"terms":[839,291],"op":"-"},"id":19,"type":"subtraction"},
+            {"prompt":"80 - 35 = __","answer":"45","column":{"terms":[80,35],"op":"-"},"id":20,"type":"subtraction"},
+            {"prompt":"156 - 111 = __","answer":"45","column":{"terms":[156,111],"op":"-"},"id":21,"type":"subtraction"},
+            {"prompt":"356 - 176 = __","answer":"180","column":{"terms":[356,176],"op":"-"},"id":22,"type":"subtraction"},
+            {"prompt":"746 - 366 = __","answer":"380","column":{"terms":[746,366],"op":"-"},"id":23,"type":"subtraction"},
+            {"prompt":"72 - 57 = __","answer":"15","column":{"terms":[72,57],"op":"-"},"id":24,"type":"subtraction"},
         ]);
-        // Sanity: within 1000 and every question is still a single subtraction.
+        // Sanity: within 1000, every question is still a single subtraction,
+        // and (the Year-3-only gate) every pair carries its column figure.
         for (const p of s) {
             expect(Number(p.answer)).toBeGreaterThanOrEqual(1);
             expect(Number(p.answer)).toBeLessThanOrEqual(1000);
             expect(p.prompt.match(/-/g)).toHaveLength(1);
+            expect(p.column).toBeDefined();
         }
     });
 });

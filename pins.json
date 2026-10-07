@@ -946,144 +946,312 @@
    {
     "prompt": "53 + 942 = __",
     "answer": "995",
+    "column": {
+     "terms": [
+      53,
+      942
+     ],
+     "op": "+"
+    },
     "id": 1,
     "type": "addition"
    },
    {
     "prompt": "412 + 90 = __",
     "answer": "502",
+    "column": {
+     "terms": [
+      412,
+      90
+     ],
+     "op": "+"
+    },
     "id": 2,
     "type": "addition"
    },
    {
     "prompt": "250 + 648 = __",
     "answer": "898",
+    "column": {
+     "terms": [
+      250,
+      648
+     ],
+     "op": "+"
+    },
     "id": 3,
     "type": "addition"
    },
    {
     "prompt": "836 + 10 = __",
     "answer": "846",
+    "column": {
+     "terms": [
+      836,
+      10
+     ],
+     "op": "+"
+    },
     "id": 4,
     "type": "addition"
    },
    {
     "prompt": "5 + 7 = __",
     "answer": "12",
+    "column": {
+     "terms": [
+      5,
+      7
+     ],
+     "op": "+"
+    },
     "id": 5,
     "type": "addition"
    },
    {
     "prompt": "707 + 28 = __",
     "answer": "735",
+    "column": {
+     "terms": [
+      707,
+      28
+     ],
+     "op": "+"
+    },
     "id": 6,
     "type": "addition"
    },
    {
     "prompt": "713 + 41 = __",
     "answer": "754",
+    "column": {
+     "terms": [
+      713,
+      41
+     ],
+     "op": "+"
+    },
     "id": 7,
     "type": "addition"
    },
    {
     "prompt": "950 + 37 = __",
     "answer": "987",
+    "column": {
+     "terms": [
+      950,
+      37
+     ],
+     "op": "+"
+    },
     "id": 8,
     "type": "addition"
    },
    {
     "prompt": "591 + 352 = __",
     "answer": "943",
+    "column": {
+     "terms": [
+      591,
+      352
+     ],
+     "op": "+"
+    },
     "id": 9,
     "type": "addition"
    },
    {
     "prompt": "486 + 215 = __",
     "answer": "701",
+    "column": {
+     "terms": [
+      486,
+      215
+     ],
+     "op": "+"
+    },
     "id": 10,
     "type": "addition"
    },
    {
     "prompt": "951 + 12 = __",
     "answer": "963",
+    "column": {
+     "terms": [
+      951,
+      12
+     ],
+     "op": "+"
+    },
     "id": 11,
     "type": "addition"
    },
    {
     "prompt": "256 + 530 = __",
     "answer": "786",
+    "column": {
+     "terms": [
+      256,
+      530
+     ],
+     "op": "+"
+    },
     "id": 12,
     "type": "addition"
    },
    {
     "prompt": "717 + 4 = __",
     "answer": "721",
+    "column": {
+     "terms": [
+      717,
+      4
+     ],
+     "op": "+"
+    },
     "id": 13,
     "type": "addition"
    },
    {
     "prompt": "619 + 367 = __",
     "answer": "986",
+    "column": {
+     "terms": [
+      619,
+      367
+     ],
+     "op": "+"
+    },
     "id": 14,
     "type": "addition"
    },
    {
     "prompt": "548 + 4 = __",
     "answer": "552",
+    "column": {
+     "terms": [
+      548,
+      4
+     ],
+     "op": "+"
+    },
     "id": 15,
     "type": "addition"
    },
    {
     "prompt": "855 + 89 = __",
     "answer": "944",
+    "column": {
+     "terms": [
+      855,
+      89
+     ],
+     "op": "+"
+    },
     "id": 16,
     "type": "addition"
    },
    {
     "prompt": "927 + 62 = __",
     "answer": "989",
+    "column": {
+     "terms": [
+      927,
+      62
+     ],
+     "op": "+"
+    },
     "id": 17,
     "type": "addition"
    },
    {
     "prompt": "903 + 29 = __",
     "answer": "932",
+    "column": {
+     "terms": [
+      903,
+      29
+     ],
+     "op": "+"
+    },
     "id": 18,
     "type": "addition"
    },
    {
     "prompt": "792 + 177 = __",
     "answer": "969",
+    "column": {
+     "terms": [
+      792,
+      177
+     ],
+     "op": "+"
+    },
     "id": 19,
     "type": "addition"
    },
    {
     "prompt": "482 + 492 = __",
     "answer": "974",
+    "column": {
+     "terms": [
+      482,
+      492
+     ],
+     "op": "+"
+    },
     "id": 20,
     "type": "addition"
    },
    {
     "prompt": "91 + 785 = __",
     "answer": "876",
+    "column": {
+     "terms": [
+      91,
+      785
+     ],
+     "op": "+"
+    },
     "id": 21,
     "type": "addition"
    },
    {
     "prompt": "997 + 1 = __",
     "answer": "998",
+    "column": {
+     "terms": [
+      997,
+      1
+     ],
+     "op": "+"
+    },
     "id": 22,
     "type": "addition"
    },
    {
     "prompt": "402 + 120 = __",
     "answer": "522",
+    "column": {
+     "terms": [
+      402,
+      120
+     ],
+     "op": "+"
+    },
     "id": 23,
     "type": "addition"
    },
    {
     "prompt": "948 + 36 = __",
     "answer": "984",
+    "column": {
+     "terms": [
+      948,
+      36
+     ],
+     "op": "+"
+    },
     "id": 24,
     "type": "addition"
    }
@@ -1092,18 +1260,39 @@
    {
     "prompt": "327 + 457 = __",
     "answer": "784",
+    "column": {
+     "terms": [
+      327,
+      457
+     ],
+     "op": "+"
+    },
     "id": 25,
     "type": "addition"
    },
    {
     "prompt": "584 + 374 = __",
     "answer": "958",
+    "column": {
+     "terms": [
+      584,
+      374
+     ],
+     "op": "+"
+    },
     "id": 26,
     "type": "addition"
    },
    {
     "prompt": "836 + 94 = __",
     "answer": "930",
+    "column": {
+     "terms": [
+      836,
+      94
+     ],
+     "op": "+"
+    },
     "id": 27,
     "type": "addition"
    }
@@ -1112,144 +1301,312 @@
    {
     "prompt": "327 + 457 = __",
     "answer": "784",
+    "column": {
+     "terms": [
+      327,
+      457
+     ],
+     "op": "+"
+    },
     "id": 25,
     "type": "addition"
    },
    {
     "prompt": "584 + 374 = __",
     "answer": "958",
+    "column": {
+     "terms": [
+      584,
+      374
+     ],
+     "op": "+"
+    },
     "id": 26,
     "type": "addition"
    },
    {
     "prompt": "836 + 94 = __",
     "answer": "930",
+    "column": {
+     "terms": [
+      836,
+      94
+     ],
+     "op": "+"
+    },
     "id": 27,
     "type": "addition"
    },
    {
     "prompt": "550 + 21 = __",
     "answer": "571",
+    "column": {
+     "terms": [
+      550,
+      21
+     ],
+     "op": "+"
+    },
     "id": 28,
     "type": "addition"
    },
    {
     "prompt": "151 + 171 = __",
     "answer": "322",
+    "column": {
+     "terms": [
+      151,
+      171
+     ],
+     "op": "+"
+    },
     "id": 29,
     "type": "addition"
    },
    {
     "prompt": "620 + 55 = __",
     "answer": "675",
+    "column": {
+     "terms": [
+      620,
+      55
+     ],
+     "op": "+"
+    },
     "id": 30,
     "type": "addition"
    },
    {
     "prompt": "722 + 152 = __",
     "answer": "874",
+    "column": {
+     "terms": [
+      722,
+      152
+     ],
+     "op": "+"
+    },
     "id": 31,
     "type": "addition"
    },
    {
     "prompt": "623 + 66 = __",
     "answer": "689",
+    "column": {
+     "terms": [
+      623,
+      66
+     ],
+     "op": "+"
+    },
     "id": 32,
     "type": "addition"
    },
    {
     "prompt": "105 + 124 = __",
     "answer": "229",
+    "column": {
+     "terms": [
+      105,
+      124
+     ],
+     "op": "+"
+    },
     "id": 33,
     "type": "addition"
    },
    {
     "prompt": "343 + 10 = __",
     "answer": "353",
+    "column": {
+     "terms": [
+      343,
+      10
+     ],
+     "op": "+"
+    },
     "id": 34,
     "type": "addition"
    },
    {
     "prompt": "29 + 971 = __",
     "answer": "1000",
+    "column": {
+     "terms": [
+      29,
+      971
+     ],
+     "op": "+"
+    },
     "id": 35,
     "type": "addition"
    },
    {
     "prompt": "400 + 73 = __",
     "answer": "473",
+    "column": {
+     "terms": [
+      400,
+      73
+     ],
+     "op": "+"
+    },
     "id": 36,
     "type": "addition"
    },
    {
     "prompt": "818 + 67 = __",
     "answer": "885",
+    "column": {
+     "terms": [
+      818,
+      67
+     ],
+     "op": "+"
+    },
     "id": 37,
     "type": "addition"
    },
    {
     "prompt": "105 + 808 = __",
     "answer": "913",
+    "column": {
+     "terms": [
+      105,
+      808
+     ],
+     "op": "+"
+    },
     "id": 38,
     "type": "addition"
    },
    {
     "prompt": "602 + 183 = __",
     "answer": "785",
+    "column": {
+     "terms": [
+      602,
+      183
+     ],
+     "op": "+"
+    },
     "id": 39,
     "type": "addition"
    },
    {
     "prompt": "504 + 61 = __",
     "answer": "565",
+    "column": {
+     "terms": [
+      504,
+      61
+     ],
+     "op": "+"
+    },
     "id": 40,
     "type": "addition"
    },
    {
     "prompt": "881 + 20 = __",
     "answer": "901",
+    "column": {
+     "terms": [
+      881,
+      20
+     ],
+     "op": "+"
+    },
     "id": 41,
     "type": "addition"
    },
    {
     "prompt": "24 + 95 = __",
     "answer": "119",
+    "column": {
+     "terms": [
+      24,
+      95
+     ],
+     "op": "+"
+    },
     "id": 42,
     "type": "addition"
    },
    {
     "prompt": "753 + 195 = __",
     "answer": "948",
+    "column": {
+     "terms": [
+      753,
+      195
+     ],
+     "op": "+"
+    },
     "id": 43,
     "type": "addition"
    },
    {
     "prompt": "900 + 71 = __",
     "answer": "971",
+    "column": {
+     "terms": [
+      900,
+      71
+     ],
+     "op": "+"
+    },
     "id": 44,
     "type": "addition"
    },
    {
     "prompt": "851 + 90 = __",
     "answer": "941",
+    "column": {
+     "terms": [
+      851,
+      90
+     ],
+     "op": "+"
+    },
     "id": 45,
     "type": "addition"
    },
    {
     "prompt": "906 + 15 = __",
     "answer": "921",
+    "column": {
+     "terms": [
+      906,
+      15
+     ],
+     "op": "+"
+    },
     "id": 46,
     "type": "addition"
    },
    {
     "prompt": "287 + 388 = __",
     "answer": "675",
+    "column": {
+     "terms": [
+      287,
+      388
+     ],
+     "op": "+"
+    },
     "id": 47,
     "type": "addition"
    },
    {
     "prompt": "950 + 11 = __",
     "answer": "961",
+    "column": {
+     "terms": [
+      950,
+      11
+     ],
+     "op": "+"
+    },
     "id": 48,
     "type": "addition"
    }
@@ -3144,144 +3501,312 @@
    {
     "prompt": "990 - 175 = __",
     "answer": "815",
+    "column": {
+     "terms": [
+      990,
+      175
+     ],
+     "op": "-"
+    },
     "id": 1,
     "type": "subtraction"
    },
    {
     "prompt": "608 - 89 = __",
     "answer": "519",
+    "column": {
+     "terms": [
+      608,
+      89
+     ],
+     "op": "-"
+    },
     "id": 2,
     "type": "subtraction"
    },
    {
     "prompt": "952 - 528 = __",
     "answer": "424",
+    "column": {
+     "terms": [
+      952,
+      528
+     ],
+     "op": "-"
+    },
     "id": 3,
     "type": "subtraction"
    },
    {
     "prompt": "235 - 23 = __",
     "answer": "212",
+    "column": {
+     "terms": [
+      235,
+      23
+     ],
+     "op": "-"
+    },
     "id": 4,
     "type": "subtraction"
    },
    {
     "prompt": "605 - 286 = __",
     "answer": "319",
+    "column": {
+     "terms": [
+      605,
+      286
+     ],
+     "op": "-"
+    },
     "id": 5,
     "type": "subtraction"
    },
    {
     "prompt": "530 - 478 = __",
     "answer": "52",
+    "column": {
+     "terms": [
+      530,
+      478
+     ],
+     "op": "-"
+    },
     "id": 6,
     "type": "subtraction"
    },
    {
     "prompt": "26 - 16 = __",
     "answer": "10",
+    "column": {
+     "terms": [
+      26,
+      16
+     ],
+     "op": "-"
+    },
     "id": 7,
     "type": "subtraction"
    },
    {
     "prompt": "306 - 173 = __",
     "answer": "133",
+    "column": {
+     "terms": [
+      306,
+      173
+     ],
+     "op": "-"
+    },
     "id": 8,
     "type": "subtraction"
    },
    {
     "prompt": "939 - 195 = __",
     "answer": "744",
+    "column": {
+     "terms": [
+      939,
+      195
+     ],
+     "op": "-"
+    },
     "id": 9,
     "type": "subtraction"
    },
    {
     "prompt": "557 - 336 = __",
     "answer": "221",
+    "column": {
+     "terms": [
+      557,
+      336
+     ],
+     "op": "-"
+    },
     "id": 10,
     "type": "subtraction"
    },
    {
     "prompt": "789 - 178 = __",
     "answer": "611",
+    "column": {
+     "terms": [
+      789,
+      178
+     ],
+     "op": "-"
+    },
     "id": 11,
     "type": "subtraction"
    },
    {
     "prompt": "257 - 98 = __",
     "answer": "159",
+    "column": {
+     "terms": [
+      257,
+      98
+     ],
+     "op": "-"
+    },
     "id": 12,
     "type": "subtraction"
    },
    {
     "prompt": "373 - 107 = __",
     "answer": "266",
+    "column": {
+     "terms": [
+      373,
+      107
+     ],
+     "op": "-"
+    },
     "id": 13,
     "type": "subtraction"
    },
    {
     "prompt": "480 - 311 = __",
     "answer": "169",
+    "column": {
+     "terms": [
+      480,
+      311
+     ],
+     "op": "-"
+    },
     "id": 14,
     "type": "subtraction"
    },
    {
     "prompt": "174 - 145 = __",
     "answer": "29",
+    "column": {
+     "terms": [
+      174,
+      145
+     ],
+     "op": "-"
+    },
     "id": 15,
     "type": "subtraction"
    },
    {
     "prompt": "682 - 190 = __",
     "answer": "492",
+    "column": {
+     "terms": [
+      682,
+      190
+     ],
+     "op": "-"
+    },
     "id": 16,
     "type": "subtraction"
    },
    {
     "prompt": "325 - 57 = __",
     "answer": "268",
+    "column": {
+     "terms": [
+      325,
+      57
+     ],
+     "op": "-"
+    },
     "id": 17,
     "type": "subtraction"
    },
    {
     "prompt": "264 - 88 = __",
     "answer": "176",
+    "column": {
+     "terms": [
+      264,
+      88
+     ],
+     "op": "-"
+    },
     "id": 18,
     "type": "subtraction"
    },
    {
     "prompt": "839 - 291 = __",
     "answer": "548",
+    "column": {
+     "terms": [
+      839,
+      291
+     ],
+     "op": "-"
+    },
     "id": 19,
     "type": "subtraction"
    },
    {
     "prompt": "80 - 35 = __",
     "answer": "45",
+    "column": {
+     "terms": [
+      80,
+      35
+     ],
+     "op": "-"
+    },
     "id": 20,
     "type": "subtraction"
    },
    {
     "prompt": "156 - 111 = __",
     "answer": "45",
+    "column": {
+     "terms": [
+      156,
+      111
+     ],
+     "op": "-"
+    },
     "id": 21,
     "type": "subtraction"
    },
    {
     "prompt": "356 - 176 = __",
     "answer": "180",
+    "column": {
+     "terms": [
+      356,
+      176
+     ],
+     "op": "-"
+    },
     "id": 22,
     "type": "subtraction"
    },
    {
     "prompt": "746 - 366 = __",
     "answer": "380",
+    "column": {
+     "terms": [
+      746,
+      366
+     ],
+     "op": "-"
+    },
     "id": 23,
     "type": "subtraction"
    },
    {
     "prompt": "72 - 57 = __",
     "answer": "15",
+    "column": {
+     "terms": [
+      72,
+      57
+     ],
+     "op": "-"
+    },
     "id": 24,
     "type": "subtraction"
    }
@@ -3290,18 +3815,39 @@
    {
     "prompt": "363 - 360 = __",
     "answer": "3",
+    "column": {
+     "terms": [
+      363,
+      360
+     ],
+     "op": "-"
+    },
     "id": 25,
     "type": "subtraction"
    },
    {
     "prompt": "841 - 671 = __",
     "answer": "170",
+    "column": {
+     "terms": [
+      841,
+      671
+     ],
+     "op": "-"
+    },
     "id": 26,
     "type": "subtraction"
    },
    {
     "prompt": "411 - 241 = __",
     "answer": "170",
+    "column": {
+     "terms": [
+      411,
+      241
+     ],
+     "op": "-"
+    },
     "id": 27,
     "type": "subtraction"
    }
@@ -3310,144 +3856,312 @@
    {
     "prompt": "363 - 360 = __",
     "answer": "3",
+    "column": {
+     "terms": [
+      363,
+      360
+     ],
+     "op": "-"
+    },
     "id": 25,
     "type": "subtraction"
    },
    {
     "prompt": "841 - 671 = __",
     "answer": "170",
+    "column": {
+     "terms": [
+      841,
+      671
+     ],
+     "op": "-"
+    },
     "id": 26,
     "type": "subtraction"
    },
    {
     "prompt": "411 - 241 = __",
     "answer": "170",
+    "column": {
+     "terms": [
+      411,
+      241
+     ],
+     "op": "-"
+    },
     "id": 27,
     "type": "subtraction"
    },
    {
     "prompt": "431 - 24 = __",
     "answer": "407",
+    "column": {
+     "terms": [
+      431,
+      24
+     ],
+     "op": "-"
+    },
     "id": 28,
     "type": "subtraction"
    },
    {
     "prompt": "878 - 670 = __",
     "answer": "208",
+    "column": {
+     "terms": [
+      878,
+      670
+     ],
+     "op": "-"
+    },
     "id": 29,
     "type": "subtraction"
    },
    {
     "prompt": "520 - 147 = __",
     "answer": "373",
+    "column": {
+     "terms": [
+      520,
+      147
+     ],
+     "op": "-"
+    },
     "id": 30,
     "type": "subtraction"
    },
    {
     "prompt": "314 - 31 = __",
     "answer": "283",
+    "column": {
+     "terms": [
+      314,
+      31
+     ],
+     "op": "-"
+    },
     "id": 31,
     "type": "subtraction"
    },
    {
     "prompt": "339 - 99 = __",
     "answer": "240",
+    "column": {
+     "terms": [
+      339,
+      99
+     ],
+     "op": "-"
+    },
     "id": 32,
     "type": "subtraction"
    },
    {
     "prompt": "686 - 548 = __",
     "answer": "138",
+    "column": {
+     "terms": [
+      686,
+      548
+     ],
+     "op": "-"
+    },
     "id": 33,
     "type": "subtraction"
    },
    {
     "prompt": "858 - 546 = __",
     "answer": "312",
+    "column": {
+     "terms": [
+      858,
+      546
+     ],
+     "op": "-"
+    },
     "id": 34,
     "type": "subtraction"
    },
    {
     "prompt": "283 - 30 = __",
     "answer": "253",
+    "column": {
+     "terms": [
+      283,
+      30
+     ],
+     "op": "-"
+    },
     "id": 35,
     "type": "subtraction"
    },
    {
     "prompt": "443 - 427 = __",
     "answer": "16",
+    "column": {
+     "terms": [
+      443,
+      427
+     ],
+     "op": "-"
+    },
     "id": 36,
     "type": "subtraction"
    },
    {
     "prompt": "92 - 48 = __",
     "answer": "44",
+    "column": {
+     "terms": [
+      92,
+      48
+     ],
+     "op": "-"
+    },
     "id": 37,
     "type": "subtraction"
    },
    {
     "prompt": "133 - 47 = __",
     "answer": "86",
+    "column": {
+     "terms": [
+      133,
+      47
+     ],
+     "op": "-"
+    },
     "id": 38,
     "type": "subtraction"
    },
    {
     "prompt": "869 - 223 = __",
     "answer": "646",
+    "column": {
+     "terms": [
+      869,
+      223
+     ],
+     "op": "-"
+    },
     "id": 39,
     "type": "subtraction"
    },
    {
     "prompt": "633 - 206 = __",
     "answer": "427",
+    "column": {
+     "terms": [
+      633,
+      206
+     ],
+     "op": "-"
+    },
     "id": 40,
     "type": "subtraction"
    },
    {
     "prompt": "419 - 105 = __",
     "answer": "314",
+    "column": {
+     "terms": [
+      419,
+      105
+     ],
+     "op": "-"
+    },
     "id": 41,
     "type": "subtraction"
    },
    {
     "prompt": "802 - 391 = __",
     "answer": "411",
+    "column": {
+     "terms": [
+      802,
+      391
+     ],
+     "op": "-"
+    },
     "id": 42,
     "type": "subtraction"
    },
    {
     "prompt": "422 - 60 = __",
     "answer": "362",
+    "column": {
+     "terms": [
+      422,
+      60
+     ],
+     "op": "-"
+    },
     "id": 43,
     "type": "subtraction"
    },
    {
     "prompt": "832 - 50 = __",
     "answer": "782",
+    "column": {
+     "terms": [
+      832,
+      50
+     ],
+     "op": "-"
+    },
     "id": 44,
     "type": "subtraction"
    },
    {
     "prompt": "682 - 541 = __",
     "answer": "141",
+    "column": {
+     "terms": [
+      682,
+      541
+     ],
+     "op": "-"
+    },
     "id": 45,
     "type": "subtraction"
    },
    {
     "prompt": "243 - 47 = __",
     "answer": "196",
+    "column": {
+     "terms": [
+      243,
+      47
+     ],
+     "op": "-"
+    },
     "id": 46,
     "type": "subtraction"
    },
    {
     "prompt": "593 - 147 = __",
     "answer": "446",
+    "column": {
+     "terms": [
+      593,
+      147
+     ],
+     "op": "-"
+    },
     "id": 47,
     "type": "subtraction"
    },
    {
     "prompt": "953 - 526 = __",
     "answer": "427",
+    "column": {
+     "terms": [
+      953,
+      526
+     ],
+     "op": "-"
+    },
     "id": 48,
     "type": "subtraction"
    }
@@ -4398,145 +5112,145 @@
  "mult:2": {
   "page1": [
    {
-    "prompt": "5 × __ = 50",
+    "prompt": "5 ├ù __ = 50",
     "answer": "10",
     "id": 1,
     "type": "mult"
    },
    {
-    "prompt": "7 × __ = 63",
+    "prompt": "7 ├ù __ = 63",
     "answer": "9",
     "id": 2,
     "type": "mult"
    },
    {
-    "prompt": "__ × 7 = 42",
+    "prompt": "__ ├ù 7 = 42",
     "answer": "6",
     "id": 3,
     "type": "mult"
    },
    {
-    "prompt": "__ × 9 = 9",
+    "prompt": "__ ├ù 9 = 9",
     "answer": "1",
     "id": 4,
     "type": "mult"
    },
    {
-    "prompt": "__ × 4 = 12",
+    "prompt": "__ ├ù 4 = 12",
     "answer": "3",
     "id": 5,
     "type": "mult"
    },
    {
-    "prompt": "__ × 9 = 45",
+    "prompt": "__ ├ù 9 = 45",
     "answer": "5",
     "id": 6,
     "type": "mult"
    },
    {
-    "prompt": "10 × __ = 100",
+    "prompt": "10 ├ù __ = 100",
     "answer": "10",
     "id": 7,
     "type": "mult"
    },
    {
-    "prompt": "__ × 2 = 6",
+    "prompt": "__ ├ù 2 = 6",
     "answer": "3",
     "id": 8,
     "type": "mult"
    },
    {
-    "prompt": "10 × 6 = __",
+    "prompt": "10 ├ù 6 = __",
     "answer": "60",
     "id": 9,
     "type": "mult"
    },
    {
-    "prompt": "5 × 8 = __",
+    "prompt": "5 ├ù 8 = __",
     "answer": "40",
     "id": 10,
     "type": "mult"
    },
    {
-    "prompt": "1 × __ = 3",
+    "prompt": "1 ├ù __ = 3",
     "answer": "3",
     "id": 11,
     "type": "mult"
    },
    {
-    "prompt": "2 × __ = 6",
+    "prompt": "2 ├ù __ = 6",
     "answer": "3",
     "id": 12,
     "type": "mult"
    },
    {
-    "prompt": "9 × __ = 18",
+    "prompt": "9 ├ù __ = 18",
     "answer": "2",
     "id": 13,
     "type": "mult"
    },
    {
-    "prompt": "__ × 6 = 24",
+    "prompt": "__ ├ù 6 = 24",
     "answer": "4",
     "id": 14,
     "type": "mult"
    },
    {
-    "prompt": "3 × __ = 15",
+    "prompt": "3 ├ù __ = 15",
     "answer": "5",
     "id": 15,
     "type": "mult"
    },
    {
-    "prompt": "2 × 9 = __",
+    "prompt": "2 ├ù 9 = __",
     "answer": "18",
     "id": 16,
     "type": "mult"
    },
    {
-    "prompt": "10 × 7 = __",
+    "prompt": "10 ├ù 7 = __",
     "answer": "70",
     "id": 17,
     "type": "mult"
    },
    {
-    "prompt": "3 × __ = 9",
+    "prompt": "3 ├ù __ = 9",
     "answer": "3",
     "id": 18,
     "type": "mult"
    },
    {
-    "prompt": "9 × __ = 81",
+    "prompt": "9 ├ù __ = 81",
     "answer": "9",
     "id": 19,
     "type": "mult"
    },
    {
-    "prompt": "__ × 3 = 18",
+    "prompt": "__ ├ù 3 = 18",
     "answer": "6",
     "id": 20,
     "type": "mult"
    },
    {
-    "prompt": "9 × __ = 27",
+    "prompt": "9 ├ù __ = 27",
     "answer": "3",
     "id": 21,
     "type": "mult"
    },
    {
-    "prompt": "2 × 5 = __",
+    "prompt": "2 ├ù 5 = __",
     "answer": "10",
     "id": 22,
     "type": "mult"
    },
    {
-    "prompt": "4 × 8 = __",
+    "prompt": "4 ├ù 8 = __",
     "answer": "32",
     "id": 23,
     "type": "mult"
    },
    {
-    "prompt": "4 × __ = 20",
+    "prompt": "4 ├ù __ = 20",
     "answer": "5",
     "id": 24,
     "type": "mult"
@@ -4544,19 +5258,19 @@
   ],
   "page2head": [
    {
-    "prompt": "__ × 6 = 48",
+    "prompt": "__ ├ù 6 = 48",
     "answer": "8",
     "id": 25,
     "type": "mult"
    },
    {
-    "prompt": "__ × 5 = 45",
+    "prompt": "__ ├ù 5 = 45",
     "answer": "9",
     "id": 26,
     "type": "mult"
    },
    {
-    "prompt": "__ × 1 = 6",
+    "prompt": "__ ├ù 1 = 6",
     "answer": "6",
     "id": 27,
     "type": "mult"
@@ -4564,145 +5278,459 @@
   ],
   "page2": [
    {
-    "prompt": "__ × 6 = 48",
+    "prompt": "__ ├ù 6 = 48",
     "answer": "8",
     "id": 25,
     "type": "mult"
    },
    {
-    "prompt": "__ × 5 = 45",
+    "prompt": "__ ├ù 5 = 45",
     "answer": "9",
     "id": 26,
     "type": "mult"
    },
    {
-    "prompt": "__ × 1 = 6",
+    "prompt": "__ ├ù 1 = 6",
     "answer": "6",
     "id": 27,
     "type": "mult"
    },
    {
-    "prompt": "10 × __ = 90",
+    "prompt": "10 ├ù __ = 90",
     "answer": "9",
     "id": 28,
     "type": "mult"
    },
    {
-    "prompt": "__ × 5 = 5",
+    "prompt": "__ ├ù 5 = 5",
     "answer": "1",
     "id": 29,
     "type": "mult"
    },
    {
-    "prompt": "3 × 2 = __",
+    "prompt": "3 ├ù 2 = __",
     "answer": "6",
     "id": 30,
     "type": "mult"
    },
    {
-    "prompt": "3 × __ = 18",
+    "prompt": "3 ├ù __ = 18",
     "answer": "6",
     "id": 31,
     "type": "mult"
    },
    {
-    "prompt": "__ × 2 = 4",
+    "prompt": "__ ├ù 2 = 4",
     "answer": "2",
     "id": 32,
     "type": "mult"
    },
    {
-    "prompt": "9 × __ = 45",
+    "prompt": "9 ├ù __ = 45",
     "answer": "5",
     "id": 33,
     "type": "mult"
    },
    {
-    "prompt": "1 × __ = 2",
+    "prompt": "1 ├ù __ = 2",
     "answer": "2",
     "id": 34,
     "type": "mult"
    },
    {
-    "prompt": "4 × __ = 24",
+    "prompt": "4 ├ù __ = 24",
     "answer": "6",
     "id": 35,
     "type": "mult"
    },
    {
-    "prompt": "6 × 4 = __",
+    "prompt": "6 ├ù 4 = __",
     "answer": "24",
     "id": 36,
     "type": "mult"
    },
    {
-    "prompt": "__ × 7 = 56",
+    "prompt": "__ ├ù 7 = 56",
     "answer": "8",
     "id": 37,
     "type": "mult"
    },
    {
-    "prompt": "__ × 5 = 15",
+    "prompt": "__ ├ù 5 = 15",
     "answer": "3",
     "id": 38,
     "type": "mult"
    },
    {
-    "prompt": "10 × __ = 70",
+    "prompt": "10 ├ù __ = 70",
     "answer": "7",
     "id": 39,
     "type": "mult"
    },
    {
-    "prompt": "2 × __ = 8",
+    "prompt": "2 ├ù __ = 8",
     "answer": "4",
     "id": 40,
     "type": "mult"
    },
    {
-    "prompt": "1 × __ = 1",
+    "prompt": "1 ├ù __ = 1",
     "answer": "1",
     "id": 41,
     "type": "mult"
    },
    {
-    "prompt": "__ × 4 = 16",
+    "prompt": "__ ├ù 4 = 16",
     "answer": "4",
     "id": 42,
     "type": "mult"
    },
    {
-    "prompt": "6 × 9 = __",
+    "prompt": "6 ├ù 9 = __",
     "answer": "54",
     "id": 43,
     "type": "mult"
    },
    {
-    "prompt": "1 × __ = 6",
+    "prompt": "1 ├ù __ = 6",
     "answer": "6",
     "id": 44,
     "type": "mult"
    },
    {
-    "prompt": "__ × 10 = 90",
+    "prompt": "__ ├ù 10 = 90",
     "answer": "9",
     "id": 45,
     "type": "mult"
    },
    {
-    "prompt": "5 × __ = 5",
+    "prompt": "5 ├ù __ = 5",
     "answer": "1",
     "id": 46,
     "type": "mult"
    },
    {
-    "prompt": "__ × 4 = 36",
+    "prompt": "__ ├ù 4 = 36",
     "answer": "9",
     "id": 47,
     "type": "mult"
    },
    {
-    "prompt": "7 × 9 = __",
+    "prompt": "7 ├ù 9 = __",
+    "answer": "63",
+    "id": 48,
+    "type": "mult"
+   }
+  ]
+ },
+ "mult:3": {
+  "page1": [
+   {
+    "prompt": "7 ├ù __ = 35",
+    "answer": "5",
+    "id": 1,
+    "type": "mult"
+   },
+   {
+    "prompt": "__ ├ù 1 = 9",
+    "answer": "9",
+    "id": 2,
+    "type": "mult"
+   },
+   {
+    "prompt": "__ ├ù 1 = 3",
+    "answer": "3",
+    "id": 3,
+    "type": "mult"
+   },
+   {
+    "prompt": "9 ├ù __ = 54",
+    "answer": "6",
+    "id": 4,
+    "type": "mult"
+   },
+   {
+    "prompt": "6 ├ù 1 = __",
+    "answer": "6",
+    "id": 5,
+    "type": "mult"
+   },
+   {
+    "prompt": "4 ├ù 6 = __",
+    "answer": "24",
+    "id": 6,
+    "type": "mult"
+   },
+   {
+    "prompt": "__ ├ù 1 = 4",
+    "answer": "4",
+    "id": 7,
+    "type": "mult"
+   },
+   {
+    "prompt": "__ ├ù 8 = 8",
+    "answer": "1",
+    "id": 8,
+    "type": "mult"
+   },
+   {
+    "prompt": "__ ├ù 8 = 72",
+    "answer": "9",
+    "id": 9,
+    "type": "mult"
+   },
+   {
+    "prompt": "__ ├ù 3 = 18",
+    "answer": "6",
+    "id": 10,
+    "type": "mult"
+   },
+   {
+    "prompt": "10 ├ù __ = 50",
+    "answer": "5",
+    "id": 11,
+    "type": "mult"
+   },
+   {
+    "prompt": "__ ├ù 5 = 45",
+    "answer": "9",
+    "id": 12,
+    "type": "mult"
+   },
+   {
+    "prompt": "__ ├ù 5 = 35",
+    "answer": "7",
+    "id": 13,
+    "type": "mult"
+   },
+   {
+    "prompt": "4 ├ù 8 = __",
+    "answer": "32",
+    "id": 14,
+    "type": "mult"
+   },
+   {
+    "prompt": "__ ├ù 2 = 12",
+    "answer": "6",
+    "id": 15,
+    "type": "mult"
+   },
+   {
+    "prompt": "__ ├ù 3 = 3",
+    "answer": "1",
+    "id": 16,
+    "type": "mult"
+   },
+   {
+    "prompt": "7 ├ù __ = 63",
+    "answer": "9",
+    "id": 17,
+    "type": "mult"
+   },
+   {
+    "prompt": "8 ├ù __ = 48",
+    "answer": "6",
+    "id": 18,
+    "type": "mult"
+   },
+   {
+    "prompt": "__ ├ù 5 = 20",
+    "answer": "4",
+    "id": 19,
+    "type": "mult"
+   },
+   {
+    "prompt": "5 ├ù __ = 50",
+    "answer": "10",
+    "id": 20,
+    "type": "mult"
+   },
+   {
+    "prompt": "1 ├ù 7 = __",
+    "answer": "7",
+    "id": 21,
+    "type": "mult"
+   },
+   {
+    "prompt": "8 ├ù 2 = __",
+    "answer": "16",
+    "id": 22,
+    "type": "mult"
+   },
+   {
+    "prompt": "2 ├ù 2 = __",
+    "answer": "4",
+    "id": 23,
+    "type": "mult"
+   },
+   {
+    "prompt": "4 ├ù 1 = __",
+    "answer": "4",
+    "id": 24,
+    "type": "mult"
+   }
+  ],
+  "page2head": [
+   {
+    "prompt": "1 ├ù 10 = __",
+    "answer": "10",
+    "id": 25,
+    "type": "mult"
+   },
+   {
+    "prompt": "8 ├ù 4 = __",
+    "answer": "32",
+    "id": 26,
+    "type": "mult"
+   },
+   {
+    "prompt": "__ ├ù 3 = 15",
+    "answer": "5",
+    "id": 27,
+    "type": "mult"
+   }
+  ],
+  "page2": [
+   {
+    "prompt": "1 ├ù 10 = __",
+    "answer": "10",
+    "id": 25,
+    "type": "mult"
+   },
+   {
+    "prompt": "8 ├ù 4 = __",
+    "answer": "32",
+    "id": 26,
+    "type": "mult"
+   },
+   {
+    "prompt": "__ ├ù 3 = 15",
+    "answer": "5",
+    "id": 27,
+    "type": "mult"
+   },
+   {
+    "prompt": "1 ├ù __ = 10",
+    "answer": "10",
+    "id": 28,
+    "type": "mult"
+   },
+   {
+    "prompt": "6 ├ù 4 = __",
+    "answer": "24",
+    "id": 29,
+    "type": "mult"
+   },
+   {
+    "prompt": "4 ├ù __ = 32",
+    "answer": "8",
+    "id": 30,
+    "type": "mult"
+   },
+   {
+    "prompt": "__ ├ù 4 = 12",
+    "answer": "3",
+    "id": 31,
+    "type": "mult"
+   },
+   {
+    "prompt": "__ ├ù 10 = 90",
+    "answer": "9",
+    "id": 32,
+    "type": "mult"
+   },
+   {
+    "prompt": "__ ├ù 9 = 45",
+    "answer": "5",
+    "id": 33,
+    "type": "mult"
+   },
+   {
+    "prompt": "__ ├ù 2 = 4",
+    "answer": "2",
+    "id": 34,
+    "type": "mult"
+   },
+   {
+    "prompt": "10 ├ù 8 = __",
+    "answer": "80",
+    "id": 35,
+    "type": "mult"
+   },
+   {
+    "prompt": "4 ├ù 5 = __",
+    "answer": "20",
+    "id": 36,
+    "type": "mult"
+   },
+   {
+    "prompt": "4 ├ù __ = 16",
+    "answer": "4",
+    "id": 37,
+    "type": "mult"
+   },
+   {
+    "prompt": "4 ├ù __ = 28",
+    "answer": "7",
+    "id": 38,
+    "type": "mult"
+   },
+   {
+    "prompt": "__ ├ù 6 = 60",
+    "answer": "10",
+    "id": 39,
+    "type": "mult"
+   },
+   {
+    "prompt": "1 ├ù __ = 2",
+    "answer": "2",
+    "id": 40,
+    "type": "mult"
+   },
+   {
+    "prompt": "9 ├ù 6 = __",
+    "answer": "54",
+    "id": 41,
+    "type": "mult"
+   },
+   {
+    "prompt": "__ ├ù 7 = 14",
+    "answer": "2",
+    "id": 42,
+    "type": "mult"
+   },
+   {
+    "prompt": "5 ├ù __ = 30",
+    "answer": "6",
+    "id": 43,
+    "type": "mult"
+   },
+   {
+    "prompt": "8 ├ù 10 = __",
+    "answer": "80",
+    "id": 44,
+    "type": "mult"
+   },
+   {
+    "prompt": "__ ├ù 2 = 6",
+    "answer": "3",
+    "id": 45,
+    "type": "mult"
+   },
+   {
+    "prompt": "2 ├ù __ = 20",
+    "answer": "10",
+    "id": 46,
+    "type": "mult"
+   },
+   {
+    "prompt": "9 ├ù 3 = __",
+    "answer": "27",
+    "id": 47,
+    "type": "mult"
+   },
+   {
+    "prompt": "7 ├ù 9 = __",
     "answer": "63",
     "id": 48,
     "type": "mult"
@@ -7541,6 +8569,322 @@
    }
   ]
  },
+ "rowscolumns:1": {
+  "page1": [
+   {
+    "prompt": "This grid has 2 rows and 2 squares in all. How many columns? __",
+    "answer": "1",
+    "rowsColumns": {
+     "rows": 2,
+     "cols": 1
+    },
+    "id": 1,
+    "type": "rowscolumns"
+   },
+   {
+    "prompt": "This grid has 4 columns and 12 squares in all. How many rows? __",
+    "answer": "3",
+    "rowsColumns": {
+     "rows": 3,
+     "cols": 4
+    },
+    "id": 2,
+    "type": "rowscolumns"
+   },
+   {
+    "prompt": "This grid has 5 columns and 5 squares in all. How many rows? __",
+    "answer": "1",
+    "rowsColumns": {
+     "rows": 1,
+     "cols": 5
+    },
+    "id": 3,
+    "type": "rowscolumns"
+   },
+   {
+    "prompt": "A grid of 2 rows and 3 columns: 3 + 3 = __",
+    "answer": "6",
+    "rowsColumns": {
+     "rows": 2,
+     "cols": 3
+    },
+    "id": 4,
+    "type": "rowscolumns"
+   },
+   {
+    "prompt": "How many squares are in a grid of 1 row and 4 columns? __",
+    "answer": "4",
+    "rowsColumns": {
+     "rows": 1,
+     "cols": 4
+    },
+    "id": 5,
+    "type": "rowscolumns"
+   },
+   {
+    "prompt": "How many squares are in a grid of 1 row and 3 columns? __",
+    "answer": "3",
+    "rowsColumns": {
+     "rows": 1,
+     "cols": 3
+    },
+    "id": 6,
+    "type": "rowscolumns"
+   }
+  ],
+  "page2head": [
+   {
+    "prompt": "How many squares are in a grid of 4 rows and 5 columns? __",
+    "answer": "20",
+    "rowsColumns": {
+     "rows": 4,
+     "cols": 5
+    },
+    "id": 7,
+    "type": "rowscolumns"
+   },
+   {
+    "prompt": "How many squares are in a grid of 3 rows and 1 column? __",
+    "answer": "3",
+    "rowsColumns": {
+     "rows": 3,
+     "cols": 1
+    },
+    "id": 8,
+    "type": "rowscolumns"
+   },
+   {
+    "prompt": "How many squares are in a grid of 3 rows and 3 columns? __",
+    "answer": "9",
+    "rowsColumns": {
+     "rows": 3,
+     "cols": 3
+    },
+    "id": 9,
+    "type": "rowscolumns"
+   }
+  ],
+  "page2": [
+   {
+    "prompt": "How many squares are in a grid of 4 rows and 5 columns? __",
+    "answer": "20",
+    "rowsColumns": {
+     "rows": 4,
+     "cols": 5
+    },
+    "id": 7,
+    "type": "rowscolumns"
+   },
+   {
+    "prompt": "How many squares are in a grid of 3 rows and 1 column? __",
+    "answer": "3",
+    "rowsColumns": {
+     "rows": 3,
+     "cols": 1
+    },
+    "id": 8,
+    "type": "rowscolumns"
+   },
+   {
+    "prompt": "How many squares are in a grid of 3 rows and 3 columns? __",
+    "answer": "9",
+    "rowsColumns": {
+     "rows": 3,
+     "cols": 3
+    },
+    "id": 9,
+    "type": "rowscolumns"
+   },
+   {
+    "prompt": "This grid has 2 rows and 8 squares in all. How many columns? __",
+    "answer": "4",
+    "rowsColumns": {
+     "rows": 2,
+     "cols": 4
+    },
+    "id": 10,
+    "type": "rowscolumns"
+   },
+   {
+    "prompt": "How many squares are in a grid of 3 rows and 5 columns? __",
+    "answer": "15",
+    "rowsColumns": {
+     "rows": 3,
+     "cols": 5
+    },
+    "id": 11,
+    "type": "rowscolumns"
+   },
+   {
+    "prompt": "A grid of 3 rows and 5 columns: 5 + 5 + 5 = __",
+    "answer": "15",
+    "rowsColumns": {
+     "rows": 3,
+     "cols": 5
+    },
+    "id": 12,
+    "type": "rowscolumns"
+   }
+  ]
+ },
+ "rowscolumns:2": {
+  "page1": [
+   {
+    "prompt": "This grid has 2 rows and 10 squares in all. How many columns? __",
+    "answer": "5",
+    "rowsColumns": {
+     "rows": 2,
+     "cols": 5
+    },
+    "id": 1,
+    "type": "rowscolumns"
+   },
+   {
+    "prompt": "This grid has 2 rows and 2 squares in all. How many columns? __",
+    "answer": "1",
+    "rowsColumns": {
+     "rows": 2,
+     "cols": 1
+    },
+    "id": 2,
+    "type": "rowscolumns"
+   },
+   {
+    "prompt": "How many squares are in a grid of 4 rows and 4 columns? __",
+    "answer": "16",
+    "rowsColumns": {
+     "rows": 4,
+     "cols": 4
+    },
+    "id": 3,
+    "type": "rowscolumns"
+   },
+   {
+    "prompt": "This grid has 2 columns and 8 squares in all. How many rows? __",
+    "answer": "4",
+    "rowsColumns": {
+     "rows": 4,
+     "cols": 2
+    },
+    "id": 4,
+    "type": "rowscolumns"
+   },
+   {
+    "prompt": "2 ├ù 3 = __",
+    "answer": "6",
+    "rowsColumns": {
+     "rows": 2,
+     "cols": 3
+    },
+    "id": 5,
+    "type": "rowscolumns"
+   },
+   {
+    "prompt": "This grid has 5 rows and 20 squares in all. How many columns? __",
+    "answer": "4",
+    "rowsColumns": {
+     "rows": 5,
+     "cols": 4
+    },
+    "id": 6,
+    "type": "rowscolumns"
+   }
+  ],
+  "page2head": [
+   {
+    "prompt": "A grid of 5 rows and 5 columns: 5 + 5 + 5 + 5 + 5 = __",
+    "answer": "25",
+    "rowsColumns": {
+     "rows": 5,
+     "cols": 5
+    },
+    "id": 7,
+    "type": "rowscolumns"
+   },
+   {
+    "prompt": "3 ├ù 2 = __",
+    "answer": "6",
+    "rowsColumns": {
+     "rows": 3,
+     "cols": 2
+    },
+    "id": 8,
+    "type": "rowscolumns"
+   },
+   {
+    "prompt": "5 ├ù 1 = __",
+    "answer": "5",
+    "rowsColumns": {
+     "rows": 5,
+     "cols": 1
+    },
+    "id": 9,
+    "type": "rowscolumns"
+   }
+  ],
+  "page2": [
+   {
+    "prompt": "A grid of 5 rows and 5 columns: 5 + 5 + 5 + 5 + 5 = __",
+    "answer": "25",
+    "rowsColumns": {
+     "rows": 5,
+     "cols": 5
+    },
+    "id": 7,
+    "type": "rowscolumns"
+   },
+   {
+    "prompt": "3 ├ù 2 = __",
+    "answer": "6",
+    "rowsColumns": {
+     "rows": 3,
+     "cols": 2
+    },
+    "id": 8,
+    "type": "rowscolumns"
+   },
+   {
+    "prompt": "5 ├ù 1 = __",
+    "answer": "5",
+    "rowsColumns": {
+     "rows": 5,
+     "cols": 1
+    },
+    "id": 9,
+    "type": "rowscolumns"
+   },
+   {
+    "prompt": "1 ├ù 3 = __",
+    "answer": "3",
+    "rowsColumns": {
+     "rows": 1,
+     "cols": 3
+    },
+    "id": 10,
+    "type": "rowscolumns"
+   },
+   {
+    "prompt": "4 ├ù 4 = __",
+    "answer": "16",
+    "rowsColumns": {
+     "rows": 4,
+     "cols": 4
+    },
+    "id": 11,
+    "type": "rowscolumns"
+   },
+   {
+    "prompt": "A grid of 2 rows and 3 columns: 3 + 3 = __",
+    "answer": "6",
+    "rowsColumns": {
+     "rows": 2,
+     "cols": 3
+    },
+    "id": 12,
+    "type": "rowscolumns"
+   }
+  ]
+ },
  "doubles:1": {
   "page1": [
    {
@@ -8174,311 +9518,390 @@
    {
     "prompt": "4 + __ = 10",
     "answer": "6",
+    "bond": {
+     "whole": 10,
+     "left": 4,
+     "right": null
+    },
     "id": 1,
     "type": "bonds"
    },
    {
     "prompt": "10 - 1 = __",
     "answer": "9",
+    "bond": {
+     "whole": 10,
+     "left": 1,
+     "right": null
+    },
     "id": 2,
     "type": "bonds"
    },
    {
     "prompt": "__ and 2 make 10",
     "answer": "8",
+    "bond": {
+     "whole": 10,
+     "left": null,
+     "right": 2
+    },
     "id": 3,
     "type": "bonds"
    },
    {
     "prompt": "9 + __ = 10",
     "answer": "1",
+    "bond": {
+     "whole": 10,
+     "left": 9,
+     "right": null
+    },
     "id": 4,
     "type": "bonds"
    },
    {
     "prompt": "__ and 5 make 10",
     "answer": "5",
+    "bond": {
+     "whole": 10,
+     "left": null,
+     "right": 5
+    },
     "id": 5,
     "type": "bonds"
    },
    {
     "prompt": "__ + 1 = 10",
     "answer": "9",
+    "bond": {
+     "whole": 10,
+     "left": null,
+     "right": 1
+    },
     "id": 6,
     "type": "bonds"
    },
    {
     "prompt": "__ and 7 make 10",
     "answer": "3",
+    "bond": {
+     "whole": 10,
+     "left": null,
+     "right": 7
+    },
     "id": 7,
     "type": "bonds"
    },
    {
     "prompt": "6 + __ = 10",
     "answer": "4",
+    "bond": {
+     "whole": 10,
+     "left": 6,
+     "right": null
+    },
     "id": 8,
     "type": "bonds"
    },
    {
     "prompt": "__ + 4 = 10",
     "answer": "6",
+    "bond": {
+     "whole": 10,
+     "left": null,
+     "right": 4
+    },
     "id": 9,
     "type": "bonds"
    },
    {
     "prompt": "__ + 3 = 10",
     "answer": "7",
+    "bond": {
+     "whole": 10,
+     "left": null,
+     "right": 3
+    },
     "id": 10,
     "type": "bonds"
    },
    {
     "prompt": "10 - 7 = __",
     "answer": "3",
+    "bond": {
+     "whole": 10,
+     "left": 7,
+     "right": null
+    },
     "id": 11,
     "type": "bonds"
    },
    {
     "prompt": "__ + 2 = 10",
     "answer": "8",
+    "bond": {
+     "whole": 10,
+     "left": null,
+     "right": 2
+    },
     "id": 12,
     "type": "bonds"
    },
    {
     "prompt": "__ and 8 make 10",
     "answer": "2",
+    "bond": {
+     "whole": 10,
+     "left": null,
+     "right": 8
+    },
     "id": 13,
     "type": "bonds"
    },
    {
     "prompt": "__ + 5 = 10",
     "answer": "5",
+    "bond": {
+     "whole": 10,
+     "left": null,
+     "right": 5
+    },
     "id": 14,
     "type": "bonds"
    },
    {
     "prompt": "3 + __ = 10",
     "answer": "7",
+    "bond": {
+     "whole": 10,
+     "left": 3,
+     "right": null
+    },
     "id": 15,
     "type": "bonds"
    },
    {
     "prompt": "1 + __ = 10",
     "answer": "9",
+    "bond": {
+     "whole": 10,
+     "left": 1,
+     "right": null
+    },
     "id": 16,
     "type": "bonds"
-   },
+   }
+  ],
+  "page2head": [
    {
     "prompt": "__ and 3 make 10",
     "answer": "7",
+    "bond": {
+     "whole": 10,
+     "left": null,
+     "right": 3
+    },
     "id": 17,
     "type": "bonds"
    },
    {
     "prompt": "__ + 8 = 10",
     "answer": "2",
+    "bond": {
+     "whole": 10,
+     "left": null,
+     "right": 8
+    },
     "id": 18,
     "type": "bonds"
    },
    {
     "prompt": "__ + 7 = 10",
     "answer": "3",
+    "bond": {
+     "whole": 10,
+     "left": null,
+     "right": 7
+    },
+    "id": 19,
+    "type": "bonds"
+   }
+  ],
+  "page2": [
+   {
+    "prompt": "__ and 3 make 10",
+    "answer": "7",
+    "bond": {
+     "whole": 10,
+     "left": null,
+     "right": 3
+    },
+    "id": 17,
+    "type": "bonds"
+   },
+   {
+    "prompt": "__ + 8 = 10",
+    "answer": "2",
+    "bond": {
+     "whole": 10,
+     "left": null,
+     "right": 8
+    },
+    "id": 18,
+    "type": "bonds"
+   },
+   {
+    "prompt": "__ + 7 = 10",
+    "answer": "3",
+    "bond": {
+     "whole": 10,
+     "left": null,
+     "right": 7
+    },
     "id": 19,
     "type": "bonds"
    },
    {
     "prompt": "10 - 8 = __",
     "answer": "2",
+    "bond": {
+     "whole": 10,
+     "left": 8,
+     "right": null
+    },
     "id": 20,
     "type": "bonds"
    },
    {
     "prompt": "7 + __ = 10",
     "answer": "3",
+    "bond": {
+     "whole": 10,
+     "left": 7,
+     "right": null
+    },
     "id": 21,
     "type": "bonds"
    },
    {
     "prompt": "__ + 6 = 10",
     "answer": "4",
+    "bond": {
+     "whole": 10,
+     "left": null,
+     "right": 6
+    },
     "id": 22,
     "type": "bonds"
    },
    {
     "prompt": "10 - 2 = __",
     "answer": "8",
+    "bond": {
+     "whole": 10,
+     "left": 2,
+     "right": null
+    },
     "id": 23,
     "type": "bonds"
    },
    {
     "prompt": "5 + __ = 10",
     "answer": "5",
+    "bond": {
+     "whole": 10,
+     "left": 5,
+     "right": null
+    },
     "id": 24,
     "type": "bonds"
-   }
-  ],
-  "page2head": [
+   },
    {
     "prompt": "10 - 9 = __",
     "answer": "1",
+    "bond": {
+     "whole": 10,
+     "left": 9,
+     "right": null
+    },
     "id": 25,
     "type": "bonds"
    },
    {
     "prompt": "10 - 5 = __",
     "answer": "5",
+    "bond": {
+     "whole": 10,
+     "left": 5,
+     "right": null
+    },
     "id": 26,
     "type": "bonds"
    },
    {
     "prompt": "10 - 4 = __",
     "answer": "6",
-    "id": 27,
-    "type": "bonds"
-   }
-  ],
-  "page2": [
-   {
-    "prompt": "10 - 9 = __",
-    "answer": "1",
-    "id": 25,
-    "type": "bonds"
-   },
-   {
-    "prompt": "10 - 5 = __",
-    "answer": "5",
-    "id": 26,
-    "type": "bonds"
-   },
-   {
-    "prompt": "10 - 4 = __",
-    "answer": "6",
+    "bond": {
+     "whole": 10,
+     "left": 4,
+     "right": null
+    },
     "id": 27,
     "type": "bonds"
    },
    {
     "prompt": "__ + 9 = 10",
     "answer": "1",
+    "bond": {
+     "whole": 10,
+     "left": null,
+     "right": 9
+    },
     "id": 28,
     "type": "bonds"
    },
    {
     "prompt": "__ and 1 make 10",
     "answer": "9",
+    "bond": {
+     "whole": 10,
+     "left": null,
+     "right": 1
+    },
     "id": 29,
     "type": "bonds"
    },
    {
     "prompt": "10 - 6 = __",
     "answer": "4",
+    "bond": {
+     "whole": 10,
+     "left": 6,
+     "right": null
+    },
     "id": 30,
     "type": "bonds"
    },
    {
     "prompt": "__ and 4 make 10",
     "answer": "6",
+    "bond": {
+     "whole": 10,
+     "left": null,
+     "right": 4
+    },
     "id": 31,
     "type": "bonds"
    },
    {
     "prompt": "2 + __ = 10",
     "answer": "8",
+    "bond": {
+     "whole": 10,
+     "left": 2,
+     "right": null
+    },
     "id": 32,
-    "type": "bonds"
-   },
-   {
-    "prompt": "__ and 6 make 10",
-    "answer": "4",
-    "id": 33,
-    "type": "bonds"
-   },
-   {
-    "prompt": "8 + __ = 10",
-    "answer": "2",
-    "id": 34,
-    "type": "bonds"
-   },
-   {
-    "prompt": "10 - 3 = __",
-    "answer": "7",
-    "id": 35,
-    "type": "bonds"
-   },
-   {
-    "prompt": "__ and 9 make 10",
-    "answer": "1",
-    "id": 36,
-    "type": "bonds"
-   },
-   {
-    "prompt": "__ + 3 = 10",
-    "answer": "7",
-    "id": 37,
-    "type": "bonds"
-   },
-   {
-    "prompt": "__ and 8 make 10",
-    "answer": "2",
-    "id": 38,
-    "type": "bonds"
-   },
-   {
-    "prompt": "2 + __ = 10",
-    "answer": "8",
-    "id": 39,
-    "type": "bonds"
-   },
-   {
-    "prompt": "__ + 4 = 10",
-    "answer": "6",
-    "id": 40,
-    "type": "bonds"
-   },
-   {
-    "prompt": "__ + 1 = 10",
-    "answer": "9",
-    "id": 41,
-    "type": "bonds"
-   },
-   {
-    "prompt": "__ and 1 make 10",
-    "answer": "9",
-    "id": 42,
-    "type": "bonds"
-   },
-   {
-    "prompt": "__ + 8 = 10",
-    "answer": "2",
-    "id": 43,
-    "type": "bonds"
-   },
-   {
-    "prompt": "8 + __ = 10",
-    "answer": "2",
-    "id": 44,
-    "type": "bonds"
-   },
-   {
-    "prompt": "4 + __ = 10",
-    "answer": "6",
-    "id": 45,
-    "type": "bonds"
-   },
-   {
-    "prompt": "__ and 6 make 10",
-    "answer": "4",
-    "id": 46,
-    "type": "bonds"
-   },
-   {
-    "prompt": "__ + 8 = 10",
-    "answer": "2",
-    "id": 47,
-    "type": "bonds"
-   },
-   {
-    "prompt": "8 + __ = 10",
-    "answer": "2",
-    "id": 48,
     "type": "bonds"
    }
   ]
@@ -8488,311 +9911,390 @@
    {
     "prompt": "20 - 4 = __",
     "answer": "16",
+    "bond": {
+     "whole": 20,
+     "left": 4,
+     "right": null
+    },
     "id": 1,
     "type": "bonds"
    },
    {
     "prompt": "13 + __ = 20",
     "answer": "7",
+    "bond": {
+     "whole": 20,
+     "left": 13,
+     "right": null
+    },
     "id": 2,
     "type": "bonds"
    },
    {
     "prompt": "20 - 2 = __",
     "answer": "18",
+    "bond": {
+     "whole": 20,
+     "left": 2,
+     "right": null
+    },
     "id": 3,
     "type": "bonds"
    },
    {
     "prompt": "__ and 13 make 20",
     "answer": "7",
+    "bond": {
+     "whole": 20,
+     "left": null,
+     "right": 13
+    },
     "id": 4,
     "type": "bonds"
    },
    {
     "prompt": "19 + __ = 20",
     "answer": "1",
+    "bond": {
+     "whole": 20,
+     "left": 19,
+     "right": null
+    },
     "id": 5,
     "type": "bonds"
    },
    {
     "prompt": "__ and 3 make 10",
     "answer": "7",
+    "bond": {
+     "whole": 10,
+     "left": null,
+     "right": 3
+    },
     "id": 6,
     "type": "bonds"
    },
    {
     "prompt": "__ + 8 = 10",
     "answer": "2",
+    "bond": {
+     "whole": 10,
+     "left": null,
+     "right": 8
+    },
     "id": 7,
     "type": "bonds"
    },
    {
     "prompt": "__ and 7 make 10",
     "answer": "3",
+    "bond": {
+     "whole": 10,
+     "left": null,
+     "right": 7
+    },
     "id": 8,
     "type": "bonds"
    },
    {
     "prompt": "__ and 1 make 20",
     "answer": "19",
+    "bond": {
+     "whole": 20,
+     "left": null,
+     "right": 1
+    },
     "id": 9,
     "type": "bonds"
    },
    {
     "prompt": "__ + 9 = 10",
     "answer": "1",
+    "bond": {
+     "whole": 10,
+     "left": null,
+     "right": 9
+    },
     "id": 10,
     "type": "bonds"
    },
    {
     "prompt": "6 + __ = 10",
     "answer": "4",
+    "bond": {
+     "whole": 10,
+     "left": 6,
+     "right": null
+    },
     "id": 11,
     "type": "bonds"
    },
    {
     "prompt": "__ and 4 make 10",
     "answer": "6",
+    "bond": {
+     "whole": 10,
+     "left": null,
+     "right": 4
+    },
     "id": 12,
     "type": "bonds"
    },
    {
     "prompt": "3 + __ = 20",
     "answer": "17",
+    "bond": {
+     "whole": 20,
+     "left": 3,
+     "right": null
+    },
     "id": 13,
     "type": "bonds"
    },
    {
     "prompt": "20 - 8 = __",
     "answer": "12",
+    "bond": {
+     "whole": 20,
+     "left": 8,
+     "right": null
+    },
     "id": 14,
     "type": "bonds"
    },
    {
     "prompt": "__ and 1 make 10",
     "answer": "9",
+    "bond": {
+     "whole": 10,
+     "left": null,
+     "right": 1
+    },
     "id": 15,
     "type": "bonds"
    },
    {
     "prompt": "__ and 5 make 10",
     "answer": "5",
+    "bond": {
+     "whole": 10,
+     "left": null,
+     "right": 5
+    },
     "id": 16,
     "type": "bonds"
-   },
+   }
+  ],
+  "page2head": [
    {
     "prompt": "__ and 18 make 20",
     "answer": "2",
+    "bond": {
+     "whole": 20,
+     "left": null,
+     "right": 18
+    },
     "id": 17,
     "type": "bonds"
    },
    {
     "prompt": "__ + 14 = 20",
     "answer": "6",
+    "bond": {
+     "whole": 20,
+     "left": null,
+     "right": 14
+    },
     "id": 18,
     "type": "bonds"
    },
    {
     "prompt": "1 + __ = 10",
     "answer": "9",
+    "bond": {
+     "whole": 10,
+     "left": 1,
+     "right": null
+    },
+    "id": 19,
+    "type": "bonds"
+   }
+  ],
+  "page2": [
+   {
+    "prompt": "__ and 18 make 20",
+    "answer": "2",
+    "bond": {
+     "whole": 20,
+     "left": null,
+     "right": 18
+    },
+    "id": 17,
+    "type": "bonds"
+   },
+   {
+    "prompt": "__ + 14 = 20",
+    "answer": "6",
+    "bond": {
+     "whole": 20,
+     "left": null,
+     "right": 14
+    },
+    "id": 18,
+    "type": "bonds"
+   },
+   {
+    "prompt": "1 + __ = 10",
+    "answer": "9",
+    "bond": {
+     "whole": 10,
+     "left": 1,
+     "right": null
+    },
     "id": 19,
     "type": "bonds"
    },
    {
     "prompt": "__ + 3 = 10",
     "answer": "7",
+    "bond": {
+     "whole": 10,
+     "left": null,
+     "right": 3
+    },
     "id": 20,
     "type": "bonds"
    },
    {
     "prompt": "__ + 11 = 20",
     "answer": "9",
+    "bond": {
+     "whole": 20,
+     "left": null,
+     "right": 11
+    },
     "id": 21,
     "type": "bonds"
    },
    {
     "prompt": "20 - 7 = __",
     "answer": "13",
+    "bond": {
+     "whole": 20,
+     "left": 7,
+     "right": null
+    },
     "id": 22,
     "type": "bonds"
    },
    {
     "prompt": "__ and 17 make 20",
     "answer": "3",
+    "bond": {
+     "whole": 20,
+     "left": null,
+     "right": 17
+    },
     "id": 23,
     "type": "bonds"
    },
    {
     "prompt": "16 + __ = 20",
     "answer": "4",
+    "bond": {
+     "whole": 20,
+     "left": 16,
+     "right": null
+    },
     "id": 24,
     "type": "bonds"
-   }
-  ],
-  "page2head": [
+   },
    {
     "prompt": "__ + 5 = 10",
     "answer": "5",
+    "bond": {
+     "whole": 10,
+     "left": null,
+     "right": 5
+    },
     "id": 25,
     "type": "bonds"
    },
    {
     "prompt": "__ + 6 = 20",
     "answer": "14",
+    "bond": {
+     "whole": 20,
+     "left": null,
+     "right": 6
+    },
     "id": 26,
     "type": "bonds"
    },
    {
     "prompt": "__ + 16 = 20",
     "answer": "4",
-    "id": 27,
-    "type": "bonds"
-   }
-  ],
-  "page2": [
-   {
-    "prompt": "__ + 5 = 10",
-    "answer": "5",
-    "id": 25,
-    "type": "bonds"
-   },
-   {
-    "prompt": "__ + 6 = 20",
-    "answer": "14",
-    "id": 26,
-    "type": "bonds"
-   },
-   {
-    "prompt": "__ + 16 = 20",
-    "answer": "4",
+    "bond": {
+     "whole": 20,
+     "left": null,
+     "right": 16
+    },
     "id": 27,
     "type": "bonds"
    },
    {
     "prompt": "__ + 4 = 20",
     "answer": "16",
+    "bond": {
+     "whole": 20,
+     "left": null,
+     "right": 4
+    },
     "id": 28,
     "type": "bonds"
    },
    {
     "prompt": "__ + 12 = 20",
     "answer": "8",
+    "bond": {
+     "whole": 20,
+     "left": null,
+     "right": 12
+    },
     "id": 29,
     "type": "bonds"
    },
    {
     "prompt": "20 - 6 = __",
     "answer": "14",
+    "bond": {
+     "whole": 20,
+     "left": 6,
+     "right": null
+    },
     "id": 30,
     "type": "bonds"
    },
    {
     "prompt": "20 - 14 = __",
     "answer": "6",
+    "bond": {
+     "whole": 20,
+     "left": 14,
+     "right": null
+    },
     "id": 31,
     "type": "bonds"
    },
    {
     "prompt": "20 - 17 = __",
     "answer": "3",
+    "bond": {
+     "whole": 20,
+     "left": 17,
+     "right": null
+    },
     "id": 32,
-    "type": "bonds"
-   },
-   {
-    "prompt": "14 + __ = 20",
-    "answer": "6",
-    "id": 33,
-    "type": "bonds"
-   },
-   {
-    "prompt": "20 - 1 = __",
-    "answer": "19",
-    "id": 34,
-    "type": "bonds"
-   },
-   {
-    "prompt": "18 + __ = 20",
-    "answer": "2",
-    "id": 35,
-    "type": "bonds"
-   },
-   {
-    "prompt": "10 - 7 = __",
-    "answer": "3",
-    "id": 36,
-    "type": "bonds"
-   },
-   {
-    "prompt": "__ + 1 = 10",
-    "answer": "9",
-    "id": 37,
-    "type": "bonds"
-   },
-   {
-    "prompt": "10 - 9 = __",
-    "answer": "1",
-    "id": 38,
-    "type": "bonds"
-   },
-   {
-    "prompt": "10 - 4 = __",
-    "answer": "6",
-    "id": 39,
-    "type": "bonds"
-   },
-   {
-    "prompt": "20 - 19 = __",
-    "answer": "1",
-    "id": 40,
-    "type": "bonds"
-   },
-   {
-    "prompt": "__ + 1 = 20",
-    "answer": "19",
-    "id": 41,
-    "type": "bonds"
-   },
-   {
-    "prompt": "__ + 2 = 10",
-    "answer": "8",
-    "id": 42,
-    "type": "bonds"
-   },
-   {
-    "prompt": "20 - 13 = __",
-    "answer": "7",
-    "id": 43,
-    "type": "bonds"
-   },
-   {
-    "prompt": "__ and 8 make 10",
-    "answer": "2",
-    "id": 44,
-    "type": "bonds"
-   },
-   {
-    "prompt": "__ + 19 = 20",
-    "answer": "1",
-    "id": 45,
-    "type": "bonds"
-   },
-   {
-    "prompt": "2 + __ = 10",
-    "answer": "8",
-    "id": 46,
-    "type": "bonds"
-   },
-   {
-    "prompt": "8 + __ = 20",
-    "answer": "12",
-    "id": 47,
-    "type": "bonds"
-   },
-   {
-    "prompt": "4 + __ = 10",
-    "answer": "6",
-    "id": 48,
     "type": "bonds"
    }
   ]
@@ -9238,96 +10740,240 @@
    {
     "prompt": "Which of these 3-D objects has only flat faces? (cube, cylinder, sphere)",
     "answer": "cube",
+    "shapes": [
+     {
+      "name": "cube",
+      "kind": "3d"
+     },
+     {
+      "name": "cylinder",
+      "kind": "3d"
+     },
+     {
+      "name": "sphere",
+      "kind": "3d"
+     }
+    ],
     "id": 1,
     "type": "shapes"
    },
    {
     "prompt": "Which of these 3-D objects has only flat faces? (cube, sphere, cylinder)",
     "answer": "cube",
+    "shapes": [
+     {
+      "name": "cube",
+      "kind": "3d"
+     },
+     {
+      "name": "sphere",
+      "kind": "3d"
+     },
+     {
+      "name": "cylinder",
+      "kind": "3d"
+     }
+    ],
     "id": 2,
     "type": "shapes"
    },
    {
     "prompt": "How many sides does a triangle have?",
     "answer": "3",
+    "shapes": [
+     {
+      "name": "triangle",
+      "kind": "2d"
+     }
+    ],
     "id": 3,
     "type": "shapes"
    },
    {
     "prompt": "How many corners does a rectangle have?",
     "answer": "4",
+    "shapes": [
+     {
+      "name": "rectangle",
+      "kind": "2d"
+     }
+    ],
     "id": 4,
     "type": "shapes"
    },
    {
     "prompt": "How many corners does a square have?",
     "answer": "4",
+    "shapes": [
+     {
+      "name": "square",
+      "kind": "2d"
+     }
+    ],
     "id": 5,
     "type": "shapes"
    },
    {
     "prompt": "How many corners does a triangle have?",
     "answer": "3",
+    "shapes": [
+     {
+      "name": "triangle",
+      "kind": "2d"
+     }
+    ],
     "id": 6,
     "type": "shapes"
    },
    {
     "prompt": "How many corners does an oval have?",
     "answer": "0",
+    "shapes": [
+     {
+      "name": "oval",
+      "kind": "2d"
+     }
+    ],
     "id": 7,
     "type": "shapes"
    },
    {
     "prompt": "How many sides does a rectangle have?",
     "answer": "4",
+    "shapes": [
+     {
+      "name": "rectangle",
+      "kind": "2d"
+     }
+    ],
     "id": 8,
     "type": "shapes"
    },
    {
     "prompt": "Which 2-D shape has 0 corners? (triangle, circle, square)",
     "answer": "circle",
+    "shapes": [
+     {
+      "name": "triangle",
+      "kind": "2d"
+     },
+     {
+      "name": "circle",
+      "kind": "2d"
+     },
+     {
+      "name": "square",
+      "kind": "2d"
+     }
+    ],
     "id": 9,
     "type": "shapes"
    },
    {
     "prompt": "Which 2-D shape has 4 corners? (oval, square, circle)",
     "answer": "square",
+    "shapes": [
+     {
+      "name": "oval",
+      "kind": "2d"
+     },
+     {
+      "name": "square",
+      "kind": "2d"
+     },
+     {
+      "name": "circle",
+      "kind": "2d"
+     }
+    ],
     "id": 10,
     "type": "shapes"
    },
    {
     "prompt": "How many flat faces does a sphere have?",
     "answer": "0",
+    "shapes": [
+     {
+      "name": "sphere",
+      "kind": "3d"
+     }
+    ],
     "id": 11,
     "type": "shapes"
    },
    {
     "prompt": "How many flat faces does a cube have?",
     "answer": "6",
+    "shapes": [
+     {
+      "name": "cube",
+      "kind": "3d"
+     }
+    ],
     "id": 12,
     "type": "shapes"
    },
    {
     "prompt": "How many flat faces does a cylinder have?",
     "answer": "2",
+    "shapes": [
+     {
+      "name": "cylinder",
+      "kind": "3d"
+     }
+    ],
     "id": 13,
     "type": "shapes"
    },
    {
     "prompt": "Which 2-D shape has 4 corners? (triangle, square, circle)",
     "answer": "square",
+    "shapes": [
+     {
+      "name": "triangle",
+      "kind": "2d"
+     },
+     {
+      "name": "square",
+      "kind": "2d"
+     },
+     {
+      "name": "circle",
+      "kind": "2d"
+     }
+    ],
     "id": 14,
     "type": "shapes"
    },
    {
     "prompt": "Which 2-D shape has 3 corners? (rectangle, triangle, oval)",
     "answer": "triangle",
+    "shapes": [
+     {
+      "name": "rectangle",
+      "kind": "2d"
+     },
+     {
+      "name": "triangle",
+      "kind": "2d"
+     },
+     {
+      "name": "oval",
+      "kind": "2d"
+     }
+    ],
     "id": 15,
     "type": "shapes"
    },
    {
     "prompt": "How many sides does a square have?",
     "answer": "4",
+    "shapes": [
+     {
+      "name": "square",
+      "kind": "2d"
+     }
+    ],
     "id": 16,
     "type": "shapes"
    }
@@ -9336,18 +10982,60 @@
    {
     "prompt": "Which 2-D shape has 4 corners? (triangle, rectangle, circle)",
     "answer": "rectangle",
+    "shapes": [
+     {
+      "name": "triangle",
+      "kind": "2d"
+     },
+     {
+      "name": "rectangle",
+      "kind": "2d"
+     },
+     {
+      "name": "circle",
+      "kind": "2d"
+     }
+    ],
     "id": 17,
     "type": "shapes"
    },
    {
     "prompt": "Which 2-D shape has 3 corners? (square, triangle, oval)",
     "answer": "triangle",
+    "shapes": [
+     {
+      "name": "square",
+      "kind": "2d"
+     },
+     {
+      "name": "triangle",
+      "kind": "2d"
+     },
+     {
+      "name": "oval",
+      "kind": "2d"
+     }
+    ],
     "id": 18,
     "type": "shapes"
    },
    {
     "prompt": "Which 2-D shape has 0 corners? (rectangle, circle, triangle)",
     "answer": "circle",
+    "shapes": [
+     {
+      "name": "rectangle",
+      "kind": "2d"
+     },
+     {
+      "name": "circle",
+      "kind": "2d"
+     },
+     {
+      "name": "triangle",
+      "kind": "2d"
+     }
+    ],
     "id": 19,
     "type": "shapes"
    }
@@ -9356,96 +11044,312 @@
    {
     "prompt": "Which 2-D shape has 4 corners? (triangle, rectangle, circle)",
     "answer": "rectangle",
+    "shapes": [
+     {
+      "name": "triangle",
+      "kind": "2d"
+     },
+     {
+      "name": "rectangle",
+      "kind": "2d"
+     },
+     {
+      "name": "circle",
+      "kind": "2d"
+     }
+    ],
     "id": 17,
     "type": "shapes"
    },
    {
     "prompt": "Which 2-D shape has 3 corners? (square, triangle, oval)",
     "answer": "triangle",
+    "shapes": [
+     {
+      "name": "square",
+      "kind": "2d"
+     },
+     {
+      "name": "triangle",
+      "kind": "2d"
+     },
+     {
+      "name": "oval",
+      "kind": "2d"
+     }
+    ],
     "id": 18,
     "type": "shapes"
    },
    {
     "prompt": "Which 2-D shape has 0 corners? (rectangle, circle, triangle)",
     "answer": "circle",
+    "shapes": [
+     {
+      "name": "rectangle",
+      "kind": "2d"
+     },
+     {
+      "name": "circle",
+      "kind": "2d"
+     },
+     {
+      "name": "triangle",
+      "kind": "2d"
+     }
+    ],
     "id": 19,
     "type": "shapes"
    },
    {
     "prompt": "Which 2-D shape has 0 corners? (rectangle, oval, triangle)",
     "answer": "oval",
+    "shapes": [
+     {
+      "name": "rectangle",
+      "kind": "2d"
+     },
+     {
+      "name": "oval",
+      "kind": "2d"
+     },
+     {
+      "name": "triangle",
+      "kind": "2d"
+     }
+    ],
     "id": 20,
     "type": "shapes"
    },
    {
     "prompt": "Which 2-D shape has 0 corners? (rectangle, oval, square)",
     "answer": "oval",
+    "shapes": [
+     {
+      "name": "rectangle",
+      "kind": "2d"
+     },
+     {
+      "name": "oval",
+      "kind": "2d"
+     },
+     {
+      "name": "square",
+      "kind": "2d"
+     }
+    ],
     "id": 21,
     "type": "shapes"
    },
    {
     "prompt": "Which 2-D shape has 3 corners? (square, triangle, circle)",
     "answer": "triangle",
+    "shapes": [
+     {
+      "name": "square",
+      "kind": "2d"
+     },
+     {
+      "name": "triangle",
+      "kind": "2d"
+     },
+     {
+      "name": "circle",
+      "kind": "2d"
+     }
+    ],
     "id": 22,
     "type": "shapes"
    },
    {
     "prompt": "Which 2-D shape has 4 corners? (oval, rectangle, triangle)",
     "answer": "rectangle",
+    "shapes": [
+     {
+      "name": "oval",
+      "kind": "2d"
+     },
+     {
+      "name": "rectangle",
+      "kind": "2d"
+     },
+     {
+      "name": "triangle",
+      "kind": "2d"
+     }
+    ],
     "id": 23,
     "type": "shapes"
    },
    {
     "prompt": "Which 2-D shape has 4 corners? (circle, rectangle, oval)",
     "answer": "rectangle",
+    "shapes": [
+     {
+      "name": "circle",
+      "kind": "2d"
+     },
+     {
+      "name": "rectangle",
+      "kind": "2d"
+     },
+     {
+      "name": "oval",
+      "kind": "2d"
+     }
+    ],
     "id": 24,
     "type": "shapes"
    },
    {
     "prompt": "How many corners does a circle have?",
     "answer": "0",
+    "shapes": [
+     {
+      "name": "circle",
+      "kind": "2d"
+     }
+    ],
     "id": 25,
     "type": "shapes"
    },
    {
     "prompt": "Which 2-D shape has 0 corners? (circle, square, triangle)",
     "answer": "circle",
+    "shapes": [
+     {
+      "name": "circle",
+      "kind": "2d"
+     },
+     {
+      "name": "square",
+      "kind": "2d"
+     },
+     {
+      "name": "triangle",
+      "kind": "2d"
+     }
+    ],
     "id": 26,
     "type": "shapes"
    },
    {
     "prompt": "Which 2-D shape has 4 corners? (circle, square, triangle)",
     "answer": "square",
+    "shapes": [
+     {
+      "name": "circle",
+      "kind": "2d"
+     },
+     {
+      "name": "square",
+      "kind": "2d"
+     },
+     {
+      "name": "triangle",
+      "kind": "2d"
+     }
+    ],
     "id": 27,
     "type": "shapes"
    },
    {
     "prompt": "Which 2-D shape has 4 corners? (oval, square, triangle)",
     "answer": "square",
+    "shapes": [
+     {
+      "name": "oval",
+      "kind": "2d"
+     },
+     {
+      "name": "square",
+      "kind": "2d"
+     },
+     {
+      "name": "triangle",
+      "kind": "2d"
+     }
+    ],
     "id": 28,
     "type": "shapes"
    },
    {
     "prompt": "Which 2-D shape has 0 corners? (triangle, oval, rectangle)",
     "answer": "oval",
+    "shapes": [
+     {
+      "name": "triangle",
+      "kind": "2d"
+     },
+     {
+      "name": "oval",
+      "kind": "2d"
+     },
+     {
+      "name": "rectangle",
+      "kind": "2d"
+     }
+    ],
     "id": 29,
     "type": "shapes"
    },
    {
     "prompt": "Which 2-D shape has 0 corners? (square, oval, rectangle)",
     "answer": "oval",
+    "shapes": [
+     {
+      "name": "square",
+      "kind": "2d"
+     },
+     {
+      "name": "oval",
+      "kind": "2d"
+     },
+     {
+      "name": "rectangle",
+      "kind": "2d"
+     }
+    ],
     "id": 30,
     "type": "shapes"
    },
    {
     "prompt": "Which 2-D shape has 3 corners? (circle, triangle, rectangle)",
     "answer": "triangle",
+    "shapes": [
+     {
+      "name": "circle",
+      "kind": "2d"
+     },
+     {
+      "name": "triangle",
+      "kind": "2d"
+     },
+     {
+      "name": "rectangle",
+      "kind": "2d"
+     }
+    ],
     "id": 31,
     "type": "shapes"
    },
    {
     "prompt": "Which 2-D shape has 3 corners? (triangle, rectangle, square)",
     "answer": "triangle",
+    "shapes": [
+     {
+      "name": "triangle",
+      "kind": "2d"
+     },
+     {
+      "name": "rectangle",
+      "kind": "2d"
+     },
+     {
+      "name": "square",
+      "kind": "2d"
+     }
+    ],
     "id": 32,
     "type": "shapes"
    }
@@ -9456,216 +11360,1236 @@
    {
     "prompt": "How many sides does a rectangle have?",
     "answer": "4",
+    "shapes": [
+     {
+      "name": "rectangle",
+      "kind": "2d"
+     }
+    ],
     "id": 1,
     "type": "shapes"
    },
    {
-    "prompt": "Which of these 3-D objects has only flat faces? (pyramid, prism, cube)",
+    "prompt": "Which of these 3-D objects has only flat faces? (pyramid, cylinder, cone)",
     "answer": "pyramid",
+    "shapes": [
+     {
+      "name": "pyramid",
+      "kind": "3d"
+     },
+     {
+      "name": "cylinder",
+      "kind": "3d"
+     },
+     {
+      "name": "cone",
+      "kind": "3d"
+     }
+    ],
     "id": 2,
     "type": "shapes"
    },
    {
     "prompt": "How many flat faces does a sphere have?",
     "answer": "0",
+    "shapes": [
+     {
+      "name": "sphere",
+      "kind": "3d"
+     }
+    ],
     "id": 3,
     "type": "shapes"
    },
    {
     "prompt": "How many sides does a hexagon have?",
     "answer": "6",
+    "shapes": [
+     {
+      "name": "hexagon",
+      "kind": "2d"
+     }
+    ],
     "id": 4,
     "type": "shapes"
    },
    {
     "prompt": "Which 2-D shape has 0 corners? (square, oval, rectangle)",
     "answer": "oval",
+    "shapes": [
+     {
+      "name": "square",
+      "kind": "2d"
+     },
+     {
+      "name": "oval",
+      "kind": "2d"
+     },
+     {
+      "name": "rectangle",
+      "kind": "2d"
+     }
+    ],
     "id": 5,
     "type": "shapes"
    },
    {
     "prompt": "How many sides does a triangle have?",
     "answer": "3",
+    "shapes": [
+     {
+      "name": "triangle",
+      "kind": "2d"
+     }
+    ],
     "id": 6,
     "type": "shapes"
    },
    {
     "prompt": "How many corners does a triangle have?",
     "answer": "3",
+    "shapes": [
+     {
+      "name": "triangle",
+      "kind": "2d"
+     }
+    ],
     "id": 7,
     "type": "shapes"
    },
    {
-    "prompt": "Which of these 3-D objects has only flat faces? (cube, pyramid, prism)",
+    "prompt": "Which of these 3-D objects has only flat faces? (cube, cone, cylinder)",
     "answer": "cube",
+    "shapes": [
+     {
+      "name": "cube",
+      "kind": "3d"
+     },
+     {
+      "name": "cone",
+      "kind": "3d"
+     },
+     {
+      "name": "cylinder",
+      "kind": "3d"
+     }
+    ],
     "id": 8,
     "type": "shapes"
    },
    {
     "prompt": "Which 2-D shape has 3 corners? (hexagon, triangle, square)",
     "answer": "triangle",
+    "shapes": [
+     {
+      "name": "hexagon",
+      "kind": "2d"
+     },
+     {
+      "name": "triangle",
+      "kind": "2d"
+     },
+     {
+      "name": "square",
+      "kind": "2d"
+     }
+    ],
     "id": 9,
     "type": "shapes"
    },
    {
-    "prompt": "Which of these 3-D objects has only flat faces? (prism, pyramid, sphere)",
+    "prompt": "Which of these 3-D objects has only flat faces? (prism, cone, sphere)",
     "answer": "prism",
+    "shapes": [
+     {
+      "name": "prism",
+      "kind": "3d"
+     },
+     {
+      "name": "cone",
+      "kind": "3d"
+     },
+     {
+      "name": "sphere",
+      "kind": "3d"
+     }
+    ],
     "id": 10,
     "type": "shapes"
    },
    {
     "prompt": "Which 2-D shape has 0 corners? (rectangle, oval, triangle)",
     "answer": "oval",
+    "shapes": [
+     {
+      "name": "rectangle",
+      "kind": "2d"
+     },
+     {
+      "name": "oval",
+      "kind": "2d"
+     },
+     {
+      "name": "triangle",
+      "kind": "2d"
+     }
+    ],
     "id": 11,
     "type": "shapes"
    },
    {
     "prompt": "How many corners does a rectangle have?",
     "answer": "4",
+    "shapes": [
+     {
+      "name": "rectangle",
+      "kind": "2d"
+     }
+    ],
     "id": 12,
     "type": "shapes"
    },
    {
     "prompt": "How many corners does an oval have?",
     "answer": "0",
+    "shapes": [
+     {
+      "name": "oval",
+      "kind": "2d"
+     }
+    ],
     "id": 13,
     "type": "shapes"
    },
    {
     "prompt": "Which 2-D shape has 4 corners? (triangle, square, circle)",
     "answer": "square",
+    "shapes": [
+     {
+      "name": "triangle",
+      "kind": "2d"
+     },
+     {
+      "name": "square",
+      "kind": "2d"
+     },
+     {
+      "name": "circle",
+      "kind": "2d"
+     }
+    ],
     "id": 14,
     "type": "shapes"
    },
    {
     "prompt": "How many flat faces does a cylinder have?",
     "answer": "2",
+    "shapes": [
+     {
+      "name": "cylinder",
+      "kind": "3d"
+     }
+    ],
     "id": 15,
     "type": "shapes"
    },
    {
-    "prompt": "Which of these 3-D objects has only flat faces? (cube, cylinder, prism)",
-    "answer": "cube",
+    "prompt": "How many corners does a square have?",
+    "answer": "4",
+    "shapes": [
+     {
+      "name": "square",
+      "kind": "2d"
+     }
+    ],
     "id": 16,
     "type": "shapes"
    }
   ],
   "page2head": [
    {
-    "prompt": "How many corners does a square have?",
-    "answer": "4",
-    "id": 17,
-    "type": "shapes"
-   },
-   {
     "prompt": "Which 2-D shape has 4 corners? (circle, square, oval)",
     "answer": "square",
-    "id": 18,
+    "shapes": [
+     {
+      "name": "circle",
+      "kind": "2d"
+     },
+     {
+      "name": "square",
+      "kind": "2d"
+     },
+     {
+      "name": "oval",
+      "kind": "2d"
+     }
+    ],
+    "id": 17,
     "type": "shapes"
    },
    {
     "prompt": "How many sides does a square have?",
     "answer": "4",
+    "shapes": [
+     {
+      "name": "square",
+      "kind": "2d"
+     }
+    ],
+    "id": 18,
+    "type": "shapes"
+   },
+   {
+    "prompt": "How many flat faces does a prism have?",
+    "answer": "6",
+    "shapes": [
+     {
+      "name": "prism",
+      "kind": "3d"
+     }
+    ],
     "id": 19,
     "type": "shapes"
    }
   ],
   "page2": [
    {
-    "prompt": "How many corners does a square have?",
-    "answer": "4",
-    "id": 17,
-    "type": "shapes"
-   },
-   {
     "prompt": "Which 2-D shape has 4 corners? (circle, square, oval)",
     "answer": "square",
-    "id": 18,
+    "shapes": [
+     {
+      "name": "circle",
+      "kind": "2d"
+     },
+     {
+      "name": "square",
+      "kind": "2d"
+     },
+     {
+      "name": "oval",
+      "kind": "2d"
+     }
+    ],
+    "id": 17,
     "type": "shapes"
    },
    {
     "prompt": "How many sides does a square have?",
     "answer": "4",
-    "id": 19,
-    "type": "shapes"
-   },
-   {
-    "prompt": "Which of these 3-D objects has only flat faces? (pyramid, cube, cylinder)",
-    "answer": "pyramid",
-    "id": 20,
+    "shapes": [
+     {
+      "name": "square",
+      "kind": "2d"
+     }
+    ],
+    "id": 18,
     "type": "shapes"
    },
    {
     "prompt": "How many flat faces does a prism have?",
     "answer": "6",
-    "id": 21,
+    "shapes": [
+     {
+      "name": "prism",
+      "kind": "3d"
+     }
+    ],
+    "id": 19,
     "type": "shapes"
    },
    {
-    "prompt": "Which of these 3-D objects has only flat faces? (cube, sphere, pyramid)",
+    "prompt": "Which of these 3-D objects has only flat faces? (cube, sphere, cylinder)",
     "answer": "cube",
-    "id": 22,
+    "shapes": [
+     {
+      "name": "cube",
+      "kind": "3d"
+     },
+     {
+      "name": "sphere",
+      "kind": "3d"
+     },
+     {
+      "name": "cylinder",
+      "kind": "3d"
+     }
+    ],
+    "id": 20,
     "type": "shapes"
    },
    {
     "prompt": "How many corners does a hexagon have?",
     "answer": "6",
-    "id": 23,
+    "shapes": [
+     {
+      "name": "hexagon",
+      "kind": "2d"
+     }
+    ],
+    "id": 21,
     "type": "shapes"
    },
    {
     "prompt": "Which 2-D shape has 0 corners? (square, circle, rectangle)",
     "answer": "circle",
-    "id": 24,
+    "shapes": [
+     {
+      "name": "square",
+      "kind": "2d"
+     },
+     {
+      "name": "circle",
+      "kind": "2d"
+     },
+     {
+      "name": "rectangle",
+      "kind": "2d"
+     }
+    ],
+    "id": 22,
     "type": "shapes"
    },
    {
-    "prompt": "Which of these 3-D objects has only flat faces? (cube, pyramid, cylinder)",
+    "prompt": "Which of these 3-D objects has only flat faces? (cube, cone, sphere)",
     "answer": "cube",
-    "id": 25,
+    "shapes": [
+     {
+      "name": "cube",
+      "kind": "3d"
+     },
+     {
+      "name": "cone",
+      "kind": "3d"
+     },
+     {
+      "name": "sphere",
+      "kind": "3d"
+     }
+    ],
+    "id": 23,
     "type": "shapes"
    },
    {
-    "prompt": "Which of these 3-D objects has only flat faces? (cube, cylinder, cone)",
-    "answer": "cube",
-    "id": 26,
-    "type": "shapes"
-   },
-   {
-    "prompt": "Which of these 3-D objects has only flat faces? (prism, cone, cylinder)",
+    "prompt": "Which of these 3-D objects has only flat faces? (prism, sphere, cone)",
     "answer": "prism",
-    "id": 27,
+    "shapes": [
+     {
+      "name": "prism",
+      "kind": "3d"
+     },
+     {
+      "name": "sphere",
+      "kind": "3d"
+     },
+     {
+      "name": "cone",
+      "kind": "3d"
+     }
+    ],
+    "id": 24,
     "type": "shapes"
    },
    {
     "prompt": "Which 2-D shape has 6 corners? (hexagon, triangle, circle)",
     "answer": "hexagon",
-    "id": 28,
+    "shapes": [
+     {
+      "name": "hexagon",
+      "kind": "2d"
+     },
+     {
+      "name": "triangle",
+      "kind": "2d"
+     },
+     {
+      "name": "circle",
+      "kind": "2d"
+     }
+    ],
+    "id": 25,
     "type": "shapes"
    },
    {
     "prompt": "Which of these 3-D objects has only flat faces? (pyramid, sphere, cone)",
     "answer": "pyramid",
-    "id": 29,
+    "shapes": [
+     {
+      "name": "pyramid",
+      "kind": "3d"
+     },
+     {
+      "name": "sphere",
+      "kind": "3d"
+     },
+     {
+      "name": "cone",
+      "kind": "3d"
+     }
+    ],
+    "id": 26,
     "type": "shapes"
    },
    {
-    "prompt": "Which of these 3-D objects has only flat faces? (cube, prism, cone)",
+    "prompt": "Which of these 3-D objects has only flat faces? (cube, cylinder, sphere)",
     "answer": "cube",
-    "id": 30,
+    "shapes": [
+     {
+      "name": "cube",
+      "kind": "3d"
+     },
+     {
+      "name": "cylinder",
+      "kind": "3d"
+     },
+     {
+      "name": "sphere",
+      "kind": "3d"
+     }
+    ],
+    "id": 27,
     "type": "shapes"
    },
    {
-    "prompt": "Which of these 3-D objects has only flat faces? (prism, cube, cone)",
+    "prompt": "Which of these 3-D objects has only flat faces? (prism, cylinder, sphere)",
     "answer": "prism",
-    "id": 31,
+    "shapes": [
+     {
+      "name": "prism",
+      "kind": "3d"
+     },
+     {
+      "name": "cylinder",
+      "kind": "3d"
+     },
+     {
+      "name": "sphere",
+      "kind": "3d"
+     }
+    ],
+    "id": 28,
     "type": "shapes"
    },
    {
     "prompt": "Which 2-D shape has 4 corners? (rectangle, oval, triangle)",
     "answer": "rectangle",
+    "shapes": [
+     {
+      "name": "rectangle",
+      "kind": "2d"
+     },
+     {
+      "name": "oval",
+      "kind": "2d"
+     },
+     {
+      "name": "triangle",
+      "kind": "2d"
+     }
+    ],
+    "id": 29,
+    "type": "shapes"
+   },
+   {
+    "prompt": "How many flat faces does a cube have?",
+    "answer": "6",
+    "shapes": [
+     {
+      "name": "cube",
+      "kind": "3d"
+     }
+    ],
+    "id": 30,
+    "type": "shapes"
+   },
+   {
+    "prompt": "How many flat faces does a pyramid have?",
+    "answer": "4",
+    "shapes": [
+     {
+      "name": "pyramid",
+      "kind": "3d"
+     }
+    ],
+    "id": 31,
+    "type": "shapes"
+   },
+   {
+    "prompt": "Which 2-D shape has 4 corners? (rectangle, oval, hexagon)",
+    "answer": "rectangle",
+    "shapes": [
+     {
+      "name": "rectangle",
+      "kind": "2d"
+     },
+     {
+      "name": "oval",
+      "kind": "2d"
+     },
+     {
+      "name": "hexagon",
+      "kind": "2d"
+     }
+    ],
     "id": 32,
     "type": "shapes"
+   }
+  ]
+ },
+ "compass:1": {
+  "page1": [
+   {
+    "prompt": "In which direction does the sun set?",
+    "answer": "West",
+    "compass": {
+     "map": false
+    },
+    "id": 1,
+    "type": "compass"
+   },
+   {
+    "prompt": "You are facing East. You make a half turn. What direction are you facing now?",
+    "answer": "West",
+    "compass": {
+     "map": false,
+     "facing": "East",
+     "turn": "half"
+    },
+    "id": 2,
+    "type": "compass"
+   },
+   {
+    "prompt": "What direction is the opposite of North?",
+    "answer": "South",
+    "compass": {
+     "map": false,
+     "facing": "North"
+    },
+    "id": 3,
+    "type": "compass"
+   },
+   {
+    "prompt": "You are facing South. You make a quarter turn to the left. What direction are you facing now?",
+    "answer": "East",
+    "compass": {
+     "map": false,
+     "facing": "South",
+     "turn": "left"
+    },
+    "id": 4,
+    "type": "compass"
+   },
+   {
+    "prompt": "You are facing West. What direction is on your left?",
+    "answer": "South",
+    "compass": {
+     "map": false,
+     "facing": "West"
+    },
+    "id": 5,
+    "type": "compass"
+   },
+   {
+    "prompt": "You are facing North. What direction is on your right?",
+    "answer": "East",
+    "compass": {
+     "map": false,
+     "facing": "North"
+    },
+    "id": 6,
+    "type": "compass"
+   },
+   {
+    "prompt": "Max walks to school towards the South. On the way home, what direction is Max walking?",
+    "answer": "North",
+    "compass": {
+     "map": false,
+     "facing": "South"
+    },
+    "id": 7,
+    "type": "compass"
+   },
+   {
+    "prompt": "You are facing East. What direction is on your right?",
+    "answer": "South",
+    "compass": {
+     "map": false,
+     "facing": "East"
+    },
+    "id": 8,
+    "type": "compass"
+   },
+   {
+    "prompt": "You are facing West. You make a quarter turn to the left. What direction are you facing now?",
+    "answer": "South",
+    "compass": {
+     "map": false,
+     "facing": "West",
+     "turn": "left"
+    },
+    "id": 9,
+    "type": "compass"
+   }
+  ],
+  "page2head": [
+   {
+    "prompt": "Which direction does a compass needle always point?",
+    "answer": "North",
+    "compass": {
+     "map": false
+    },
+    "id": 10,
+    "type": "compass"
+   },
+   {
+    "prompt": "You are facing South. What direction is on your right?",
+    "answer": "West",
+    "compass": {
+     "map": false,
+     "facing": "South"
+    },
+    "id": 11,
+    "type": "compass"
+   },
+   {
+    "prompt": "In which direction does the sun rise?",
+    "answer": "East",
+    "compass": {
+     "map": false
+    },
+    "id": 12,
+    "type": "compass"
+   }
+  ],
+  "page2": [
+   {
+    "prompt": "Which direction does a compass needle always point?",
+    "answer": "North",
+    "compass": {
+     "map": false
+    },
+    "id": 10,
+    "type": "compass"
+   },
+   {
+    "prompt": "You are facing South. What direction is on your right?",
+    "answer": "West",
+    "compass": {
+     "map": false,
+     "facing": "South"
+    },
+    "id": 11,
+    "type": "compass"
+   },
+   {
+    "prompt": "In which direction does the sun rise?",
+    "answer": "East",
+    "compass": {
+     "map": false
+    },
+    "id": 12,
+    "type": "compass"
+   },
+   {
+    "prompt": "You are facing East. What direction is on your left?",
+    "answer": "North",
+    "compass": {
+     "map": false,
+     "facing": "East"
+    },
+    "id": 13,
+    "type": "compass"
+   },
+   {
+    "prompt": "Kai walks to school towards the North. On the way home, what direction is Kai walking?",
+    "answer": "South",
+    "compass": {
+     "map": false,
+     "facing": "North"
+    },
+    "id": 14,
+    "type": "compass"
+   },
+   {
+    "prompt": "On a map, North is at the top. What direction is at the left of the map?",
+    "answer": "West",
+    "compass": {
+     "map": true
+    },
+    "id": 15,
+    "type": "compass"
+   },
+   {
+    "prompt": "You are facing West. What direction is on your right?",
+    "answer": "North",
+    "compass": {
+     "map": false,
+     "facing": "West"
+    },
+    "id": 16,
+    "type": "compass"
+   },
+   {
+    "prompt": "You are facing South. You make a half turn. What direction are you facing now?",
+    "answer": "North",
+    "compass": {
+     "map": false,
+     "facing": "South",
+     "turn": "half"
+    },
+    "id": 17,
+    "type": "compass"
+   },
+   {
+    "prompt": "You are facing South. You make a quarter turn to the right. What direction are you facing now?",
+    "answer": "West",
+    "compass": {
+     "map": false,
+     "facing": "South",
+     "turn": "right"
+    },
+    "id": 18,
+    "type": "compass"
+   }
+  ]
+ },
+ "compass:2": {
+  "page1": [
+   {
+    "prompt": "You are facing South. You make a quarter turn to the right. What direction are you facing now?",
+    "answer": "West",
+    "compass": {
+     "map": false,
+     "facing": "South",
+     "turn": "right"
+    },
+    "id": 1,
+    "type": "compass"
+   },
+   {
+    "prompt": "In which direction does the sun set?",
+    "answer": "West",
+    "compass": {
+     "map": false
+    },
+    "id": 2,
+    "type": "compass"
+   },
+   {
+    "prompt": "What direction is the opposite of North?",
+    "answer": "South",
+    "compass": {
+     "map": false,
+     "facing": "North"
+    },
+    "id": 3,
+    "type": "compass"
+   },
+   {
+    "prompt": "On a map, North is at the top. What direction is at the bottom of the map?",
+    "answer": "South",
+    "compass": {
+     "map": true
+    },
+    "id": 4,
+    "type": "compass"
+   },
+   {
+    "prompt": "On a map, North is at the top. What direction is at the left of the map?",
+    "answer": "West",
+    "compass": {
+     "map": true
+    },
+    "id": 5,
+    "type": "compass"
+   },
+   {
+    "prompt": "You are facing East. You make a quarter turn to the right. What direction are you facing now?",
+    "answer": "South",
+    "compass": {
+     "map": false,
+     "facing": "East",
+     "turn": "right"
+    },
+    "id": 6,
+    "type": "compass"
+   },
+   {
+    "prompt": "You are facing West. You make a quarter turn to the left. What direction are you facing now?",
+    "answer": "South",
+    "compass": {
+     "map": false,
+     "facing": "West",
+     "turn": "left"
+    },
+    "id": 7,
+    "type": "compass"
+   },
+   {
+    "prompt": "Max walks to school towards the East. On the way home, what direction is Max walking?",
+    "answer": "West",
+    "compass": {
+     "map": false,
+     "facing": "East"
+    },
+    "id": 8,
+    "type": "compass"
+   },
+   {
+    "prompt": "What direction is the opposite of South?",
+    "answer": "North",
+    "compass": {
+     "map": false,
+     "facing": "South"
+    },
+    "id": 9,
+    "type": "compass"
+   }
+  ],
+  "page2head": [
+   {
+    "prompt": "You are facing North. You make a quarter turn to the left. What direction are you facing now?",
+    "answer": "West",
+    "compass": {
+     "map": false,
+     "facing": "North",
+     "turn": "left"
+    },
+    "id": 10,
+    "type": "compass"
+   },
+   {
+    "prompt": "Mia walks to school towards the East. On the way home, what direction is Mia walking?",
+    "answer": "West",
+    "compass": {
+     "map": false,
+     "facing": "East"
+    },
+    "id": 11,
+    "type": "compass"
+   },
+   {
+    "prompt": "You are facing North. What direction is on your right?",
+    "answer": "East",
+    "compass": {
+     "map": false,
+     "facing": "North"
+    },
+    "id": 12,
+    "type": "compass"
+   }
+  ],
+  "page2": [
+   {
+    "prompt": "You are facing North. You make a quarter turn to the left. What direction are you facing now?",
+    "answer": "West",
+    "compass": {
+     "map": false,
+     "facing": "North",
+     "turn": "left"
+    },
+    "id": 10,
+    "type": "compass"
+   },
+   {
+    "prompt": "Mia walks to school towards the East. On the way home, what direction is Mia walking?",
+    "answer": "West",
+    "compass": {
+     "map": false,
+     "facing": "East"
+    },
+    "id": 11,
+    "type": "compass"
+   },
+   {
+    "prompt": "You are facing North. What direction is on your right?",
+    "answer": "East",
+    "compass": {
+     "map": false,
+     "facing": "North"
+    },
+    "id": 12,
+    "type": "compass"
+   },
+   {
+    "prompt": "On a map, North is at the top. What direction is at the right of the map?",
+    "answer": "East",
+    "compass": {
+     "map": true
+    },
+    "id": 13,
+    "type": "compass"
+   },
+   {
+    "prompt": "Sam walks to school towards the South. On the way home, what direction is Sam walking?",
+    "answer": "North",
+    "compass": {
+     "map": false,
+     "facing": "South"
+    },
+    "id": 14,
+    "type": "compass"
+   },
+   {
+    "prompt": "You are facing West. What direction is on your left?",
+    "answer": "South",
+    "compass": {
+     "map": false,
+     "facing": "West"
+    },
+    "id": 15,
+    "type": "compass"
+   },
+   {
+    "prompt": "You are facing North. You make a half turn. What direction are you facing now?",
+    "answer": "South",
+    "compass": {
+     "map": false,
+     "facing": "North",
+     "turn": "half"
+    },
+    "id": 16,
+    "type": "compass"
+   },
+   {
+    "prompt": "What direction is the opposite of West?",
+    "answer": "East",
+    "compass": {
+     "map": false,
+     "facing": "West"
+    },
+    "id": 17,
+    "type": "compass"
+   },
+   {
+    "prompt": "You are facing East. What direction is on your left?",
+    "answer": "North",
+    "compass": {
+     "map": false,
+     "facing": "East"
+    },
+    "id": 18,
+    "type": "compass"
+   }
+  ]
+ },
+ "compass:3": {
+  "page1": [
+   {
+    "prompt": "You are facing West. What direction is on your left?",
+    "answer": "South",
+    "compass": {
+     "map": false,
+     "facing": "West"
+    },
+    "id": 1,
+    "type": "compass"
+   },
+   {
+    "prompt": "You are facing South. What direction is on your left?",
+    "answer": "East",
+    "compass": {
+     "map": false,
+     "facing": "South"
+    },
+    "id": 2,
+    "type": "compass"
+   },
+   {
+    "prompt": "Leo walks to school towards the East. On the way home, what direction is Leo walking?",
+    "answer": "West",
+    "compass": {
+     "map": false,
+     "facing": "East"
+    },
+    "id": 3,
+    "type": "compass"
+   },
+   {
+    "prompt": "You are facing North. What direction is on your left?",
+    "answer": "West",
+    "compass": {
+     "map": false,
+     "facing": "North"
+    },
+    "id": 4,
+    "type": "compass"
+   },
+   {
+    "prompt": "You are facing East. You make a half turn. What direction are you facing now?",
+    "answer": "West",
+    "compass": {
+     "map": false,
+     "facing": "East",
+     "turn": "half"
+    },
+    "id": 5,
+    "type": "compass"
+   },
+   {
+    "prompt": "You are facing North. You make a quarter turn to the left. What direction are you facing now?",
+    "answer": "West",
+    "compass": {
+     "map": false,
+     "facing": "North",
+     "turn": "left"
+    },
+    "id": 6,
+    "type": "compass"
+   },
+   {
+    "prompt": "On a map, North is at the top. What direction is at the right of the map?",
+    "answer": "East",
+    "compass": {
+     "map": true
+    },
+    "id": 7,
+    "type": "compass"
+   },
+   {
+    "prompt": "You are facing West. You make a quarter turn to the left. What direction are you facing now?",
+    "answer": "South",
+    "compass": {
+     "map": false,
+     "facing": "West",
+     "turn": "left"
+    },
+    "id": 8,
+    "type": "compass"
+   },
+   {
+    "prompt": "On a map, North is at the top. What direction is at the bottom of the map?",
+    "answer": "South",
+    "compass": {
+     "map": true
+    },
+    "id": 9,
+    "type": "compass"
+   }
+  ],
+  "page2head": [
+   {
+    "prompt": "What direction is the opposite of South?",
+    "answer": "North",
+    "compass": {
+     "map": false,
+     "facing": "South"
+    },
+    "id": 10,
+    "type": "compass"
+   },
+   {
+    "prompt": "You are facing North. You make a quarter turn to the right. What direction are you facing now?",
+    "answer": "East",
+    "compass": {
+     "map": false,
+     "facing": "North",
+     "turn": "right"
+    },
+    "id": 11,
+    "type": "compass"
+   },
+   {
+    "prompt": "You are facing East. What direction is on your left?",
+    "answer": "North",
+    "compass": {
+     "map": false,
+     "facing": "East"
+    },
+    "id": 12,
+    "type": "compass"
+   }
+  ],
+  "page2": [
+   {
+    "prompt": "What direction is the opposite of South?",
+    "answer": "North",
+    "compass": {
+     "map": false,
+     "facing": "South"
+    },
+    "id": 10,
+    "type": "compass"
+   },
+   {
+    "prompt": "You are facing North. You make a quarter turn to the right. What direction are you facing now?",
+    "answer": "East",
+    "compass": {
+     "map": false,
+     "facing": "North",
+     "turn": "right"
+    },
+    "id": 11,
+    "type": "compass"
+   },
+   {
+    "prompt": "You are facing East. What direction is on your left?",
+    "answer": "North",
+    "compass": {
+     "map": false,
+     "facing": "East"
+    },
+    "id": 12,
+    "type": "compass"
+   },
+   {
+    "prompt": "You are facing East. You make a quarter turn to the right. What direction are you facing now?",
+    "answer": "South",
+    "compass": {
+     "map": false,
+     "facing": "East",
+     "turn": "right"
+    },
+    "id": 13,
+    "type": "compass"
+   },
+   {
+    "prompt": "On a map, North is at the top. What direction is at the left of the map?",
+    "answer": "West",
+    "compass": {
+     "map": true
+    },
+    "id": 14,
+    "type": "compass"
+   },
+   {
+    "prompt": "In which direction does the sun set?",
+    "answer": "West",
+    "compass": {
+     "map": false
+    },
+    "id": 15,
+    "type": "compass"
+   },
+   {
+    "prompt": "You are facing West. You make a half turn. What direction are you facing now?",
+    "answer": "East",
+    "compass": {
+     "map": false,
+     "facing": "West",
+     "turn": "half"
+    },
+    "id": 16,
+    "type": "compass"
+   },
+   {
+    "prompt": "You are facing North. What direction is on your right?",
+    "answer": "East",
+    "compass": {
+     "map": false,
+     "facing": "North"
+    },
+    "id": 17,
+    "type": "compass"
+   },
+   {
+    "prompt": "You are facing South. What direction is on your right?",
+    "answer": "West",
+    "compass": {
+     "map": false,
+     "facing": "South"
+    },
+    "id": 18,
+    "type": "compass"
    }
   ]
  },
@@ -9898,6 +12822,10 @@
    {
     "prompt": "It is 5 o'clock now. What time is it 2 hours later?",
     "answer": "7 o'clock",
+    "clock": {
+     "hour": 5,
+     "minute": 0
+    },
     "id": 2,
     "type": "time"
    },
@@ -9934,6 +12862,10 @@
    {
     "prompt": "It is half past 11 now. What time is it one hour later?",
     "answer": "half past 12",
+    "clock": {
+     "hour": 11,
+     "minute": 30
+    },
     "id": 8,
     "type": "time"
    },
@@ -9996,12 +12928,20 @@
    {
     "prompt": "It is 1 o'clock now. What time is it 2 hours later?",
     "answer": "3 o'clock",
+    "clock": {
+     "hour": 1,
+     "minute": 0
+    },
     "id": 18,
     "type": "time"
    },
    {
     "prompt": "It is half past 4 now. What time is it one hour later?",
     "answer": "half past 5",
+    "clock": {
+     "hour": 4,
+     "minute": 30
+    },
     "id": 19,
     "type": "time"
    }
@@ -10016,18 +12956,30 @@
    {
     "prompt": "It is 1 o'clock now. What time is it 2 hours later?",
     "answer": "3 o'clock",
+    "clock": {
+     "hour": 1,
+     "minute": 0
+    },
     "id": 18,
     "type": "time"
    },
    {
     "prompt": "It is half past 4 now. What time is it one hour later?",
     "answer": "half past 5",
+    "clock": {
+     "hour": 4,
+     "minute": 30
+    },
     "id": 19,
     "type": "time"
    },
    {
     "prompt": "It is half past 7 now. What time is it one hour later?",
     "answer": "half past 8",
+    "clock": {
+     "hour": 7,
+     "minute": 30
+    },
     "id": 20,
     "type": "time"
    },
@@ -10082,6 +13034,10 @@
    {
     "prompt": "It is half past 2 now. What time is it one hour later?",
     "answer": "half past 3",
+    "clock": {
+     "hour": 2,
+     "minute": 30
+    },
     "id": 29,
     "type": "time"
    },
@@ -10094,6 +13050,10 @@
    {
     "prompt": "It is half past 10 now. What time is it one hour later?",
     "answer": "half past 11",
+    "clock": {
+     "hour": 10,
+     "minute": 30
+    },
     "id": 31,
     "type": "time"
    },
@@ -10155,7 +13115,7 @@
    },
    {
     "prompt": "Draw the hands to show quarter to 1.",
-    "answer": "12:45 — hour hand on 12, minute hand on 9",
+    "answer": "12:45 ΓÇö hour hand on 12, minute hand on 9",
     "clock": {
      "hour": 12,
      "minute": 45,
@@ -10184,7 +13144,7 @@
    },
    {
     "prompt": "Draw the hands to show quarter to 8.",
-    "answer": "7:45 — hour hand on 7, minute hand on 9",
+    "answer": "7:45 ΓÇö hour hand on 7, minute hand on 9",
     "clock": {
      "hour": 7,
      "minute": 45,
@@ -10255,7 +13215,7 @@
    },
    {
     "prompt": "Draw the hands to show quarter past 5.",
-    "answer": "5:15 — hour hand on 5, minute hand on 3",
+    "answer": "5:15 ΓÇö hour hand on 5, minute hand on 3",
     "clock": {
      "hour": 5,
      "minute": 15,
@@ -10273,7 +13233,7 @@
    },
    {
     "prompt": "Draw the hands to show quarter to 4.",
-    "answer": "3:45 — hour hand on 3, minute hand on 9",
+    "answer": "3:45 ΓÇö hour hand on 3, minute hand on 9",
     "clock": {
      "hour": 3,
      "minute": 45,
@@ -10635,6 +13595,351 @@
     "answer": "3",
     "id": 24,
     "type": "measure"
+   }
+  ]
+ },
+ "temperature:1": {
+  "page1": [
+   {
+    "prompt": "Which is the warmest: 11┬░C, 5┬░C or 17┬░C?",
+    "answer": "17┬░C",
+    "id": 1,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Is a sunny Christmas picnic more likely to be 5┬░C or 14┬░C?",
+    "answer": "14┬░C",
+    "id": 2,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Put these temperatures in order from coldest to warmest: 12┬░C, 8┬░C, 18┬░C",
+    "answer": "8┬░C, 12┬░C, 18┬░C",
+    "answerLine": true,
+    "id": 3,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Which season has the hottest days in Australia?",
+    "answer": "summer",
+    "id": 4,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Which is warmer: 2┬░C or 13┬░C?",
+    "answer": "13┬░C",
+    "id": 5,
+    "type": "temperature"
+   },
+   {
+    "prompt": "What do we measure temperature with?",
+    "answer": "a thermometer",
+    "id": 6,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Which is colder: 18┬░C or 14┬░C?",
+    "answer": "14┬░C",
+    "id": 7,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Put these temperatures in order from coldest to warmest: 19┬░C, 15┬░C, 6┬░C",
+    "answer": "6┬░C, 15┬░C, 19┬░C",
+    "answerLine": true,
+    "id": 8,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Put these temperatures in order from coldest to warmest: 8┬░C, 17┬░C, 3┬░C",
+    "answer": "3┬░C, 8┬░C, 17┬░C",
+    "answerLine": true,
+    "id": 9,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Which is the warmest: 7┬░C, 16┬░C or 9┬░C?",
+    "answer": "16┬░C",
+    "id": 10,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Is a summer day at the pool more likely to be 20┬░C or 4┬░C?",
+    "answer": "20┬░C",
+    "id": 11,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Which is colder: 5┬░C or 15┬░C?",
+    "answer": "5┬░C",
+    "id": 12,
+    "type": "temperature"
+   }
+  ],
+  "page2head": [
+   {
+    "prompt": "Which is the warmest: 4┬░C, 7┬░C or 11┬░C?",
+    "answer": "11┬░C",
+    "id": 13,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Is a hot day at the beach more likely to be 19┬░C or 3┬░C?",
+    "answer": "19┬░C",
+    "id": 14,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Which is colder: 18┬░C or 6┬░C?",
+    "answer": "6┬░C",
+    "id": 15,
+    "type": "temperature"
+   }
+  ],
+  "page2": [
+   {
+    "prompt": "Which is the warmest: 4┬░C, 7┬░C or 11┬░C?",
+    "answer": "11┬░C",
+    "id": 13,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Is a hot day at the beach more likely to be 19┬░C or 3┬░C?",
+    "answer": "19┬░C",
+    "id": 14,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Which is colder: 18┬░C or 6┬░C?",
+    "answer": "6┬░C",
+    "id": 15,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Which is warmer: 15┬░C or 6┬░C?",
+    "answer": "15┬░C",
+    "id": 16,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Which is warmer: 3┬░C or 1┬░C?",
+    "answer": "3┬░C",
+    "id": 17,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Which is the coldest: 6┬░C, 8┬░C or 17┬░C?",
+    "answer": "6┬░C",
+    "id": 18,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Put these temperatures in order from coldest to warmest: 18┬░C, 16┬░C, 13┬░C",
+    "answer": "13┬░C, 16┬░C, 18┬░C",
+    "answerLine": true,
+    "id": 19,
+    "type": "temperature"
+   },
+   {
+    "prompt": "It is 5┬░C outside. The temperature goes up by 3 degrees. What is the temperature now?",
+    "answer": "8┬░C",
+    "id": 20,
+    "type": "temperature"
+   },
+   {
+    "prompt": "It is 8┬░C outside. The temperature goes down by 4 degrees. What is the temperature now?",
+    "answer": "4┬░C",
+    "id": 21,
+    "type": "temperature"
+   },
+   {
+    "prompt": "It is 9┬░C outside. The temperature goes up by 5 degrees. What is the temperature now?",
+    "answer": "14┬░C",
+    "id": 22,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Which is the coldest: 17┬░C, 15┬░C or 4┬░C?",
+    "answer": "4┬░C",
+    "id": 23,
+    "type": "temperature"
+   },
+   {
+    "prompt": "It is 12┬░C outside. The temperature goes up by 5 degrees. What is the temperature now?",
+    "answer": "17┬░C",
+    "id": 24,
+    "type": "temperature"
+   }
+  ]
+ },
+ "temperature:2": {
+  "page1": [
+   {
+    "prompt": "Which is the coldest: 5┬░C, 2┬░C or 39┬░C?",
+    "answer": "2┬░C",
+    "id": 1,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Which is colder: 31┬░C or 6┬░C?",
+    "answer": "6┬░C",
+    "id": 2,
+    "type": "temperature"
+   },
+   {
+    "prompt": "It is 10┬░C outside. The temperature goes down by 2 degrees. What is the temperature now?",
+    "answer": "8┬░C",
+    "id": 3,
+    "type": "temperature"
+   },
+   {
+    "prompt": "It is 5┬░C outside. The temperature goes up by 4 degrees. What is the temperature now?",
+    "answer": "9┬░C",
+    "id": 4,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Which is colder: 3┬░C or 15┬░C?",
+    "answer": "3┬░C",
+    "id": 5,
+    "type": "temperature"
+   },
+   {
+    "prompt": "It is 38┬░C outside. The temperature goes down by 5 degrees. What is the temperature now?",
+    "answer": "33┬░C",
+    "id": 6,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Which is the warmest: 28┬░C, 15┬░C or 1┬░C?",
+    "answer": "28┬░C",
+    "id": 7,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Which is the warmest: 20┬░C, 25┬░C or 29┬░C?",
+    "answer": "29┬░C",
+    "id": 8,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Which is the coldest: 33┬░C, 12┬░C or 18┬░C?",
+    "answer": "12┬░C",
+    "id": 9,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Is a snowy winter morning more likely to be 4┬░C or 28┬░C?",
+    "answer": "4┬░C",
+    "id": 10,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Which is the warmest: 31┬░C, 8┬░C or 36┬░C?",
+    "answer": "36┬░C",
+    "id": 11,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Which is the warmest: 10┬░C, 38┬░C or 5┬░C?",
+    "answer": "38┬░C",
+    "id": 12,
+    "type": "temperature"
+   }
+  ],
+  "page2head": [
+   {
+    "prompt": "Is a hot day at the beach more likely to be 10┬░C or 40┬░C?",
+    "answer": "40┬░C",
+    "id": 13,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Which is the warmest: 22┬░C, 15┬░C or 27┬░C?",
+    "answer": "27┬░C",
+    "id": 14,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Which is the warmest: 30┬░C, 8┬░C or 34┬░C?",
+    "answer": "34┬░C",
+    "id": 15,
+    "type": "temperature"
+   }
+  ],
+  "page2": [
+   {
+    "prompt": "Is a hot day at the beach more likely to be 10┬░C or 40┬░C?",
+    "answer": "40┬░C",
+    "id": 13,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Which is the warmest: 22┬░C, 15┬░C or 27┬░C?",
+    "answer": "27┬░C",
+    "id": 14,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Which is the warmest: 30┬░C, 8┬░C or 34┬░C?",
+    "answer": "34┬░C",
+    "id": 15,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Which is warmer: 4┬░C or 10┬░C?",
+    "answer": "10┬░C",
+    "id": 16,
+    "type": "temperature"
+   },
+   {
+    "prompt": "What do we measure temperature with?",
+    "answer": "a thermometer",
+    "id": 17,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Which is the warmest: 15┬░C, 13┬░C or 32┬░C?",
+    "answer": "32┬░C",
+    "id": 18,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Which is colder: 32┬░C or 12┬░C?",
+    "answer": "12┬░C",
+    "id": 19,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Put these temperatures in order from coldest to warmest: 32┬░C, 23┬░C, 11┬░C",
+    "answer": "11┬░C, 23┬░C, 32┬░C",
+    "answerLine": true,
+    "id": 20,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Which is the warmest: 21┬░C, 27┬░C or 37┬░C?",
+    "answer": "37┬░C",
+    "id": 21,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Which is the warmest: 37┬░C, 18┬░C or 9┬░C?",
+    "answer": "37┬░C",
+    "id": 22,
+    "type": "temperature"
+   },
+   {
+    "prompt": "It is 29┬░C outside. The temperature goes down by 4 degrees. What is the temperature now?",
+    "answer": "25┬░C",
+    "id": 23,
+    "type": "temperature"
+   },
+   {
+    "prompt": "Which is colder: 13┬░C or 6┬░C?",
+    "answer": "6┬░C",
+    "id": 24,
+    "type": "temperature"
    }
   ]
  },
@@ -11077,241 +14382,261 @@
  "data:1": {
   "page1": [
    {
-    "prompt": "Count the tallies: ||||/ ||||/ ||||/ ||||/ — how many in all?",
+    "prompt": "Count the tallies: ||||/ ||||/ ||||/ ||||/ ΓÇö how many in all?",
     "answer": "20",
+    "data": {
+     "kind": "tally",
+     "total": 20
+    },
     "id": 1,
     "type": "data"
    },
    {
     "prompt": "In a column graph, each square is 1 vote. Kai's bar is 9 squares tall and Mia's bar is 8 squares tall. How many more votes did Kai get?",
     "answer": "1",
+    "data": {
+     "kind": "column",
+     "leftName": "Kai",
+     "rightName": "Mia",
+     "left": 9,
+     "right": 8
+    },
     "id": 2,
     "type": "data"
    },
    {
-    "prompt": "In a picture graph, 1 star = 2 cookies. How many cookies do ★★★★★★ show?",
+    "prompt": "In a picture graph, 1 star = 2 cookies. How many cookies do ΓÿàΓÿàΓÿàΓÿàΓÿàΓÿà show?",
     "answer": "12",
+    "data": {
+     "kind": "picture",
+     "stars": 6
+    },
     "id": 3,
     "type": "data"
    },
    {
-    "prompt": "In a picture graph, 1 star = 1 crayon. How many crayons do ★★★★★★ show?",
+    "prompt": "In a picture graph, 1 star = 1 crayon. How many crayons do ΓÿàΓÿàΓÿàΓÿàΓÿàΓÿà show?",
     "answer": "6",
+    "data": {
+     "kind": "picture",
+     "stars": 6
+    },
     "id": 4,
     "type": "data"
    },
    {
     "prompt": "In a column graph, each square is 1 vote. Tom's bar is 7 squares tall and Sam's bar is 2 squares tall. How many more votes did Tom get?",
     "answer": "5",
+    "data": {
+     "kind": "column",
+     "leftName": "Tom",
+     "rightName": "Sam",
+     "left": 7,
+     "right": 2
+    },
     "id": 5,
     "type": "data"
    },
    {
-    "prompt": "Count the tallies: ||||/ ||||/ | | | — how many in all?",
+    "prompt": "Count the tallies: ||||/ ||||/ | | | ΓÇö how many in all?",
     "answer": "13",
+    "data": {
+     "kind": "tally",
+     "total": 13
+    },
     "id": 6,
     "type": "data"
    },
    {
     "prompt": "In a column graph, each square is 1 vote. Zoe's bar is 9 squares tall and Max's bar is 8 squares tall. How many more votes did Zoe get?",
     "answer": "1",
+    "data": {
+     "kind": "column",
+     "leftName": "Zoe",
+     "rightName": "Max",
+     "left": 9,
+     "right": 8
+    },
     "id": 7,
     "type": "data"
    },
    {
-    "prompt": "Count the tallies: ||||/ ||||/ ||||/ — how many in all?",
+    "prompt": "Count the tallies: ||||/ ||||/ ||||/ ΓÇö how many in all?",
     "answer": "15",
+    "data": {
+     "kind": "tally",
+     "total": 15
+    },
     "id": 8,
     "type": "data"
    },
    {
-    "prompt": "Count the tallies: | | | — how many in all?",
+    "prompt": "Count the tallies: | | | ΓÇö how many in all?",
     "answer": "3",
+    "data": {
+     "kind": "tally",
+     "total": 3
+    },
     "id": 9,
     "type": "data"
    },
    {
-    "prompt": "In a picture graph, 1 star = 1 balloon. How many balloons do ★★★★★★ show?",
+    "prompt": "In a picture graph, 1 star = 1 balloon. How many balloons do ΓÿàΓÿàΓÿàΓÿàΓÿàΓÿà show?",
     "answer": "6",
+    "data": {
+     "kind": "picture",
+     "stars": 6
+    },
     "id": 10,
     "type": "data"
-   },
+   }
+  ],
+  "page2head": [
    {
-    "prompt": "Count the tallies: ||||/ — how many in all?",
+    "prompt": "Count the tallies: ||||/ ΓÇö how many in all?",
     "answer": "5",
+    "data": {
+     "kind": "tally",
+     "total": 5
+    },
     "id": 11,
     "type": "data"
    },
    {
     "prompt": "In a column graph, each square is 1 vote. Leo's bar is 6 squares tall and Rae's bar is 1 square tall. How many more votes did Leo get?",
     "answer": "5",
+    "data": {
+     "kind": "column",
+     "leftName": "Leo",
+     "rightName": "Rae",
+     "left": 6,
+     "right": 1
+    },
     "id": 12,
     "type": "data"
    },
    {
-    "prompt": "Count the tallies: ||||/ ||||/ | | | | — how many in all?",
+    "prompt": "Count the tallies: ||||/ ||||/ | | | | ΓÇö how many in all?",
     "answer": "14",
+    "data": {
+     "kind": "tally",
+     "total": 14
+    },
+    "id": 13,
+    "type": "data"
+   }
+  ],
+  "page2": [
+   {
+    "prompt": "Count the tallies: ||||/ ΓÇö how many in all?",
+    "answer": "5",
+    "data": {
+     "kind": "tally",
+     "total": 5
+    },
+    "id": 11,
+    "type": "data"
+   },
+   {
+    "prompt": "In a column graph, each square is 1 vote. Leo's bar is 6 squares tall and Rae's bar is 1 square tall. How many more votes did Leo get?",
+    "answer": "5",
+    "data": {
+     "kind": "column",
+     "leftName": "Leo",
+     "rightName": "Rae",
+     "left": 6,
+     "right": 1
+    },
+    "id": 12,
+    "type": "data"
+   },
+   {
+    "prompt": "Count the tallies: ||||/ ||||/ | | | | ΓÇö how many in all?",
+    "answer": "14",
+    "data": {
+     "kind": "tally",
+     "total": 14
+    },
     "id": 13,
     "type": "data"
    },
    {
-    "prompt": "In a picture graph, 1 star = 1 toy. How many toys do ★★ show?",
+    "prompt": "In a picture graph, 1 star = 1 toy. How many toys do ΓÿàΓÿà show?",
     "answer": "2",
+    "data": {
+     "kind": "picture",
+     "stars": 2
+    },
     "id": 14,
     "type": "data"
    },
    {
     "prompt": "In a column graph, each square is 1 vote. Tom's bar is 7 squares tall and Max's bar is 6 squares tall. How many more votes did Tom get?",
     "answer": "1",
+    "data": {
+     "kind": "column",
+     "leftName": "Tom",
+     "rightName": "Max",
+     "left": 7,
+     "right": 6
+    },
     "id": 15,
     "type": "data"
    },
    {
-    "prompt": "In a picture graph, 1 star = 3 cars. How many cars do ★★★★★ show?",
+    "prompt": "In a picture graph, 1 star = 3 cars. How many cars do ΓÿàΓÿàΓÿàΓÿàΓÿà show?",
     "answer": "15",
+    "data": {
+     "kind": "picture",
+     "stars": 5
+    },
     "id": 16,
     "type": "data"
    },
    {
-    "prompt": "Count the tallies: ||||/ ||||/ ||||/ | — how many in all?",
+    "prompt": "Count the tallies: ||||/ ||||/ ||||/ | ΓÇö how many in all?",
     "answer": "16",
+    "data": {
+     "kind": "tally",
+     "total": 16
+    },
     "id": 17,
     "type": "data"
    },
    {
     "prompt": "In a column graph, each square is 1 vote. Zoe's bar is 5 squares tall and Rae's bar is 4 squares tall. How many more votes did Zoe get?",
     "answer": "1",
+    "data": {
+     "kind": "column",
+     "leftName": "Zoe",
+     "rightName": "Rae",
+     "left": 5,
+     "right": 4
+    },
     "id": 18,
     "type": "data"
-   }
-  ],
-  "page2head": [
+   },
    {
     "prompt": "In a column graph, each square is 1 vote. Leo's bar is 2 squares tall and Mia's bar is 1 square tall. How many more votes did Leo get?",
     "answer": "1",
+    "data": {
+     "kind": "column",
+     "leftName": "Leo",
+     "rightName": "Mia",
+     "left": 2,
+     "right": 1
+    },
     "id": 19,
     "type": "data"
    },
    {
-    "prompt": "Count the tallies: ||||/ ||||/ ||||/ | | | | — how many in all?",
+    "prompt": "Count the tallies: ||||/ ||||/ ||||/ | | | | ΓÇö how many in all?",
     "answer": "19",
+    "data": {
+     "kind": "tally",
+     "total": 19
+    },
     "id": 20,
-    "type": "data"
-   },
-   {
-    "prompt": "In a picture graph, 1 star = 1 flower. How many flowers do ★★★★★★ show?",
-    "answer": "6",
-    "id": 21,
-    "type": "data"
-   }
-  ],
-  "page2": [
-   {
-    "prompt": "In a column graph, each square is 1 vote. Leo's bar is 2 squares tall and Mia's bar is 1 square tall. How many more votes did Leo get?",
-    "answer": "1",
-    "id": 19,
-    "type": "data"
-   },
-   {
-    "prompt": "Count the tallies: ||||/ ||||/ ||||/ | | | | — how many in all?",
-    "answer": "19",
-    "id": 20,
-    "type": "data"
-   },
-   {
-    "prompt": "In a picture graph, 1 star = 1 flower. How many flowers do ★★★★★★ show?",
-    "answer": "6",
-    "id": 21,
-    "type": "data"
-   },
-   {
-    "prompt": "In a picture graph, 1 star = 1 apple. How many apples do ★★★★★★ show?",
-    "answer": "6",
-    "id": 22,
-    "type": "data"
-   },
-   {
-    "prompt": "In a picture graph, 1 star = 3 stickers. How many stickers do ★★★★★ show?",
-    "answer": "15",
-    "id": 23,
-    "type": "data"
-   },
-   {
-    "prompt": "Count the tallies: ||||/ | | — how many in all?",
-    "answer": "7",
-    "id": 24,
-    "type": "data"
-   },
-   {
-    "prompt": "In a picture graph, 1 star = 1 balloon. How many balloons do ★★★★★ show?",
-    "answer": "5",
-    "id": 25,
-    "type": "data"
-   },
-   {
-    "prompt": "Count the tallies: ||||/ | | | | — how many in all?",
-    "answer": "9",
-    "id": 26,
-    "type": "data"
-   },
-   {
-    "prompt": "Count the tallies: ||||/ | | | — how many in all?",
-    "answer": "8",
-    "id": 27,
-    "type": "data"
-   },
-   {
-    "prompt": "In a column graph, each square is 1 vote. Sam's bar is 5 squares tall and Kai's bar is 2 squares tall. How many more votes did Sam get?",
-    "answer": "3",
-    "id": 28,
-    "type": "data"
-   },
-   {
-    "prompt": "In a picture graph, 1 star = 2 apples. How many apples do ★ show?",
-    "answer": "2",
-    "id": 29,
-    "type": "data"
-   },
-   {
-    "prompt": "Count the tallies: ||||/ ||||/ | — how many in all?",
-    "answer": "11",
-    "id": 30,
-    "type": "data"
-   },
-   {
-    "prompt": "In a picture graph, 1 star = 3 crayons. How many crayons do ★★ show?",
-    "answer": "6",
-    "id": 31,
-    "type": "data"
-   },
-   {
-    "prompt": "In a column graph, each square is 1 vote. Mia's bar is 2 squares tall and Max's bar is 1 square tall. How many more votes did Mia get?",
-    "answer": "1",
-    "id": 32,
-    "type": "data"
-   },
-   {
-    "prompt": "In a column graph, each square is 1 vote. Tom's bar is 9 squares tall and Rae's bar is 2 squares tall. How many more votes did Tom get?",
-    "answer": "7",
-    "id": 33,
-    "type": "data"
-   },
-   {
-    "prompt": "In a picture graph, 1 star = 2 cars. How many cars do ★★★ show?",
-    "answer": "6",
-    "id": 34,
-    "type": "data"
-   },
-   {
-    "prompt": "In a picture graph, 1 star = 3 cookies. How many cookies do ★ show?",
-    "answer": "3",
-    "id": 35,
-    "type": "data"
-   },
-   {
-    "prompt": "In a picture graph, 1 star = 1 sticker. How many stickers do ★★★★★★ show?",
-    "answer": "6",
-    "id": 36,
     "type": "data"
    }
   ]
@@ -11319,241 +14644,246 @@
  "data:2": {
   "page1": [
    {
-    "prompt": "In a picture graph, 1 star = 1 car. How many cars do ★★★★ show?",
+    "prompt": "In a picture graph, 1 star = 1 car. How many cars do ΓÿàΓÿàΓÿàΓÿà show?",
     "answer": "4",
+    "data": {
+     "kind": "picture",
+     "stars": 4
+    },
     "id": 1,
     "type": "data"
    },
    {
-    "prompt": "Count the tallies: ||||/ | | — how many in all?",
+    "prompt": "Count the tallies: ||||/ | | ΓÇö how many in all?",
     "answer": "7",
+    "data": {
+     "kind": "tally",
+     "total": 7
+    },
     "id": 2,
     "type": "data"
    },
    {
     "prompt": "In a column graph, each square is 1 vote. Mia's bar is 6 squares tall and Leo's bar is 5 squares tall. How many more votes did Mia get?",
     "answer": "1",
+    "data": {
+     "kind": "column",
+     "leftName": "Mia",
+     "rightName": "Leo",
+     "left": 6,
+     "right": 5
+    },
     "id": 3,
     "type": "data"
    },
    {
-    "prompt": "Count the tallies: ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ | | | | — how many in all?",
+    "prompt": "Count the tallies: ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ | | | | ΓÇö how many in all?",
     "answer": "39",
+    "data": {
+     "kind": "tally",
+     "total": 39
+    },
     "id": 4,
     "type": "data"
    },
    {
-    "prompt": "Count the tallies: ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ — how many in all?",
+    "prompt": "Count the tallies: ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ ΓÇö how many in all?",
     "answer": "35",
+    "data": {
+     "kind": "tally",
+     "total": 35
+    },
     "id": 5,
     "type": "data"
    },
    {
-    "prompt": "Count the tallies: ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ | | | | — how many in all?",
+    "prompt": "Count the tallies: ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ | | | | ΓÇö how many in all?",
     "answer": "34",
+    "data": {
+     "kind": "tally",
+     "total": 34
+    },
     "id": 6,
     "type": "data"
    },
    {
-    "prompt": "In a picture graph, 1 star = 1 crayon. How many crayons do ★★★ show?",
+    "prompt": "In a picture graph, 1 star = 1 crayon. How many crayons do ΓÿàΓÿàΓÿà show?",
     "answer": "3",
+    "data": {
+     "kind": "picture",
+     "stars": 3
+    },
     "id": 7,
     "type": "data"
    },
    {
-    "prompt": "Count the tallies: ||||/ ||||/ ||||/ ||||/ — how many in all?",
+    "prompt": "Count the tallies: ||||/ ||||/ ||||/ ||||/ ΓÇö how many in all?",
     "answer": "20",
+    "data": {
+     "kind": "tally",
+     "total": 20
+    },
     "id": 8,
     "type": "data"
    },
    {
-    "prompt": "Count the tallies: ||||/ ||||/ ||||/ | | | | — how many in all?",
+    "prompt": "Count the tallies: ||||/ ||||/ ||||/ | | | | ΓÇö how many in all?",
     "answer": "19",
+    "data": {
+     "kind": "tally",
+     "total": 19
+    },
     "id": 9,
     "type": "data"
    },
    {
-    "prompt": "In a picture graph, 1 star = 2 flowers. How many flowers do ★★★★ show?",
+    "prompt": "In a picture graph, 1 star = 2 flowers. How many flowers do ΓÿàΓÿàΓÿàΓÿà show?",
     "answer": "8",
+    "data": {
+     "kind": "picture",
+     "stars": 4
+    },
     "id": 10,
     "type": "data"
-   },
+   }
+  ],
+  "page2head": [
    {
-    "prompt": "In a picture graph, 1 star = 3 toys. How many toys do ★★★★ show?",
+    "prompt": "In a picture graph, 1 star = 3 toys. How many toys do ΓÿàΓÿàΓÿàΓÿà show?",
     "answer": "12",
+    "data": {
+     "kind": "picture",
+     "stars": 4
+    },
     "id": 11,
     "type": "data"
    },
    {
-    "prompt": "Count the tallies: ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ | | | — how many in all?",
+    "prompt": "Count the tallies: ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ | | | ΓÇö how many in all?",
     "answer": "38",
+    "data": {
+     "kind": "tally",
+     "total": 38
+    },
     "id": 12,
     "type": "data"
    },
    {
-    "prompt": "Count the tallies: ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ | | — how many in all?",
+    "prompt": "Count the tallies: ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ | | ΓÇö how many in all?",
     "answer": "37",
+    "data": {
+     "kind": "tally",
+     "total": 37
+    },
+    "id": 13,
+    "type": "data"
+   }
+  ],
+  "page2": [
+   {
+    "prompt": "In a picture graph, 1 star = 3 toys. How many toys do ΓÿàΓÿàΓÿàΓÿà show?",
+    "answer": "12",
+    "data": {
+     "kind": "picture",
+     "stars": 4
+    },
+    "id": 11,
+    "type": "data"
+   },
+   {
+    "prompt": "Count the tallies: ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ | | | ΓÇö how many in all?",
+    "answer": "38",
+    "data": {
+     "kind": "tally",
+     "total": 38
+    },
+    "id": 12,
+    "type": "data"
+   },
+   {
+    "prompt": "Count the tallies: ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ | | ΓÇö how many in all?",
+    "answer": "37",
+    "data": {
+     "kind": "tally",
+     "total": 37
+    },
     "id": 13,
     "type": "data"
    },
    {
     "prompt": "In a column graph, each square is 1 vote. Max's bar is 14 squares tall and Rae's bar is 12 squares tall. How many more votes did Max get?",
     "answer": "2",
+    "data": {
+     "kind": "column",
+     "leftName": "Max",
+     "rightName": "Rae",
+     "left": 14,
+     "right": 12
+    },
     "id": 14,
     "type": "data"
    },
    {
-    "prompt": "Count the tallies: ||||/ | | | | — how many in all?",
+    "prompt": "Count the tallies: ||||/ | | | | ΓÇö how many in all?",
     "answer": "9",
+    "data": {
+     "kind": "tally",
+     "total": 9
+    },
     "id": 15,
     "type": "data"
    },
    {
-    "prompt": "In a picture graph, 1 star = 1 sticker. How many stickers do ★★★ show?",
+    "prompt": "In a picture graph, 1 star = 1 sticker. How many stickers do ΓÿàΓÿàΓÿà show?",
     "answer": "3",
+    "data": {
+     "kind": "picture",
+     "stars": 3
+    },
     "id": 16,
     "type": "data"
    },
    {
-    "prompt": "In a picture graph, 1 star = 1 cookie. How many cookies do ★ show?",
+    "prompt": "In a picture graph, 1 star = 1 cookie. How many cookies do Γÿà show?",
     "answer": "1",
+    "data": {
+     "kind": "picture",
+     "stars": 1
+    },
     "id": 17,
     "type": "data"
    },
    {
     "prompt": "In a column graph, each square is 1 vote. Tom's bar is 17 squares tall and Sam's bar is 10 squares tall. How many more votes did Tom get?",
     "answer": "7",
+    "data": {
+     "kind": "column",
+     "leftName": "Tom",
+     "rightName": "Sam",
+     "left": 17,
+     "right": 10
+    },
     "id": 18,
     "type": "data"
-   }
-  ],
-  "page2head": [
+   },
    {
-    "prompt": "In a picture graph, 1 star = 3 apples. How many apples do ★★★★★ show?",
+    "prompt": "In a picture graph, 1 star = 3 apples. How many apples do ΓÿàΓÿàΓÿàΓÿàΓÿà show?",
     "answer": "15",
+    "data": {
+     "kind": "picture",
+     "stars": 5
+    },
     "id": 19,
     "type": "data"
    },
    {
-    "prompt": "Count the tallies: ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ | — how many in all?",
+    "prompt": "Count the tallies: ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ | ΓÇö how many in all?",
     "answer": "36",
+    "data": {
+     "kind": "tally",
+     "total": 36
+    },
     "id": 20,
-    "type": "data"
-   },
-   {
-    "prompt": "Count the tallies: ||||/ ||||/ | — how many in all?",
-    "answer": "11",
-    "id": 21,
-    "type": "data"
-   }
-  ],
-  "page2": [
-   {
-    "prompt": "In a picture graph, 1 star = 3 apples. How many apples do ★★★★★ show?",
-    "answer": "15",
-    "id": 19,
-    "type": "data"
-   },
-   {
-    "prompt": "Count the tallies: ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ | — how many in all?",
-    "answer": "36",
-    "id": 20,
-    "type": "data"
-   },
-   {
-    "prompt": "Count the tallies: ||||/ ||||/ | — how many in all?",
-    "answer": "11",
-    "id": 21,
-    "type": "data"
-   },
-   {
-    "prompt": "In a column graph, each square is 1 vote. Kai's bar is 17 squares tall and Zoe's bar is 16 squares tall. How many more votes did Kai get?",
-    "answer": "1",
-    "id": 22,
-    "type": "data"
-   },
-   {
-    "prompt": "In a column graph, each square is 1 vote. Tom's bar is 12 squares tall and Leo's bar is 3 squares tall. How many more votes did Tom get?",
-    "answer": "9",
-    "id": 23,
-    "type": "data"
-   },
-   {
-    "prompt": "In a column graph, each square is 1 vote. Kai's bar is 8 squares tall and Zoe's bar is 7 squares tall. How many more votes did Kai get?",
-    "answer": "1",
-    "id": 24,
-    "type": "data"
-   },
-   {
-    "prompt": "Count the tallies: ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ — how many in all?",
-    "answer": "40",
-    "id": 25,
-    "type": "data"
-   },
-   {
-    "prompt": "In a picture graph, 1 star = 3 balloons. How many balloons do ★ show?",
-    "answer": "3",
-    "id": 26,
-    "type": "data"
-   },
-   {
-    "prompt": "In a picture graph, 1 star = 3 apples. How many apples do ★★★ show?",
-    "answer": "9",
-    "id": 27,
-    "type": "data"
-   },
-   {
-    "prompt": "In a column graph, each square is 1 vote. Max's bar is 11 squares tall and Sam's bar is 3 squares tall. How many more votes did Max get?",
-    "answer": "8",
-    "id": 28,
-    "type": "data"
-   },
-   {
-    "prompt": "Count the tallies: ||||/ ||||/ ||||/ — how many in all?",
-    "answer": "15",
-    "id": 29,
-    "type": "data"
-   },
-   {
-    "prompt": "Count the tallies: ||||/ — how many in all?",
-    "answer": "5",
-    "id": 30,
-    "type": "data"
-   },
-   {
-    "prompt": "Count the tallies: ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ | | | — how many in all?",
-    "answer": "33",
-    "id": 31,
-    "type": "data"
-   },
-   {
-    "prompt": "Count the tallies: ||||/ ||||/ ||||/ ||||/ ||||/ — how many in all?",
-    "answer": "25",
-    "id": 32,
-    "type": "data"
-   },
-   {
-    "prompt": "Count the tallies: ||||/ ||||/ ||||/ ||||/ | — how many in all?",
-    "answer": "21",
-    "id": 33,
-    "type": "data"
-   },
-   {
-    "prompt": "Count the tallies: ||||/ ||||/ ||||/ ||||/ ||||/ | | — how many in all?",
-    "answer": "27",
-    "id": 34,
-    "type": "data"
-   },
-   {
-    "prompt": "In a column graph, each square is 1 vote. Rae's bar is 17 squares tall and Mia's bar is 10 squares tall. How many more votes did Rae get?",
-    "answer": "7",
-    "id": 35,
-    "type": "data"
-   },
-   {
-    "prompt": "In a column graph, each square is 1 vote. Tom's bar is 18 squares tall and Mia's bar is 4 squares tall. How many more votes did Tom get?",
-    "answer": "14",
-    "id": 36,
     "type": "data"
    }
   ]
@@ -11579,7 +14909,7 @@
     "type": "division"
    },
    {
-    "prompt": "14 ÷ 2 = __",
+    "prompt": "14 ├╖ 2 = __",
     "answer": "7",
     "id": 4,
     "type": "division"
@@ -11593,17 +14923,22 @@
    {
     "prompt": "Max had 12 crayons. Max shared them equally between 2 friends. How many crayons does each friend get?",
     "answer": "6",
+    "division": {
+     "kind": "share",
+     "friends": 2,
+     "total": 12
+    },
     "id": 6,
     "type": "division"
    },
    {
-    "prompt": "28 ÷ 7 = __",
+    "prompt": "28 ├╖ 7 = __",
     "answer": "4",
     "id": 7,
     "type": "division"
    },
    {
-    "prompt": "24 ÷ 4 = __",
+    "prompt": "24 ├╖ 4 = __",
     "answer": "6",
     "id": 8,
     "type": "division"
@@ -11611,6 +14946,11 @@
    {
     "prompt": "Sam had 30 balloons. Sam shared them equally between 5 friends. How many balloons does each friend get?",
     "answer": "6",
+    "division": {
+     "kind": "share",
+     "friends": 5,
+     "total": 30
+    },
     "id": 9,
     "type": "division"
    },
@@ -11621,13 +14961,13 @@
     "type": "division"
    },
    {
-    "prompt": "50 ÷ 5 = __",
+    "prompt": "50 ├╖ 5 = __",
     "answer": "10",
     "id": 11,
     "type": "division"
    },
    {
-    "prompt": "2 ÷ 2 = __",
+    "prompt": "2 ├╖ 2 = __",
     "answer": "1",
     "id": 12,
     "type": "division"
@@ -11641,7 +14981,7 @@
     "type": "division"
    },
    {
-    "prompt": "70 ÷ 7 = __",
+    "prompt": "70 ├╖ 7 = __",
     "answer": "10",
     "id": 14,
     "type": "division"
@@ -11661,7 +15001,7 @@
     "type": "division"
    },
    {
-    "prompt": "70 ÷ 7 = __",
+    "prompt": "70 ├╖ 7 = __",
     "answer": "10",
     "id": 14,
     "type": "division"
@@ -11673,7 +15013,7 @@
     "type": "division"
    },
    {
-    "prompt": "18 ÷ 6 = __",
+    "prompt": "18 ├╖ 6 = __",
     "answer": "3",
     "id": 16,
     "type": "division"
@@ -11685,7 +15025,7 @@
     "type": "division"
    },
    {
-    "prompt": "18 ÷ 3 = __",
+    "prompt": "18 ├╖ 3 = __",
     "answer": "6",
     "id": 18,
     "type": "division"
@@ -11709,19 +15049,19 @@
     "type": "division"
    },
    {
-    "prompt": "100 ÷ 10 = __",
+    "prompt": "100 ├╖ 10 = __",
     "answer": "10",
     "id": 22,
     "type": "division"
    },
    {
-    "prompt": "40 ÷ 5 = __",
+    "prompt": "40 ├╖ 5 = __",
     "answer": "8",
     "id": 23,
     "type": "division"
    },
    {
-    "prompt": "45 ÷ 5 = __",
+    "prompt": "45 ├╖ 5 = __",
     "answer": "9",
     "id": 24,
     "type": "division"
@@ -11733,12 +15073,22 @@
    {
     "prompt": "How many five-cent coins are the same as one ten-cent coin?",
     "answer": "2",
+    "money": {
+     "given": [
+      10
+     ]
+    },
     "id": 1,
     "type": "money"
    },
    {
     "prompt": "How many five-cent coins are the same as one fifty-cent coin?",
     "answer": "10",
+    "money": {
+     "given": [
+      50
+     ]
+    },
     "id": 2,
     "type": "money"
    },
@@ -11751,6 +15101,11 @@
    {
     "prompt": "How many five-cent coins are the same as one twenty-cent coin?",
     "answer": "4",
+    "money": {
+     "given": [
+      20
+     ]
+    },
     "id": 4,
     "type": "money"
    },
@@ -11763,42 +15118,79 @@
    {
     "prompt": "How many twenty-cent coins make 40c?",
     "answer": "2",
+    "money": {
+     "given": [
+      20
+     ]
+    },
     "id": 6,
     "type": "money"
    },
    {
     "prompt": "How many twenty-cent coins make 20c?",
     "answer": "1",
+    "money": {
+     "given": [
+      20
+     ]
+    },
     "id": 7,
     "type": "money"
    },
    {
     "prompt": "You have one $1 note and one ten-cent coin. How much money is there in all?",
     "answer": "$1.10",
+    "money": {
+     "given": [
+      100,
+      10
+     ]
+    },
     "id": 8,
     "type": "money"
    },
    {
     "prompt": "How many ten-cent coins are the same as one twenty-cent coin?",
     "answer": "2",
+    "money": {
+     "given": [
+      20
+     ]
+    },
     "id": 9,
     "type": "money"
    },
    {
     "prompt": "You have one $5 note and one ten-cent coin. How much money is there in all?",
     "answer": "$5.10",
+    "money": {
+     "given": [
+      500,
+      10
+     ]
+    },
     "id": 10,
     "type": "money"
    },
    {
     "prompt": "How many ten-cent coins make 10c?",
     "answer": "1",
+    "money": {
+     "given": [
+      10
+     ]
+    },
     "id": 11,
     "type": "money"
    },
    {
     "prompt": "How many ten-cent coins make 40c?",
     "answer": "4",
+    "money": {
+     "given": [
+      10
+     ]
+    },
     "id": 12,
     "type": "money"
    }
@@ -11807,12 +15199,30 @@
    {
     "prompt": "A jar holds 8 ten-cent coins. How much money is in the jar?",
     "answer": "80c",
+    "money": {
+     "given": [
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10
+     ]
+    },
     "id": 13,
     "type": "money"
    },
    {
     "prompt": "You have one $2 note and one fifty-cent coin. How much money is there in all?",
     "answer": "$2.50",
+    "money": {
+     "given": [
+      200,
+      50
+     ]
+    },
     "id": 14,
     "type": "money"
    },
@@ -11827,12 +15237,30 @@
    {
     "prompt": "A jar holds 8 ten-cent coins. How much money is in the jar?",
     "answer": "80c",
+    "money": {
+     "given": [
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10
+     ]
+    },
     "id": 13,
     "type": "money"
    },
    {
     "prompt": "You have one $2 note and one fifty-cent coin. How much money is there in all?",
     "answer": "$2.50",
+    "money": {
+     "given": [
+      200,
+      50
+     ]
+    },
     "id": 14,
     "type": "money"
    },
@@ -11851,12 +15279,22 @@
    {
     "prompt": "A jar holds 1 fifty-cent coins. How much money is in the jar?",
     "answer": "50c",
+    "money": {
+     "given": [
+      50
+     ]
+    },
     "id": 17,
     "type": "money"
    },
    {
     "prompt": "How many twenty-cent coins make 80c?",
     "answer": "4",
+    "money": {
+     "given": [
+      20
+     ]
+    },
     "id": 18,
     "type": "money"
    },
@@ -11869,24 +15307,51 @@
    {
     "prompt": "A jar holds 2 twenty-cent coins. How much money is in the jar?",
     "answer": "40c",
+    "money": {
+     "given": [
+      20,
+      20
+     ]
+    },
     "id": 20,
     "type": "money"
    },
    {
     "prompt": "You have one $2 note and one twenty-cent coin. How much money is there in all?",
     "answer": "$2.20",
+    "money": {
+     "given": [
+      200,
+      20
+     ]
+    },
     "id": 21,
     "type": "money"
    },
    {
     "prompt": "A jar holds 6 ten-cent coins. How much money is in the jar?",
     "answer": "60c",
+    "money": {
+     "given": [
+      10,
+      10,
+      10,
+      10,
+      10,
+      10
+     ]
+    },
     "id": 22,
     "type": "money"
    },
    {
     "prompt": "How many ten-cent coins are the same as one fifty-cent coin?",
     "answer": "5",
+    "money": {
+     "given": [
+      50
+     ]
+    },
     "id": 23,
     "type": "money"
    },

@@ -11,7 +11,7 @@
 import { seedFrom, getGradeConfig, generateSheet, generateDocument } from '../src/framework';
 import {
     additionSpec, subtractionSpec, multiplicationSpec, missingSpec,
-    comparisonSpec, skipSpec, wordSpec, countingSpec, doublesSpec,
+    comparisonSpec, skipSpec, wordSpec, countingSpec, rowsColumnsSpec, doublesSpec,
     bondsSpec, patternsSpec, shapesSpec, compassSpec, timeSpec, clockSpec,
     measureSpec, temperatureSpec, placeValueSpec, dataSpec, divisionSpec,
     moneySpec
@@ -19,7 +19,7 @@ import {
 
 const SPECS = [
     additionSpec, subtractionSpec, multiplicationSpec, missingSpec,
-    comparisonSpec, skipSpec, wordSpec, countingSpec, doublesSpec,
+    comparisonSpec, skipSpec, wordSpec, countingSpec, rowsColumnsSpec, doublesSpec,
     bondsSpec, patternsSpec, shapesSpec, compassSpec, timeSpec, clockSpec,
     measureSpec, temperatureSpec, placeValueSpec, dataSpec, divisionSpec,
     moneySpec

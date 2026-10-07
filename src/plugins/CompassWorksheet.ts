@@ -83,13 +83,21 @@ function generateCompass(rng: Rng, _caps: Caps, count: number): RawProblem[] {
                 'fact'
             ];
             const kind = rng.pick(kinds);
+            // Every item carries a reference diagram (framework/CompassDiagram.tsx):
+            // a N/E/S/W rose, or the N-at-top map square. `facing` marks the
+            // GIVEN direction (the prompt's word); the answer direction is never
+            // labelled on the figure.
+            const facingFigure = (i: number, turn?: 'right' | 'left' | 'half') => ({
+                compass: { map: false, facing: COMPASS_POINTS[i] as 'North' | 'East' | 'South' | 'West', ...(turn ? { turn } : {}) }
+            });
             switch (kind) {
                 case 'turnRight': {
                     // Quarter turn clockwise from the facing.
                     const i = COMPASS_POINTS.indexOf(faceDeck.take());
                     return {
                         prompt: `You are facing ${COMPASS_POINTS[i]}. You make a quarter turn to the right. What direction are you facing now?`,
-                        answer: COMPASS_POINTS[(i + 1) % 4]
+                        answer: COMPASS_POINTS[(i + 1) % 4],
+                        ...facingFigure(i, 'right')
                     };
                 }
                 case 'turnLeft': {
@@ -97,7 +105,8 @@ function generateCompass(rng: Rng, _caps: Caps, count: number): RawProblem[] {
                     const i = COMPASS_POINTS.indexOf(faceDeck.take());
                     return {
                         prompt: `You are facing ${COMPASS_POINTS[i]}. You make a quarter turn to the left. What direction are you facing now?`,
-                        answer: COMPASS_POINTS[(i + 3) % 4]
+                        answer: COMPASS_POINTS[(i + 3) % 4],
+                        ...facingFigure(i, 'left')
                     };
                 }
                 case 'halfTurn': {
@@ -105,14 +114,16 @@ function generateCompass(rng: Rng, _caps: Caps, count: number): RawProblem[] {
                     const i = COMPASS_POINTS.indexOf(faceDeck.take());
                     return {
                         prompt: `You are facing ${COMPASS_POINTS[i]}. You make a half turn. What direction are you facing now?`,
-                        answer: COMPASS_POINTS[(i + 2) % 4]
+                        answer: COMPASS_POINTS[(i + 2) % 4],
+                        ...facingFigure(i, 'half')
                     };
                 }
                 case 'opposite': {
                     const i = COMPASS_POINTS.indexOf(faceDeck.take());
                     return {
                         prompt: `What direction is the opposite of ${COMPASS_POINTS[i]}?`,
-                        answer: COMPASS_POINTS[(i + 2) % 4]
+                        answer: COMPASS_POINTS[(i + 2) % 4],
+                        ...facingFigure(i)
                     };
                 }
                 case 'rightSide': {
@@ -121,21 +132,25 @@ function generateCompass(rng: Rng, _caps: Caps, count: number): RawProblem[] {
                     const i = COMPASS_POINTS.indexOf(faceDeck.take());
                     return {
                         prompt: `You are facing ${COMPASS_POINTS[i]}. What direction is on your right?`,
-                        answer: COMPASS_POINTS[(i + 1) % 4]
+                        answer: COMPASS_POINTS[(i + 1) % 4],
+                        ...facingFigure(i)
                     };
                 }
                 case 'leftSide': {
                     const i = COMPASS_POINTS.indexOf(faceDeck.take());
                     return {
                         prompt: `You are facing ${COMPASS_POINTS[i]}. What direction is on your left?`,
-                        answer: COMPASS_POINTS[(i + 3) % 4]
+                        answer: COMPASS_POINTS[(i + 3) % 4],
+                        ...facingFigure(i)
                     };
                 }
                 case 'map': {
                     const [edge, direction] = rng.pick(MAP_EDGES);
                     return {
                         prompt: `On a map, North is at the top. What direction is at the ${edge} of the map?`,
-                        answer: direction
+                        answer: direction,
+                        // The map square draws N at top only — the edge answer is private.
+                        compass: { map: true }
                     };
                 }
                 case 'walk': {
@@ -144,12 +159,14 @@ function generateCompass(rng: Rng, _caps: Caps, count: number): RawProblem[] {
                     const name = nameDeck.take();
                     return {
                         prompt: `${name} walks to school towards the ${COMPASS_POINTS[i]}. On the way home, what direction is ${name} walking?`,
-                        answer: COMPASS_POINTS[(i + 2) % 4]
+                        answer: COMPASS_POINTS[(i + 2) % 4],
+                        ...facingFigure(i)
                     };
                 }
                 default: {
                     const [prompt, answer] = factDeck.take();
-                    return { prompt, answer };
+                    // Plain rose reference (needle/sunrise/sunset facts).
+                    return { prompt, answer, compass: { map: false } };
                 }
             }
         },
@@ -162,7 +179,9 @@ export const compassSpec: WorksheetSpec = {
     id: 'compass',
     label: 'Compass Directions',
     icon: '✥',
-    perPage: 12,
+    // Nine per A4 single-column: each item now carries a 48px compass rose /
+    // map reference (framework/CompassDiagram.tsx) under its two-sentence text.
+    perPage: 9,
     // Two-sentence turn/position items — prints single-column like the
     // measurement sheet.
     singleColumn: true,

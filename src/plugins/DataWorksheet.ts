@@ -44,13 +44,22 @@ function generateData(rng: Rng, caps: Caps, count: number): RawProblem[] {
             const r = rng.next();
             if (r < 0.45) {
                 // Tally: groups of five (|||/) plus a remainder of single strokes.
+                // The figure (framework/DataDiagram.tsx) draws the SAME marks as
+                // a crisp SVG grid of strokes + slashes; the prompt keeps the ASCII
+                // so the question stays distinct per total (sampling key) while the
+                // printed sheet reads visually.
                 const total = rng.int(3, cap);
                 const marks: string[] = [];
                 const fives = Math.floor(total / 5);
                 for (let f = 0; f < fives; f++) marks.push('||||/');
                 const rest = total % 5;
                 for (let d = 0; d < rest; d++) marks.push('|');
-                return { prompt: `Count the tallies: ${marks.join(' ')} — how many in all?`, answer: `${total}` };
+                return {
+                    prompt: `Count the tallies: ${marks.join(' ')} — how many in all?`,
+                    answer: `${total}`,
+                    // The figure owns the marks (tally groups of five).
+                    data: { kind: 'tally', total }
+                };
             }
             if (r < 0.75) {
                 // Picture graph: each star counts for u things. Pick by index so we
@@ -64,7 +73,9 @@ function generateData(rng: Rng, caps: Caps, count: number): RawProblem[] {
                 const unit = u === 1 ? `1 ${singular}` : `${u} ${plural}`;
                 return {
                     prompt: `In a picture graph, 1 star = ${unit}. How many ${plural} do ${'★'.repeat(k)} show?`,
-                    answer: `${k * u}`
+                    answer: `${k * u}`,
+                    // The figure draws exactly k stars (the ★ runs are its data).
+                    data: { kind: 'picture', stars: k }
                 };
             }
             // Column graph: each square is 1 vote; compare two bars. a >= 2 and
@@ -80,7 +91,10 @@ function generateData(rng: Rng, caps: Caps, count: number): RawProblem[] {
             if (n2 === n1) n2 = NAMES.find((n) => n !== n1)!;
             return {
                 prompt: `In a column graph, each square is 1 vote. ${n1}'s bar is ${a} ${squares(a)} tall and ${n2}'s bar is ${b} ${squares(b)} tall. How many more votes did ${n1} get?`,
-                answer: `${a - b}`
+                answer: `${a - b}`,
+                // The figure draws the two named bars at 2px/vote (values stay
+                // in the prompt; the "how many more" difference is never drawn).
+                data: { kind: 'column', leftName: n1, rightName: n2, left: a, right: b }
             };
         },
         (p) => p.prompt
@@ -92,7 +106,13 @@ export const dataSpec: WorksheetSpec = {
     id: 'data',
     label: 'Data & Tally',
     icon: '▥',
-    perPage: 18,
+    // Ten per A4: each item now carries a real diagram (tally marks /
+    // picture stars / two named bars, framework/DataDiagram.tsx), and the
+    // column-graph prose runs ~4 lines in the compact two-column layout —
+    // ten items (five two-column rows) is the densest page that keeps the
+    // ~80px-tall column bars inside a fixed A4 sheet even on the worst deal
+    // (T3 audit: twelve items clipped up to 145px on some refresh seeds).
+    perPage: 10,
     offered: (grade: GradeConfig) => grade.available.includes('data'),
     scope: () => 'tallies & simple graphs',
     generate: generateData

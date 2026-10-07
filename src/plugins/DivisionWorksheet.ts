@@ -55,16 +55,24 @@ function generateDivision(rng: Rng, caps: Caps, count: number): RawProblem[] {
             if (r < 0.4) {
                 return { prompt: `${d * q} ÷ ${d} = __`, answer: `${q}` };
             }
+            // A visible equal-group model (framework/DivisionDiagram.tsx) only
+            // fits A4 while the buckets stay ≤ 6 with ≤ 36 total dots; bigger
+            // story items stay plain prose so the sheet never overflows.
+            const figurable = d >= 2 && d <= 6 && d * q <= 36 && q <= 6;
             if (r < 0.7) {
                 const n = nameDeck.take();
                 return {
                     prompt: `${n} had ${countOf(d * q, idx)}. ${n} shared them equally between ${d} friends. How many ${thing} does each friend get?`,
-                    answer: `${q}`
+                    answer: `${q}`,
+                    // d friend-buckets, each with q dots (dots per bucket = total/friends).
+                    ...(figurable ? { division: { kind: 'share' as const, friends: d, total: d * q } } : {})
                 };
             }
             return {
                 prompt: `There are ${countOf(d * q, idx)}. They are put into groups of ${d}. How many groups are there?`,
-                answer: `${q}`
+                answer: `${q}`,
+                // q group-boxes of d dots (groups = total/size; q is gated ≤ 6).
+                ...(figurable ? { division: { kind: 'groupsOf' as const, size: d, total: d * q } } : {})
             };
         },
         (p) => p.prompt

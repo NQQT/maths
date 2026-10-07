@@ -51,7 +51,15 @@ function generateBonds(rng: Rng, caps: Caps, count: number): RawProblem[] {
                       : form === 2
                         ? `__ and ${a} make ${total}`
                         : `${total} - ${a} = __`;
-            return { prompt, answer: `${missing}` };
+            // Part-part-whole diagram (framework/BondDiagram.tsx): the whole and
+            // the GIVEN part print their values; the REQUESTED part prints as a
+            // blank circle (null) — the missing answer is never drawn. Which
+            // part is the blank follows the prompt's missing blank: forms 1–2
+            // ask for the first part (left blank), forms 0 & 3 for the second.
+            const bond = form === 0 || form === 3
+                ? { whole: total, left: a, right: null }
+                : { whole: total, left: null, right: a };
+            return { prompt, answer: `${missing}`, bond };
         },
         (p) => p.prompt
     );
@@ -62,7 +70,10 @@ export const bondsSpec: WorksheetSpec = {
     id: 'bonds',
     label: 'Number Bonds',
     icon: '∨',
-    perPage: 24,
+    // Sixteen per A4: each item now carries a part-part-whole diagram
+    // (~68px tall, framework/BondDiagram.tsx), so the compact two-column
+    // page must leave room without overflowing the sheet.
+    perPage: 16,
     offered: (grade: GradeConfig) => grade.available.includes('bonds'),
     scope: (grade: GradeConfig) =>
         grade.caps.bondCap >= 20 ? 'bonds to 10 & 20' : `bonds to ${Math.max(5, grade.caps.bondCap)}`,

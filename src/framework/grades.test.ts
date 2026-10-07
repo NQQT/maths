@@ -110,7 +110,7 @@ describe('grade catalogue', () => {
         );
     });
 
-    it('grade 1 offers the full original catalogue plus the ten extension types', () => {
+    it('grade 1 offers the full original catalogue plus the eleven extension types', () => {
         expect([...g1.available].sort()).toEqual(
             [
                 'addition',
@@ -124,6 +124,7 @@ describe('grade catalogue', () => {
                 'missing',
                 'patterns',
                 'placevalue',
+                'rowscolumns',
                 'shapes',
                 'skip',
                 'subtraction',
@@ -134,12 +135,12 @@ describe('grade catalogue', () => {
         );
     });
 
-    it('grade 2 adds times tables, division and Australian coins (21 types total)', () => {
+    it('grade 2 adds times tables, division and Australian coins (22 types total)', () => {
         // Year 2 is the first grade with times tables AND the only grade with
         // division / coins & money (V8-aligned money: coins to about $1).
-        // It is also the only grade with clock faces (reading + drawing hands).
-        // Compass Directions and Temperature carry over from Year 1 (the
-        // compass space is unchanged; the temperature range widens to 40°C).
+        // It is also the only grade with clock faces (reading + drawing hands)
+        // and the only counting-bridge grade with the rows-columns multiplication
+        // form (multCap 10 lets the r × c products through).
         expect([...g2.available].sort()).toEqual(
             [
                 'addition',
@@ -157,6 +158,7 @@ describe('grade catalogue', () => {
                 'mult',
                 'patterns',
                 'placevalue',
+                'rowscolumns',
                 'shapes',
                 'skip',
                 'subtraction',

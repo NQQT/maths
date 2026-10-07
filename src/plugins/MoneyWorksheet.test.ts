@@ -42,20 +42,27 @@ describe('money — availability gating', () => {
 describe('money — Year 2 (AU 5/10/20/50c coins + $ notes, V8-aligned)', () => {
     it('matches the exact sheet', () => {
         const s = sheet(g2);
+        // Every problem EXCEPT the "what coins make X?" form pins the GIVEN
+        // pieces only (framework/MoneyDiagram.tsx draws coins <100c as coins,
+        // >=100c as notes); the "make X" answer set is never drawn because it
+        // IS the answer.
         expect(s).toEqual([
-            {"prompt":"How many five-cent coins are the same as one ten-cent coin?","answer":"2","id":1,"type":"money"},
-            {"prompt":"How many five-cent coins are the same as one fifty-cent coin?","answer":"10","id":2,"type":"money"},
+            {"prompt":"How many five-cent coins are the same as one ten-cent coin?","answer":"2","money":{"given":[10]},"id":1,"type":"money"},
+            {"prompt":"How many five-cent coins are the same as one fifty-cent coin?","answer":"10","money":{"given":[50]},"id":2,"type":"money"},
             {"prompt":"What coins make 60c?","answer":"50c + 10c","id":3,"type":"money"},
-            {"prompt":"How many five-cent coins are the same as one twenty-cent coin?","answer":"4","id":4,"type":"money"},
+            {"prompt":"How many five-cent coins are the same as one twenty-cent coin?","answer":"4","money":{"given":[20]},"id":4,"type":"money"},
             {"prompt":"What coins make 25c?","answer":"20c + 5c","id":5,"type":"money"},
-            {"prompt":"How many twenty-cent coins make 40c?","answer":"2","id":6,"type":"money"},
-            {"prompt":"How many twenty-cent coins make 20c?","answer":"1","id":7,"type":"money"},
-            {"prompt":"You have one $1 note and one ten-cent coin. How much money is there in all?","answer":"$1.10","id":8,"type":"money"},
-            {"prompt":"How many ten-cent coins are the same as one twenty-cent coin?","answer":"2","id":9,"type":"money"},
-            {"prompt":"You have one $5 note and one ten-cent coin. How much money is there in all?","answer":"$5.10","id":10,"type":"money"},
-            {"prompt":"How many ten-cent coins make 10c?","answer":"1","id":11,"type":"money"},
-            {"prompt":"How many ten-cent coins make 40c?","answer":"4","id":12,"type":"money"},
+            {"prompt":"How many twenty-cent coins make 40c?","answer":"2","money":{"given":[20]},"id":6,"type":"money"},
+            {"prompt":"How many twenty-cent coins make 20c?","answer":"1","money":{"given":[20]},"id":7,"type":"money"},
+            {"prompt":"You have one $1 note and one ten-cent coin. How much money is there in all?","answer":"$1.10","money":{"given":[100,10]},"id":8,"type":"money"},
+            {"prompt":"How many ten-cent coins are the same as one twenty-cent coin?","answer":"2","money":{"given":[20]},"id":9,"type":"money"},
+            {"prompt":"You have one $5 note and one ten-cent coin. How much money is there in all?","answer":"$5.10","money":{"given":[500,10]},"id":10,"type":"money"},
+            {"prompt":"How many ten-cent coins make 10c?","answer":"1","money":{"given":[10]},"id":11,"type":"money"},
+            {"prompt":"How many ten-cent coins make 40c?","answer":"4","money":{"given":[10]},"id":12,"type":"money"},
         ]);
+        // The given-only rule: no figure ever lists more pieces than the
+        // question states (the "make" form has a figureless answer by design).
+        expect(s.filter((p) => p.prompt.startsWith('What coins make')).every((p) => p.money === undefined)).toBe(true);
         // Every "what coins make X?" answer sums back to X using AU denominations.
         for (const p of s) {
             const m = p.prompt.match(/^What coins make (\$[\d.]+|\d+c)?$/);

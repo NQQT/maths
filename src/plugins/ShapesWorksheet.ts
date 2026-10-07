@@ -76,19 +76,34 @@ function generateShapes(rng: Rng, caps: Caps, count: number): RawProblem[] {
             const r = rng.next();
             if (r < 0.25) {
                 // "How many (straight) sides..." — only shapes that have them.
+                // The figure draws the exact 2-D outline (framework/ShapeFigure.tsx);
+                // the side count stays the private answer.
                 const pool = twoD.filter((s) => s.sides > 0);
                 const s = rng.pick(pool.length ? pool : twoD);
-                return { prompt: `How many sides does ${shapeArticle(s.name)} ${s.name} have?`, answer: `${s.sides}` };
+                return {
+                    prompt: `How many sides does ${shapeArticle(s.name)} ${s.name} have?`,
+                    answer: `${s.sides}`,
+                    shapes: [{ name: s.name, kind: '2d' }]
+                };
             }
             if (r < 0.45) {
                 // "How many corners..." — circles/ovals answer 0 (curved side).
                 const s = rng.pick(twoD);
-                return { prompt: `How many corners does ${shapeArticle(s.name)} ${s.name} have?`, answer: `${s.corners}` };
+                return {
+                    prompt: `How many corners does ${shapeArticle(s.name)} ${s.name} have?`,
+                    answer: `${s.corners}`,
+                    shapes: [{ name: s.name, kind: '2d' }]
+                };
             }
             if (r < 0.65 && threeD.length >= 3) {
-                // "How many flat faces..." — 3-D objects only.
+                // "How many flat faces..." — 3-D objects only. The figure draws the
+                // solid's line drawing; the face count stays the private answer.
                 const s = rng.pick(threeD);
-                return { prompt: `How many flat faces does ${shapeArticle(s.name)} ${s.name} have?`, answer: `${s.flatFaces}` };
+                return {
+                    prompt: `How many flat faces does ${shapeArticle(s.name)} ${s.name} have?`,
+                    answer: `${s.flatFaces}`,
+                    shapes: [{ name: s.name, kind: '3d' }]
+                };
             }
             if (r < 0.8) {
                 // Multiple-choice on 2-D corners: the answer must be UNIQUE among
@@ -101,7 +116,8 @@ function generateShapes(rng: Rng, caps: Caps, count: number): RawProblem[] {
                     answer = rng.pick(twoD);
                     return {
                         prompt: `How many corners does ${shapeArticle(answer.name)} ${answer.name} have?`,
-                        answer: `${answer.corners}`
+                        answer: `${answer.corners}`,
+                        shapes: [{ name: answer.name, kind: '2d' }]
                     };
                 }
                 // Two distractors with different corner counts; the correct
@@ -113,7 +129,10 @@ function generateShapes(rng: Rng, caps: Caps, count: number): RawProblem[] {
                 const shown = [order[at], ...order.filter((s) => s !== order[at])];
                 return {
                     prompt: `Which 2-D shape has ${answer.corners} corners? (${shown.map((s) => s.name).join(', ')})`,
-                    answer: answer.name
+                    answer: answer.name,
+                    // Drawn in the prompt's option order, labelled under each
+                    // outline (the labels keep the question unambiguous).
+                    shapes: shown.map((s) => ({ name: s.name, kind: '2d' as const }))
                 };
             }
             // 3-D "only flat faces" identification — shapes with NO curved surface (cube
@@ -123,16 +142,35 @@ function generateShapes(rng: Rng, caps: Caps, count: number): RawProblem[] {
             if (threeD.length >= 3 && allFlat.length >= 1) {
                 const answer = rng.pick(allFlat);
                 const others = threeD.filter((s) => s.name !== answer.name);
-                const d1 = rng.pick(others);
-                const d2 = rng.pick(others.filter((s) => s.name !== d1.name));
+                // Distractors come from the CURVED-surface solids (cylinder /
+                // cone / sphere) so the asked object is the UNIQUE all-flat
+                // choice: Year 2's cube, prism AND pyramid are all all-flat,
+                // so drawing distractors from the whole set would leave the
+                // question with several correct candidates (T3 audit). A set
+                // with fewer than two curved 3-D shapes falls back to the
+                // original pool (the variant's own gate keeps it usable).
+                const curved = threeD.filter((s) => s.curved);
+                const pool = curved.length >= 2 ? curved : others;
+                const d1 = rng.pick(pool);
+                const d2 = rng.pick(pool.filter((s) => s.name !== d1.name));
                 return {
                     prompt: `Which of these 3-D objects has only flat faces? (${[answer, d1, d2].map((s) => s.name).join(', ')})`,
-                    answer: answer.name
+                    answer: answer.name,
+                    // Three labelled 3-D line drawings, in the prompt's order.
+                    shapes: [
+                        { name: answer.name, kind: '3d' as const },
+                        { name: d1.name, kind: '3d' as const },
+                        { name: d2.name, kind: '3d' as const }
+                    ]
                 };
             }
             const curved = twoD.filter((s) => s.curved);
             const answer = rng.pick(curved.length ? curved : twoD);
-            return { prompt: `Does ${shapeArticle(answer.name)} ${answer.name} have a curved side?`, answer: answer.curved ? 'Yes' : 'No' };
+            return {
+                prompt: `Does ${shapeArticle(answer.name)} ${answer.name} have a curved side?`,
+                answer: answer.curved ? 'Yes' : 'No',
+                shapes: [{ name: answer.name, kind: '2d' as const }]
+            };
         },
         (p) => p.prompt
     );

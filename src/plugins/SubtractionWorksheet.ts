@@ -44,6 +44,11 @@ function generateSubtraction(rng: Rng, caps: Caps, count: number): RawProblem[] 
     return sampleUnique(
         count,
         () => {
+            // Year 3 (caps.opCap === 1000) is the multi-digit pair grade: its
+            // items print a right-aligned vertical column (framework/
+            // ColumnDiagram.tsx). Lower grades keep plain inline prompts and
+            // Year 4+ keeps its established behaviour (grades.ts ladder).
+            const vertical = caps.opCap === 1000;
             // Roll THIS question's subtrahend count — but only when the grade
             // allows more than one. Grades 0..2 (addendCap 2) take no extra
             // RNG draw.
@@ -55,7 +60,11 @@ function generateSubtraction(rng: Rng, caps: Caps, count: number): RawProblem[] 
                 const aMax = Math.max(2, caps.opCap);
                 const a = rng.int(2, aMax);
                 const b = rng.int(0, a - 1); // b < a  =>  a - b >= 1
-                return { prompt: `${a} - ${b} = __`, answer: `${a - b}` };
+                return {
+                    prompt: `${a} - ${b} = __`,
+                    answer: `${a - b}`,
+                    ...(vertical ? { column: { terms: [a, b], op: '-' as const } } : {})
+                };
             }
             // MULTI-SUBTRAHEND — the minuend is drawn first, large enough
             // that every subtrahend can be >= 1 AND the final answer >= 1

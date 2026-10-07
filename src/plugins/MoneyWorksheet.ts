@@ -68,27 +68,40 @@ function generateMoney(rng: Rng, caps: Caps, count: number): RawProblem[] {
             if (form === 1) {
                 // A jar of one denomination — a skip-counting-in-money task. The
                 // coin count is capped at 9: "16 five-cent coins" is a fine fact
-                // but a tedious count for the grade's counting fluency goal.
+                // but a tedious count for the grade's counting fluency goal. The
+                // figure draws the GIVEN jar (n coins of value c), never the total.
                 const c = rng.pick(AU_COIN_CENTS);
                 const word = AU_COIN_WORDS[AU_COIN_CENTS.indexOf(c)];
                 const n = rng.int(1, Math.max(1, Math.min(9, Math.floor(cap / c))));
-                return { prompt: `A jar holds ${n} ${word} coins. How much money is in the jar?`, answer: formatMoney(n * c) };
+                return {
+                    prompt: `A jar holds ${n} ${word} coins. How much money is in the jar?`,
+                    answer: formatMoney(n * c),
+                    money: { given: Array(n).fill(c) }
+                };
             }
             if (form === 2) {
-                // How many of one coin make a round amount.
+                // How many of one coin make a round amount. The figure shows the
+                // single GIVEN coin type only — drawing k of them would print
+                // the answer, so the figure stays at one coin.
                 const c = rng.pick(AU_COIN_CENTS);
                 const word = AU_COIN_WORDS[AU_COIN_CENTS.indexOf(c)];
                 const k = rng.int(1, Math.max(1, Math.min(4, Math.floor(cap / c))));
-                return { prompt: `How many ${word} coins make ${formatMoney(k * c)}?`, answer: `${k}` };
+                return {
+                    prompt: `How many ${word} coins make ${formatMoney(k * c)}?`,
+                    answer: `${k}`,
+                    money: { given: [c] }
+                };
             }
             if (form === 3) {
-                // A note plus one coin: total printed as dollars.cents.
+                // A note plus one coin: total printed as dollars.cents. The
+                // figure draws both GIVEN pieces (note = cents value >= 100).
                 const note = rng.pick(AU_NOTE_DOLLARS);
                 const cent = rng.pick(AU_COIN_CENTS);
                 const word = AU_COIN_WORDS[AU_COIN_CENTS.indexOf(cent)];
                 return {
                     prompt: `You have one $${note} note and one ${word} coin. How much money is there in all?`,
-                    answer: formatMoney(note * 100 + cent)
+                    answer: formatMoney(note * 100 + cent),
+                    money: { given: [note * 100, cent] }
                 };
             }
             // Coin swap: how many small coins equal one bigger coin (only
@@ -99,9 +112,12 @@ function generateMoney(rng: Rng, caps: Caps, count: number): RawProblem[] {
             const [small, big] = rng.pick(pairs);
             const smallWord = AU_COIN_WORDS[(AU_COIN_CENTS as readonly number[]).indexOf(small)];
             const bigWord = AU_COIN_WORDS[(AU_COIN_CENTS as readonly number[]).indexOf(big)];
+            // The figure shows the single GIVEN big coin; the count of smalls
+            // that match it is the answer and is never drawn.
             return {
                 prompt: `How many ${smallWord} coins are the same as one ${bigWord} coin?`,
-                answer: `${big / small}`
+                answer: `${big / small}`,
+                money: { given: [big] }
             };
         },
         (p) => p.prompt

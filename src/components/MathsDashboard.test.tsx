@@ -210,8 +210,13 @@ describe('MathsDashboard — math type selection (left)', () => {
         const page = screen.getByTestId('sheet-preview-page1');
         const row = within(page).getByText('1.').parentElement!;
         expect(screen.getByTestId('toolbar-title').textContent).toBe('Year 3 \u2014 Compass Directions');
-        expect(text(row)).toBe('1.You are facing West. What direction is on your left?');
-        expect(row.lastElementChild!.children.length).toBe(0);
+        // The compass rose figure now prints with the row: its N/E/S/W
+        // reference letters are the only figure text (the answer direction is
+        // never labelled — pinned in CompassDiagram.test.tsx).
+        expect(text(row)).toBe('1.You are facing West. What direction is on your left?NESW');
+        // The prompt has no fill-in blank, so the row's text container now
+        // carries exactly one element child: the compass figure root span.
+        expect(row.lastElementChild!.children.length).toBe(1);
     });
 });
 
@@ -255,14 +260,17 @@ describe('MathsDashboard — grade selection (top-right)', () => {
         // New spatial entries must not alter the arithmetic seeds. The exact
         // first rows remain pinned in plugins/AdditionWorksheet.test.ts and
         // plugins/SubtractionWorksheet.test.ts, including the rendered blank.
+        // Year 3 is the vertical-column grade: the printed column figure
+        // repeats its right-aligned terms (ColumnDiagram.tsx), so the row text
+        // carries the operands a second time — never the answer.
         const page = screen.getByTestId('sheet-preview-page1');
-        expect(text(within(page).getByText('1.').parentElement)).toBe('1.53 + 942 = ');
+        expect(text(within(page).getByText('1.').parentElement)).toBe('1.53 + 942 = 53+942');
         expect(screen.getByTestId('toolbar-title').textContent).toBe('Year 3 \u2014 Addition');
         fireEvent.click(
             await within(rail).findByRole('button', { name: 'Subtraction' }, { timeout: 20_000 })
         );
         expect(text(within(screen.getByTestId('sheet-preview-page1')).getByText('1.').parentElement))
-            .toBe('1.990 - 175 = ');
+            .toBe('1.990 - 175 = 990−175');
         expect(screen.getByTestId('toolbar-title').textContent).toBe('Year 3 \u2014 Subtraction');
     });
 

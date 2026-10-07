@@ -17,7 +17,10 @@
 
 import { createRng } from './rng';
 import type { GradeConfig } from './grades';
-import type { ClockFigure, ShapeTransformationFigure, RawProblem, WorksheetSpec } from './types';
+import type {
+    BondFigure, ClockFigure, ColumnFigure, CompassFigure, DataFigure, DivisionFigure,
+    MoneyFigure, RowsColumnsFigure, ShapeFigure, ShapeTransformationFigure, RawProblem, WorksheetSpec
+} from './types';
 
 // A problem as printed: the plugin's prompt/answer plus the framework-assigned
 // document position (1-based, continuous across pages) and the owning
@@ -36,6 +39,19 @@ export type Problem = {
     // Optional shape choices and mirror/turn guide (types.ts); no geometry is
     // recomputed while stamping ids or chunking pages.
     shapeTransformation?: ShapeTransformationFigure;
+    // Optional rows × columns grid figure (types.ts); the chunker spreads it
+    // through verbatim alongside the clock and shape figures (document.test.ts
+    // pins the figure passthrough).
+    rowsColumns?: RowsColumnsFigure;
+    // The remaining visual figure data (types.ts) rides through the same
+    // spread: preview + print render exactly what the generator attached.
+    data?: DataFigure;
+    shapes?: ShapeFigure[];
+    bond?: BondFigure;
+    compass?: CompassFigure;
+    money?: MoneyFigure;
+    division?: DivisionFigure;
+    column?: ColumnFigure;
     // true = the prompt's "__" blanks print as wide fill-in lines.
     wideBlanks?: boolean;
     // true = a full-width fill-in line prints BELOW the prompt.

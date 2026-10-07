@@ -69,15 +69,18 @@ describe('time — Year 1 (days/months/seasons; no clocks)', () => {
 describe('time — Year 2 (adds clock time to the hour & half-past)', () => {
     it('matches the exact sheet', () => {
         const s = sheet(g2);
+        // Year 2's clock/half-past items now pin the GIVEN time as a clock
+        // figure (framework/PrintableSheet.tsx's ClockFace draws the hand
+        // positions; the "hours later" answer is never printed on the figure).
         expect(s).toEqual([
             {"prompt":"What season comes after summer?","answer":"autumn","id":1,"type":"time"},
-            {"prompt":"It is 5 o'clock now. What time is it 2 hours later?","answer":"7 o'clock","id":2,"type":"time"},
+            {"prompt":"It is 5 o'clock now. What time is it 2 hours later?","answer":"7 o'clock","clock":{"hour":5,"minute":0},"id":2,"type":"time"},
             {"prompt":"What day comes before Sunday?","answer":"Saturday","id":3,"type":"time"},
             {"prompt":"What day comes after Wednesday?","answer":"Thursday","id":4,"type":"time"},
             {"prompt":"What month comes after January?","answer":"February","id":5,"type":"time"},
             {"prompt":"If today is Monday, what day was yesterday?","answer":"Sunday","id":6,"type":"time"},
             {"prompt":"If today is Saturday, what day is tomorrow?","answer":"Sunday","id":7,"type":"time"},
-            {"prompt":"It is half past 11 now. What time is it one hour later?","answer":"half past 12","id":8,"type":"time"},
+            {"prompt":"It is half past 11 now. What time is it one hour later?","answer":"half past 12","clock":{"hour":11,"minute":30},"id":8,"type":"time"},
             {"prompt":"What month comes after July?","answer":"August","id":9,"type":"time"},
             {"prompt":"If today is Friday, what day was yesterday?","answer":"Thursday","id":10,"type":"time"},
             {"prompt":"If today is Thursday, what day is tomorrow?","answer":"Friday","id":11,"type":"time"},
@@ -87,7 +90,10 @@ describe('time — Year 2 (adds clock time to the hour & half-past)', () => {
             {"prompt":"What season comes after spring?","answer":"summer","id":15,"type":"time"},
             {"prompt":"What day comes after Friday?","answer":"Saturday","id":16,"type":"time"},
         ]);
-        // Year 2 (clockCap 12) DOES produce clock items on this seeded sheet.
+        // Year 2 (clockCap 12) DOES produce clock items on this seeded sheet,
+        // and every clock item pins its given-time figure.
         expect(s.some((p) => p.prompt.includes("o'clock"))).toBe(true);
+        expect(s.filter((p) => p.prompt.includes("o'clock") || p.prompt.includes('half past'))
+            .every((p) => p.clock !== undefined)).toBe(true);
     });
 });

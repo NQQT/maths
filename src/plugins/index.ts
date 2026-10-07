@@ -27,14 +27,16 @@
 //                         framework falls back to the remaining plugins
 //                         automatically.
 //
-// The array ORDER is the UI order AND the loading order: plugins appear in
-// the left rail in this sequence (grade-gated), the first plugin's entry is
-// the default selection AND the first plugin loaded with the dashboard's
-// first render. The order mirrors the curriculum catalogue (Addition first,
-// Coins & Money last); Compass Directions sits with the spatial cluster
-// (after Shapes and Shape Transformations) and Temperature with the measurement cluster (after
-// Measurement), and both stay ahead of Data & Tally — the LAST entry visible
-// on Year 1 (the dashboard tests await it to know the full rail is loaded).
+ // The array ORDER is the UI order AND the loading order: plugins appear in
+ // the left rail in this sequence (grade-gated), the first plugin's entry is
+ // the default selection AND the first plugin loaded with the dashboard's
+ // first render. The order mirrors the curriculum catalogue (Addition first,
+ // Coins & Money last); Rows & Columns sits with the counting cluster (after
+ // Counting), Compass Directions with the spatial cluster (after Shapes and
+ // Shape Transformations) and Temperature with the measurement cluster (after
+ // Measurement), and all of them stay ahead of Data & Tally — the LAST entry
+ // visible on Year 1 (the dashboard tests await it to know the full rail is
+ // loaded).
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { PluginFactory } from '../framework';
@@ -46,6 +48,7 @@ import { CompareWorksheet } from './CompareWorksheet';
 import { SkipCountingWorksheet } from './SkipCountingWorksheet';
 import { WordProblemsWorksheet } from './WordProblemsWorksheet';
 import { CountingWorksheet } from './CountingWorksheet';
+import { RowsColumnsWorksheet } from './RowsColumnsWorksheet';
 import { DoublesWorksheet } from './DoublesWorksheet';
 import { NumberBondsWorksheet } from './NumberBondsWorksheet';
 import { PatternsWorksheet } from './PatternsWorksheet';
@@ -75,6 +78,9 @@ export const PLUGINS: PluginFactory[] = [
     SkipCountingWorksheet,
     WordProblemsWorksheet,
     CountingWorksheet,
+    // Rows & Columns sits with the counting cluster (after Counting) and stays
+    // ahead of Data & Tally, which remains the LAST entry visible on Year 1.
+    RowsColumnsWorksheet,
     DoublesWorksheet,
     NumberBondsWorksheet,
     PatternsWorksheet,

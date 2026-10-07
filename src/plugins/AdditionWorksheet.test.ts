@@ -148,36 +148,42 @@ describe('addition — Year 2 (bigger numbers)', () => {
 describe('addition — Year 3 (three-digit pairs)', () => {
     it('matches the exact sheet (within 1000, still classic pairs)', () => {
         const s = sheet(g3);
+        // Year 3 is the vertical-column grade (caps.opCap === 1000): every
+        // pair prints a right-aligned column figure (framework/ColumnDiagram.tsx)
+        // so kids line up digits. The figure repeats the printed terms — the
+        // answer is never drawn.
         expect(s).toEqual([
-            {"prompt":"53 + 942 = __","answer":"995","id":1,"type":"addition"},
-            {"prompt":"412 + 90 = __","answer":"502","id":2,"type":"addition"},
-            {"prompt":"250 + 648 = __","answer":"898","id":3,"type":"addition"},
-            {"prompt":"836 + 10 = __","answer":"846","id":4,"type":"addition"},
-            {"prompt":"5 + 7 = __","answer":"12","id":5,"type":"addition"},
-            {"prompt":"707 + 28 = __","answer":"735","id":6,"type":"addition"},
-            {"prompt":"713 + 41 = __","answer":"754","id":7,"type":"addition"},
-            {"prompt":"950 + 37 = __","answer":"987","id":8,"type":"addition"},
-            {"prompt":"591 + 352 = __","answer":"943","id":9,"type":"addition"},
-            {"prompt":"486 + 215 = __","answer":"701","id":10,"type":"addition"},
-            {"prompt":"951 + 12 = __","answer":"963","id":11,"type":"addition"},
-            {"prompt":"256 + 530 = __","answer":"786","id":12,"type":"addition"},
-            {"prompt":"717 + 4 = __","answer":"721","id":13,"type":"addition"},
-            {"prompt":"619 + 367 = __","answer":"986","id":14,"type":"addition"},
-            {"prompt":"548 + 4 = __","answer":"552","id":15,"type":"addition"},
-            {"prompt":"855 + 89 = __","answer":"944","id":16,"type":"addition"},
-            {"prompt":"927 + 62 = __","answer":"989","id":17,"type":"addition"},
-            {"prompt":"903 + 29 = __","answer":"932","id":18,"type":"addition"},
-            {"prompt":"792 + 177 = __","answer":"969","id":19,"type":"addition"},
-            {"prompt":"482 + 492 = __","answer":"974","id":20,"type":"addition"},
-            {"prompt":"91 + 785 = __","answer":"876","id":21,"type":"addition"},
-            {"prompt":"997 + 1 = __","answer":"998","id":22,"type":"addition"},
-            {"prompt":"402 + 120 = __","answer":"522","id":23,"type":"addition"},
-            {"prompt":"948 + 36 = __","answer":"984","id":24,"type":"addition"},
+            {"prompt":"53 + 942 = __","answer":"995","column":{"terms":[53,942],"op":"+"},"id":1,"type":"addition"},
+            {"prompt":"412 + 90 = __","answer":"502","column":{"terms":[412,90],"op":"+"},"id":2,"type":"addition"},
+            {"prompt":"250 + 648 = __","answer":"898","column":{"terms":[250,648],"op":"+"},"id":3,"type":"addition"},
+            {"prompt":"836 + 10 = __","answer":"846","column":{"terms":[836,10],"op":"+"},"id":4,"type":"addition"},
+            {"prompt":"5 + 7 = __","answer":"12","column":{"terms":[5,7],"op":"+"},"id":5,"type":"addition"},
+            {"prompt":"707 + 28 = __","answer":"735","column":{"terms":[707,28],"op":"+"},"id":6,"type":"addition"},
+            {"prompt":"713 + 41 = __","answer":"754","column":{"terms":[713,41],"op":"+"},"id":7,"type":"addition"},
+            {"prompt":"950 + 37 = __","answer":"987","column":{"terms":[950,37],"op":"+"},"id":8,"type":"addition"},
+            {"prompt":"591 + 352 = __","answer":"943","column":{"terms":[591,352],"op":"+"},"id":9,"type":"addition"},
+            {"prompt":"486 + 215 = __","answer":"701","column":{"terms":[486,215],"op":"+"},"id":10,"type":"addition"},
+            {"prompt":"951 + 12 = __","answer":"963","column":{"terms":[951,12],"op":"+"},"id":11,"type":"addition"},
+            {"prompt":"256 + 530 = __","answer":"786","column":{"terms":[256,530],"op":"+"},"id":12,"type":"addition"},
+            {"prompt":"717 + 4 = __","answer":"721","column":{"terms":[717,4],"op":"+"},"id":13,"type":"addition"},
+            {"prompt":"619 + 367 = __","answer":"986","column":{"terms":[619,367],"op":"+"},"id":14,"type":"addition"},
+            {"prompt":"548 + 4 = __","answer":"552","column":{"terms":[548,4],"op":"+"},"id":15,"type":"addition"},
+            {"prompt":"855 + 89 = __","answer":"944","column":{"terms":[855,89],"op":"+"},"id":16,"type":"addition"},
+            {"prompt":"927 + 62 = __","answer":"989","column":{"terms":[927,62],"op":"+"},"id":17,"type":"addition"},
+            {"prompt":"903 + 29 = __","answer":"932","column":{"terms":[903,29],"op":"+"},"id":18,"type":"addition"},
+            {"prompt":"792 + 177 = __","answer":"969","column":{"terms":[792,177],"op":"+"},"id":19,"type":"addition"},
+            {"prompt":"482 + 492 = __","answer":"974","column":{"terms":[482,492],"op":"+"},"id":20,"type":"addition"},
+            {"prompt":"91 + 785 = __","answer":"876","column":{"terms":[91,785],"op":"+"},"id":21,"type":"addition"},
+            {"prompt":"997 + 1 = __","answer":"998","column":{"terms":[997,1],"op":"+"},"id":22,"type":"addition"},
+            {"prompt":"402 + 120 = __","answer":"522","column":{"terms":[402,120],"op":"+"},"id":23,"type":"addition"},
+            {"prompt":"948 + 36 = __","answer":"984","column":{"terms":[948,36],"op":"+"},"id":24,"type":"addition"},
         ]);
-        // Sanity: within 1000 and every question is still a pair.
+        // Sanity: within 1000, every question is still a pair, and (the
+        // Year-3-only gate) every pair carries its column figure.
         for (const p of s) {
             expect(Number(p.answer)).toBeLessThanOrEqual(1000);
             expect(p.prompt.match(/\+/g)).toHaveLength(1);
+            expect(p.column).toBeDefined();
         }
     });
 });

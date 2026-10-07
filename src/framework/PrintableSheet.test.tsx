@@ -179,6 +179,71 @@ describe('PrintableSheet', () => {
         expect(page.querySelector('[style]')).toBe(null);
     });
 
+    // RowsColumnsWorksheet requests six single-column rows and a dimensions-only
+    // grid figure. Pin the shared sheet path: one neutral SVG grid per item,
+    // exact 12-unit cell lattice, illustrated typography — answers never enter
+    // the DOM.
+    it('prints six rows/columns grid questions with neutral figures and private answers', () => {
+        const grids = [
+            { rows: 3, cols: 4 },
+            { rows: 2, cols: 3 },
+            { rows: 4, cols: 5 },
+            { rows: 1, cols: 5 },
+            { rows: 5, cols: 2 },
+            { rows: 2, cols: 2 }
+        ];
+        const problems: Problem[] = arrayCreate(({ index }) => {
+            const grid = grids[index];
+            return grid && {
+                id: index + 13,
+                type: 'rowscolumns',
+                prompt: `How many squares are in a grid of ${grid.rows} rows and ${grid.cols} columns? __`,
+                answer: 'PRIVATE GRID ANSWER',
+                rowsColumns: grid
+            };
+        });
+        render(<PrintableSheet {...heading} problems={problems} single />);
+        const page = screen.getByTestId('printed-sheet');
+        const grid = page.children[2];
+
+        expect(arrayCreate(({ index }) => grid.children[index]?.firstElementChild?.textContent)).toEqual([
+            '13.', '14.', '15.', '16.', '17.', '18.'
+        ]);
+        // One square-lattice SVG per question, dimensions only:
+        const svgs = page.querySelectorAll('svg');
+        expect(svgs).toHaveLength(6);
+        const first = svgs[0];
+        expect(first.getAttribute('aria-label')).toBe('grid of squares');
+        expect(first.getAttribute('viewBox')).toBe('0 0 48 36');
+        expect(first.getAttribute('width')).toBe('64px');
+        expect(first.getAttribute('height')).toBe('48px');
+        expect(arrayCreate(({ index }) => first.querySelectorAll('rect')[index]?.outerHTML)).toEqual([
+            '<rect x="1" y="1" width="10" height="10" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"></rect>',
+            '<rect x="13" y="1" width="10" height="10" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"></rect>',
+            '<rect x="25" y="1" width="10" height="10" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"></rect>',
+            '<rect x="37" y="1" width="10" height="10" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"></rect>',
+            '<rect x="1" y="13" width="10" height="10" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"></rect>',
+            '<rect x="13" y="13" width="10" height="10" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"></rect>',
+            '<rect x="25" y="13" width="10" height="10" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"></rect>',
+            '<rect x="37" y="13" width="10" height="10" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"></rect>',
+            '<rect x="1" y="25" width="10" height="10" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"></rect>',
+            '<rect x="13" y="25" width="10" height="10" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"></rect>',
+            '<rect x="25" y="25" width="10" height="10" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"></rect>',
+            '<rect x="37" y="25" width="10" height="10" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"></rect>'
+        ]);
+        // 5 × 2 grid (item 17: 5 rows, 2 columns): viewBox width comes from
+        // columns and height from rows, following the same 12-unit cell rule.
+        expect(svgs[4].getAttribute('viewBox')).toBe('0 0 24 60');
+        expect(svgs[4].querySelectorAll('rect').length).toBe(10);
+        // Illustrated typography (compact block layout, full row width) and
+        // no private answer text anywhere in the sheet.
+        arrayEach([...grid.children], ({ value: row }) => {
+            expect(declarations(row.lastElementChild!, textProperties)).toEqual(illustratedText);
+        });
+        expect(page.textContent).not.toContain('PRIVATE');
+        expect(page.querySelector('[style]')).toBe(null);
+    });
+
     // Optional illustration and answerLine are independent. A wide inline
     // blank must survive too, and changing private answers cannot alter DOM.
     it.each([false, true])('preserves blanks and bottom answer space without a footer (illustrated: %s)', (illustrated) => {
@@ -288,5 +353,46 @@ describe('PrintableSheet', () => {
             expect(declarations(row.lastElementChild!, textProperties)).toEqual(legacyText);
         });
         expect(page.querySelectorAll('polygon').length).toBe(0);
+    });
+
+    // Every figure family (types.ts) shares one sheet path: the figure renders
+    // after the prompt, illustrated typography applies, the private answer
+    // stays out of the DOM and no inline style attributes are introduced.
+    it('prints all figure families with neutral figures and private answers', () => {
+        const problems: Problem[] = [
+            { id: 1, type: 'data', prompt: 'Count the tallies: __.', answer: 'PRIVATE TALLY TOTAL', data: { kind: 'tally', total: 13 } },
+            { id: 2, type: 'shapes', prompt: 'How many sides does a triangle have? __', answer: 'PRIVATE SIDE COUNT', shapes: [{ name: 'triangle', kind: '2d' }, { name: 'cube', kind: '3d' }] },
+            { id: 3, type: 'bonds', prompt: '4 + __ = 10', answer: 'PRIVATE BOND PART', bond: { whole: 10, left: 4, right: null } },
+            { id: 4, type: 'compass', prompt: 'You are facing North. What direction is on your left? __', answer: 'PRIVATE DIRECTION', compass: { map: false, facing: 'North' } },
+            { id: 5, type: 'money', prompt: 'You have one $1 note and one ten-cent coin. How much money is there in all? __', answer: 'PRIVATE TOTAL', money: { given: [100, 10] } },
+            { id: 6, type: 'division', prompt: 'Max had 12 crayons. Max shared them equally between 2 friends. How many crayons does each friend get? __', answer: 'PRIVATE QUOTIENT', division: { kind: 'share', friends: 2, total: 12 } },
+            { id: 7, type: 'column', prompt: '53 + 942 = __', answer: 'PRIVATE SUM', column: { terms: [53, 942], op: '+' } }
+        ];
+        render(<PrintableSheet {...heading} problems={problems} single />);
+        const page = screen.getByTestId('printed-sheet');
+        const grid = page.children[2];
+
+        // One figure SVG per family (the shapes row carries two cards).
+        const svgs = page.querySelectorAll('svg');
+        expect(arrayCreate(({ index }) => svgs[index]?.getAttribute('aria-label'))).toEqual([
+            'tally marks', 'shape triangle', 'shape cube', 'part-part-whole bond',
+            'compass rose', 'coins and notes', 'equal groups of objects', 'vertical sum layout'
+        ]);
+        // The shapes row draws its option cards in prompt order (triangle, cube).
+        // (the "__" blank renders as an empty span, so no visible punctuation
+        // follows the question mark)
+        expect(grid.children[1].textContent).toBe(
+            '2.How many sides does a triangle have? trianglecube'
+        );
+        // Illustrated typography on every row (compact block layout), and the
+        // PRIVATE answers never enter the sheet's text.
+        arrayEach([...grid.children], ({ value: row }) => {
+            expect(declarations(row.lastElementChild!, textProperties)).toEqual(illustratedText);
+        });
+        expect(page.textContent).not.toContain('PRIVATE');
+        expect(page.textContent).not.toContain('815');
+        expect(page.textContent).not.toContain('995');
+        // Figures introduce no inline style attributes (styledComponent only).
+        expect(page.querySelector('[style]')).toBe(null);
     });
 });

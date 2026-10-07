@@ -48,14 +48,18 @@ describe('division — Year 2 (equal sharing within 100)', () => {
             {"prompt":"Kai had 36 cars. Kai shared them equally between 4 friends. How many cars does each friend get?","answer":"9","id":3,"type":"division"},
             {"prompt":"14 ÷ 2 = __","answer":"7","id":4,"type":"division"},
             {"prompt":"There are 45 stickers. They are put into groups of 5. How many groups are there?","answer":"9","id":5,"type":"division"},
-            {"prompt":"Max had 12 crayons. Max shared them equally between 2 friends. How many crayons does each friend get?","answer":"6","id":6,"type":"division"},
+            {"prompt":"Max had 12 crayons. Max shared them equally between 2 friends. How many crayons does each friend get?","answer":"6","division":{"kind":"share","friends":2,"total":12},"id":6,"type":"division"},
             {"prompt":"28 ÷ 7 = __","answer":"4","id":7,"type":"division"},
             {"prompt":"24 ÷ 4 = __","answer":"6","id":8,"type":"division"},
-            {"prompt":"Sam had 30 balloons. Sam shared them equally between 5 friends. How many balloons does each friend get?","answer":"6","id":9,"type":"division"},
+            {"prompt":"Sam had 30 balloons. Sam shared them equally between 5 friends. How many balloons does each friend get?","answer":"6","division":{"kind":"share","friends":5,"total":30},"id":9,"type":"division"},
             {"prompt":"There are 21 cars. They are put into groups of 3. How many groups are there?","answer":"7","id":10,"type":"division"},
             {"prompt":"50 ÷ 5 = __","answer":"10","id":11,"type":"division"},
             {"prompt":"2 ÷ 2 = __","answer":"1","id":12,"type":"division"},
         ]);
+        // Figures exist ONLY on the share-story form inside the drawable gate
+        // (friends 2..6, total <= 36, quotient <= 6): Kai's 36/4 = 9 exceeds
+        // it (no figure on id 3), the groups-of forms and ÷ lines never draw.
+        expect(s.filter((p) => p.division !== undefined)).toEqual([s[5], s[8]]);
         // ÷-form lines: quotient × divisor = dividend, never a x ÷ 1.
         for (const p of s) {
             const m = p.prompt.match(/^(\d+) ÷ (\d+) = __$/);
