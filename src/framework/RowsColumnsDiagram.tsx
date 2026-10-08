@@ -9,19 +9,18 @@ import type { RowsColumnsFigure } from './types';
 
 // Spans keep this valid inside PrintableSheet's ProblemText span (the same
 // nesting constraint ShapeTransformationDiagram.tsx works under). One SVG
-// per grid: each 12-unit cell displays as 16px, so a 5 × 5 grid prints at
-// 80 × 80px — comparable to the 100px clock face and smaller than the
-// shape cards' 60px-plus-label rows, keeping six illustrated questions
-// per single-column page (perPage 6, see plugins/RowsColumnsWorksheet.ts).
+// per grid: each 12-unit cell displays as 20px, so the worst 5 × 5 grid
+// prints at 100 × 100px — clearly countable squares, and figure + prompt
+// still fit the six single-column rows the sheet pins (≈144px in ~151px).
 const DiagramRoot = styledComponent('span', {
     display: 'block',
     width: 'fit-content',
-    marginTop: '4px'
+    marginTop: '6px'
 });
 
 export function RowsColumnsDiagram({ figure }: { figure: RowsColumnsFigure }) {
     const { rows, cols } = figure;
-    // Cell geometry: viewBox unit = 1/4 display px (12-unit cell => 16px).
+    // Cell geometry: viewBox unit = 1/3.33 display px (12-unit cell => 20px).
     // Every cell is a 10 × 10 square inset 1 unit into its 12-unit slot, so
     // printed squares keep a uniform 1-unit gutter at any page scale.
     // Factory form (arrayCreate stops at undefined): one {x, y} slot per
@@ -38,8 +37,8 @@ export function RowsColumnsDiagram({ figure }: { figure: RowsColumnsFigure }) {
     return (
         <DiagramRoot>
             <svg
-                width={`${16 * cols}px`}
-                height={`${16 * rows}px`}
+                width={`${20 * cols}px`}
+                height={`${20 * rows}px`}
                 viewBox={`0 0 ${12 * cols} ${12 * rows}`}
                 role="img"
                 // Neutral accessible name: the figure must not print its

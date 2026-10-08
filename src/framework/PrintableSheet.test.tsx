@@ -112,15 +112,15 @@ describe('PrintableSheet', () => {
             { name: '#text', text: 'Explain your answer:' },
             { name: 'SPAN', text: '' }
         ]);
-        expect(declarations(firstText.children[0], ['min-width'])).toEqual({ 'min-width': '38px' });
-        expect(declarations(firstText.children[1], ['min-width'])).toEqual({ 'min-width': '38px' });
-        expect(declarations(secondText.children[0], ['min-width'])).toEqual({ 'min-width': '140px' });
-        expect(declarations(screen.getByText('Name:').children[0], ['min-width'])).toEqual({ 'min-width': '140px' });
-        expect(declarations(screen.getByText('Date:').children[0], ['min-width'])).toEqual({ 'min-width': '140px' });
+        expect(declarations(firstText.children[0], ['min-width'])).toEqual({ 'min-width': '56px' });
+        expect(declarations(firstText.children[1], ['min-width'])).toEqual({ 'min-width': '56px' });
+        expect(declarations(secondText.children[0], ['min-width'])).toEqual({ 'min-width': '160px' });
+        expect(declarations(screen.getByText('Name:').children[0], ['min-width'])).toEqual({ 'min-width': '160px' });
+        expect(declarations(screen.getByText('Date:').children[0], ['min-width'])).toEqual({ 'min-width': '160px' });
         expect(declarations(thirdText.children[0], ['display', 'height', 'margin-top'])).toEqual({
-            display: 'block', height: '1.2em', 'margin-top': '12px'
+            display: 'block', height: '1.5em', 'margin-top': '14px'
         });
-        expect(getComputedStyle(thirdText.children[0]).borderBottomWidth).toBe('2px');
+        expect(getComputedStyle(thirdText.children[0]).borderBottomWidth).toBe('2.5px');
         arrayEach([...grid.children], ({ value: row }) => {
             expect(declarations(row, ['font-size', 'line-height'])).toEqual({ 'font-size': '22px', 'line-height': '1.5' });
             expect(declarations(row.lastElementChild!, textProperties)).toEqual(legacyText);
@@ -171,7 +171,7 @@ describe('PrintableSheet', () => {
             const text = row.lastElementChild!;
             expect(text.tagName).toBe('SPAN');
             expect(declarations(text, textProperties)).toEqual(illustratedText);
-            expect(declarations(text.children[0], ['min-width'])).toEqual({ 'min-width': '38px' });
+            expect(declarations(text.children[0], ['min-width'])).toEqual({ 'min-width': '56px' });
             expect(text.children[1].textContent).toBe('OriginalABCD');
             expect(text.children[1].tagName).toBe('SPAN');
             expect(text.childNodes[2].textContent).toBe('.');
@@ -215,8 +215,8 @@ describe('PrintableSheet', () => {
         const first = svgs[0];
         expect(first.getAttribute('aria-label')).toBe('grid of squares');
         expect(first.getAttribute('viewBox')).toBe('0 0 48 36');
-        expect(first.getAttribute('width')).toBe('64px');
-        expect(first.getAttribute('height')).toBe('48px');
+        expect(first.getAttribute('width')).toBe('80px');
+        expect(first.getAttribute('height')).toBe('60px');
         expect(arrayCreate(({ index }) => first.querySelectorAll('rect')[index]?.outerHTML)).toEqual([
             '<rect x="1" y="1" width="10" height="10" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"></rect>',
             '<rect x="13" y="1" width="10" height="10" fill="#ffffff" stroke="#1a1a1a" stroke-width="1"></rect>',
@@ -272,11 +272,11 @@ describe('PrintableSheet', () => {
             { name: 'SPAN', text: '' }
         ]);
         expect(declarations(text, textProperties)).toEqual(illustrated ? illustratedText : legacyText);
-        expect(declarations(text.children[0], ['min-width'])).toEqual({ 'min-width': '140px' });
+        expect(declarations(text.children[0], ['min-width'])).toEqual({ 'min-width': '160px' });
         expect(declarations(text.lastElementChild!, ['display', 'height', 'margin-top'])).toEqual({
-            display: 'block', height: '1.2em', 'margin-top': '12px'
+            display: 'block', height: '1.5em', 'margin-top': '14px'
         });
-        expect(getComputedStyle(text.lastElementChild!).borderBottomWidth).toBe('2px');
+        expect(getComputedStyle(text.lastElementChild!).borderBottomWidth).toBe('2.5px');
         const originalMarkup = page.outerHTML;
         rerender(<PrintableSheet {...heading} problems={[{ ...problem, answer: 'PRIVATE ANSWER TWO' }]} single />);
         expect(page.outerHTML).toBe(originalMarkup);
@@ -317,7 +317,7 @@ describe('PrintableSheet', () => {
             };
         })).toEqual([
             {
-                name: 'clock showing 3:00', viewBox: '0 0 64 64', width: '100', height: '100', lines: 14,
+                name: 'clock showing 3:00', viewBox: '0 0 64 64', width: '120', height: '120', lines: 14,
                 circles: [
                     '<circle cx="32" cy="32" r="30" fill="#ffffff" stroke="#1a1a1a" stroke-width="2"></circle>',
                     '<circle cx="32" cy="32" r="2" fill="#1a1a1a"></circle>'
@@ -325,7 +325,7 @@ describe('PrintableSheet', () => {
                 numbers: numerals
             },
             {
-                name: 'blank clock face', viewBox: '0 0 64 64', width: '100', height: '100', lines: 12,
+                name: 'blank clock face', viewBox: '0 0 64 64', width: '120', height: '120', lines: 12,
                 circles: ['<circle cx="32" cy="32" r="30" fill="#ffffff" stroke="#1a1a1a" stroke-width="2"></circle>'],
                 numbers: numerals
             }

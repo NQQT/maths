@@ -13,69 +13,148 @@
 // Fully self-contained: deleting this file and its line in plugins/index.ts
 // removes the Place Value worksheet without affecting the framework or any
 // other plugin.
+//
+// DEPTH DESIGN (quality over quantity): eight CONNECTED items per page
+// instead of sixteen isolated one-blank recalls. Each item anchors one number
+// (or one pair of numbers) and asks two linked questions — (a)/(b) print on
+// their own lines (PrintableSheet's ProblemText is white-space: pre-wrap)
+// with their own "__" blank, and the answer string lists BOTH results in
+// order. The seven forms over the (N, tens, ones) fact space:
+//   tensOnesOf   — read the partition of N apart: how many tens, leftover ones
+//   composeMore  — build N from t tens + o ones, then step it by 1 (Y1) / 10 (Y2)
+//   decade       — 1 more than 9/19/29… crosses the decade, then count its tens
+//   compare      — which of two numbers is greater AND by how much
+//   riddle       — reverse construction: ones digit GIVEN RELATIVE to tens
+//   cards (Y2)   — greatest/smallest 2-digit number from two digit cards
+//   tenMore (Y2) — 10 more AND 10 less than N (inverse pair on one anchor)
+// Year 1 stays inside tens & ones to 20; Year 2 widens to pvCap = 99.
+//
+// NON-REPEATING SAMPLING: the whole question passes through sampleUnique
+// keyed on the printed prompt, so each number prints once per FORM before
+// the space cycles.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem, Rng, WorksheetSpec } from '../framework';
 import { sampleUnique } from '../framework';
 
-// Place value (V9 AC9M1N02/AC9M2N02 partitions into tens & ones; Y1 range is
-// at most 20, Y2 up to pvCap=99). SIX forms over the (N, tens, ones) fact
-// space — the number range is small, so the form variants are what keep a
-// long document fresh:
-//   0. decompose:   "How many tens and ones make N?"
-//   1. compose:     "What number is t tens and o ones?"
-//   2. tens ask:    "How many tens are in N?"
-//   3. ones ask:    "How many ones are in N?"
-//   4. digit ask:   "What is the tens digit of N?"   (the DIGIT, not the
-//                   quantity — a distinct Y2 skill)
-//   5. edit ask:    "N is __ tens and __ ones" (both blanks; Y2 two-digit
-//                   partition written as one line — the answer lists both)
-//
-// NON-REPEATING SAMPLING: the whole question passes through sampleUnique
-// keyed on the printed prompt, so each number prints once per FORM before
-// the space cycles.
 function generatePlaceValue(rng: Rng, caps: Caps, count: number): RawProblem[] {
     const cap = Math.max(10, caps.pvCap);
     // "1 ten" / "1 one" (singular) vs "4 tens" / "5 ones".
     const words = (t: number) => (t === 1 ? 'ten' : 'tens');
     const onesWord = (o: number) => (o === 1 ? 'one' : 'ones');
+    // Numbers one below a decade boundary (9, 19, 29, …) inside the grade's
+    // range — the crossing points that make "1 more" real place-value work.
+    const decadeNums: number[] = [];
+    for (let n = 9; n <= cap - 1; n += 10) decadeNums.push(n);
+    // The Y2-only forms need the wider 10..99 space; Year 1 (cap 20) would
+    // make them degenerate, so they join the pool only when cap is wide.
+    const wide = cap >= 50;
+    // Largest legal riddle tens digit: n = 11t + d ≤ cap needs 11t + 1 ≤ cap.
+    const riddleTMax = Math.floor((cap - 1) / 11);
     return sampleUnique(
         count,
         () => {
-            const form = rng.int(0, 5);
-            if (form === 0) {
-                // Decompose: N = t tens and o ones.
+            const kinds = ['tensOnesOf', 'composeMore', 'decade', 'compare', ...(riddleTMax >= 1 ? ['riddle'] : []), ...(wide ? ['cards', 'tenMore'] : [])];
+            const form = rng.pick(kinds);
+            if (form === 'tensOnesOf') {
+                // The partition read APART — tens first, leftover ones second.
                 const n = rng.int(10, cap);
                 const t = Math.floor(n / 10);
-                return { prompt: `How many tens and ones make ${n}?`, answer: `${t} ${words(t)} and ${n % 10} ${onesWord(n % 10)}` };
+                return {
+                    prompt:
+                        `Look at the number ${n}.\n` +
+                        `(a) How many tens are in ${n}? __\n` +
+                        `(b) How many ones are left over? __`,
+                    answer: `${t} ${words(t)}, ${n % 10} ${onesWord(n % 10)}`
+                };
             }
-            if (form === 1) {
-                // Compose: "what number is t tens and o ones?" The ones must be a
-                // DIGIT (0..9) and the total must stay within the cap, so at the
-                // top tens row only trailing zeros are allowed.
-                const t = rng.int(1, Math.floor(cap / 10));
-                const o = rng.int(0, Math.min(9, cap - t * 10));
-                return { prompt: `What number is ${t} ${words(t)} and ${o} ${onesWord(o)}?`, answer: `${t * 10 + o}` };
+            if (form === 'composeMore') {
+                // Compose, then step: Y1 steps by 1 (within-20 scope), Y2 by
+                // 10 (the "same ones digit, one more ten" insight). n+step ≤
+                // cap is enforced by the draw, so the answer never escapes
+                // the grade's number range.
+                const step = wide ? 10 : 1;
+                const t = rng.int(1, Math.floor((cap - step) / 10));
+                const o = rng.int(0, Math.min(9, cap - step - t * 10));
+                const n = t * 10 + o;
+                return {
+                    prompt:
+                        `Write the number: ${t} ${words(t)} and ${o} ${onesWord(o)}.\n` +
+                        `(a) What number is it? __\n` +
+                        `(b) What is ${step} more than that number? __`,
+                    answer: `${n}, ${n + step}`
+                };
             }
-            if (form === 2) {
-                // Tens quantity of N.
-                const n = rng.int(10, cap);
-                return { prompt: `How many tens are in ${n}?`, answer: `${Math.floor(n / 10)}` };
+            if (form === 'decade') {
+                // Crossing the decade: 19 + 1 = 20, then COUNT the new tens —
+                // the exchange itself is the question.
+                const n = rng.pick(decadeNums);
+                const next = n + 1;
+                return {
+                    prompt:
+                        `(a) What is 1 more than ${n}? __\n` +
+                        `(b) How many tens are in your answer? __`,
+                    answer: `${next}, ${Math.floor(next / 10)}`
+                };
             }
-            if (form === 3) {
-                // Ones quantity of N (legitimately 0 for round tens like 20).
-                const n = rng.int(10, cap);
-                return { prompt: `How many ones are in ${n}?`, answer: `${n % 10}` };
+            if (form === 'compare') {
+                // Comparison AND the size of the gap (digit-place reasoning
+                // made visible by the difference).
+                const a = rng.int(10, cap);
+                let b = rng.int(10, cap);
+                while (b === a) b = rng.int(10, cap);
+                const hi = Math.max(a, b);
+                const lo = Math.min(a, b);
+                return {
+                    prompt:
+                        `(a) Which is greater, ${a} or ${b}? __\n` +
+                        `(b) How many more? __`,
+                    answer: `${hi}, ${hi - lo}`
+                };
             }
-            if (form === 4) {
-                // Tens DIGIT of N (the digit, not the quantity).
-                const n = rng.int(10, cap);
-                return { prompt: `What is the tens digit of ${n}?`, answer: `${Math.floor(n / 10)}` };
+            if (form === 'riddle') {
+                // Reverse construction: the ones digit is GIVEN RELATIVE to
+                // the tens digit; (a) finds it, (b) assembles the number.
+                // n = 11t + d, so d ≤ min(9 - t, cap - 11t) keeps the ones
+                // digit a digit AND the number inside the grade's range.
+                const t = rng.int(1, riddleTMax);
+                const d = rng.int(1, Math.min(9 - t, cap - 11 * t));
+                const ones = t + d;
+                const n = t * 10 + ones;
+                return {
+                    prompt:
+                        `I am thinking of a 2-digit number. Its tens digit is ${t}. Its ones digit is ${d} more than its tens digit.\n` +
+                        `(a) What is my ones digit? __\n` +
+                        `(b) What is my number? __`,
+                    answer: `${ones}, ${n}`
+                };
             }
-            // Both-blanks partition: the answer names both parts.
-            const n = rng.int(10, cap);
-            const t = Math.floor(n / 10);
-            return { prompt: `${n} is __ tens and __ ones`, answer: `${t} tens and ${n % 10} ones` };
+            if (form === 'cards') {
+                // Year 2: the two orders of the SAME digit cards bracket the
+                // range — greatest needs the bigger digit in the tens place.
+                const x = rng.int(1, 9);
+                let y = rng.int(1, 9);
+                while (y === x) y = rng.int(1, 9);
+                const hi = Math.max(x, y);
+                const lo = Math.min(x, y);
+                return {
+                    prompt:
+                        `You have two digit cards: ${x} and ${y}.\n` +
+                        `(a) What is the greatest 2-digit number you can make? __\n` +
+                        `(b) What is the smallest 2-digit number you can make? __`,
+                    answer: `${hi * 10 + lo}, ${lo * 10 + hi}`
+                };
+            }
+            // 'tenMore' (Year 2): the inverse pair on one anchor — 10 more
+            // AND 10 less keep the ones digit unchanged.
+            const n = rng.int(20, cap - 10);
+            return {
+                prompt:
+                    `Think about the number ${n}.\n` +
+                    `(a) What is 10 more than ${n}? __\n` +
+                    `(b) What is 10 less than ${n}? __`,
+                answer: `${n + 10}, ${n - 10}`
+            };
         },
         (p) => p.prompt
     );
@@ -86,7 +165,8 @@ export const placeValueSpec: WorksheetSpec = {
     id: 'placevalue',
     label: 'Place Value',
     icon: '⊞',
-    perPage: 16,
+    // Eight connected two-part items instead of sixteen one-blank recalls.
+    perPage: 8,
     offered: (grade: GradeConfig) => grade.available.includes('placevalue'),
     scope: (grade: GradeConfig) => `tens & ones to ${Math.max(10, grade.caps.pvCap)}`,
     generate: generatePlaceValue

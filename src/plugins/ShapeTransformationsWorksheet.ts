@@ -81,9 +81,14 @@ function makeQuestion(rng: Rng, name: string, original: readonly ShapePoint[], e
     });
     const task = TASKS[exercise];
     const verb = task.guide === 'centre' ? 'Rotate' : 'Flip';
+    // CONNECTED task (T2V): the letter answer PLUS naming the move type —
+    // "flip" for the mirror-line items, "turn" for the around-the-dot items.
+    // Both printed blanks are covered by the comma-separated answer, in
+    // printed order. The geometry, options and RNG stream are untouched.
+    const moveType = task.guide === 'centre' ? 'turn' : 'flip';
     return {
-        prompt: `${verb} ${name} ${task.instruction}. Which option matches? __`,
-        answer,
+        prompt: `${verb} ${name} ${task.instruction}. Which option matches? __ Is this a flip or a turn? __`,
+        answer: `${answer}, ${moveType}`,
         shapeTransformation: { name, original, options, guide: task.guide }
     };
 }

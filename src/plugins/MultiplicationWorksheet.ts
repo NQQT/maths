@@ -10,48 +10,139 @@
 //     the generator below — shows in the content area via the framework's
 //     standard worksheet recipe (dashboard.createWorksheet).
 //
+// DEPTH-FIRST SHEET (quality over quantity): EIGHT connected tasks per A4
+// page (single column — every prompt is a multi-part line with real writing
+// space), instead of the old 24 shallow single-blank drills. Every task asks
+// 2–3 connected things at once: switch the factors, step one table row on,
+// fill two different missing factors, read an ARRAY figure (the rows ×
+// columns bridge), compare two products in the same table, and check a
+// true/false claim before fixing it.
+//
 // Fully self-contained: deleting this file and its line in plugins/index.ts
 // removes the Multiplication worksheet without affecting the framework or any
 // other plugin.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem, Rng, WorksheetSpec } from '../framework';
-import { sampleUnique } from '../framework';
+import { createDeck, sampleUnique } from '../framework';
 
-// Multiplication / times tables, THREE procedural forms over the same fact
-// space (a × b with both operands in [1, multCap]):
-//   0. product unknown:      "7 × 8 = __"        (the classic recall form)
-//   1. first factor unknown: "__ × 8 = 56"       (missing-factor, V9
-//      AC9M2N05 relational thinking)
-//   2. second factor unknown: "7 × __ = 56"
-// Grade 2 introduces times tables (to 10), so with its cap every product
-// stays <= multCap * multCap (100) — right-sized for the grade.
+// Times tables over the fact space (a × b with both operands in [1, multCap]).
+// Grade 2 introduces tables (to 10), so with its cap every product stays
+// <= multCap * multCap (100) — right-sized for the grade. Year 3 reuses the
+// same tables-to-10 cap (grades.ts).
 //
-// NON-REPEATING SAMPLING: the whole question passes through sampleUnique
-// keyed on the printed prompt, so each of the 100 facts prints once per
-// FORM before the space cycles — a 100-page document still spreads the
-// three forms evenly (the old free-draw loop could print "7 × 8 = __"
-// twice on one page).
+// The task families. Every printed task carries 2–3 blanks whose answers are
+// recorded in order in `answer` (comma separated — RawProblem allows it), so
+// the answer key covers EVERY requested part:
+//   switch       — "a × b = __ and b × a = __"        (commutative insight)
+//   step         — "a × b = __ and a × (b+1) = __"    (one row on in the
+//                  same table — the distributive strategy made visible)
+//   missingPair  — two DIFFERENT facts with a missing factor each (relational
+//                  thinking, V9 AC9M2N05) in one connected line
+//   grid         — an ARRAY figure (framework/RowsColumnsDiagram.tsx): count
+//                  the printed lattice, then state the total it models
+//   diff         — two products in the SAME table, then their distance
+//                  (= factor × row-gap — the distributive insight)
+//   verify       — true/false claim + correction      (checking, word blank)
+//
+// NON-REPEATING SAMPLING: the family is dealt from a deck (every family
+// appears before any repeats) and the whole question passes through
+// sampleUnique keyed on the printed prompt, so each distinct task prints once
+// per document before the space cycles.
+const MULTIPLICATION_FORMS = ['switch', 'step', 'missingPair', 'grid', 'diff', 'verify'] as const;
+
 function generateMultiplication(rng: Rng, caps: Caps, count: number): RawProblem[] {
     // A grade that doesn't offer multiplication passes multCap 0; the
     // generator is unreachable for them (buildDocument checks grade.available
     // through the spec's offered() first).
     const cap = Math.max(1, caps.multCap);
+    const formDeck = createDeck(rng, MULTIPLICATION_FORMS);
     return sampleUnique(
         count,
         () => {
+            const form = formDeck.take();
+            if (form === 'switch') {
+                // COMPUTE, then SWITCH: same product, factors swapped. The
+                // factors stay DISTINCT — "10 × 10 = __ and 10 × 10 = __"
+                // would print one statement twice and test nothing.
+                const a = rng.int(1, cap);
+                let b = rng.int(1, cap);
+                if (a === b) b = (b % cap) + 1; // rotate to a different factor, stays in [1, cap]
+                return { prompt: `${a} × ${b} = __ and ${b} × ${a} = __`, answer: `${a * b}, ${a * b}` };
+            }
+            if (form === 'step') {
+                // STEP ONE ROW ON: 4 × 6 then 4 × 7 — the student uses the
+                // first product (+ one more group of 4) for the second.
+                const a = rng.int(1, cap);
+                const b = rng.int(1, cap - 1); // b+1 stays within the table
+                return {
+                    prompt: `${a} × ${b} = __ and ${a} × ${b + 1} = __`,
+                    answer: `${a * b}, ${a * (b + 1)}`
+                };
+            }
+            if (form === 'missingPair') {
+                // TWO related recall jumps in one line: a missing first
+                // factor AND a missing second factor, from different facts.
+                const a1 = rng.int(1, cap);
+                const b1 = rng.int(1, cap);
+                const a2 = rng.int(1, cap);
+                const b2 = rng.int(1, cap);
+                return {
+                    prompt: `__ × ${b1} = ${a1 * b1} and ${a2} × __ = ${a2 * b2}`,
+                    answer: `${a1}, ${b2}`
+                };
+            }
+            if (form === 'grid') {
+                // ARRAY REPRESENTATION: the printed lattice (rows × cols of
+                // unit squares) is counted, then its total is stated — the
+                // rows-and-columns bridge to multiplication. Grids stay at
+                // most 5 × 5 so the figure prints at the established size
+                // (framework/RowsColumnsDiagram.tsx).
+                const rows = rng.int(2, 5);
+                const cols = rng.int(2, 5);
+                return {
+                    prompt: `The grid shows __ rows of __ squares; the total is __`,
+                    answer: `${rows}, ${cols}, ${rows * cols}`,
+                    rowsColumns: { rows, cols }
+                };
+            }
+            if (form === 'diff') {
+                // SAME TABLE, TWO ROWS: the distance between the products is
+                // factor × (row gap) — relational, not another fact to drill.
+                const a = rng.int(1, cap);
+                const b = rng.int(1, cap);
+                let c = rng.int(1, cap);
+                if (c === b) c = ((b % cap) + 1); // force a different second factor
+                return {
+                    prompt: `${a} × ${b} = __ and ${a} × ${c} = __; the products differ by __`,
+                    answer: `${a * b}, ${a * c}, ${a * Math.abs(b - c)}`
+                };
+            }
+            // VERIFY: the claim is correct ~1/3 of the time; a wrong claim is
+            // off by exactly one group (±a or ±b — the adjacent table rows),
+            // clamped to a positive product within the tables' range.
             const a = rng.int(1, cap);
             const b = rng.int(1, cap);
-            const form = rng.int(0, 2);
-            if (form === 0) {
-                return { prompt: `${a} × ${b} = __`, answer: `${a * b}` };
+            const p = a * b;
+            let claim = p;
+            if (rng.next() < 2 / 3) {
+                const deltas = [a, -a, b, -b].filter((d) => p + d >= 1 && p + d <= cap * cap);
+                if (deltas.length > 0) claim = p + rng.pick(deltas);
             }
-            if (form === 1) {
-                return { prompt: `__ × ${b} = ${a * b}`, answer: `${a}` };
-            }
-            return { prompt: `${a} × __ = ${a * b}`, answer: `${b}` };
+            return {
+                prompt: `True or false: ${a} × ${b} = ${claim}. __; if it is wrong, fix it: ${a} × ${b} = __`,
+                answer: `${claim === p ? 'Correct' : 'Wrong'}, ${p}`,
+                // The first blank takes the WORD ("Correct"/"Wrong").
+                wideBlanks: true
+            };
         },
-        (p) => p.prompt
+        // Sampling key = prompt + ARRAY figure. The grid form prints the SAME
+        // sentence for every lattice (the figure itself is the question — the
+        // blanks ask for its rows/columns/total), so the prompt alone would
+        // collapse all 16 grids into one question per document. Keying on the
+        // figure too (the DataWorksheet/RowsColumnsWorksheet pattern) keeps
+        // every grid a distinct question; figure-free prompts are unaffected.
+        (p) => `${p.prompt}|${p.rowsColumns ? `${p.rowsColumns.rows}x${p.rowsColumns.cols}` : ''}`
     );
 }
 
@@ -60,7 +151,11 @@ export const multiplicationSpec: WorksheetSpec = {
     id: 'mult',
     label: 'Multiplication',
     icon: '×',
-    perPage: 24,
+    // Eight connected multi-part tasks per A4, printed in ONE column so every
+    // line (and the array figure) has room — fewer questions, deeper recall
+    // and reasoning each.
+    perPage: 8,
+    singleColumn: true,
     offered: (grade: GradeConfig) => grade.available.includes('mult'),
     scope: (grade: GradeConfig) => `times tables to ${grade.caps.multCap}`,
     generate: generateMultiplication

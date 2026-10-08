@@ -10,6 +10,14 @@
 //     the generator below — shows in the content area via the framework's
 //     standard worksheet recipe (dashboard.createWorksheet).
 //
+// QUALITY-OVER-QUANTITY REDESIGN (T2V): six large single-column items instead
+// of sixteen tiny two-column ones. Every item prints its shape figure(s) at
+// the enlarged ShapeFigure size, and the page mixes OBSERVE items (count the
+// sides/corners/faces of the printed shape) with ACT items (shade the named
+// shape among the printed candidates) and JUSTIFY items (tick a statement
+// true/false, then report a second shape's attribute) — all age-appropriate
+// V8 recognition work with real printed area.
+//
 // Fully self-contained: the shape catalogue lives IN this plugin (duplicated
 // deliberately — plugins never import from each other). Deleting this file
 // and its line in plugins/index.ts removes the Shapes worksheet without
@@ -56,6 +64,10 @@ function shapesFor(caps: Caps): ShapeDef[] {
 function shapeArticle(name: string): string {
     return /^[aeiou]/i.test(name) ? 'an' : 'a';
 }
+// Sentence-case the name inside statements ("Square has 4 corners").
+function shapeNameSentence(name: string): string {
+    return name.charAt(0).toUpperCase() + name.slice(1);
+}
 
 // 2-D & 3-D shape recognition + attributes (V8 ACMMG159/174-175 era; V9 keeps
 // the 2-D attribute questions for Y2 and moves 3-D features to Y3). Each
@@ -74,38 +86,88 @@ function generateShapes(rng: Rng, caps: Caps, count: number): RawProblem[] {
         count,
         () => {
             const r = rng.next();
-            if (r < 0.25) {
+            if (r < 0.18) {
                 // "How many (straight) sides..." — only shapes that have them.
                 // The figure draws the exact 2-D outline (framework/ShapeFigure.tsx);
                 // the side count stays the private answer.
                 const pool = twoD.filter((s) => s.sides > 0);
                 const s = rng.pick(pool.length ? pool : twoD);
                 return {
-                    prompt: `How many sides does ${shapeArticle(s.name)} ${s.name} have?`,
+                    prompt: `Count the sides on the shape. How many sides does ${shapeArticle(s.name)} ${s.name} have? __`,
                     answer: `${s.sides}`,
                     shapes: [{ name: s.name, kind: '2d' }]
                 };
             }
-            if (r < 0.45) {
+            if (r < 0.34) {
                 // "How many corners..." — circles/ovals answer 0 (curved side).
                 const s = rng.pick(twoD);
                 return {
-                    prompt: `How many corners does ${shapeArticle(s.name)} ${s.name} have?`,
+                    prompt: `Count the corners. How many corners does ${shapeArticle(s.name)} ${s.name} have? __`,
                     answer: `${s.corners}`,
                     shapes: [{ name: s.name, kind: '2d' }]
                 };
             }
-            if (r < 0.65 && threeD.length >= 3) {
+            if (r < 0.48 && threeD.length >= 3) {
                 // "How many flat faces..." — 3-D objects only. The figure draws the
                 // solid's line drawing; the face count stays the private answer.
                 const s = rng.pick(threeD);
                 return {
-                    prompt: `How many flat faces does ${shapeArticle(s.name)} ${s.name} have?`,
+                    prompt: `Look at the solid. How many flat faces does ${shapeArticle(s.name)} ${s.name} have? __`,
                     answer: `${s.flatFaces}`,
                     shapes: [{ name: s.name, kind: '3d' }]
                 };
             }
-            if (r < 0.8) {
+            if (r < 0.6 && threeD.length >= 3) {
+                // SHADE ACT: shade the named solid among three printed
+                // candidates. The answer is the named solid's name; the
+                // student must recognise WHICH drawing it is. Shading acts on
+                // the given candidates only — nothing here depends on a
+                // previously computed answer.
+                const answer = rng.pick(threeD);
+                const others = threeD.filter((s) => s.name !== answer.name);
+                if (others.length >= 2) {
+                    const d1 = rng.pick(others);
+                    const d2 = rng.pick(others.filter((s) => s.name !== d1.name));
+                    const shown = [answer, d1, d2];
+                    return {
+                        prompt: `Shade the ${answer.name}.`,
+                        answer: answer.name,
+                        // Candidates in printed order, labelled under each
+                        // drawing (framework/ShapeFigure.tsx).
+                        shapes: shown.map((s) => ({ name: s.name, kind: '3d' as const }))
+                    };
+                }
+                // Not enough solids to show candidates — fall through to the
+                // plain corners count below so the item stays valid.
+                const s = rng.pick(twoD);
+                return {
+                    prompt: `Count the corners. How many corners does ${shapeArticle(s.name)} ${s.name} have? __`,
+                    answer: `${s.corners}`,
+                    shapes: [{ name: s.name, kind: '2d' }]
+                };
+            }
+            if (r < 0.72) {
+                // JUSTIFY: tick the statement, then report a SECOND shape's
+                // corner count. The statement is true for half the shapes and
+                // off-by-one for the rest, so Yes/No is a real judgement; the
+                // second blank keeps the item checkable end to end.
+                const s = rng.pick(twoD);
+                const lie = rng.next() < 0.5;
+                const stated = lie ? s.corners + 1 : s.corners;
+                const others = twoD.filter((x) => x.name !== s.name);
+                const other = rng.pick(others.length ? others : twoD);
+                return {
+                    prompt: `Tick Yes or No: "${shapeNameSentence(s.name)} has ${stated} corners." __ Now count: how many corners does ${shapeArticle(other.name)} ${other.name} have? __`,
+                    answer: `${lie ? 'No' : 'Yes'}, ${other.corners}`,
+                    // Both printed shapes appear: the statement shape first,
+                    // then the one to count.
+                    shapes: [
+                        { name: s.name, kind: '2d' as const },
+                        { name: other.name, kind: '2d' as const }
+                    ]
+                };
+            }
+            if (r < 0.88) {
                 // Multiple-choice on 2-D corners: the answer must be UNIQUE among
                 // the shown options, so distractors share no corner count with it.
                 let answer = rng.pick(twoD);
@@ -115,7 +177,7 @@ function generateShapes(rng: Rng, caps: Caps, count: number): RawProblem[] {
                     // back to a plain "how many corners" line instead.
                     answer = rng.pick(twoD);
                     return {
-                        prompt: `How many corners does ${shapeArticle(answer.name)} ${answer.name} have?`,
+                        prompt: `Count the corners. How many corners does ${shapeArticle(answer.name)} ${answer.name} have? __`,
                         answer: `${answer.corners}`,
                         shapes: [{ name: answer.name, kind: '2d' }]
                     };
@@ -128,7 +190,7 @@ function generateShapes(rng: Rng, caps: Caps, count: number): RawProblem[] {
                 const at = rng.int(0, 2);
                 const shown = [order[at], ...order.filter((s) => s !== order[at])];
                 return {
-                    prompt: `Which 2-D shape has ${answer.corners} corners? (${shown.map((s) => s.name).join(', ')})`,
+                    prompt: `Which 2-D shape has ${answer.corners} corners? (${shown.map((s) => s.name).join(', ')}) __`,
                     answer: answer.name,
                     // Drawn in the prompt's option order, labelled under each
                     // outline (the labels keep the question unambiguous).
@@ -154,7 +216,7 @@ function generateShapes(rng: Rng, caps: Caps, count: number): RawProblem[] {
                 const d1 = rng.pick(pool);
                 const d2 = rng.pick(pool.filter((s) => s.name !== d1.name));
                 return {
-                    prompt: `Which of these 3-D objects has only flat faces? (${[answer, d1, d2].map((s) => s.name).join(', ')})`,
+                    prompt: `Which of these 3-D objects has only flat faces? (${[answer, d1, d2].map((s) => s.name).join(', ')}) __`,
                     answer: answer.name,
                     // Three labelled 3-D line drawings, in the prompt's order.
                     shapes: [
@@ -167,7 +229,7 @@ function generateShapes(rng: Rng, caps: Caps, count: number): RawProblem[] {
             const curved = twoD.filter((s) => s.curved);
             const answer = rng.pick(curved.length ? curved : twoD);
             return {
-                prompt: `Does ${shapeArticle(answer.name)} ${answer.name} have a curved side?`,
+                prompt: `Does ${shapeArticle(answer.name)} ${answer.name} have a curved side? __`,
                 answer: answer.curved ? 'Yes' : 'No',
                 shapes: [{ name: answer.name, kind: '2d' as const }]
             };
@@ -181,7 +243,11 @@ export const shapesSpec: WorksheetSpec = {
     id: 'shapes',
     label: 'Shapes & Attributes',
     icon: '△',
-    perPage: 16,
+    // Six large single-column items: each prints its shape figure(s) at full
+    // size with room to count, shade and write — the old sixteen-up two-column
+    // page left no usable area for any of that.
+    perPage: 6,
+    singleColumn: true,
     offered: (grade: GradeConfig) => grade.available.includes('shapes'),
     scope: () => '2-D & 3-D shapes',
     generate: generateShapes

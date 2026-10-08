@@ -139,7 +139,13 @@ function generateClock(rng: Rng, _caps: Caps, count: number): RawProblem[] {
                 }
             }
         },
-        (p) => p.prompt
+        // Sampling key = prompt + clock figure. The two READING kinds print a
+        // fixed sentence — the drawn face IS the question — so the prompt
+        // alone would collapse all 48 faces per read mode into ONE question
+        // per document. Keying on the figure too (the DataWorksheet pattern)
+        // keeps the documented 48 faces x 5 modes space reachable; the other
+        // kinds embed their time in the prompt and are unaffected.
+        (p) => `${p.prompt}|${p.clock ? `${p.clock.hour}:${p.clock.minute}:${p.clock.hands === false ? 'blank' : 'drawn'}` : ''}`
     );
 }
 
@@ -148,8 +154,12 @@ export const clockSpec: WorksheetSpec = {
     id: 'clock',
     label: 'Clock Faces',
     icon: '⏱',
-    // Clocks need vertical room: 10 items per A4 page (2 columns × 5 rows).
-    perPage: 10,
+    // SIX single-column items per A4 page (was ten two-column): every item
+    // gets the full 100px clock face PLUS its prose and answer line on one
+    // uncluttered row — draw-the-hands items need the whole face to be
+    // hand-usable, and word answers need their wide blank to stay wide.
+    perPage: 6,
+    singleColumn: true,
     offered: (grade: GradeConfig) => grade.available.includes('clock') && grade.caps.clockCap > 0,
     scope: (grade: GradeConfig) =>
         grade.caps.clockCap >= 12 ? "o'clock, half past, quarter past & to" : "o'clock & half past",

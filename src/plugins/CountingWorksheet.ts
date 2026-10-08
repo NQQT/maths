@@ -13,66 +13,102 @@
 // Fully self-contained: deleting this file and its line in plugins/index.ts
 // removes the Counting worksheet without affecting the framework or any other
 // plugin.
+//
+// QUALITY-OVER-QUANTITY REDESIGN (T2V): eight roomy items per page instead of
+// eighteen cramped ones, and every item is a CONNECTED task — observe first,
+// then justify — rather than a bare one-blank drill:
+//   0. seqForward:   "a, a+1, __, a+3"        => a+2   (gap in a rising run)
+//   1. seqBack:      "a, a-1, __, a-3"        => a-2   (gap in a falling run)
+//   2. seqEnds:      "a, __, __, a+3"         => a+1, a+2   (TWO consecutive
+//      numbers missing — the student must hold the whole run, not just ±1)
+//   3. between:      "a, __, a+2"             => a+1   (the middle number)
+//   4. countGrid:    an r × c square array (framework/RowsColumnsDiagram via
+//      the shared rowsColumns figure) — "Count the squares in this r × c grid.
+//      There are __ squares. The number just after it is __." => total, total+1
+//      (count by groups, then place that number on the counting line). The
+//      grid is the SVG representation; the printed array is large enough to
+//      tick off squares with a pencil (framework enlarges the cells).
+//   5. compareJustify: "Which is bigger: a or b? __ It is __ more than the
+//      other." => bigger, difference (comparison WITH justification — the
+//      difference is countable, so the answer is exact and checkable).
+// All answers stay within [0, numCap]; multi-part answers are comma-separated
+// (RawProblem contract, framework/types.ts) and cover EVERY printed blank.
+//
+// NON-REPEATING SAMPLING: every question passes through sampleUnique keyed on
+// the printed prompt, so a document of any length holds each distinct line
+// once before the space cycles.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem, Rng, WorksheetSpec } from '../framework';
 import { sampleUnique } from '../framework';
 
-// Counting & number recognition — SIX procedural kinds (the old two-kind
-// generator asked each next/before pair twice per page):
-//   0. next:        "a, a+1, __"            => a+2
-//   1. before:      "__, a, a+1"            => a-1
-//   2. run blank:   "a, a+1, a+2, __"       => a+3   (count on three)
-//   3. back run:    "a, a-1, a-2, __"       => a-3   (count back three)
-//   4. between:     "a, __, a+2"            => a+1   (the middle number)
-//   5. bigger MC:   "Which is bigger: a or b?" (number sense; distinct
-//                   values so there is always one answer)
-// All answers stay within [0, numCap].
-//
-// NON-REPEATING SAMPLING: every question passes through sampleUnique keyed
-// on the printed prompt, so a document of any length holds each distinct
-// line once before the space cycles.
 function generateCounting(rng: Rng, caps: Caps, count: number): RawProblem[] {
     return sampleUnique(
         count,
         () => {
             const kind = rng.int(0, 5);
             if (kind === 0) {
-                // Next number: a, a+1, __  => answer a+2 (a+2 must be <= numCap)
-                const a = rng.int(0, Math.max(0, caps.numCap - 2));
-                return { prompt: `${a}, ${a + 1}, __`, answer: `${a + 2}` };
+                // Rising run with the THIRD number missing: a, a+1, __, a+3.
+                // (a+3 must stay <= numCap.) One blank, but the student reads
+                // three neighbours to fix the step, not just "next".
+                const a = rng.int(0, Math.max(0, caps.numCap - 3));
+                return { prompt: `${a}, ${a + 1}, __, ${a + 3}`, answer: `${a + 2}` };
             }
             if (kind === 1) {
-                // Previous number: __, a, a+1  => answer a-1 (a-1 >= 0)
-                const a = rng.int(1, Math.max(1, caps.numCap - 1));
-                return { prompt: `__, ${a}, ${a + 1}`, answer: `${a - 1}` };
+                // Falling run with the third number missing: a, a-1, __, a-3
+                // (a-3 >= 0 keeps every printed value valid).
+                const a = rng.int(3, Math.max(3, caps.numCap));
+                return { prompt: `${a}, ${a - 1}, __, ${a - 3}`, answer: `${a - 2}` };
             }
             if (kind === 2) {
-                // Longer forward run: a, a+1, a+2, __ => a+3 (<= numCap)
+                // TWO consecutive numbers missing from a rising run:
+                // a, __, __, a+3 => "a+1, a+2". The comma-separated answer
+                // covers both blanks in printed order.
                 const a = rng.int(0, Math.max(0, caps.numCap - 3));
-                return { prompt: `${a}, ${a + 1}, ${a + 2}, __`, answer: `${a + 3}` };
+                return { prompt: `${a}, __, __, ${a + 3}`, answer: `${a + 1}, ${a + 2}` };
             }
             if (kind === 3) {
-                // Backward run: a, a-1, a-2, __ => a-3 (a-3 >= 0)
-                const a = rng.int(3, Math.max(3, caps.numCap));
-                return { prompt: `${a}, ${a - 1}, ${a - 2}, __`, answer: `${a - 3}` };
-            }
-            if (kind === 4) {
                 // Between: a, __, a+2 => the middle number.
                 const a = rng.int(0, Math.max(0, caps.numCap - 2));
                 return { prompt: `${a}, __, ${a + 2}`, answer: `${a + 1}` };
             }
-            // Bigger/smaller number sense: distinct values, one clear answer.
-            // Direction alternates so "bigger" isn't the only drilled word.
+            if (kind === 4) {
+                // Count the printed square array, then place the total on the
+                // counting line. The r × c dimensions in the prompt keep every
+                // grid a DISTINCT sampling key (the figure itself prints no
+                // numbers), and the total stays the student's job.
+                // Grids are at least 2 × 2 and their total (plus the "just
+                // after" successor) stays within the grade's number scope:
+                // cap the TOTAL at numCap - 1 so total + 1 is still in scope.
+                // PRINTABILITY: at most 5 rows × 10 columns (the shared grid
+                // renderer prints 16px per cell — 160px max — so the array
+                // always fits a two-column sheet row and stays tick-off
+                // readable; the sequence kinds still reach the full numCap).
+                const maxTotal = Math.max(4, caps.numCap - 1);
+                const rows = rng.int(2, Math.min(5, Math.floor(maxTotal / 2)));
+                const cols = rng.int(2, Math.max(2, Math.min(10, Math.floor(maxTotal / rows))));
+                const total = rows * cols;
+                return {
+                    prompt: `Count the squares in this ${rows} × ${cols} grid. There are __ squares. The number just after it is __.`,
+                    answer: `${total}, ${total + 1}`,
+                    // The shared grid figure draws the exact r × c lattice
+                    // (framework/RowsColumnsDiagram.tsx) — dimensions only,
+                    // never the total.
+                    rowsColumns: { rows, cols }
+                };
+            }
+            // Compare WITH justification: name the bigger number AND by how
+            // much. Distinct values guarantee exactly one answer; the
+            // difference is exact, so the second blank is fully checkable.
             const a = rng.int(0, caps.numCap);
             let b = rng.int(0, caps.numCap);
             if (b === a) b = (a + 1) % (caps.numCap + 1);
-            const askBigger = rng.next() < 0.5;
             const bigger = Math.max(a, b);
-            const smaller = Math.min(a, b);
-            return askBigger
-                ? { prompt: `Which is bigger: ${a} or ${b}?`, answer: `${bigger}` }
-                : { prompt: `Which is smaller: ${a} or ${b}?`, answer: `${smaller}` };
+            const difference = bigger === a ? a - b : b - a;
+            return {
+                prompt: `Which is bigger: ${a} or ${b}? __ It is __ more than the other.`,
+                answer: `${bigger}, ${difference}`
+            };
         },
         (p) => p.prompt
     );
@@ -83,7 +119,10 @@ export const countingSpec: WorksheetSpec = {
     id: 'counting',
     label: 'Counting & Numbers',
     icon: '#',
-    perPage: 18,
+    // Eight connected tasks per A4 page (was eighteen one-line drills): the
+    // grid items print a real square array and every item carries one or two
+    // full blanks, so each task gets usable writing room.
+    perPage: 8,
     offered: (grade: GradeConfig) => grade.available.includes('counting'),
     scope: (grade: GradeConfig) => `to ${grade.caps.numCap}`,
     generate: generateCounting

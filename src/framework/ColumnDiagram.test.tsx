@@ -14,13 +14,14 @@ afterEach(cleanup);
 
 describe('ColumnDiagram — vertical sum', () => {
     it('right-aligns the pair under a result rule with the + before the last row', () => {
-        // 53 + 942: 3-digit width (3×6 + 12 = 30px), 12px row pitch from
-        // y=10 → 32px tall; digits end-aligned at x=width−4.
+        // 53 + 942: 3-digit width (3×6 + 12 = 30 units), 12-unit row pitch from
+        // y=10, plus the 18-unit WORKING_SPACE strip under the rule → 50 units
+        // tall, displayed 1.5x (45×75px); digits end-aligned at x=width−4.
         const { container } = render(<ColumnDiagram figure={Object.freeze({ terms: [53, 942], op: '+' })} />);
         const svg = container.querySelector('svg')!;
-        expect(svg.getAttribute('viewBox')).toBe('0 0 30 32');
-        expect(svg.getAttribute('width')).toBe('30px');
-        expect(svg.getAttribute('height')).toBe('32px');
+        expect(svg.getAttribute('viewBox')).toBe('0 0 30 50');
+        expect(svg.getAttribute('width')).toBe('45px');
+        expect(svg.getAttribute('height')).toBe('75px');
         expect(svg.getAttribute('aria-label')).toBe('vertical sum layout');
         const texts = svg.querySelectorAll('text');
         expect(arrayCreate(({ index }) => texts[index]?.textContent)).toEqual(['53', '+942']);
@@ -51,11 +52,11 @@ describe('ColumnDiagram — vertical difference', () => {
     });
 
     it('sizes the figure from the longest operand (monospace alignment)', () => {
-        // 1- and 2-digit terms share the 2-digit width (2×6 + 12 = 24px);
-        // rows stack at the 12px pitch and end-align at x=width−4.
+        // 1- and 2-digit terms share the 2-digit width (2×6 + 12 = 24 units);
+        // rows stack at the 12-unit pitch and end-align at x=width−4.
         const { container } = render(<ColumnDiagram figure={Object.freeze({ terms: [4, 85], op: '+' })} />);
         const svg = container.querySelector('svg')!;
-        expect(svg.getAttribute('viewBox')).toBe('0 0 24 32');
+        expect(svg.getAttribute('viewBox')).toBe('0 0 24 50');
         const texts = svg.querySelectorAll('text');
         expect(arrayCreate(({ index }) => texts[index]?.outerHTML)).toEqual([
             '<text x="20" y="10" font-size="10" font-weight="600" text-anchor="end" font-family="monospace" fill="#1a1a1a">4</text>',

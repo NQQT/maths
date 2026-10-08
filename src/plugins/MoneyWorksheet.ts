@@ -63,7 +63,10 @@ function generateMoney(rng: Rng, caps: Caps, count: number): RawProblem[] {
                     for (let k = 0; k < n; k++) coinList.push(`${c}c`);
                     rem -= n * c;
                 }
-                return { prompt: `What coins make ${formatMoney(amount)}?`, answer: coinList.join(' + ') };
+                // answerLine: the coin list is handwritten on a full-width
+                // line under the question (a coin set does not fit an inline
+                // blank).
+                return { prompt: `What coins make ${formatMoney(amount)}?`, answer: coinList.join(' + '), answerLine: true };
             }
             if (form === 1) {
                 // A jar of one denomination — a skip-counting-in-money task. The
@@ -76,6 +79,8 @@ function generateMoney(rng: Rng, caps: Caps, count: number): RawProblem[] {
                 return {
                     prompt: `A jar holds ${n} ${word} coins. How much money is in the jar?`,
                     answer: formatMoney(n * c),
+                    // The amount is handwritten on its own full-width line.
+                    answerLine: true,
                     money: { given: Array(n).fill(c) }
                 };
             }
@@ -89,6 +94,7 @@ function generateMoney(rng: Rng, caps: Caps, count: number): RawProblem[] {
                 return {
                     prompt: `How many ${word} coins make ${formatMoney(k * c)}?`,
                     answer: `${k}`,
+                    answerLine: true,
                     money: { given: [c] }
                 };
             }
@@ -101,6 +107,7 @@ function generateMoney(rng: Rng, caps: Caps, count: number): RawProblem[] {
                 return {
                     prompt: `You have one $${note} note and one ${word} coin. How much money is there in all?`,
                     answer: formatMoney(note * 100 + cent),
+                    answerLine: true,
                     money: { given: [note * 100, cent] }
                 };
             }
@@ -114,11 +121,12 @@ function generateMoney(rng: Rng, caps: Caps, count: number): RawProblem[] {
             const bigWord = AU_COIN_WORDS[(AU_COIN_CENTS as readonly number[]).indexOf(big)];
             // The figure shows the single GIVEN big coin; the count of smalls
             // that match it is the answer and is never drawn.
-            return {
-                prompt: `How many ${smallWord} coins are the same as one ${bigWord} coin?`,
-                answer: `${big / small}`,
-                money: { given: [big] }
-            };
+        return {
+            prompt: `How many ${smallWord} coins are the same as one ${bigWord} coin?`,
+            answer: `${big / small}`,
+            answerLine: true,
+            money: { given: [big] }
+        };
         },
         (p) => p.prompt
     );
@@ -129,7 +137,10 @@ export const moneySpec: WorksheetSpec = {
     id: 'money',
     label: 'Coins & Money',
     icon: '$',
-    perPage: 12,
+    // SIX worded items per A4 page (was twelve): every item prints its given
+    // coins/notes figure AND a full-width handwritten answer line, so the
+    // six-up page is the densest layout that keeps both usable.
+    perPage: 6,
     // Money questions are worded — prints single-column.
     singleColumn: true,
     offered: (grade: GradeConfig) => grade.available.includes('money'),

@@ -9,29 +9,106 @@
 //     the generator below — shows in the content area via the framework's
 //     standard worksheet recipe (dashboard.createWorksheet).
 //
+// DEPTH-FIRST SHEET (quality over quantity): EIGHT connected tasks per A4
+// page (single column — every prompt is a multi-part line with real writing
+// space), instead of the old 16 shallow single-blank items. Every task makes
+// the student work with the PART-WHOLE structure, not just recall: a chain
+// where the first blank feeds the second, a fact family where the addition
+// is given and BOTH related subtractions are asked, the same number in two
+// boxes (early algebra), a balanced equation with work on both sides, and a
+// subtraction with its partner addition.
+//
 // Fully self-contained: deleting this file and its line in plugins/index.ts
 // removes the Missing Number worksheet without affecting the framework or any
 // other plugin.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem, Rng, WorksheetSpec } from '../framework';
-import { sampleUnique } from '../framework';
+import { createDeck, sampleUnique } from '../framework';
 
-// Missing number / number bond: a + __ = c  or  __ + a = c  (c within opCap,
-// the hidden addend is always >= 0 because a is chosen <= c).
+// Missing numbers within opCap (Year 1: within 20, Year 2: within 100).
 //
-// NON-REPEATING SAMPLING: the whole question passes through sampleUnique
-// keyed on the printed prompt, so a document holds each distinct line once
-// before the space cycles.
+// The task families. Every printed task carries 2 blanks whose answers are
+// recorded in order in `answer` (comma separated — RawProblem allows it), so
+// the answer key covers EVERY requested part:
+//   chain    — "a + __ = m and m + __ = e"  (two hops on the same number line)
+//   family   — "a + b = s, so s - a = __ and s - b = __" (the whole family)
+//   sameBox  — "the same number in both blanks: __ + __ = e" (halving insight;
+//              e is always EVEN so a whole-number solution exists — an odd
+//              total would ask the student to fail, not reason)
+//   balance  — "a + b = c + __" (relational equality: both sides must match)
+//   subPair  — "a - __ = d and __ + d = a" (subtraction + its partner fact)
+//
+// NON-REPEATING SAMPLING: the family is dealt from a deck (every family
+// appears before any repeats) and the whole question passes through
+// sampleUnique keyed on the printed prompt, so a document holds each distinct
+// line once before the space cycles.
+const MISSING_FORMS = ['chain', 'family', 'sameBox', 'balance', 'subPair'] as const;
+
 function generateMissing(rng: Rng, caps: Caps, count: number): RawProblem[] {
+    const cap = caps.opCap;
+    const formDeck = createDeck(rng, MISSING_FORMS);
     return sampleUnique(
         count,
         () => {
-            const c = rng.int(1, caps.opCap); // the sum
-            const a = rng.int(0, c); // one known addend
-            const missing = c - a; // always >= 0
-            const prompt = rng.next() < 0.5 ? `${a} + __ = ${c}` : `__ + ${a} = ${c}`;
-            return { prompt, answer: `${missing}` };
+            const form = formDeck.take();
+            if (form === 'chain') {
+                // TWO HOPS: reach the middle total, then the end total — the
+                // second blank counts on from the FIRST answer's total.
+                const middle = rng.int(2, Math.max(2, cap));
+                const a = rng.int(0, middle - 1); // first addend (may be 0)
+                const end = rng.int(middle + 1, Math.max(middle + 1, cap)); // > middle
+                return {
+                    prompt: `${a} + __ = ${middle} and ${middle} + __ = ${end}`,
+                    answer: `${middle - a}, ${end - middle}`
+                };
+            }
+            if (form === 'family') {
+                // THE WHOLE FAMILY: the addition is printed complete; both
+                // subtractions run off the SAME three numbers.
+                const a = rng.int(1, Math.max(1, cap - 1));
+                const b = rng.int(1, Math.max(1, cap - a)); // a + b <= cap
+                const s = a + b;
+                return {
+                    prompt: `${a} + ${b} = ${s}, so ${s} - ${a} = __ and ${s} - ${b} = __`,
+                    answer: `${b}, ${a}`
+                };
+            }
+            if (form === 'sameBox') {
+                // EARLY ALGEBRA: one unknown twice. Even totals only (2..cap),
+                // so the blank value is a whole number the student can verify.
+                const half = rng.int(1, Math.max(1, Math.floor(cap / 2)));
+                return {
+                    prompt: `The same number goes in both blanks: __ + __ = ${half * 2}`,
+                    answer: `${half}, ${half}`
+                };
+            }
+            if (form === 'balance') {
+                // BALANCE THE SCALES: the left side is a finished sum; the
+                // right side needs the number that makes BOTH sides equal.
+                // The known right addend is drawn from every value in
+                // [0, left] EXCEPT a and b, so the answer is never a copy-
+                // the-obvious-number mirror of an addend already printed.
+                const a = rng.int(1, Math.max(1, cap - 1));
+                const b = rng.int(1, Math.max(1, cap - a)); // a + b <= cap
+                const left = a + b;
+                const options: number[] = [];
+                for (let v = 0; v <= left; v++) if (v !== a && v !== b) options.push(v);
+                const c = rng.pick(options); // left >= 2, so this pool is never empty
+                return {
+                    prompt: `${a} + ${b} = ${c} + __`,
+                    answer: `${left - c}`
+                };
+            }
+            // SUB + PARTNER: the difference is printed, both missing parts
+            // are the SAME number seen from the two directions.
+            const a = rng.int(2, Math.max(2, cap));
+            const b = rng.int(1, a - 1); // 1 <= b < a  =>  difference >= 1
+            const d = a - b;
+            return {
+                prompt: `${a} - __ = ${d} and __ + ${d} = ${a}`,
+                answer: `${b}, ${b}`
+            };
         },
         (p) => p.prompt
     );
@@ -42,7 +119,11 @@ export const missingSpec: WorksheetSpec = {
     id: 'missing',
     label: 'Missing Number',
     icon: '?',
-    perPage: 16,
+    // Eight connected multi-part tasks per A4, printed in ONE column so every
+    // line has the full page width and the rows stretch to fill the sheet —
+    // fewer questions, far more thinking and writing space each.
+    perPage: 8,
+    singleColumn: true,
     offered: (grade: GradeConfig) => grade.available.includes('missing'),
     scope: (grade: GradeConfig) => `within ${grade.caps.opCap}`,
     generate: generateMissing

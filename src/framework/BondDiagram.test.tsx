@@ -19,7 +19,9 @@ describe('BondDiagram', () => {
         const { container } = render(<BondDiagram figure={Object.freeze({ whole: 10, left: 4, right: null })} />);
         const svg = container.querySelector('svg')!;
         expect(svg.getAttribute('viewBox')).toBe('0 0 96 68');
-        expect(svg.getAttribute('width')).toBe('96px');
+        // 1.25x display (120×85px): the blank part circle prints ~35px across.
+        expect(svg.getAttribute('width')).toBe('120px');
+        expect(svg.getAttribute('height')).toBe('85px');
         expect(svg.getAttribute('aria-label')).toBe('part-part-whole bond');
         // Two precomputed links from the whole circle to each part circle
         // (the exact edge-to-edge coordinates pinned by the renderer).

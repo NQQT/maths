@@ -8,11 +8,12 @@ import { styledComponent } from '@presource/react';
 import type { DataFigure } from './types';
 
 // Spans keep this valid inside PrintableSheet's illustrated ProblemText (the
-// same nesting constraint ShapeTransformationDiagram.tsx works under).
+// same nesting constraint ShapeTransformationDiagram.tsx works under). The
+// 6px top margin separates figure from prompt on the roomier rows.
 const DiagramRoot = styledComponent('span', {
     display: 'block',
     width: 'fit-content',
-    marginTop: '4px'
+    marginTop: '6px'
 });
 
 // 5-pointed star centred at (cx, cy): outer radius 6 / inner radius 2.5,
@@ -31,38 +32,42 @@ function starPoints(cx: number, cy: number) {
 export function DataDiagram({ figure }: { figure: DataFigure }) {
     if (figure.kind === 'tally') {
         // Classic tallies: floor(total/5) five-groups (4 strokes + slash) plus
-        // the remainder as single strokes. 34px group pitch, 6px stroke pitch,
-        // so 40 (the Year-2 ceiling) prints 276px wide inside a two-column sheet.
+        // the remainder as single strokes.
+        //
+        // SIZE (R2): 8-unit stroke pitch, 40-unit group pitch, 36-unit height
+        // rendered 1:1 — the marks are ~50% taller than the old 24px strip so
+        // they read at arm's length, while the worst case (total 40 = 8 full
+        // groups) stays 322px wide, inside the ~335px two-column sheet.
         const fives = Math.floor(figure.total / 5);
         const rest = figure.total % 5;
-        const width = fives * 34 + (rest > 0 ? rest * 6 + 3 : 0) + 2;
+        const width = fives * 40 + (rest > 0 ? rest * 8 + 4 : 0) + 2;
         return (
             <DiagramRoot>
                 <svg
                     width={`${width}px`}
-                    height="24px"
-                    viewBox={`0 0 ${width} 24`}
+                    height="36px"
+                    viewBox={`0 0 ${width} 36`}
                     role="img"
                     // Neutral accessible name — the total is the PRIVATE answer.
                     aria-label="tally marks"
                 >
                     {arrayCreate(({ index }) => {
                         if (index >= fives) return undefined;
-                        const x = index * 34;
+                        const x = index * 40;
                         return (
                             <g key={`five-${index}`}>
                                 {arrayCreate(({ index: s }) => {
                                     if (s >= 4) return undefined;
-                                    return <line key={s} x1={x + s * 6} y1="4" x2={x + s * 6} y2="20" stroke="#1a1a1a" strokeWidth="2" />;
+                                    return <line key={s} x1={x + s * 8} y1="5" x2={x + s * 8} y2="31" stroke="#1a1a1a" strokeWidth="2.5" />;
                                 })}
-                                <line x1={x + 2} y1="21" x2={x + 27} y2="3" stroke="#1a1a1a" strokeWidth="2" />
+                                <line x1={x + 2} y1="32" x2={x + 26} y2="4" stroke="#1a1a1a" strokeWidth="2.5" />
                             </g>
                         );
                     })}
                     {arrayCreate(({ index }) => {
                         if (index >= rest) return undefined;
-                        const x = fives * 34 + index * 6;
-                        return <line key={`rest-${index}`} x1={x} y1="4" x2={x} y2="20" stroke="#1a1a1a" strokeWidth="2" />;
+                        const x = fives * 40 + index * 8;
+                        return <line key={`rest-${index}`} x1={x} y1="5" x2={x} y2="31" stroke="#1a1a1a" strokeWidth="2.5" />;
                     })}
                 </svg>
             </DiagramRoot>
@@ -71,12 +76,15 @@ export function DataDiagram({ figure }: { figure: DataFigure }) {
     if (figure.kind === 'picture') {
         // One star per counted unit (the "1 star = u things" scale is the
         // prompt's text, not the figure's — the figure prints the stars only).
+        // SIZE (R2): the 14-unit viewBox row renders at 2x (28px tall) so the
+        // counted stars are big enough to tick/cross out; 6 stars (the plugin
+        // ceiling) print 200px, inside the two-column sheet.
         const width = figure.stars * 18 - 8;
         return (
             <DiagramRoot>
                 <svg
-                    width={`${width}px`}
-                    height="14px"
+                    width={`${width * 2}px`}
+                    height="28px"
                     viewBox={`0 0 ${width} 14`}
                     role="img"
                     // Neutral: star counts ARE the printed data, but the unit
@@ -100,17 +108,19 @@ export function DataDiagram({ figure }: { figure: DataFigure }) {
             </DiagramRoot>
         );
     }
-    // Column graph: two named bars, 2px per square (40 votes => 80px, inside
-    // a two-column sheet). Bars grow UP from the y=68 baseline; names sit
-    // below. No heights-in-numbers, no difference label (the difference is
-    // the PRIVATE answer).
+    // Column graph: two named bars, 2px per square in the 76×80 viewBox,
+    // rendered at 1.25x (95×100px) so the bars are readable and the names
+    // print at ~11px. The figure + the long prose prompt stay inside one row
+    // even at the old 10-per-page two-column density, and comfortably so at
+    // the sheet's current single-column layout. No heights-in-numbers, no
+    // difference label (the difference is the PRIVATE answer).
     const leftHeight = figure.left * 2;
     const rightHeight = figure.right * 2;
     return (
         <DiagramRoot>
             <svg
-                width="76px"
-                height="80px"
+                width="95px"
+                height="100px"
                 viewBox="0 0 76 80"
                 role="img"
                 aria-label="column graph"

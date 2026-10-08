@@ -23,6 +23,18 @@
 // temperature — compare warmer/colder days, read °C values within the grade's
 // cap (caps.tempCap: 20 for Year 1, 40 for Year 2), add/subtract small
 // degree changes within the same range, and know the thermometer facts.
+//
+// DEPTH DESIGN (quality over quantity): eight connected items per page.
+// The families now chain instead of isolating:
+//   chain        — Mon→Tue→Wed two-step weather story (b continues from a)
+//   compareDiff  — which is warmer/colder AND by how many degrees
+//   errorCheck   — judge a friend's "warmest is…" claim, then correct it
+//   freezeUp/Down— rise/drop AND whether the new reading moved closer to or
+//                  further from freezing (0°C) — number-line reasoning
+//   warmestDiff  — warmest of three AND warmest-minus-coldest
+//   order        — write the full coldest→warmest list on the answer line
+//   season/fact  — everyday-context and thermometer knowledge (kept)
+// Every multi-part answer string lists BOTH part results in printed order.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem, Rng, WorksheetSpec } from '../framework';
@@ -32,11 +44,11 @@ import { createDeck, sampleUnique } from '../framework';
 // Australian seasons item keeps the southern-hemisphere framing consistent
 // with the Time & Calendar sheet's seasons).
 const TEMPERATURE_FACTS: readonly [string, string][] = [
-    ['What do we measure temperature with?', 'a thermometer'],
-    ['What does the °C on a weather chart stand for?', 'Celsius'],
-    ['At what temperature does water freeze?', '0°C'],
-    ['Which season has the coldest days in Australia?', 'winter'],
-    ['Which season has the hottest days in Australia?', 'summer']
+    ['What do we measure temperature with? __', 'a thermometer'],
+    ['What does the °C on a weather chart stand for? __', 'Celsius'],
+    ['At what temperature does water freeze? __', '0°C'],
+    ['Which season has the coldest days in Australia? __', 'winter'],
+    ['Which season has the hottest days in Australia? __', 'summer']
 ];
 
 // Everyday contexts for the "more likely" kind. Hot contexts pair a value
@@ -57,13 +69,23 @@ function pickThreeTemps(rng: Rng, cap: number): number[] {
     return temps;
 }
 
-// Temperature (grade-1 measurement sense): warmer/colder comparisons, small
-// rises and drops (arithmetic stays within the grade's temperature cap),
-// warmest/coldest of three, order-from-coldest-to-warmest on a writing line,
-// everyday hot/cold contexts and thermometer facts. The numeric range comes
-// from caps.tempCap (20 for Year 1, 40 for Year 2); 0 would mean "not
-// offered", which buildDocument gates away before the generator runs — the
-// Math.max floor below only guards a misconfigured catalogue.
+// Two values with a gap >= 2 — never a one-degree coin flip.
+function pickPair(rng: Rng, cap: number): [number, number] {
+    const a = rng.int(1, cap);
+    let b = rng.int(1, cap);
+    while (Math.abs(b - a) < 2) b = rng.int(1, cap);
+    return [a, b];
+}
+
+// Temperature (grade-1 measurement sense): chained day-by-day rises/drops,
+// warmer/colder comparisons WITH the difference, error analysis of a friend's
+// claim, freezing-point number-line reasoning, warmest-of-three with its
+// spread, ordering on a writing line, everyday hot/cold contexts and
+// thermometer facts. The numeric range comes from caps.tempCap (20 for Year 1,
+// 40 for Year 2); 0 would mean "not offered", which buildDocument gates away
+// before the generator runs — the Math.max floor below only guards a
+// misconfigured catalogue. EVERY constraint keeps intermediate answers inside
+// 1..cap: no below-zero readings and no totals above the grade's cap.
 //
 // NON-REPEATING SAMPLING: every question passes through sampleUnique keyed
 // on the printed prompt, so the same comparison (in either display order)
@@ -81,63 +103,106 @@ function generateTemperature(rng: Rng, caps: Caps, count: number): RawProblem[] 
         count,
         () => {
             const kinds: string[] = [
-                'warmer',
-                'colder',
-                'up',
-                'down',
-                'warmest',
-                'coldest',
+                'chain',
+                'warmerDiff',
+                'colderDiff',
+                'errorCheck',
+                'freezeUp',
+                'freezeDown',
+                'warmestDiff',
                 'order',
                 'season',
                 'fact'
             ];
             const kind = rng.pick(kinds);
             switch (kind) {
-                case 'warmer': {
-                    // Two values with a gap >= 2 — never a one-degree coin flip.
-                    const a = rng.int(1, cap);
-                    let b = rng.int(1, cap);
-                    while (Math.abs(b - a) < 2) b = rng.int(1, cap);
-                    return { prompt: `Which is warmer: ${a}°C or ${b}°C?`, answer: `${Math.max(a, b)}°C` };
-                }
-                case 'colder': {
-                    const a = rng.int(1, cap);
-                    let b = rng.int(1, cap);
-                    while (Math.abs(b - a) < 2) b = rng.int(1, cap);
-                    return { prompt: `Which is colder: ${a}°C or ${b}°C?`, answer: `${Math.min(a, b)}°C` };
-                }
-                case 'up': {
-                    // Rise: start + delta never exceeds the grade's cap, so a
-                    // Year 1 sheet's answers stay within 20.
-                    const start = rng.int(2, cap - 5);
-                    const delta = rng.int(1, Math.min(5, cap - start));
+                case 'chain': {
+                    // Two-step weather story: (b) continues from (a)'s answer.
+                    // t1 ≥ 4 and t1 ≤ cap-6 leave room for +d1 then -d2 while
+                    // every reading stays inside 1..cap.
+                    const t1 = rng.int(4, cap - 6);
+                    const d1 = rng.int(1, 5);
+                    const t2 = t1 + d1;
+                    const d2 = rng.int(1, Math.min(5, t2 - 1));
+                    const t3 = t2 - d2;
                     return {
-                        prompt: `It is ${start}°C outside. The temperature goes up by ${delta} degrees. What is the temperature now?`,
-                        answer: `${start + delta}°C`
+                        prompt:
+                            `On Monday the temperature is ${t1}°C. Tuesday is ${d1} degrees warmer than Monday. Wednesday is ${d2} degrees colder than Tuesday.\n` +
+                            `(a) What is Tuesday's temperature? __\n` +
+                            `(b) What is Wednesday's temperature? __`,
+                        answer: `${t2}°C, ${t3}°C`
                     };
                 }
-                case 'down': {
-                    // Drop: never falls below 1°C (below-zero reading is out of
-                    // scope for the grade-1 sheet).
-                    const start = rng.int(6, cap);
-                    const delta = rng.int(1, Math.min(5, start - 1));
+                case 'warmerDiff': {
+                    // Comparison AND the size of the gap.
+                    const [a, b] = pickPair(rng, cap);
                     return {
-                        prompt: `It is ${start}°C outside. The temperature goes down by ${delta} degrees. What is the temperature now?`,
-                        answer: `${start - delta}°C`
+                        prompt:
+                            `(a) Which is warmer: ${a}°C or ${b}°C? __\n` +
+                            `(b) How many degrees warmer is it? __`,
+                        answer: `${Math.max(a, b)}°C, ${Math.abs(a - b)} degrees`
                     };
                 }
-                case 'warmest': {
+                case 'colderDiff': {
+                    const [a, b] = pickPair(rng, cap);
+                    return {
+                        prompt:
+                            `(a) Which is colder: ${a}°C or ${b}°C? __\n` +
+                            `(b) How many degrees colder is it? __`,
+                        answer: `${Math.min(a, b)}°C, ${Math.abs(a - b)} degrees`
+                    };
+                }
+                case 'errorCheck': {
+                    // Error analysis: half the claims are right, so the
+                    // student must actually compare the three readings.
+                    const temps = pickThreeTemps(rng, cap);
+                    const max = Math.max(...temps);
+                    const saysMax = rng.next() < 0.5;
+                    const claimed = saysMax ? max : temps.find((t) => t !== max)!;
+                    const name = ['Sam', 'Mia', 'Leo', 'Zoe'][rng.int(0, 3)];
+                    return {
+                        prompt:
+                            `${name} says the warmest of ${temps[0]}°C, ${temps[1]}°C and ${temps[2]}°C is ${claimed}°C.\n` +
+                            `(a) Is ${name} correct? __\n` +
+                            `(b) What is the actual warmest temperature? __`,
+                        answer: `${saysMax ? 'yes' : 'no'}, ${max}°C`
+                    };
+                }
+                case 'freezeUp': {
+                    // Rise + distance-from-freezing reasoning (0°C anchor).
+                    const t = rng.int(2, cap - 5);
+                    const d = rng.int(1, Math.min(5, cap - t));
+                    return {
+                        prompt:
+                            `It is ${t}°C now. The temperature rises by ${d} degrees.\n` +
+                            `(a) What is the temperature now? __\n` +
+                            `(b) Is the new temperature closer to or further from freezing (0°C) than before? __`,
+                        answer: `${t + d}°C, further`
+                    };
+                }
+                case 'freezeDown': {
+                    // Drop that never crosses zero (below-zero reading is out
+                    // of scope for this sheet), plus the same 0°C reasoning.
+                    const t = rng.int(6, cap);
+                    const d = rng.int(1, Math.min(5, t - 1));
+                    return {
+                        prompt:
+                            `It is ${t}°C now. The temperature drops by ${d} degrees.\n` +
+                            `(a) What is the temperature now? __\n` +
+                            `(b) Is the new temperature closer to or further from freezing (0°C) than before? __`,
+                        answer: `${t - d}°C, closer`
+                    };
+                }
+                case 'warmestDiff': {
+                    // Warmest of three AND the spread (warmest − coldest).
                     const [a, b, c] = pickThreeTemps(rng, cap);
+                    const max = Math.max(a, b, c);
+                    const min = Math.min(a, b, c);
                     return {
-                        prompt: `Which is the warmest: ${a}°C, ${b}°C or ${c}°C?`,
-                        answer: `${Math.max(a, b, c)}°C`
-                    };
-                }
-                case 'coldest': {
-                    const [a, b, c] = pickThreeTemps(rng, cap);
-                    return {
-                        prompt: `Which is the coldest: ${a}°C, ${b}°C or ${c}°C?`,
-                        answer: `${Math.min(a, b, c)}°C`
+                        prompt:
+                            `(a) Which is the warmest: ${a}°C, ${b}°C or ${c}°C? __\n` +
+                            `(b) What is the difference between the warmest and the coldest? __`,
+                        answer: `${max}°C, ${max - min} degrees`
                     };
                 }
                 case 'order': {
@@ -169,7 +234,7 @@ function generateTemperature(rng: Rng, caps: Caps, count: number): RawProblem[] 
                         [right, wrong],
                         [wrong, right]
                     ]);
-                    return { prompt: `Is ${context} more likely to be ${x}°C or ${y}°C?`, answer: `${right}°C` };
+                    return { prompt: `Is ${context} more likely to be ${x}°C or ${y}°C? __`, answer: `${right}°C` };
                 }
                 default: {
                     const [prompt, answer] = factDeck.take();
@@ -186,7 +251,9 @@ export const temperatureSpec: WorksheetSpec = {
     id: 'temperature',
     label: 'Temperature',
     icon: '♨',
-    perPage: 12,
+    // Eight connected items per page — the multi-part stories and ordering
+    // line need the space the old density of 12 did not leave.
+    perPage: 8,
     // Mixes short comparisons with worded items — prints single-column.
     singleColumn: true,
     offered: (grade: GradeConfig) => grade.available.includes('temperature'),

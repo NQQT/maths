@@ -18,6 +18,14 @@
 // this file and its line in plugins/index.ts removes the Compass Directions
 // worksheet without affecting the framework or any other plugin.
 //
+// USABLE PRINTED AREA (T2V): every item now prints a full-width answer LINE
+// under its prose (`answerLine`) — the direction is handwritten on its own
+// line, not in thin air after the sentence — and the page carries SIX roomy
+// items (was nine) so each rose/map figure and its answer line get real
+// space. The question space itself (the curated 62-prompt N/S/E/W set) and
+// the seeded deal order are deliberately UNCHANGED: they are pinned by the
+// shared capacity suite and the dashboard's Year-3 first-row pin.
+//
 // CURRICULUM: grade-1 spatial sense (V8 ACMMG023 "give and follow directions
 // to familiar places"; V9 AC9M1SP02) — recognise North, South, East and West,
 // quarter/half turns between them, and everyday direction facts (sunrise,
@@ -97,6 +105,8 @@ function generateCompass(rng: Rng, _caps: Caps, count: number): RawProblem[] {
                     return {
                         prompt: `You are facing ${COMPASS_POINTS[i]}. You make a quarter turn to the right. What direction are you facing now?`,
                         answer: COMPASS_POINTS[(i + 1) % 4],
+                        // The answer is handwritten on a full-width line.
+                        answerLine: true,
                         ...facingFigure(i, 'right')
                     };
                 }
@@ -106,6 +116,7 @@ function generateCompass(rng: Rng, _caps: Caps, count: number): RawProblem[] {
                     return {
                         prompt: `You are facing ${COMPASS_POINTS[i]}. You make a quarter turn to the left. What direction are you facing now?`,
                         answer: COMPASS_POINTS[(i + 3) % 4],
+                        answerLine: true,
                         ...facingFigure(i, 'left')
                     };
                 }
@@ -115,6 +126,7 @@ function generateCompass(rng: Rng, _caps: Caps, count: number): RawProblem[] {
                     return {
                         prompt: `You are facing ${COMPASS_POINTS[i]}. You make a half turn. What direction are you facing now?`,
                         answer: COMPASS_POINTS[(i + 2) % 4],
+                        answerLine: true,
                         ...facingFigure(i, 'half')
                     };
                 }
@@ -123,6 +135,7 @@ function generateCompass(rng: Rng, _caps: Caps, count: number): RawProblem[] {
                     return {
                         prompt: `What direction is the opposite of ${COMPASS_POINTS[i]}?`,
                         answer: COMPASS_POINTS[(i + 2) % 4],
+                        answerLine: true,
                         ...facingFigure(i)
                     };
                 }
@@ -133,6 +146,7 @@ function generateCompass(rng: Rng, _caps: Caps, count: number): RawProblem[] {
                     return {
                         prompt: `You are facing ${COMPASS_POINTS[i]}. What direction is on your right?`,
                         answer: COMPASS_POINTS[(i + 1) % 4],
+                        answerLine: true,
                         ...facingFigure(i)
                     };
                 }
@@ -141,6 +155,7 @@ function generateCompass(rng: Rng, _caps: Caps, count: number): RawProblem[] {
                     return {
                         prompt: `You are facing ${COMPASS_POINTS[i]}. What direction is on your left?`,
                         answer: COMPASS_POINTS[(i + 3) % 4],
+                        answerLine: true,
                         ...facingFigure(i)
                     };
                 }
@@ -149,6 +164,7 @@ function generateCompass(rng: Rng, _caps: Caps, count: number): RawProblem[] {
                     return {
                         prompt: `On a map, North is at the top. What direction is at the ${edge} of the map?`,
                         answer: direction,
+                        answerLine: true,
                         // The map square draws N at top only — the edge answer is private.
                         compass: { map: true }
                     };
@@ -160,13 +176,14 @@ function generateCompass(rng: Rng, _caps: Caps, count: number): RawProblem[] {
                     return {
                         prompt: `${name} walks to school towards the ${COMPASS_POINTS[i]}. On the way home, what direction is ${name} walking?`,
                         answer: COMPASS_POINTS[(i + 2) % 4],
+                        answerLine: true,
                         ...facingFigure(i)
                     };
                 }
                 default: {
                     const [prompt, answer] = factDeck.take();
                     // Plain rose reference (needle/sunrise/sunset facts).
-                    return { prompt, answer, compass: { map: false } };
+                    return { prompt, answer, answerLine: true, compass: { map: false } };
                 }
             }
         },
@@ -179,9 +196,11 @@ export const compassSpec: WorksheetSpec = {
     id: 'compass',
     label: 'Compass Directions',
     icon: '✥',
-    // Nine per A4 single-column: each item now carries a 48px compass rose /
-    // map reference (framework/CompassDiagram.tsx) under its two-sentence text.
-    perPage: 9,
+    // SIX per A4 single-column (was nine): each item carries its compass
+    // rose / map reference (framework/CompassDiagram.tsx) AND a full-width
+    // handwritten answer line, so the prose, figure and writing space all get
+    // usable room on the fixed page.
+    perPage: 6,
     // Two-sentence turn/position items — prints single-column like the
     // measurement sheet.
     singleColumn: true,

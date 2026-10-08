@@ -6,14 +6,20 @@ import { arrayCreate } from '@presource/core';
 import { styledComponent } from '@presource/react';
 import type { ShapeTransformationFigure } from './types';
 
-// Spans keep this valid inside PrintableSheet's ProblemText span. Five 60px
-// cards plus four 8px gaps fit a single-column sheet without wrapping.
+// Spans keep this valid inside PrintableSheet's ProblemText span.
+//
+// SIZE (R2): five 88px cards plus four 8px gaps (472px) fit the ~703px
+// single-column sheet with room to spare, and at 88px the outlines are large
+// enough to compare, shade and label by hand. The viewBox stays '-4 -4 8 8'
+// so the pinned guide markup (MathsDashboard.test.tsx byte-pins the dashed
+// line/centre dot) and every polygon coordinate render UNCHANGED — only the
+// display size grows, which also thickens the 0.18-unit outline to ~2.6px.
 const DiagramRoot = styledComponent('span', {
     display: 'flex',
     width: 'fit-content',
     maxWidth: '100%',
     gap: '8px',
-    marginTop: '4px',
+    marginTop: '6px',
     alignItems: 'flex-start',
     whiteSpace: 'normal'
 });
@@ -22,16 +28,16 @@ const DiagramCard = styledComponent('span', {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    width: '60px',
-    flex: '0 0 60px',
-    gap: '2px'
+    width: '88px',
+    flex: '0 0 88px',
+    gap: '3px'
 });
 
-// An explicit 16px label line plus the 2px gap and 60px SVG totals 78px;
+// An explicit 17px label line plus the 3px gap and 88px SVG totals 108px;
 // inherited worksheet line heights must not enlarge the printed cards.
 const CardLabel = styledComponent('span', {
-    fontSize: '13px',
-    lineHeight: '16px',
+    fontSize: '14px',
+    lineHeight: '17px',
     fontWeight: 600
 });
 
@@ -45,8 +51,8 @@ export function ShapeTransformationDiagram({ figure }: { figure: ShapeTransforma
                 <DiagramCard key={index}>
                     <CardLabel>{label}</CardLabel>
                     <svg
-                        width="60px"
-                        height="60px"
+                        width="88px"
+                        height="88px"
                         viewBox="-4 -4 8 8"
                         role="img"
                         aria-label={index === 0 ? `Original ${figure.name}` : `Option ${label}`}

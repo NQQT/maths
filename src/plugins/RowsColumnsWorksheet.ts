@@ -1,7 +1,15 @@
 // ROWS & COLUMNS WORKSHEET — a self-contained Year-1/2 counting worksheet that
-// builds the FOUNDATION OF MULTIPLICATION: students count the rows, the
-// columns and the total number of squares in a drawn grid, then bridge from
-// repeated addition (Year 1) to simple products r × c (Year 2).
+// builds the FOUNDATION OF MULTIPLICATION: students read a drawn grid, report
+// its rows, columns and total, then bridge from repeated addition (Year 1) to
+// simple products r × c (Year 2).
+//
+// QUALITY-OVER-QUANTITY (T2V): six roomy single-column items per page, and
+// the page now opens with the FULL observation task ('look': report rows,
+// columns AND total from the printed grid — every answer subpart is checked
+// against the same figure) before the relational and bridge forms drill the
+// pieces. EVERY item prints its grid (the shared RowsColumnsDiagram draws the
+// exact r × c lattice large enough to tick squares off with a pencil), so no
+// question ever asks about a grid the student cannot see.
 //
 // Like every plugin it lives in ONE file (see plugins/index.ts): the generator
 // calculates all prompts/answers, framework/RowsColumnsDiagram.tsx only draws
@@ -18,20 +26,19 @@ import {
     type Rng, type WorksheetSpec
 } from '../framework';
 
-// Five fixed question forms over one modest grid space. The two RELATIONAL
-// forms (`rows` / `columns`) ask for a missing dimension with the OTHER
-// dimension + total given — a straightforward "How many rows?"/"How many
-// columns?" exercise (not only relational missing-factor wording). The
-// product form is the multiplication bridge and is only offered where the
-// grade has a multCap (Year 2 => 10; Year 1 => 0, so repeated addition stays
-// there).
-type GridKind = 'count' | 'rows' | 'columns' | 'repeated' | 'product';
+// Six fixed question forms over one modest grid space. `look` is the full
+// observe-and-report task (three blanks: rows, columns, total). The two
+// RELATIONAL forms (`rows` / `columns`) ask for a missing dimension with the
+// OTHER dimension + total given. `repeated` is the Year-1 addition bridge and
+// `product` the Year-2 multiplication bridge (only offered where the grade
+// has a multCap: Year 2 => 10; Year 1 => 0, so products stay off Y1 sheets).
+type GridKind = 'count' | 'rows' | 'columns' | 'repeated' | 'product' | 'look';
 
-// Five columns keeps every printed grid within 80px wide (16px per 12-unit
-// cell in RowsColumnsDiagram.tsx) while a single-column six-question page
-// still fits a fixed A4 sheet. The MAX ROWS derive from the EXISTING dataCap
-// (no new caps): Y1 (dataCap 20) => floor(20 / 5) = 4 rows (max grid 4 × 5 =
-// 20 squares, inside its within-20 number scope); Y2 (dataCap 40) => 5 rows.
+// Five columns keeps every printed grid within the enlarged cell width while
+// a single-column six-question page still fits a fixed A4 sheet. The MAX ROWS
+// derive from the EXISTING dataCap (no new caps): Y1 (dataCap 20) => floor(20
+// / 5) = 4 rows (max grid 4 × 5 = 20 squares, inside its within-20 number
+// scope); Y2 (dataCap 40) => 5 rows.
 const MAX_COLS = 5;
 function maxRows(caps: Caps): number {
     return Math.min(5, Math.floor(caps.dataCap / MAX_COLS));
@@ -43,7 +50,8 @@ const unit = (count: number, word: string) => (count === 1 ? `1 ${word}` : `${co
 // One question for a fixed (kind, rows, cols) grid. The prompt text carries
 // enough numbers to stay DISTINCT per grid (the sampling key is the printed
 // prompt) while the ANSWER stays in the problem data: no form prints its own
-// answer inside the prompt, and the figure prints dimensions only.
+// answer inside the prompt, and the figure prints dimensions only. Multi-part
+// answers are comma-separated IN PRINTED BLANK ORDER (RawProblem contract).
 function makeQuestion(kind: GridKind, rows: number, cols: number): RawProblem {
     const rowsText = unit(rows, 'row');
     const colsText = unit(cols, 'column');
@@ -73,7 +81,7 @@ function makeQuestion(kind: GridKind, rows: number, cols: number): RawProblem {
                 answer: `${cols}`,
                 rowsColumns: { rows, cols }
             };
-        case 'repeated':
+        case 'repeated': {
             // The REPEATED-ADDITION bridge: rows equal addends of `cols`
             // written out in full (3 + 3 + 3 = __ for 3 rows of 3 columns).
             const sum = arrayCreate(({ index }) => (index < rows ? cols : undefined)).join(' + ');
@@ -82,12 +90,22 @@ function makeQuestion(kind: GridKind, rows: number, cols: number): RawProblem {
                 answer: `${rows * cols}`,
                 rowsColumns: { rows, cols }
             };
+        }
         case 'product':
             // The simple multiplication form (Year 2 only — its multCap gate
             // keeps the operands inside the times-tables scope).
             return {
                 prompt: `${rows} × ${cols} = __`,
                 answer: `${rows * cols}`,
+                rowsColumns: { rows, cols }
+            };
+        case 'look':
+            // The FULL observation task: count the grid and report all three
+            // facts at once. The three blanks answer rows, columns, total —
+            // the whole multiplication concept in one printed item.
+            return {
+                prompt: `Look at the grid. __ rows, __ columns, __ squares in all.`,
+                answer: `${rows}, ${cols}, ${rows * cols}`,
                 rowsColumns: { rows, cols }
             };
     }
@@ -103,7 +121,7 @@ function buildBank(caps: Caps): RawProblem[] {
     // kind order is part of the bank's identity (deck deals are reproducible
     // from it); the product form extends the list only where multCap > 0.
     // 'rows' and 'columns' are the two relational missing-dimension forms.
-    const kinds: GridKind[] = ['count', 'rows', 'columns', 'repeated', ...(caps.multCap > 0 ? (['product'] as GridKind[]) : [])];
+    const kinds: GridKind[] = ['look', 'count', 'rows', 'columns', 'repeated', ...(caps.multCap > 0 ? (['product'] as GridKind[]) : [])];
     const bank: RawProblem[] = [];
     arrayEach(kinds, ({ value: kind }) => {
         arrayEach(arrayCreate(({ index }) => (index < rows ? index + 1 : undefined)), ({ value: r }) => {
@@ -132,7 +150,13 @@ function generateRowsColumns(rng: Rng, caps: Caps, count: number): RawProblem[] 
     const bank = buildBank(caps);
     if (count <= 0 || bank.length === 0) return [];
     const questions = createDeck(rng, bank);
-    const firstPass = sampleUnique(Math.min(count, bank.length), () => questions.take(), (problem) => problem.prompt);
+    // Sampling key = prompt + grid dimensions. The 'look' form prints the
+    // SAME sentence for every grid (the grid itself is the question), so the
+    // prompt alone would collapse those bank entries; keying on the figure
+    // too keeps every bank question distinct while the printed text stays
+    // answer-free.
+    const keyOf = (problem: RawProblem) => `${problem.prompt}|${problem.rowsColumns!.rows}x${problem.rowsColumns!.cols}`;
+    const firstPass = sampleUnique(Math.min(count, bank.length), () => questions.take(), keyOf);
     return [...firstPass, ...arrayCreate(({ index }) => (index < count - firstPass.length ? questions.take() : undefined))];
 }
 
@@ -141,8 +165,8 @@ export const rowsColumnsSpec: WorksheetSpec = {
     id: 'rowscolumns',
     label: 'Rows & Columns',
     icon: '▦',
-    // Six illustrated single-column items: prose + 80px-max grid fits a
-    // fixed A4 page the way the six shape rows do (PrintableSheet.tsx).
+    // Six illustrated single-column items: prose + the enlarged grid fits a
+    // fixed A4 page with real tick-off room on every square.
     perPage: 6,
     singleColumn: true,
     offered: (grade) => grade.available.includes('rowscolumns'),

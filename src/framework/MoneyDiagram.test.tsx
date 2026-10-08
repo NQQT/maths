@@ -15,11 +15,13 @@ afterEach(cleanup);
 
 describe('MoneyDiagram', () => {
     it('prints the given note + coin as exact slots with value labels only', () => {
-        // $1 note (32px slot) + 10c coin (22px slot) = 54px wide; 24px row.
+        // $1 note (32-unit slot) + 10c coin (22-unit slot) = 54-unit row,
+        // displayed 1.5x → 81×36px; viewBox geometry stays in 24-unit rows.
         const { container } = render(<MoneyDiagram figure={Object.freeze({ given: [100, 10] })} />);
         const svg = container.querySelector('svg')!;
         expect(svg.getAttribute('viewBox')).toBe('0 0 54 24');
-        expect(svg.getAttribute('width')).toBe('54px');
+        expect(svg.getAttribute('width')).toBe('81px');
+        expect(svg.getAttribute('height')).toBe('36px');
         expect(svg.getAttribute('aria-label')).toBe('coins and notes');
         // The note: rounded rect (x+3…x+29) with the "$1" label centred.
         const note = svg.querySelector('rect')!;

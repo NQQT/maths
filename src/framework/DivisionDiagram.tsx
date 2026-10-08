@@ -8,19 +8,24 @@ import { arrayCreate } from '@presource/core';
 import { styledComponent } from '@presource/react';
 import type { DivisionFigure } from './types';
 
-// Block-level span inside the illustrated ProblemText. Six 20px buckets +
-// gaps (150px) fit the single-column sheet at full width.
+// Block-level span inside the illustrated ProblemText.
+//
+// SIZE (R2): the 26-unit bucket row renders at 1.5x (39px tall) so the dots
+// inside each bucket are countable at a glance; six buckets (the widest deal)
+// print 186px, inside the single-column sheet. 1.5 is a binary-exact scale,
+// so every derived width/height attribute stays a clean number.
 const DiagramRoot = styledComponent('span', {
     display: 'block',
     width: 'fit-content',
-    marginTop: '4px'
+    marginTop: '6px'
 });
 
-// Bucket dimensions: 20 × 26px, 6px gaps. Dots are 2px radius circles in a
-// 2-column grid (10 dots max: rows 0..4).
+// Bucket dimensions (viewBox units): 20 × 26, 6-unit gaps, displayed at 1.5x.
+// Dots are 2-unit circles in a 2-column grid (10 dots max: rows 0..4).
 const BOX_W = 20;
 const BOX_H = 26;
 const GAP = 6;
+const SCALE = 1.5;
 
 export function DivisionDiagram({ figure }: { figure: DivisionFigure }) {
     // Both story forms draw the same picture: `groups` buckets, each holding
@@ -31,8 +36,8 @@ export function DivisionDiagram({ figure }: { figure: DivisionFigure }) {
     return (
         <DiagramRoot>
             <svg
-                width={`${groups * BOX_W + (groups - 1) * GAP}px`}
-                height={`${BOX_H}px`}
+                width={`${(groups * BOX_W + (groups - 1) * GAP) * SCALE}px`}
+                height={`${BOX_H * SCALE}px`}
                 viewBox={`0 0 ${groups * BOX_W + (groups - 1) * GAP} ${BOX_H}`}
                 role="img"
                 // Neutral accessible name: the bucket/dot COUNTS are the data,

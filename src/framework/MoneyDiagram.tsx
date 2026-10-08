@@ -7,12 +7,15 @@ import React from 'react';
 import { styledComponent } from '@presource/react';
 import type { MoneyFigure } from './types';
 
-// Block-level span inside the illustrated ProblemText. A row of up to nine
-// 22px coin slots (198px) fits the single-column sheet at full width.
+// Block-level span inside the illustrated ProblemText.
+//
+// SIZE (R2): the 24-unit row renders at 1.5x (36px tall) so coin/note labels
+// read at ~11px; a row of up to nine pieces (the plugin ceiling) prints 297px,
+// inside the single-column sheet at full width.
 const DiagramRoot = styledComponent('span', {
     display: 'block',
     width: 'fit-content',
-    marginTop: '4px'
+    marginTop: '6px'
 });
 
 // Print labels for a cents value: < 100 is a coin ("5c"), >= 100 a note
@@ -53,8 +56,8 @@ export function MoneyDiagram({ figure }: { figure: MoneyFigure }) {
     return (
         <DiagramRoot>
             <svg
-                width={`${width}px`}
-                height="24px"
+                width={`${width * 1.5}px`}
+                height="36px"
                 viewBox={`0 0 ${width} 24`}
                 role="img"
                 // Neutral: lists the given money only, never totals or answers.

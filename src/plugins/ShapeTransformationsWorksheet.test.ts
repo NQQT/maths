@@ -112,22 +112,27 @@ describe('shape transformations — deterministic worksheets', () => {
 
     it('pins correct outlines for both mirror axes and both 90-degree directions', () => {
         // Assert independently specified vertices, not transformShapePoints
-        // applied to the same input as the implementation under test.
+        // applied to the same input as the implementation under test. The
+        // T2V prompt adds a second blank ("Is this a flip or a turn?") whose
+        // answer part is pinned alongside the letter.
         const problems = shapeTransformationsSpec.generate(createRng(seed), grade.caps, 48);
         const prompts = [
-            'Flip triangle 1 left to right across the dashed vertical line. Which option matches? __',
-            'Flip triangle 1 top to bottom across the dashed horizontal line. Which option matches? __',
-            'Rotate triangle 1 90° clockwise (a quarter turn right) around the dot. Which option matches? __',
-            'Rotate triangle 1 90° anticlockwise (a quarter turn left) around the dot. Which option matches? __'
+            'Flip triangle 1 left to right across the dashed vertical line. Which option matches? __ Is this a flip or a turn? __',
+            'Flip triangle 1 top to bottom across the dashed horizontal line. Which option matches? __ Is this a flip or a turn? __',
+            'Rotate triangle 1 90° clockwise (a quarter turn right) around the dot. Which option matches? __ Is this a flip or a turn? __',
+            'Rotate triangle 1 90° anticlockwise (a quarter turn left) around the dot. Which option matches? __ Is this a flip or a turn? __'
         ];
         expect(prompts.map((prompt) => {
             const problem = problems.find((item) => item.prompt === prompt)!;
             const figure = problem.shapeTransformation!;
+            // The comma-separated answer covers BOTH blanks: letter, move type.
+            const [letter, moveType] = problem.answer.split(', ');
+            expect(moveType).toBe(figure.guide === 'centre' ? 'turn' : 'flip');
             return {
                 prompt: problem.prompt,
                 original: figure.original,
                 guide: figure.guide,
-                correct: figure.options.find((option) => option.label === problem.answer)!.points
+                correct: figure.options.find((option) => option.label === letter)!.points
             };
         })).toEqual([
             { prompt: prompts[0], original: [[-3, -2], [2, -2], [-3, 1]], guide: 'vertical', correct: [[3, -2], [-2, -2], [3, 1]] },
@@ -135,6 +140,20 @@ describe('shape transformations — deterministic worksheets', () => {
             { prompt: prompts[2], original: [[-3, -2], [2, -2], [-3, 1]], guide: 'centre', correct: [[2, -3], [2, 2], [-1, -3]] },
             { prompt: prompts[3], original: [[-3, -2], [2, -2], [-3, 1]], guide: 'centre', correct: [[-2, 3], [-2, -2], [1, 3]] }
         ]);
+    });
+
+    it('every answer names a real option letter AND the correct move type', () => {
+        // The connected-task answer is "letter, flip|turn": the letter must
+        // be one of the printed A-D options and the move type must match the
+        // printed guide (dashed line = flip, dot = turn) for EVERY question.
+        const problems = shapeTransformationsSpec.generate(createRng(seed), grade.caps, 60);
+        for (const problem of problems) {
+            const [letter, moveType] = problem.answer.split(', ');
+            const figure = problem.shapeTransformation!;
+            expect(['A', 'B', 'C', 'D']).toContain(letter);
+            expect(moveType).toBe(figure.guide === 'centre' ? 'turn' : 'flip');
+            expect(problem.prompt.endsWith('Which option matches? __ Is this a flip or a turn? __')).toBe(true);
+        }
     });
 
     it('deals all 48 distinct questions before repeating and never offers identical outlines', () => {

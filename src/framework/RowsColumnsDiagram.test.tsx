@@ -34,8 +34,9 @@ describe('RowsColumnsDiagram', () => {
         // — no totals, no "3 rows and 4 columns", no answers (private data).
         expect(image.getAttribute('aria-label')).toBe('grid of squares');
         expect(image.getAttribute('viewBox')).toBe('0 0 48 36');
-        expect(image.getAttribute('width')).toBe('64px');
-        expect(image.getAttribute('height')).toBe('48px');
+        // 20px per 12-unit cell (roomy countable squares).
+        expect(image.getAttribute('width')).toBe('80px');
+        expect(image.getAttribute('height')).toBe('60px');
         expect(container.querySelectorAll('text').length).toBe(0);
         expect(container.querySelectorAll('rect').length).toBe(12);
         expect(arrayCreate(({ index }) => container.querySelectorAll('rect')[index]?.outerHTML)).toEqual(expectedRects(3, 4));
@@ -45,12 +46,12 @@ describe('RowsColumnsDiagram', () => {
         { rows: 5, cols: 5 },
         { rows: 1, cols: 5 },
         { rows: 4, cols: 1 }
-    ])('sizes the SVG for a %i × %i grid (max 80 × 80px printed)', ({ rows, cols }) => {
+    ])('sizes the SVG for a %i × %i grid (max 100 × 100px printed)', ({ rows, cols }) => {
         const { container } = render(<RowsColumnsDiagram figure={Object.freeze({ rows, cols })} />);
         const image = screen.getByRole('img');
         expect(image.getAttribute('viewBox')).toBe(`0 0 ${12 * cols} ${12 * rows}`);
-        expect(image.getAttribute('width')).toBe(`${16 * cols}px`);
-        expect(image.getAttribute('height')).toBe(`${16 * rows}px`);
+        expect(image.getAttribute('width')).toBe(`${20 * cols}px`);
+        expect(image.getAttribute('height')).toBe(`${20 * rows}px`);
         expect(container.querySelectorAll('rect').length).toBe(rows * cols);
         expect(arrayCreate(({ index }) => container.querySelectorAll('rect')[index]?.outerHTML)).toEqual(expectedRects(rows, cols));
     });

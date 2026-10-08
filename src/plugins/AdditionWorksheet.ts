@@ -9,6 +9,14 @@
 //     the generator below — shows in the content area via the framework's
 //     standard worksheet recipe (dashboard.createWorksheet).
 //
+// DEPTH-FIRST SHEET (quality over quantity): EIGHT connected tasks per A4
+// page (single column — every prompt is a multi-part line with real writing
+// space), instead of the old 24 shallow "a + b = __" drills. Every task asks
+// 2–3 connected things at once so the student computes ONCE and then REASONES
+// about the result: commutative switching, comparing two sums, checking a
+// true/false claim and fixing it, part-part-whole representation, and the
+// inverse-operation check after a column or multi-addend calculation.
+//
 // DIFFICULTY LADDER (grade 0..6), driven entirely by the grade catalogue
 // (framework/grades.ts — arithmeticLadderGrade, shared with the Subtraction
 // plugin):
@@ -25,53 +33,135 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem, Rng, WorksheetSpec } from '../framework';
-import { sampleUnique } from '../framework';
+import { createDeck, sampleUnique } from '../framework';
 
 // Difficulty is read from two caps:
 //   - caps.opCap      — the "within N" ceiling the sum may reach;
 //   - caps.addendCap  — max addends per question (2 = classic pairs; 3/4 =
 //                       multi-addend column addition, from Year 4 upwards).
 //
-// NON-REPEATING SAMPLING: the whole question passes through sampleUnique
-// keyed on the printed prompt, so a document holds each distinct problem
-// line once before the space cycles (the old free-draw loop repeated pairs
-// like "4 + 2 = __" twice within a single 24-question page).
+// PAIR RECIPE (shared by every pair-based form): a is never the full cap and
+// b >= 1 whenever possible, so we avoid the trivial "x + 0" and guarantee
+// a + b <= opCap — the original within-opCap recipe, unchanged.
+function drawPair(rng: Rng, cap: number): [number, number] {
+    const aMax = Math.max(1, cap - 1);
+    const a = rng.int(1, aMax);
+    const bMax = cap - a; // >= 1 because a <= opCap-1
+    const b = bMax >= 1 ? rng.int(1, bMax) : 0;
+    return [a, b];
+}
+
+// The task families. Every printed task carries 2–3 blanks whose answers are
+// recorded in order in `answer` (comma separated — RawProblem allows it), so
+// the answer key covers EVERY requested part:
+//   switch   — "a + b = __ and b + a = __"          (commutative insight)
+//   diff     — two sums then "the sums differ by __" (compute + compare)
+//   verify   — true/false claim + correction        (checking, word blank)
+//   bond     — part-part-whole representation + the matching sentence
+//              (Prep..Year 2 only — the grades whose bondCap is live)
+//   column   — Year 3 vertical column + inverse check (ColumnDiagram figure)
+//   multi    — Year 4+ multi-addend sum + inverse check
+const ADDITION_FORMS_PAIR = ['switch', 'diff', 'verify', 'bond'] as const;
+const ADDITION_FORMS_COLUMN = ['switch', 'diff', 'verify', 'column'] as const;
+const ADDITION_FORMS_MULTI = ['switch', 'diff', 'verify', 'multi'] as const;
+
+// NON-REPEATING SAMPLING: the family is dealt from a deck (every family
+// appears before any repeats) and the whole question passes through
+// sampleUnique keyed on the printed prompt, so a document holds each distinct
+// task once before the space cycles.
 function generateAddition(rng: Rng, caps: Caps, count: number): RawProblem[] {
     // Normalise the addend cap: 0/undefined (unimplemented grades) behaves
     // like classic pairs, and the ladder never goes below 2 addends.
     const maxAddends = Math.max(2, caps.addendCap || 2);
-    // Roll THIS question's addend count — but only when the grade allows
-    // more than pairs. Grades 0..2 (addendCap 2) take no extra RNG draw.
+    // Year 3 (caps.opCap === 1000) is the multi-digit pair grade: its column
+    // tasks print a right-aligned vertical column (framework/ColumnDiagram.tsx)
+    // so kids line up digits — the established Year-3-only figure gate.
+    const forms = maxAddends > 2 ? ADDITION_FORMS_MULTI : caps.opCap === 1000 ? ADDITION_FORMS_COLUMN : ADDITION_FORMS_PAIR;
+    const formDeck = createDeck(rng, forms);
     return sampleUnique(
         count,
         () => {
-            // Year 3 (caps.opCap === 1000) is the multi-digit pair grade: its
-            // items print a right-aligned vertical column (framework/
-            // ColumnDiagram.tsx) so kids line up digits. Lower grades keep plain
-            // inline prompts, and Year 4+ keeps its established behaviour —
-            // only opCap 1000 gets the figure (grades.ts ladder).
-            const vertical = caps.opCap === 1000;
-            const k = maxAddends > 2 ? rng.int(2, maxAddends) : 2;
-            if (k === 2) {
-                // PAIRS — the original within-opCap recipe: a is never the full
-                // cap and b >= 1 whenever possible, so we avoid the trivial
-                // "x + 0" and guarantee a + b <= opCap.
-                const aMax = Math.max(1, caps.opCap - 1);
-                const a = rng.int(1, aMax);
-                const bMax = caps.opCap - a; // >= 1 because a <= opCap-1
-                const b = bMax >= 1 ? rng.int(1, bMax) : 0;
+            const form = formDeck.take();
+            if (form === 'switch') {
+                // COMPUTE, then SWITCH: the second blank is the same sum with
+                // the addends swapped — the student reuses the first answer.
+                const [a, b] = drawPair(rng, caps.opCap);
+                const c = a + b;
+                return { prompt: `${a} + ${b} = __ and ${b} + ${a} = __`, answer: `${c}, ${c}` };
+            }
+            if (form === 'diff') {
+                // COMPUTE BOTH, then COMPARE: the third blank is the distance
+                // between the two sums (0 is a legitimate, instructive answer
+                // — e.g. the same sum built a different way). The second pair
+                // is redrawn while it is the IDENTICAL ordered pair, so the
+                // line never prints the very same statement twice.
+                const [a, b] = drawPair(rng, caps.opCap);
+                let [c, d] = drawPair(rng, caps.opCap);
+                let guard = 0;
+                while (c === a && d === b && guard++ < 10) [c, d] = drawPair(rng, caps.opCap);
+                const s1 = a + b;
+                const s2 = c + d;
                 return {
-                    prompt: `${a} + ${b} = __`,
-                    answer: `${a + b}`,
-                    ...(vertical ? { column: { terms: [a, b], op: '+' as const } } : {})
+                    prompt: `${a} + ${b} = __ and ${c} + ${d} = __; the sums differ by __`,
+                    answer: `${s1}, ${s2}, ${Math.abs(s1 - s2)}`
                 };
             }
-            // MULTI-ADDEND — draw the question's TOTAL first (anywhere within
-            // the cap, at least k so every addend can be >= 1), then split it
-            // into k addends. Each draw reserves 1 for every still-to-come
-            // addend, so no addend can be 0; the last addend takes whatever
-            // remains. Mirrors the pair path, where the sum also lands
-            // anywhere within the cap rather than always at it.
+            if (form === 'verify') {
+                // CHECK a claim, then FIX it. The claim is correct ~1/3 of the
+                // time; a wrong claim is off by 1 or 2 and stays within the
+                // grade's ceiling (never a nonsensical 0 or over-cap total).
+                const [a, b] = drawPair(rng, caps.opCap);
+                const c = a + b;
+                let claim = c;
+                if (rng.next() < 2 / 3) {
+                    const delta = rng.int(1, 2);
+                    const upOk = c + delta <= caps.opCap;
+                    const downOk = c - delta >= 1;
+                    // Prefer a direction that stays in range; pick randomly
+                    // when both do, so errors sit on either side of truth.
+                    if (upOk && downOk) claim = rng.next() < 0.5 ? c + delta : c - delta;
+                    else claim = upOk ? c + delta : c - delta;
+                }
+                return {
+                    prompt: `True or false: ${a} + ${b} = ${claim}. __; if it is wrong, fix it: ${a} + ${b} = __`,
+                    answer: `${claim === c ? 'Correct' : 'Wrong'}, ${c}`,
+                    // The first blank takes the WORD ("Correct"/"Wrong").
+                    wideBlanks: true
+                };
+            }
+            if (form === 'bond') {
+                // REPRESENT: the whole and one part are given (the same idea
+                // the Number Bonds sheet draws); here the student writes the
+                // missing part AND the addition sentence it belongs to.
+                const total = Math.max(5, caps.bondCap);
+                const part = rng.int(1, total - 1);
+                const other = total - part;
+                return {
+                    prompt: `The whole is ${total} and one part is ${part}. The other part is __; the addition sentence is __`,
+                    answer: `${other}, ${part} + ${other} = ${total}`,
+                    wideBlanks: true
+                };
+            }
+            if (form === 'column') {
+                // Year 3: add in the printed column (figure repeats the terms,
+                // never the sum), then CHECK with the inverse subtraction —
+                // the check restates the sum, which is exactly how checking
+                // works on paper.
+                const [a, b] = drawPair(rng, caps.opCap);
+                const s = a + b;
+                return {
+                    prompt: `Add, then check: ${a} + ${b} = __; check: ${s} - ${b} = __`,
+                    answer: `${s}, ${a}`,
+                    column: { terms: [a, b], op: '+' }
+                };
+            }
+            // MULTI-ADDEND + CHECK (Year 4+): draw the question's TOTAL first
+            // (anywhere within the cap, at least k so every addend can be
+            // >= 1), then split it into k addends. Each draw reserves 1 for
+            // every still-to-come addend, so no addend can be 0; the last
+            // addend takes whatever remains. The check subtracts the LAST
+            // addend — its answer is the sum of the others.
+            const k = maxAddends > 2 ? rng.int(2, maxAddends) : 2;
             const target = rng.int(k, caps.opCap);
             let remaining = target;
             const parts: number[] = [];
@@ -81,7 +171,11 @@ function generateAddition(rng: Rng, caps: Caps, count: number): RawProblem[] {
                 parts.push(v);
                 remaining -= v;
             }
-            return { prompt: `${parts.join(' + ')} = __`, answer: `${target}` };
+            const last = parts[parts.length - 1];
+            return {
+                prompt: `${parts.join(' + ')} = __; check: ${target} - ${last} = __`,
+                answer: `${target}, ${target - last}`
+            };
         },
         (p) => p.prompt
     );
@@ -92,7 +186,11 @@ export const additionSpec: WorksheetSpec = {
     id: 'addition',
     label: 'Addition',
     icon: '+',
-    perPage: 24,
+    // Eight connected multi-part tasks per A4, printed in ONE column so every
+    // line has the full page width and the rows stretch to fill the sheet —
+    // fewer questions, far more thinking and writing space each.
+    perPage: 8,
+    singleColumn: true,
     offered: (grade: GradeConfig) => grade.available.includes('addition'),
     // "within 20" for the pair grades; the multi-addend grades (Year 4+)
     // advertise the second difficulty axis as well.

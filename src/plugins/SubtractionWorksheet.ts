@@ -9,6 +9,14 @@
 //     the generator below — shows in the content area via the framework's
 //     standard worksheet recipe (dashboard.createWorksheet).
 //
+// DEPTH-FIRST SHEET (quality over quantity): EIGHT connected tasks per A4
+// page (single column — every prompt is a multi-part line with real writing
+// space), instead of the old 24 shallow "a - b = __" drills. Every task asks
+// 2–3 connected things at once: the difference AND its partner addition,
+// two differences AND their distance apart, checking a true/false claim and
+// fixing it, and the inverse-operation (add-back) check after a column or
+// multi-subtrahend calculation.
+//
 // DIFFICULTY LADDER (grade 0..6), driven entirely by the grade catalogue
 // (framework/grades.ts — arithmeticLadderGrade, shared with the Addition
 // plugin):
@@ -25,7 +33,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem, Rng, WorksheetSpec } from '../framework';
-import { sampleUnique } from '../framework';
+import { createDeck, sampleUnique } from '../framework';
 
 // Difficulty is read from two caps:
 //   - caps.opCap     — the "within N" ceiling for the minuend;
@@ -34,43 +42,111 @@ import { sampleUnique } from '../framework';
 //                      (addendCap - 1) subtrahends (2 => classic a - b pairs,
 //                      3 => a - b - c from Year 4, 4 => a - b - c - d in Y6).
 //
-// NON-REPEATING SAMPLING: the whole question passes through sampleUnique
-// keyed on the printed prompt, so a document holds each distinct problem
-// line once before the space cycles.
+// PAIR RECIPE (shared by every pair-based form): b is chosen at least 1 and
+// strictly below a, so every difference is a POSITIVE whole number and the
+// trivial "a - 0" never prints (the old sheet showed it; depth-first, the
+// subtracting-zero case adds no practice).
+function drawPair(rng: Rng, cap: number): [number, number] {
+    const a = rng.int(2, Math.max(2, cap));
+    const b = rng.int(1, a - 1); // 1 <= b < a  =>  a - b >= 1
+    return [a, b];
+}
+
+// The task families. Every printed task carries 2–3 blanks whose answers are
+// recorded in order in `answer` (comma separated — RawProblem allows it), so
+// the answer key covers EVERY requested part:
+//   partner  — "a - b = __ and __ + b = a"          (fact-family partner)
+//   diff     — two differences then "the differences differ by __"
+//   verify   — true/false claim + correction        (checking, word blank)
+//   column   — Year 3 vertical column + add-back check (ColumnDiagram figure)
+//   multi    — Year 4+ multi-subtrahend chain + add-back check
+const SUBTRACTION_FORMS_PAIR = ['partner', 'diff', 'verify'] as const;
+const SUBTRACTION_FORMS_COLUMN = ['partner', 'diff', 'verify', 'column'] as const;
+const SUBTRACTION_FORMS_MULTI = ['partner', 'diff', 'verify', 'multi'] as const;
+
+// NON-REPEATING SAMPLING: the family is dealt from a deck (every family
+// appears before any repeats) and the whole question passes through
+// sampleUnique keyed on the printed prompt, so a document holds each distinct
+// task once before the space cycles.
 function generateSubtraction(rng: Rng, caps: Caps, count: number): RawProblem[] {
     // Max subtrahends for this grade: the pair grades (addendCap 2) stay
     // single-subtraction; 0/undefined (unimplemented grades) behaves the same.
     const maxSubtrahends = Math.max(1, (caps.addendCap || 2) - 1);
+    // Year 3 (caps.opCap === 1000) is the multi-digit pair grade: its column
+    // tasks print a right-aligned vertical column (framework/ColumnDiagram.tsx)
+    // with the "−" marker before the subtrahend — the established Year-3-only
+    // figure gate (grades.ts ladder).
+    const forms = maxSubtrahends > 1 ? SUBTRACTION_FORMS_MULTI : caps.opCap === 1000 ? SUBTRACTION_FORMS_COLUMN : SUBTRACTION_FORMS_PAIR;
+    const formDeck = createDeck(rng, forms);
     return sampleUnique(
         count,
         () => {
-            // Year 3 (caps.opCap === 1000) is the multi-digit pair grade: its
-            // items print a right-aligned vertical column (framework/
-            // ColumnDiagram.tsx). Lower grades keep plain inline prompts and
-            // Year 4+ keeps its established behaviour (grades.ts ladder).
-            const vertical = caps.opCap === 1000;
-            // Roll THIS question's subtrahend count — but only when the grade
-            // allows more than one. Grades 0..2 (addendCap 2) take no extra
-            // RNG draw.
-            const s = maxSubtrahends > 1 ? rng.int(1, maxSubtrahends) : 1;
-            if (s === 1) {
-                // PAIRS — the original within-opCap recipe: b is chosen strictly
-                // below a so every answer is a positive whole number (no negative
-                // results, no trivial "x - x = 0").
-                const aMax = Math.max(2, caps.opCap);
-                const a = rng.int(2, aMax);
-                const b = rng.int(0, a - 1); // b < a  =>  a - b >= 1
+            const form = formDeck.take();
+            if (form === 'partner') {
+                // COMPUTE, then REUSE: the difference the student just found
+                // is the missing addend of the partner fact — the fact family
+                // made explicit.
+                const [a, b] = drawPair(rng, caps.opCap);
+                const d = a - b;
+                return { prompt: `${a} - ${b} = __ and __ + ${b} = ${a}`, answer: `${d}, ${d}` };
+            }
+            if (form === 'diff') {
+                // COMPUTE BOTH, then COMPARE: the third blank is the distance
+                // between the two differences (0 is legitimate and
+                // instructive). The second pair is redrawn while it is the
+                // IDENTICAL ordered pair, so the line never prints the very
+                // same statement twice.
+                const [a, b] = drawPair(rng, caps.opCap);
+                let [c, d] = drawPair(rng, caps.opCap);
+                let guard = 0;
+                while (c === a && d === b && guard++ < 10) [c, d] = drawPair(rng, caps.opCap);
+                const d1 = a - b;
+                const d2 = c - d;
                 return {
-                    prompt: `${a} - ${b} = __`,
-                    answer: `${a - b}`,
-                    ...(vertical ? { column: { terms: [a, b], op: '-' as const } } : {})
+                    prompt: `${a} - ${b} = __ and ${c} - ${d} = __; the differences differ by __`,
+                    answer: `${d1}, ${d2}, ${Math.abs(d1 - d2)}`
                 };
             }
-            // MULTI-SUBTRAHEND — the minuend is drawn first, large enough
-            // that every subtrahend can be >= 1 AND the final answer >= 1
-            // (so no negatives and no trivial "x - x = 0"). Each subtrahend
-            // then reserves 1 for every still-to-come subtrahend plus 1 for
-            // the final answer.
+            if (form === 'verify') {
+                // CHECK a claim, then FIX it. The claim is correct ~1/3 of the
+                // time; a wrong claim is off by 1 or 2 and stays a plausible
+                // positive difference within the grade's ceiling.
+                const [a, b] = drawPair(rng, caps.opCap);
+                const d = a - b;
+                let claim = d;
+                if (rng.next() < 2 / 3) {
+                    const delta = rng.int(1, 2);
+                    const upOk = d + delta <= caps.opCap;
+                    const downOk = d - delta >= 1;
+                    if (upOk && downOk) claim = rng.next() < 0.5 ? d + delta : d - delta;
+                    else claim = upOk ? d + delta : d - delta;
+                }
+                return {
+                    prompt: `True or false: ${a} - ${b} = ${claim}. __; if it is wrong, fix it: ${a} - ${b} = __`,
+                    answer: `${claim === d ? 'Correct' : 'Wrong'}, ${d}`,
+                    // The first blank takes the WORD ("Correct"/"Wrong").
+                    wideBlanks: true
+                };
+            }
+            if (form === 'column') {
+                // Year 3: subtract in the printed column (figure repeats the
+                // terms, never the result), then CHECK by adding the answer
+                // back to the subtrahend — the inverse operation.
+                const [a, b] = drawPair(rng, caps.opCap);
+                const d = a - b;
+                return {
+                    prompt: `Subtract, then check: ${a} - ${b} = __; check: ${d} + ${b} = __`,
+                    answer: `${d}, ${a}`,
+                    column: { terms: [a, b], op: '-' }
+                };
+            }
+            // MULTI-SUBTRAHEND + CHECK (Year 4+): the minuend is drawn first,
+            // large enough that every subtrahend can be >= 1 AND the final
+            // answer >= 1 (so no negatives and no trivial "x - x = 0"). Each
+            // subtrahend reserves 1 for every still-to-come subtrahend plus 1
+            // for the final answer. The check adds the subtrahends back in
+            // REVERSE order — its answer is the original minuend.
+            const s = maxSubtrahends > 1 ? rng.int(1, maxSubtrahends) : 1;
             const a = rng.int(s + 1, Math.max(2, caps.opCap));
             let remaining = a;
             const parts: number[] = [];
@@ -80,8 +156,12 @@ function generateSubtraction(rng: Rng, caps: Caps, count: number): RawProblem[] 
                 parts.push(v);
                 remaining -= v;
             }
-            // What is left after every subtraction IS the answer.
-            return { prompt: `${a} - ${parts.join(' - ')} = __`, answer: `${remaining}` };
+            // What is left after every subtraction IS the first answer.
+            const back = [...parts].reverse().join(' + ');
+            return {
+                prompt: `${a} - ${parts.join(' - ')} = __; check: ${remaining} + ${back} = __`,
+                answer: `${remaining}, ${a}`
+            };
         },
         (p) => p.prompt
     );
@@ -92,7 +172,11 @@ export const subtractionSpec: WorksheetSpec = {
     id: 'subtraction',
     label: 'Subtraction',
     icon: '−',
-    perPage: 24,
+    // Eight connected multi-part tasks per A4, printed in ONE column so every
+    // line has the full page width and the rows stretch to fill the sheet —
+    // fewer questions, far more thinking and writing space each.
+    perPage: 8,
+    singleColumn: true,
     offered: (grade: GradeConfig) => grade.available.includes('subtraction'),
     // "within 20" for the pair grades; the multi-subtrahend grades (Year 4+)
     // advertise the second difficulty axis as well.

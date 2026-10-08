@@ -10,56 +10,110 @@
 //     the generator below — shows in the content area via the framework's
 //     standard worksheet recipe (dashboard.createWorksheet).
 //
+// DEPTH-FIRST SHEET (quality over quantity): SIX bond tasks per A4 page
+// (single column — each row carries its part-part-whole diagram AND a
+// multi-part prompt with real writing space), instead of the old 16 single-
+// blank bonds. The tasks now span the whole part-part-whole idea: fill BOTH
+// parts of a given whole from the diagram, a bond with BOTH related
+// subtractions, a story whose bond sentence the student writes out, a
+// missing-WHOLE item (the hardest bond direction), and — Year 2 — the
+// make-ten bridge for crossing ten.
+//
 // Fully self-contained: deleting this file and its line in plugins/index.ts
 // removes the Number Bonds worksheet without affecting the framework or any
 // other plugin.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem, Rng, WorksheetSpec } from '../framework';
-import { sampleUnique } from '../framework';
+import { createDeck, sampleUnique } from '../framework';
 
 // Number bonds / part-part-whole (V9 AC9M1N02: "to 10" in Y1; Y2 bridges
 // through 10 and 20). The total is 10 when bondCap < 20, otherwise 10 or 20.
 //
-// FOUR prompt forms over the same (total, part) fact space — the bond is a
-// tiny fact set (9 bonds to 10, 19 to 20), so the form variants are what keep
-// a long document fresh:
-//   0. "a + __ = total"          (missing second part)
-//   1. "__ + a = total"          (missing first part)
-//   2. "__ and a make total"     (verbal form)
-//   3. "total - a = __"          (the subtraction counterpart of the bond)
+// The task families. Every printed task carries 2–3 blanks whose answers are
+// recorded in order in `answer` (comma separated — RawProblem allows it), so
+// the answer key covers EVERY requested part:
+//   bothParts    — diagram with BOTH part circles blank: the student splits
+//                  the whole into the pair this sheet generated (the figure
+//                  shows the whole; the parts are the private answer)
+//   relatedSub   — "p + __ = T and T - p = __" (the same bond, two faces)
+//   story        — a grown-part story; the missing part AND the bond
+//                  sentence "__ + __ = T" are written
+//   missingWhole — "__ - p = q and q + p = __" (the whole is the unknown —
+//                  no diagram, the whole is not printed anywhere)
+//   makeTen      — Year 2 only: "9 + 6 = 10 + __ = __" — the crossing-ten
+//                  bridge built directly on bonds of 10
 //
-// NON-REPEATING SAMPLING: the whole question passes through sampleUnique
-// keyed on the printed prompt, so each bond prints once per FORM before the
-// space cycles.
+// NON-REPEATING SAMPLING: the family is dealt from a deck (every family
+// appears before any repeats) and the whole question passes through
+// sampleUnique keyed on the printed prompt, so each bond prints once per
+// FORM before the space cycles.
 function generateBonds(rng: Rng, caps: Caps, count: number): RawProblem[] {
     const totals = caps.bondCap >= 20 ? [10, 20] : [Math.max(5, caps.bondCap)];
+    // Year 2 (bondCap >= 20) additionally bridges through ten; the pair
+    // grades keep the four core families.
+    const forms = caps.bondCap >= 20
+        ? (['bothParts', 'relatedSub', 'story', 'missingWhole', 'makeTen'] as const)
+        : (['bothParts', 'relatedSub', 'story', 'missingWhole'] as const);
+    const formDeck = createDeck(rng, forms);
     return sampleUnique(
         count,
         () => {
+            const form = formDeck.take();
             const total = rng.pick(totals);
             // Both parts of a bond are NON-ZERO (1..total-1) — a "10 + __ = 10"
             // item teaches nothing and would confuse the part-part-whole idea.
-            const a = rng.int(1, total - 1);
-            const missing = total - a; // the hidden part, 1..total-1
-            const form = rng.int(0, 3);
-            const prompt =
-                form === 0
-                    ? `${a} + __ = ${total}`
-                    : form === 1
-                      ? `__ + ${a} = ${total}`
-                      : form === 2
-                        ? `__ and ${a} make ${total}`
-                        : `${total} - ${a} = __`;
-            // Part-part-whole diagram (framework/BondDiagram.tsx): the whole and
-            // the GIVEN part print their values; the REQUESTED part prints as a
-            // blank circle (null) — the missing answer is never drawn. Which
-            // part is the blank follows the prompt's missing blank: forms 1–2
-            // ask for the first part (left blank), forms 0 & 3 for the second.
-            const bond = form === 0 || form === 3
-                ? { whole: total, left: a, right: null }
-                : { whole: total, left: null, right: a };
-            return { prompt, answer: `${missing}`, bond };
+            const part = rng.int(1, total - 1);
+            const other = total - part;
+            if (form === 'bothParts') {
+                // SPLIT THE WHOLE: the diagram prints the whole with BOTH
+                // part circles blank (framework/BondDiagram.tsx leaves null
+                // parts empty — the missing answers are never drawn).
+                return {
+                    prompt: `The whole is ${total}. Write its two parts: __ and __`,
+                    answer: `${part}, ${other}`,
+                    bond: { whole: total, left: null, right: null }
+                };
+            }
+            if (form === 'relatedSub') {
+                // TWO FACES OF ONE BOND: the addition blank and the matching
+                // subtraction are the SAME missing part — the student sees
+                // the bond and the subtraction are one idea.
+                return {
+                    prompt: `${part} + __ = ${total} and ${total} - ${part} = __`,
+                    answer: `${other}, ${other}`,
+                    bond: { whole: total, left: part, right: null }
+                };
+            }
+            if (form === 'story') {
+                // STORY + SENTENCE: the missing part is found, then the
+                // whole bond is written out as an addition sentence.
+                return {
+                    prompt: `A tower of ${total} cubes has ${part} showing. The hidden part is __; the bond is __ + __ = ${total}`,
+                    answer: `${other}, ${part}, ${other}`,
+                    bond: { whole: total, left: part, right: null }
+                };
+            }
+            if (form === 'missingWhole') {
+                // MISSING WHOLE: the hardest bond direction — the difference
+                // and one part are given, the whole must be rebuilt, and the
+                // partner addition confirms it. No diagram: the whole is the
+                // answer and must never be printed.
+                return {
+                    prompt: `__ - ${part} = ${other} and ${other} + ${part} = __`,
+                    answer: `${total}, ${total}`
+                };
+            }
+            // MAKE TEN (Year 2): split the SECOND addend so 9..(x) makes 10
+            // first — "8 + 7 = 10 + 5 = 15". x is 6..9 so the ten-bond is
+            // worth using, and y is drawn large enough that the leftover is
+            // a positive part of 10 (never 0).
+            const x = rng.int(6, 9);
+            const y = rng.int(11 - x, Math.max(11 - x, 20 - x)); // leftover >= 1, sum <= 20
+            return {
+                prompt: `${x} + ${y} = 10 + __ = __`,
+                answer: `${y - (10 - x)}, ${x + y}`
+            };
         },
         (p) => p.prompt
     );
@@ -70,10 +124,12 @@ export const bondsSpec: WorksheetSpec = {
     id: 'bonds',
     label: 'Number Bonds',
     icon: '∨',
-    // Sixteen per A4: each item now carries a part-part-whole diagram
-    // (~68px tall, framework/BondDiagram.tsx), so the compact two-column
-    // page must leave room without overflowing the sheet.
-    perPage: 16,
+    // SIX bond tasks per A4: every row carries a part-part-whole diagram
+    // (framework/BondDiagram.tsx) AND a multi-part prompt, printed in ONE
+    // column so each task owns a generous band of the sheet — the diagrams
+    // stay hand-sizeable and the writing space is real.
+    perPage: 6,
+    singleColumn: true,
     offered: (grade: GradeConfig) => grade.available.includes('bonds'),
     scope: (grade: GradeConfig) =>
         grade.caps.bondCap >= 20 ? 'bonds to 10 & 20' : `bonds to ${Math.max(5, grade.caps.bondCap)}`,

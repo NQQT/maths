@@ -14,6 +14,19 @@
 // (duplicated deliberately — plugins never import from each other). Deleting
 // this file and its line in plugins/index.ts removes the Time worksheet
 // without affecting the framework or any other plugin.
+//
+// DEPTH DESIGN (quality over quantity): instead of sixteen isolated
+// one-word answers, eight CONNECTED items per page. Most items anchor ONE
+// real-world situation and ask two linked questions about it — (a)/(b) print
+// on their own lines (PrintableSheet's ProblemText is white-space: pre-wrap)
+// each with its own "__" response blank, and the answer string lists BOTH
+// results in order. The reasoning strands: day-before AND day-after from one
+// anchor, days-until plus the day before the event, month before AND after,
+// month → season (Australian seasons), season-adjacent temperature reasoning,
+// weekday/weekend classification, doubling calendar facts, and — Year 2 only —
+// clock items that read the drawn face FIRST, then move forward or BACKWARD
+// in time (the framework ClockFigure draws only the GIVEN face; answers stay
+// private).
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem, Rng, WorksheetSpec } from '../framework';
@@ -24,110 +37,200 @@ import { createDeck, sampleUnique } from '../framework';
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] as const;
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] as const;
 const SEASONS = ['spring', 'summer', 'autumn', 'winter'] as const;
-// One-line calendar facts kids are expected to know (also V8 ACMMG168-169).
-const TIME_FACTS: readonly [string, string][] = [
-    ['How many days are in a week?', '7'],
-    ['How many months are in a year?', '12'],
-    ['How many days are in a year?', '365']
+
+// Southern-hemisphere (Australian) season of each month — the same framing the
+// Temperature sheet uses ("coldest days in Australia = winter"). Kept explicit
+// so the generator never computes seasons from dates:
+// Jan/Feb = summer, Mar/Apr/May = autumn, Jun/Jul/Aug = winter,
+// Sep/Oct/Nov = spring, Dec = summer.
+const AU_SEASON: readonly string[] = [
+    'summer', // January
+    'summer', // February
+    'autumn', // March
+    'autumn', // April
+    'autumn', // May
+    'winter', // June
+    'winter', // July
+    'winter', // August
+    'spring', // September
+    'spring', // October
+    'spring', // November
+    'summer' // December
 ];
 
-// Time & calendar (V8 ACMMG168-170; V9 AC9M2M04). Kind pool is uniform:
-// day-after/before, yesterday/tomorrow, days-until, month-after, month-BEFORE,
-// season-after, calendar facts — plus clock forms (o'clock + hours-later,
-// half-past + one hour later) which only appear when clockCap > 0 (Year 2).
+// Coldness ranking used by the season-adjacent comparison (southern hemisphere
+// everyday knowledge: winter is the coldest season, summer the hottest).
+const COLD_RANK: Record<string, number> = { winter: 0, autumn: 1, spring: 2, summer: 3 };
+
+// Time & calendar (V8 ACMMG168-170; V9 AC9M2M04). Connected two-part kinds:
+// dayBoth, dayUntil, monthBoth, monthSeason, seasonNext, weekday, plus the
+// doubling calendar facts — and, only when clockCap > 0 (Year 2), the clock
+// kinds clockBoth / clockAgo / halfBoth anchored on a drawn GIVEN face.
 //
 // NON-REPEATING SAMPLING: days, months and seasons are dealt from decks (the
 // finite calendar vocabularies each appear once per cycle) and every question
-// passes through sampleUnique keyed on the printed prompt. The days-until,
-// month, clock and half kinds are PROCEDURAL (ranges of starts/offsets), so
-// the space stays far deeper than the 3 calendar facts.
+// passes through sampleUnique keyed on the printed prompt. The clock kinds are
+// PROCEDURAL (12 faces × 2 offsets × 3 kinds), so Year 2's space stays deep
+// even though the calendar vocabulary itself is finite and curated.
 function generateTime(rng: Rng, caps: Caps, count: number): RawProblem[] {
     const clock = caps.clockCap > 0;
     const dayDeck = createDeck(rng, DAYS);
     const monthDeck = createDeck(rng, MONTHS);
     const seasonDeck = createDeck(rng, SEASONS);
-    const factDeck = createDeck(rng, TIME_FACTS);
     return sampleUnique(
         count,
         () => {
-            const kinds: string[] = ['after', 'before', 'yesterday', 'tomorrow', 'until', 'month', 'monthBefore', 'season', 'fact'];
-            if (clock) kinds.push('clock', 'half');
+            const kinds: string[] = ['dayBoth', 'dayUntil', 'monthBoth', 'monthSeason', 'seasonNext', 'weekday', 'factWeek', 'factMonth', 'factYear'];
+            if (clock) kinds.push('clockBoth', 'clockAgo', 'halfBoth');
             const kind = rng.pick(kinds);
             switch (kind) {
-                case 'after': {
+                case 'dayBoth': {
+                    // One anchor day, both neighbours: yesterday AND tomorrow.
                     const d = dayDeck.take();
                     const j = DAYS.indexOf(d);
-                    return { prompt: `What day comes after ${d}?`, answer: DAYS[(j + 1) % 7] };
+                    return {
+                        prompt:
+                            `Today is ${d}.\n` +
+                            `(a) What day was yesterday? __\n` +
+                            `(b) What day will it be tomorrow? __`,
+                        answer: `${DAYS[(j + 6) % 7]}, ${DAYS[(j + 1) % 7]}`
+                    };
                 }
-                case 'before': {
-                    const d = dayDeck.take();
-                    const j = DAYS.indexOf(d);
-                    return { prompt: `What day comes before ${d}?`, answer: DAYS[(j + 6) % 7] };
-                }
-                case 'yesterday': {
-                    const d = dayDeck.take();
-                    const j = DAYS.indexOf(d);
-                    return { prompt: `If today is ${d}, what day was yesterday?`, answer: DAYS[(j + 6) % 7] };
-                }
-                case 'tomorrow': {
-                    const d = dayDeck.take();
-                    const j = DAYS.indexOf(d);
-                    return { prompt: `If today is ${d}, what day is tomorrow?`, answer: DAYS[(j + 1) % 7] };
-                }
-                case 'until': {
-                    // Start Mon-Fri, target strictly later the same week.
+                case 'dayUntil': {
+                    // Counting forward to an event, then the day BEFORE it —
+                    // forward and backward on the same week.
                     const i1 = rng.int(0, 4);
                     const i2 = rng.int(i1 + 1, 6);
                     return {
-                        prompt: `If today is ${DAYS[i1]}, how many days is it until ${DAYS[i2]}?`,
-                        answer: `${i2 - i1}`
+                        prompt:
+                            `Today is ${DAYS[i1]}. Grandma arrives on ${DAYS[i2]}.\n` +
+                            `(a) How many days is it until Grandma arrives? __\n` +
+                            `(b) What day is the day BEFORE she arrives? __`,
+                        answer: `${i2 - i1}, ${DAYS[i2 - 1]}`
                     };
                 }
-                case 'month': {
+                case 'monthBoth': {
                     const m = monthDeck.take();
                     const mi = MONTHS.indexOf(m);
-                    return { prompt: `What month comes after ${m}?`, answer: MONTHS[(mi + 1) % 12] };
+                    return {
+                        prompt:
+                            `My birthday is in ${m}.\n` +
+                            `(a) What month comes just BEFORE ${m}? __\n` +
+                            `(b) What month comes just AFTER ${m}? __`,
+                        answer: `${MONTHS[(mi + 11) % 12]}, ${MONTHS[(mi + 1) % 12]}`
+                    };
                 }
-                case 'monthBefore': {
+                case 'monthSeason': {
+                    // Month sequence feeding real-world season knowledge.
                     const m = monthDeck.take();
                     const mi = MONTHS.indexOf(m);
-                    return { prompt: `What month comes before ${m}?`, answer: MONTHS[(mi + 11) % 12] };
+                    const next = (mi + 1) % 12;
+                    return {
+                        prompt:
+                            `We are in ${m} now.\n` +
+                            `(a) What month comes after ${m}? __\n` +
+                            `(b) What season is ${MONTHS[next]} in Australia? __`,
+                        answer: `${MONTHS[next]}, ${AU_SEASON[next]}`
+                    };
                 }
-                case 'season': {
+                case 'seasonNext': {
+                    // Adjacent seasons compared for coldness (never a tie:
+                    // neighbouring seasons always differ in COLD_RANK).
                     const s = seasonDeck.take();
                     const k = SEASONS.indexOf(s);
-                    return { prompt: `What season comes after ${s}?`, answer: SEASONS[(k + 1) % 4] };
+                    const next = SEASONS[(k + 1) % 4];
+                    const colder = COLD_RANK[s] < COLD_RANK[next] ? s : next;
+                    return {
+                        prompt:
+                            `It is ${s} in Australia.\n` +
+                            `(a) What season comes after ${s}? __\n` +
+                            `(b) Which is colder there, ${s} or ${next}? __`,
+                        answer: `${next}, ${colder}`
+                    };
                 }
-                case 'fact': {
-                    const [prompt, answer] = factDeck.take();
-                    return { prompt, answer };
+                case 'weekday': {
+                    // Yesterday's NAME feeding weekday/weekend classification.
+                    const d = dayDeck.take();
+                    const j = DAYS.indexOf(d);
+                    const y = DAYS[(j + 6) % 7];
+                    const dayKind = y === 'Saturday' || y === 'Sunday' ? 'weekend' : 'weekday';
+                    return {
+                        prompt:
+                            `Today is ${d}.\n` +
+                            `(a) What day was yesterday? __\n` +
+                            `(b) Was yesterday a weekday or a weekend day? __`,
+                        answer: `${y}, ${dayKind}`
+                    };
                 }
-                case 'clock': {
-                    // O'clock now, k (1-2) hours later; answer wraps at 12.
-                    // The clock figure (framework ClockFigure, drawn by
-                    // PrintableSheet's ClockFace) shows the GIVEN "now" face with
-                    // hands — the later answer time is never drawn.
+                case 'factWeek': {
+                    // Fact + doubling (14 stays inside Year 1's within-20).
+                    return {
+                        prompt:
+                            `(a) How many days are in a week? __\n` +
+                            `(b) How many days are in 2 weeks? __`,
+                        answer: '7, 14'
+                    };
+                }
+                case 'factMonth': {
+                    // Fact + halving 12 (halves as equal parts are Y1 content).
+                    return {
+                        prompt:
+                            `(a) How many months are in a year? __\n` +
+                            `(b) How many months are in HALF a year? __`,
+                        answer: '12, 6'
+                    };
+                }
+                case 'factYear': {
+                    return { prompt: 'How many days are in a year? __', answer: '365' };
+                }
+                case 'clockBoth': {
+                    // Read the GIVEN face first, then move FORWARD k hours.
+                    // The ClockFigure draws only the given time (PrintableSheet
+                    // ClockFace) — the later answer is never drawn.
                     const h = rng.int(1, 12);
                     const k = rng.int(1, 2);
                     const h2 = ((h - 1 + k) % 12) + 1;
                     return {
-                        prompt: `It is ${h} o'clock now. What time is it ${k} ${k === 1 ? 'hour' : 'hours'} later?`,
-                        answer: `${h2} o'clock`,
+                        prompt:
+                            `(a) What time is showing on the clock? __\n` +
+                            `(b) What time will it be ${k} ${k === 1 ? 'hour' : 'hours'} later? __`,
+                        answer: `${h} o'clock, ${h2} o'clock`,
+                        clock: { hour: h, minute: 0 }
+                    };
+                }
+                case 'clockAgo': {
+                    // Read the GIVEN face, then move BACKWARD — reverse time.
+                    const h = rng.int(1, 12);
+                    const k = rng.int(1, 2);
+                    const hAgo = (((h - 1 - k) % 12) + 12) % 12 + 1;
+                    return {
+                        prompt:
+                            `(a) What time is showing on the clock? __\n` +
+                            `(b) What time was it ${k} ${k === 1 ? 'hour' : 'hours'} ago? __`,
+                        answer: `${h} o'clock, ${hAgo} o'clock`,
                         clock: { hour: h, minute: 0 }
                     };
                 }
                 default: {
-                    // 'half': half-past h now, one hour later (half past 12 wraps back to 1).
+                    // 'halfBoth': read the half-past face, then one hour later.
                     const h = rng.int(1, 12);
                     return {
-                        prompt: `It is half past ${h} now. What time is it one hour later?`,
-                        answer: `half past ${(h % 12) + 1}`,
+                        prompt:
+                            `(a) What time is showing on the clock? __\n` +
+                            `(b) What time will it be one hour later? __`,
+                        answer: `half past ${h}, half past ${(h % 12) + 1}`,
                         clock: { hour: h, minute: 30 }
                     };
                 }
             }
         },
-        (p) => p.prompt
+        // Sampling key = prompt + clock figure. The three clock kinds print
+        // fixed sentences — the GIVEN face IS the question (only the drawn
+        // face reveals the time) — so the prompt alone would collapse the
+        // 12 faces x offsets space to a handful of sentences. Keying on the
+        // figure too (the DataWorksheet pattern) keeps every face a distinct
+        // question; the calendar kinds carry no figure and are unaffected.
+        (p) => `${p.prompt}|${p.clock ? `${p.clock.hour}:${p.clock.minute}` : ''}`
     );
 }
 
@@ -136,9 +239,12 @@ export const timeSpec: WorksheetSpec = {
     id: 'time',
     label: 'Time & Calendar',
     icon: '◷',
-    perPage: 16,
+    // Eight connected items instead of sixteen one-word answers: every row
+    // now carries a two-part situation with real thinking (and a clock face
+    // where the grade has one).
+    perPage: 8,
     offered: (grade: GradeConfig) => grade.available.includes('time'),
-    scope: (grade: GradeConfig) => (grade.caps.clockCap > 0 ? 'time to the half hour' : 'days & months'),
+    scope: (grade: GradeConfig) => (grade.caps.clockCap > 0 ? 'calendar & time to the half hour' : 'days, months & seasons'),
     generate: generateTime
 };
 

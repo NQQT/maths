@@ -8,11 +8,17 @@ import { styledComponent } from '@presource/react';
 import type { CompassFigure, CompassCardinal } from './types';
 
 // Block-level span inside the illustrated ProblemText (same nesting the other
-// figure renderers use). 48 × 48px fits the single-column compass sheet.
+// figure renderers use).
+//
+// SIZE (R2): the rose/map print at 84px — big enough for a child to write the
+// four cardinals beside the rose or mark a route on the map square. The 48-unit
+// viewBox is untouched (all pinned geometry in CompassDiagram.test.tsx), so the
+// display scale simply thickens every stroke (~3.5px) and numeral (~14px).
+// Capacity: 84px + a two-line prompt fits single-column sheets at ≤7/page.
 const DiagramRoot = styledComponent('span', {
     display: 'block',
     width: 'fit-content',
-    marginTop: '4px'
+    marginTop: '6px'
 });
 
 // Cardinal angles in degrees, CLOCKWISE from top (the sheet's compass order:
@@ -72,8 +78,8 @@ export function CompassDiagram({ figure }: { figure: CompassFigure }) {
         return (
             <DiagramRoot>
                 <svg
-                    width="48px"
-                    height="48px"
+                    width="84px"
+                    height="84px"
                     viewBox="0 0 48 48"
                     role="img"
                     aria-label="map with north at the top"
@@ -99,8 +105,8 @@ export function CompassDiagram({ figure }: { figure: CompassFigure }) {
     return (
         <DiagramRoot>
             <svg
-                width="48px"
-                height="48px"
+                width="84px"
+                height="84px"
                 viewBox="0 0 48 48"
                 role="img"
                 // Neutral: names the reference, never the answer direction.

@@ -1,11 +1,13 @@
 // Unit tests for the PLACE VALUE worksheet plugin.
 //
-// The plugin's generator is DETERMINISTIC: entire sheets pinned to exact
-// expected values from the same seed the framework uses
-// (seedFrom([grade.id, spec.id, 0])). Prep does not offer the extension types.
+// Deterministic pins from seedFrom([grade.id, 'placevalue', 0]). Depth
+// design: eight CONNECTED two-part items per page (was sixteen one-blank
+// recalls) — every item anchors one number and asks two linked questions.
+// The correctness suite re-derives every answer from the printed prompt
+// across a 10-page document and enforces the grade's pvCap.
 
 import { describe, it, expect } from 'vitest';
-import { seedFrom, getGradeConfig, generateSheet } from '../framework';
+import { seedFrom, getGradeConfig, generateSheet, generateDocument, createRng } from '../framework';
 import { placeValueSpec } from './PlaceValueWorksheet';
 
 const g0 = getGradeConfig(0);
@@ -16,71 +18,146 @@ function sheet(grade: ReturnType<typeof getGradeConfig>) {
     return generateSheet(placeValueSpec, grade, seedFrom([grade.id, placeValueSpec.id, 0]));
 }
 
+// "1 ten" / "4 tens", "1 one" / "5 ones" — same wording rule as the plugin.
+const tensWord = (t: number) => (t === 1 ? 'ten' : 'tens');
+const onesWord = (o: number) => (o === 1 ? 'one' : 'ones');
+
+type P = { prompt: string; answer: string };
+
+// Re-derive the expected answer from the printed prompt alone.
+function expectedAnswer(p: P): string | null {
+    let m: RegExpMatchArray | null;
+    // Partition read apart: tens first, leftover ones second.
+    if ((m = p.prompt.match(/^Look at the number (\d+)\.\n\(a\) How many tens are in \1\? __\n\(b\) How many ones are left over\? __$/))) {
+        const n = +m[1];
+        return `${Math.floor(n / 10)} ${tensWord(Math.floor(n / 10))}, ${n % 10} ${onesWord(n % 10)}`;
+    }
+    // Compose from tens+ones, then step by 1 (Y1) or 10 (Y2).
+    if ((m = p.prompt.match(/^Write the number: (\d+) tens? and (\d+) ones?\.\n\(a\) What number is it\? __\n\(b\) What is (\d+) more than that number\? __$/))) {
+        const n = +m[1] * 10 + +m[2];
+        return `${n}, ${n + +m[3]}`;
+    }
+    // Decade crossing: 19 → 20, then count the new tens.
+    if ((m = p.prompt.match(/^\(a\) What is 1 more than (\d+)\? __\n\(b\) How many tens are in your answer\? __$/))) {
+        const next = +m[1] + 1;
+        return `${next}, ${Math.floor(next / 10)}`;
+    }
+    // Comparison AND the gap.
+    if ((m = p.prompt.match(/^\(a\) Which is greater, (\d+) or (\d+)\? __\n\(b\) How many more\? __$/))) {
+        const a = +m[1], b = +m[2];
+        return `${Math.max(a, b)}, ${Math.abs(a - b)}`;
+    }
+    // Riddle: ones digit relative to the tens digit, then assemble.
+    if ((m = p.prompt.match(/^I am thinking of a 2-digit number\. Its tens digit is (\d+)\. Its ones digit is (\d+) more than its tens digit\.\n\(a\) What is my ones digit\? __\n\(b\) What is my number\? __$/))) {
+        const t = +m[1], ones = t + +m[2];
+        if (ones > 9) return null;
+        return `${ones}, ${t * 10 + ones}`;
+    }
+    // Digit cards: greatest and smallest 2-digit numbers.
+    if ((m = p.prompt.match(/^You have two digit cards: (\d) and (\d)\.\n\(a\) What is the greatest 2-digit number you can make\? __\n\(b\) What is the smallest 2-digit number you can make\? __$/))) {
+        const hi = Math.max(+m[1], +m[2]), lo = Math.min(+m[1], +m[2]);
+        return `${hi * 10 + lo}, ${lo * 10 + hi}`;
+    }
+    // Inverse pair: 10 more AND 10 less on one anchor.
+    if ((m = p.prompt.match(/^Think about the number (\d+)\.\n\(a\) What is 10 more than \1\? __\n\(b\) What is 10 less than \1\? __$/))) {
+        const n = +m[1];
+        return `${n + 10}, ${n - 10}`;
+    }
+    return null;
+}
+
 describe('place value plugin — declarative spec', () => {
-    it('declares its sidebar label, glyph and page size', () => {
+    it('declares its sidebar label, glyph and reduced page size', () => {
         expect(placeValueSpec.id).toBe('placevalue');
         expect(placeValueSpec.label).toBe('Place Value');
         expect(placeValueSpec.icon).toBe('⊞');
-        expect(placeValueSpec.perPage).toBe(16);
+        // Density regression: eight connected items per page (was 16).
+        expect(placeValueSpec.perPage).toBe(8);
     });
 
-    it('describes its numeric scope from the grade caps', () => {
+    it('describes its numeric scope', () => {
         expect(placeValueSpec.scope(g1)).toBe('tens & ones to 20');
         expect(placeValueSpec.scope(g2)).toBe('tens & ones to 99');
     });
 });
 
 describe('place value — availability gating', () => {
-    it('Prep does not offer the extension type (empty sheet); Year 1 does', () => {
+    it('Prep does not offer place value (empty sheet)', () => {
         expect(sheet(g0)).toEqual([]);
-        expect(sheet(g1)).toHaveLength(16);
+    });
+
+    it('Year 1 never sees the wide-space forms (cards / 10-more)', () => {
+        const doc = generateDocument(placeValueSpec, g1, seedFrom([1, 'placevalue', 0]), 10);
+        for (const p of doc.pages.flat()) {
+            expect(p.prompt).not.toContain('digit cards');
+            expect(p.prompt).not.toContain('10 more');
+        }
     });
 });
 
-describe('place value — Year 1 (tens & ones to 20)', () => {
-    it('matches the exact sheet', () => {
-        const s = sheet(g1);
-        expect(s).toEqual([
-            {"prompt":"How many tens are in 14?","answer":"1","id":1,"type":"placevalue"},
-            {"prompt":"20 is __ tens and __ ones","answer":"2 tens and 0 ones","id":2,"type":"placevalue"},
-            {"prompt":"How many tens and ones make 18?","answer":"1 ten and 8 ones","id":3,"type":"placevalue"},
-            {"prompt":"How many tens and ones make 19?","answer":"1 ten and 9 ones","id":4,"type":"placevalue"},
-            {"prompt":"What is the tens digit of 19?","answer":"1","id":5,"type":"placevalue"},
-            {"prompt":"How many tens are in 17?","answer":"1","id":6,"type":"placevalue"},
-            {"prompt":"How many tens are in 16?","answer":"1","id":7,"type":"placevalue"},
-            {"prompt":"16 is __ tens and __ ones","answer":"1 tens and 6 ones","id":8,"type":"placevalue"},
-            {"prompt":"How many ones are in 16?","answer":"6","id":9,"type":"placevalue"},
-            {"prompt":"How many ones are in 17?","answer":"7","id":10,"type":"placevalue"},
-            {"prompt":"What number is 1 ten and 7 ones?","answer":"17","id":11,"type":"placevalue"},
-            {"prompt":"How many tens and ones make 12?","answer":"1 ten and 2 ones","id":12,"type":"placevalue"},
-            {"prompt":"What number is 1 ten and 5 ones?","answer":"15","id":13,"type":"placevalue"},
-            {"prompt":"How many tens and ones make 13?","answer":"1 ten and 3 ones","id":14,"type":"placevalue"},
-            {"prompt":"What number is 2 tens and 0 ones?","answer":"20","id":15,"type":"placevalue"},
-            {"prompt":"What is the tens digit of 11?","answer":"1","id":16,"type":"placevalue"},
+describe('place value — Year 1', () => {
+    it('matches the exact sheet (two-part items, both answers correct)', () => {
+        expect(sheet(g1)).toEqual([
+            { prompt: '(a) What is 1 more than 9? __\n(b) How many tens are in your answer? __', answer: '10, 1', id: 1, type: 'placevalue' },
+            { prompt: 'I am thinking of a 2-digit number. Its tens digit is 1. Its ones digit is 1 more than its tens digit.\n(a) What is my ones digit? __\n(b) What is my number? __', answer: '2, 12', id: 2, type: 'placevalue' },
+            { prompt: '(a) Which is greater, 10 or 19? __\n(b) How many more? __', answer: '19, 9', id: 3, type: 'placevalue' },
+            { prompt: '(a) Which is greater, 19 or 14? __\n(b) How many more? __', answer: '19, 5', id: 4, type: 'placevalue' },
+            { prompt: '(a) Which is greater, 14 or 17? __\n(b) How many more? __', answer: '17, 3', id: 5, type: 'placevalue' },
+            { prompt: '(a) What is 1 more than 19? __\n(b) How many tens are in your answer? __', answer: '20, 2', id: 6, type: 'placevalue' },
+            { prompt: 'I am thinking of a 2-digit number. Its tens digit is 1. Its ones digit is 8 more than its tens digit.\n(a) What is my ones digit? __\n(b) What is my number? __', answer: '9, 19', id: 7, type: 'placevalue' },
+            { prompt: '(a) Which is greater, 12 or 11? __\n(b) How many more? __', answer: '12, 1', id: 8, type: 'placevalue' },
         ]);
     });
 });
 
-describe('place value — Year 2 (tens & ones to 99)', () => {
+describe('place value — Year 2', () => {
     it('matches the exact sheet', () => {
-        const s = sheet(g2);
-        expect(s).toEqual([
-            {"prompt":"How many tens and ones make 45?","answer":"4 tens and 5 ones","id":1,"type":"placevalue"},
-            {"prompt":"38 is __ tens and __ ones","answer":"3 tens and 8 ones","id":2,"type":"placevalue"},
-            {"prompt":"What number is 6 tens and 3 ones?","answer":"63","id":3,"type":"placevalue"},
-            {"prompt":"What is the tens digit of 51?","answer":"5","id":4,"type":"placevalue"},
-            {"prompt":"85 is __ tens and __ ones","answer":"8 tens and 5 ones","id":5,"type":"placevalue"},
-            {"prompt":"What is the tens digit of 61?","answer":"6","id":6,"type":"placevalue"},
-            {"prompt":"How many tens and ones make 96?","answer":"9 tens and 6 ones","id":7,"type":"placevalue"},
-            {"prompt":"How many ones are in 10?","answer":"0","id":8,"type":"placevalue"},
-            {"prompt":"How many ones are in 43?","answer":"3","id":9,"type":"placevalue"},
-            {"prompt":"What is the tens digit of 67?","answer":"6","id":10,"type":"placevalue"},
-            {"prompt":"What is the tens digit of 16?","answer":"1","id":11,"type":"placevalue"},
-            {"prompt":"What is the tens digit of 92?","answer":"9","id":12,"type":"placevalue"},
-            {"prompt":"How many tens are in 22?","answer":"2","id":13,"type":"placevalue"},
-            {"prompt":"How many tens and ones make 35?","answer":"3 tens and 5 ones","id":14,"type":"placevalue"},
-            {"prompt":"How many tens are in 49?","answer":"4","id":15,"type":"placevalue"},
-            {"prompt":"How many tens and ones make 27?","answer":"2 tens and 7 ones","id":16,"type":"placevalue"},
+        expect(sheet(g2)).toEqual([
+            { prompt: 'Look at the number 45.\n(a) How many tens are in 45? __\n(b) How many ones are left over? __', answer: '4 tens, 5 ones', id: 1, type: 'placevalue' },
+            { prompt: 'Think about the number 42.\n(a) What is 10 more than 42? __\n(b) What is 10 less than 42? __', answer: '52, 32', id: 2, type: 'placevalue' },
+            { prompt: '(a) What is 1 more than 59? __\n(b) How many tens are in your answer? __', answer: '60, 6', id: 3, type: 'placevalue' },
+            { prompt: '(a) What is 1 more than 69? __\n(b) How many tens are in your answer? __', answer: '70, 7', id: 4, type: 'placevalue' },
+            { prompt: '(a) Which is greater, 95 or 85? __\n(b) How many more? __', answer: '95, 10', id: 5, type: 'placevalue' },
+            { prompt: 'You have two digit cards: 6 and 1.\n(a) What is the greatest 2-digit number you can make? __\n(b) What is the smallest 2-digit number you can make? __', answer: '61, 16', id: 6, type: 'placevalue' },
+            { prompt: 'Think about the number 55.\n(a) What is 10 more than 55? __\n(b) What is 10 less than 55? __', answer: '65, 45', id: 7, type: 'placevalue' },
+            { prompt: 'Look at the number 69.\n(a) How many tens are in 69? __\n(b) How many ones are left over? __', answer: '6 tens, 9 ones', id: 8, type: 'placevalue' },
         ]);
     });
+});
+
+describe('place value — correctness, depth and range regression (10 pages)', () => {
+    for (const grade of [g1, g2]) {
+        const cap = Math.max(10, grade.caps.pvCap);
+        const problems = generateDocument(placeValueSpec, grade, seedFrom([grade.id, 'placevalue', 0]), 10).pages.flat();
+        it(`Year ${grade.id}: every answer re-derived from its prompt`, () => {
+            for (const p of problems) {
+                const exp = expectedAnswer(p);
+                expect(exp, `unrecognised prompt: ${p.prompt}`).not.toBeNull();
+                expect(p.answer).toBe(exp);
+            }
+        });
+        it(`Year ${grade.id}: 100% two-part items, both parts answered`, () => {
+            for (const p of problems) {
+                expect(p.prompt).toContain('(a)');
+                expect(p.prompt).toContain('(b)');
+                expect(p.answer.split(', ')).toHaveLength(2);
+            }
+        });
+        it(`Year ${grade.id}: every printed number stays within the pvCap (${cap})`, () => {
+            for (const p of problems) {
+                for (const m of p.prompt.matchAll(/\b\d+\b/g)) expect(+m[0]).toBeLessThanOrEqual(cap);
+                for (const part of p.answer.split(', ')) {
+                    const n = Number(part.replace(/ (tens?|ones?)$/, ''));
+                    if (!Number.isNaN(n)) expect(n).toBeLessThanOrEqual(cap);
+                }
+            }
+        });
+        it(`Year ${grade.id}: page 1 never repeats; ASCII-only; deterministic`, () => {
+            const page1 = generateSheet(placeValueSpec, grade, seedFrom([grade.id, 'placevalue', 0]));
+            expect(new Set(page1.map((p) => p.prompt)).size).toBe(page1.length);
+            for (const p of problems) expect(p.prompt).toMatch(/^[ -~\n]+$/);
+            const seed = seedFrom([grade.id, 'placevalue', 0]);
+            expect(placeValueSpec.generate(createRng(seed), grade.caps, 40)).toEqual(placeValueSpec.generate(createRng(seed), grade.caps, 40));
+        });
+    }
 });

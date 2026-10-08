@@ -87,13 +87,13 @@ describe('ShapeTransformationDiagram', () => {
             display: 'flex',
             width: 'fit-content',
             gap: '8px',
-            marginTop: '4px',
+            marginTop: '6px',
             cardDisplay: 'flex',
             cardDirection: 'column',
-            cardWidth: '60px',
-            cardGap: '2px',
-            labelFont: '13px',
-            labelLine: '16px'
+            cardWidth: '88px',
+            cardGap: '3px',
+            labelFont: '14px',
+            labelLine: '17px'
         });
     });
 
@@ -112,11 +112,11 @@ describe('ShapeTransformationDiagram', () => {
                 height: image.getAttribute('height')
             };
         })).toEqual([
-            { name: 'Original triangle', role: 'img', viewBox: '-4 -4 8 8', width: '60px', height: '60px' },
-            { name: 'Option A', role: 'img', viewBox: '-4 -4 8 8', width: '60px', height: '60px' },
-            { name: 'Option B', role: 'img', viewBox: '-4 -4 8 8', width: '60px', height: '60px' },
-            { name: 'Option C', role: 'img', viewBox: '-4 -4 8 8', width: '60px', height: '60px' },
-            { name: 'Option D', role: 'img', viewBox: '-4 -4 8 8', width: '60px', height: '60px' }
+            { name: 'Original triangle', role: 'img', viewBox: '-4 -4 8 8', width: '88px', height: '88px' },
+            { name: 'Option A', role: 'img', viewBox: '-4 -4 8 8', width: '88px', height: '88px' },
+            { name: 'Option B', role: 'img', viewBox: '-4 -4 8 8', width: '88px', height: '88px' },
+            { name: 'Option C', role: 'img', viewBox: '-4 -4 8 8', width: '88px', height: '88px' },
+            { name: 'Option D', role: 'img', viewBox: '-4 -4 8 8', width: '88px', height: '88px' }
         ]);
     });
 

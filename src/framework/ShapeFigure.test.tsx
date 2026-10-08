@@ -1,8 +1,8 @@
 // Rendering contract for types.ts's ShapeFigure[] (framework/ShapeFigure.tsx).
 // Exact shape math belongs in plugins/ShapesWorksheet.test.ts; these fixtures
-// pin the printed cards: one 40×40 SVG per shape in option order, the shape's
-// label, and neutral accessible names — side/corner/face counts and answers
-// are PRIVATE and never enter the DOM.
+// pin the printed cards: one 40-unit viewBox SVG per shape (72px display) in
+// option order, the shape's label, and neutral accessible names — side/corner/
+// face counts and answers are PRIVATE and never enter the DOM.
 import React from 'react';
 import { arrayCreate } from '@presource/core';
 import { cleanup, render, screen } from '@testing-library/react';
@@ -13,7 +13,7 @@ import type { ShapeFigure } from './types';
 afterEach(cleanup);
 
 describe('ShapeFigures', () => {
-    it('prints one labelled 40×40 card per shape in option order', () => {
+    it('prints one labelled card per shape in option order (72px display)', () => {
         const shapes: readonly ShapeFigure[] = Object.freeze([
             { name: 'triangle', kind: '2d' },
             { name: 'square', kind: '2d' },

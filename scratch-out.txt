@@ -1,10 +1,6 @@
-1|4|In a picture graph, 1 star = 1 car. How many cars do ★★★★ show?
-2|7|Count the tallies: ||||/ | | — how many in all?
-3|1|In a column graph, each square is 1 vote. Mia's bar is 6 squares tall and Leo's bar is 5 squares tall. How many more votes did Mia get?
-4|39|Count the tallies: ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ | | | | — how many in all?
-5|35|Count the tallies: ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ — how many in all?
-6|34|Count the tallies: ||||/ ||||/ ||||/ ||||/ ||||/ ||||/ | | | | — how many in all?
-7|3|In a picture graph, 1 star = 1 crayon. How many crayons do ★★★ show?
-8|20|Count the tallies: ||||/ ||||/ ||||/ ||||/ — how many in all?
-9|19|Count the tallies: ||||/ ||||/ ||||/ | | | | — how many in all?
-10|8|In a picture graph, 1 star = 2 flowers. How many flowers do ★★★★ show?
+1|4, No|In a picture graph, 1 star = 1 car. Count the stars below. How many cars do they show? __ Is that more than 10 cars? Yes or No: __
+2|7, 0 tens and 7 ones|Count the tallies below. There are __ in all. That is __ tens and __ ones.
+3|Mia, 1|In a column graph, each square is 1 vote. Mia's bar is 6 squares tall and Leo's bar is 5 squares tall. Who got MORE votes? __ How many more votes did Mia get? __
+4|39, 3 tens and 9 ones|Count the tallies below. There are __ in all. That is __ tens and __ ones.
+5|9, No|In a picture graph, 1 star = 3 crayons. Count the stars below. How many crayons do they show? __ Is that more than 10 crayons? Yes or No: __
+6|Max, 12|In a column graph, each square is 1 vote. Max's bar is 13 squares tall and Rae's bar is 1 square tall. Who got MORE votes? __ How many more votes did Max get? __

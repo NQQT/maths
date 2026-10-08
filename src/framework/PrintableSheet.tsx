@@ -128,11 +128,16 @@ const Rule = styledComponent('hr', {
 // so no matter how many problems a worksheet generates, the LAST question row
 // always lands at the bottom of the page: there is never a blank band between
 // the questions and the page foot (screen preview and print share this layout).
+//
+// DEEPER-TASK SPACING (R3): the gaps are sized for the roomy 4..10-per-page
+// densities the illustrated sheets target — at 10/page two-column each row is
+// ~180px, and the 32/24px gutters keep figures (max ~130px tall) and their
+// prompts visually separated without pushing the last row off the sheet.
 const ProblemGrid = styledComponent<{ single: boolean }>('div', {
     display: 'grid',
     gridTemplateColumns: ({ single }) => (single ? '1fr' : '1fr 1fr'),
-    columnGap: '28px',
-    rowGap: '16px',
+    columnGap: '32px',
+    rowGap: '24px',
     alignItems: 'center',
     flex: 1,
     minHeight: '0',
@@ -141,7 +146,7 @@ const ProblemGrid = styledComponent<{ single: boolean }>('div', {
 
 const ProblemRow = styledComponent('div', {
     display: 'flex',
-    gap: '10px',
+    gap: '12px',
     fontSize: '22px',
     lineHeight: 1.5
 });
@@ -174,22 +179,24 @@ const ProblemText = styledComponent<{ illustrated: boolean }>('span', {
 // Full-width fill-in line printed BELOW a prompt flagged `answerLine` — the
 // student writes the answer on its own line (e.g. "7:45 is the same time in
 // words:" with the writing space underneath), not squeezed inline. Extra
-// height above the rule leaves real pen-on-paper room.
+// height above the rule leaves real pen-on-paper room: 1.5em of clear space
+// under the baseline is a full handwritten word/phrase for a young learner.
 const AnswerLine = styledComponent('span', {
     display: 'block',
-    height: '1.2em',
-    marginTop: '12px',
-    borderBottom: '2px solid #1a1a1a'
+    height: '1.5em',
+    marginTop: '14px',
+    borderBottom: '2.5px solid #1a1a1a'
 });
 
 // A fill-in blank. Big blanks (name/date lines, and problems flagged
 // `wideBlanks` — e.g. handwritten "quarter past 11" answers) are wide;
-// default question blanks are short.
+// default question blanks fit a written digit/word, and the heavier rule
+// keeps the line visible once a pencil has been dragged across it.
 const Blank = styledComponent<{ big?: boolean }>('span', {
     display: 'inline-block',
-    minWidth: ({ big }) => (big ? '140px' : '38px'),
-    borderBottom: '2px solid #1a1a1a',
-    height: '0.8em',
+    minWidth: ({ big }) => (big ? '160px' : '56px'),
+    borderBottom: '2.5px solid #1a1a1a',
+    height: '0.9em',
     verticalAlign: 'baseline',
     margin: '0 5px'
 });
@@ -211,25 +218,31 @@ const FooterText = styledComponent('span', {
 });
 
 // ── Analog clock figure (optional problem.clock) ─────────────────────────────
-// When a problem carries a `clock` figure (types.ts ClockFigure) a small SVG
-// analog clock is printed before the prompt text: hands drawn for reading
-// items, a BLANK face for "draw the hands" items. Pure geometry — hand angles
-// are measured clockwise from 12 o'clock, so a hand tip sits at
+// When a problem carries a `clock` figure (types.ts ClockFigure) an SVG analog
+// clock is printed before the prompt text: hands drawn for reading items, a
+// BLANK face for "draw the hands" items. Pure geometry — hand angles are
+// measured clockwise from 12 o'clock, so a hand tip sits at
 // (cx + r·sin θ, cy − r·cos θ) with θ = (fraction of the dial) × 360°.
+//
+// SIZE (R2): 120px — a draw-the-hands face must be big enough for a child to
+// rule two hands and still read the numerals; the 64-unit viewBox keeps every
+// stroke/numeral resolution-independent (the rim stroke renders ~3.8px here).
+// The hour hand's 3.5-unit stroke is a pinned contract (plugins.test.tsx
+// distinguishes drawn vs blank faces by it) — do not renumber it.
 const ClockBox = styledComponent('span', {
     display: 'inline-block',
-    width: '100px',
-    height: '100px',
+    width: '120px',
+    height: '120px',
     flexShrink: 0,
     alignSelf: 'center'
 });
 
 function ClockFace({ clock }: { clock: ClockFigure }) {
-    // 64-unit viewBox scaled up to a 100px box: all geometry below is defined
+    // 64-unit viewBox scaled up to a 120px box: all geometry below is defined
     // in the 64-unit space (centre 32) and scales with the svg size, keeping
     // the numbers, ticks and hands crisp at any print size.
     const c = 32;
-    const SIZE = 100;
+    const SIZE = 120;
     const showHands = clock.hands !== false;
     // Hour hand moves 30° per hour PLUS 0.5° per minute (so a half-past hand
     // points halfway between two numbers); minute hand moves 6° per minute.

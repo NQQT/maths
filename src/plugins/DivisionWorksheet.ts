@@ -15,6 +15,22 @@
 // deliberately — plugins never import from each other). Deleting this file
 // and its line in plugins/index.ts removes the Division worksheet without
 // affecting the framework or any other plugin.
+//
+// DEPTH DESIGN (quality over quantity): five connected items per page — the
+// equal-group diagrams and worded stories need the working space. Families:
+//   family    — one multiplication fact unlocks BOTH division facts
+//               (p ÷ a and p ÷ b): the multiplication↔division bridge
+//   missing   — __ ÷ d = q style missing-divisor lines (reverse thinking)
+//   share     — equal-sharing story WITH the visible equal-group model
+//               (framework DivisionDiagram) where it fits A4
+//   groupsOf  — grouping story with the same model
+//   remainder — groups of d with a LEFTOVER count: full groups AND remainder
+//               (prose only — the diagram draws exact groups, so it is
+//               deliberately NOT attached when dots are left over)
+//   twoShare  — two quantities shared by the SAME number of friends
+//   reverse   — "q each to d children, none left" → recover the total, then
+//               re-share it a different way (inverse of sharing)
+// Every multi-part answer string lists BOTH part results in printed order.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { Caps, DashboardFramework, DashboardPlugin, GradeConfig, RawProblem, Rng, WorksheetSpec } from '../framework';
@@ -30,16 +46,32 @@ const THINGS_SING = ['apple', 'toy', 'sticker', 'balloon', 'cookie', 'crayon', '
 // Grammatical count phrase: "1 cookie", "2 cookies".
 const countOf = (n: number, idx: number) => `${n} ${n === 1 ? THINGS_SING[idx] : THINGS[idx]}`;
 
+// Reverse-share tuples (total, d, d2): a total ≤ 40 that divides EXACTLY by
+// two different friend counts 2..10. Built once at module load — deterministic
+// and loop-free at generation time.
+const REVERSE_TUPLES: { total: number; d: number; d2: number }[] = (() => {
+    const out: { total: number; d: number; d2: number }[] = [];
+    for (let d = 2; d <= 10; d++) {
+        for (let q = 2; q <= 10; q++) {
+            const total = d * q;
+            if (total > 40) continue;
+            for (let d2 = 2; d2 <= 10; d2++) {
+                if (d2 !== d && total % d2 === 0) out.push({ total, d, d2 });
+            }
+        }
+    }
+    return out;
+})();
+
 // Division by equal sharing & grouping (V8 Y2 multiplication/division; V9
-// AC9M2N05). Three forms: the ÷ sign, a "share between friends" story, and a
-// "put into groups of d" story. Divisors are >= 2 to avoid trivial x ÷ 1, and
-// every dividend stays <= multCap * multCap (100 for Year 2). Only offered in
-// Year 2 (buildDocument checks grade.available through the spec first).
+// AC9M2N05). Divisors are >= 2 to avoid trivial x ÷ 1, and every dividend
+// stays <= multCap * multCap (100 for Year 2). Only offered in Year 2
+// (buildDocument checks grade.available through the spec first).
 //
 // NON-REPEATING SAMPLING: names and things are dealt from decks and the whole
 // question passes through sampleUnique keyed on the printed prompt — the
-// (divisor x quotient x form x name x thing) cross-product keeps a 100-page
-// document repeat-free.
+// (form × divisor × quotient × remainder × name × thing) cross-product keeps
+// even a 100-page document repeat-free.
 function generateDivision(rng: Rng, caps: Caps, count: number): RawProblem[] {
     const cap = Math.max(2, caps.multCap);
     const nameDeck = createDeck(rng, NAMES);
@@ -47,29 +79,102 @@ function generateDivision(rng: Rng, caps: Caps, count: number): RawProblem[] {
     return sampleUnique(
         count,
         () => {
-            const r = rng.next();
+            const form = rng.pick(['family', 'missing', 'share', 'groupsOf', 'remainder', 'twoShare', 'reverse'] as const);
+            if (form === 'family') {
+                // The fact family: one product, TWO divisions — (b) is the
+                // sibling fact of (a), the multiplication↔division bridge.
+                // a ≠ b keeps the two parts genuinely different questions.
+                const a = rng.int(2, cap);
+                let b = rng.int(2, cap);
+                if (b === a) b = a === cap ? 2 : a + 1;
+                const p = a * b;
+                return {
+                    prompt:
+                        `${a} × ${b} = ${p}.\n` +
+                        `(a) ${p} ÷ ${a} = __\n` +
+                        `(b) ${p} ÷ ${b} = __`,
+                    answer: `${b}, ${a}`
+                };
+            }
+            if (form === 'missing') {
+                // Missing DIVISOR: "p ÷ __ = q" — reverse multiplication. The
+                // equation's "__" is the single response blank.
+                const d = rng.int(2, cap);
+                const q = rng.int(2, cap);
+                return {
+                    prompt: `${d * q} ÷ __ = ${q}`,
+                    answer: `${d}`
+                };
+            }
+            if (form === 'twoShare') {
+                // Two quantities, the SAME d friends: the divisor is shared
+                // context, the parts are independent quotients.
+                const d = rng.int(2, Math.min(5, cap));
+                const k1 = rng.int(1, Math.floor(20 / d));
+                const k2 = rng.int(1, Math.floor(20 / d));
+                const idx1 = thingDeck.take();
+                let idx2 = thingDeck.take();
+                if (idx2 === idx1) idx2 = (idx1 + 1) % THINGS.length;
+                return {
+                    prompt:
+                        `There are ${countOf(d * k1, idx1)} and ${countOf(d * k2, idx2)}. They are shared equally between ${d} friends.\n` +
+                        `(a) How many ${THINGS[idx1]} does each friend get? __\n` +
+                        `(b) How many ${THINGS[idx2]} does each friend get? __`,
+                    answer: `${k1}, ${k2}`
+                };
+            }
+            if (form === 'reverse') {
+                // Recover the total from "q each, none left", then re-share
+                // the SAME total with a different friend count.
+                const t = rng.pick(REVERSE_TUPLES);
+                const q = t.total / t.d;
+                const idx = thingDeck.take();
+                const n = nameDeck.take();
+                return {
+                    prompt:
+                        `${n} gives ${countOf(q, idx)} to each of ${t.d} children, and there are none left over.\n` +
+                        `(a) How many ${THINGS[idx]} are there altogether? __\n` +
+                        `(b) If they were shared equally between ${t.d2} children instead, how many would each child get? __`,
+                    answer: `${t.total}, ${t.total / t.d2}`
+                };
+            }
+            if (form === 'remainder') {
+                // Grouping WITH leftovers: full groups AND the remainder.
+                // Prose only — the equal-group diagram draws exact groups, so
+                // attaching it here would misrepresent the leftover items.
+                const d = rng.int(2, Math.min(9, cap));
+                const q = rng.int(2, Math.max(2, Math.min(cap, Math.floor((40 - d) / d))));
+                const r = rng.int(1, d - 1);
+                const total = d * q + r;
+                const idx = thingDeck.take();
+                return {
+                    prompt:
+                        `There are ${countOf(total, idx)}. They are put into groups of ${d}.\n` +
+                        `(a) How many FULL groups can be made? __\n` +
+                        `(b) How many ${THINGS[idx]} are left over? __`,
+                    answer: `${q}, ${r}`
+                };
+            }
             const d = rng.int(2, cap); // divisor / friends / group size
             const q = rng.int(1, cap); // quotient
             const idx = thingDeck.take();
             const thing = THINGS[idx];
-            if (r < 0.4) {
-                return { prompt: `${d * q} ÷ ${d} = __`, answer: `${q}` };
-            }
             // A visible equal-group model (framework/DivisionDiagram.tsx) only
             // fits A4 while the buckets stay ≤ 6 with ≤ 36 total dots; bigger
             // story items stay plain prose so the sheet never overflows.
             const figurable = d >= 2 && d <= 6 && d * q <= 36 && q <= 6;
-            if (r < 0.7) {
+            if (form === 'share') {
                 const n = nameDeck.take();
                 return {
-                    prompt: `${n} had ${countOf(d * q, idx)}. ${n} shared them equally between ${d} friends. How many ${thing} does each friend get?`,
+                    prompt: `${n} had ${countOf(d * q, idx)}. ${n} shared them equally between ${d} friends. How many ${thing} does each friend get? __`,
                     answer: `${q}`,
                     // d friend-buckets, each with q dots (dots per bucket = total/friends).
                     ...(figurable ? { division: { kind: 'share' as const, friends: d, total: d * q } } : {})
                 };
             }
+            // 'groupsOf'
             return {
-                prompt: `There are ${countOf(d * q, idx)}. They are put into groups of ${d}. How many groups are there?`,
+                prompt: `There are ${countOf(d * q, idx)}. They are put into groups of ${d}. How many groups are there? __`,
                 answer: `${q}`,
                 // q group-boxes of d dots (groups = total/size; q is gated ≤ 6).
                 ...(figurable ? { division: { kind: 'groupsOf' as const, size: d, total: d * q } } : {})
@@ -84,7 +189,9 @@ export const divisionSpec: WorksheetSpec = {
     id: 'division',
     label: 'Division',
     icon: '÷',
-    perPage: 12,
+    // Five items per page: sharing stories carry equal-group diagrams and
+    // multi-part questions need real working space (density 12 → 5).
+    perPage: 5,
     // Sharing stories are worded — prints single-column.
     singleColumn: true,
     offered: (grade: GradeConfig) => grade.available.includes('division'),

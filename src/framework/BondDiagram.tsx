@@ -8,11 +8,17 @@ import { styledComponent } from '@presource/react';
 import type { BondFigure } from './types';
 
 // Block-level span inside the illustrated ProblemText (the nesting the other
-// figure renderers use). 96 × 68px fits a two-column sheet's row.
+// figure renderers use).
+//
+// SIZE (R2): the 96×68 viewBox renders at 1.25x (120×85px — a binary-exact
+// scale, so the width/height attributes stay clean numbers). The blank
+// (requested-part) circle grows to ~35px across, room for a child's digit,
+// while a two-column row at the sheet's current 16-per-page density (figure
+// + one prompt line ≈ 107px in a ~114px row) still fits without overlap.
 const DiagramRoot = styledComponent('span', {
     display: 'block',
     width: 'fit-content',
-    marginTop: '4px'
+    marginTop: '6px'
 });
 
 // Connection geometry, precomputed once (whole → part circle edges):
@@ -39,8 +45,8 @@ export function BondDiagram({ figure }: { figure: BondFigure }) {
     return (
         <DiagramRoot>
             <svg
-                width="96px"
-                height="68px"
+                width="120px"
+                height="85px"
                 viewBox="0 0 96 68"
                 role="img"
                 // Neutral accessible name: the missing part is the answer.

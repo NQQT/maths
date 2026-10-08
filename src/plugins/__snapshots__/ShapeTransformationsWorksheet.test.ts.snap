@@ -3,9 +3,9 @@
 exports[`shape transformations — deterministic worksheets > continues one seeded stream across pages and preserves the first page 1`] = `
 [
   {
-    "answer": "B",
+    "answer": "B, turn",
     "id": 7,
-    "prompt": "Rotate pentagon 2 90° clockwise (a quarter turn right) around the dot. Which option matches? __",
+    "prompt": "Rotate pentagon 2 90° clockwise (a quarter turn right) around the dot. Which option matches? __ Is this a flip or a turn? __",
     "shapeTransformation": {
       "guide": "centre",
       "name": "pentagon 2",
@@ -137,9 +137,9 @@ exports[`shape transformations — deterministic worksheets > continues one seed
     "type": "transformations",
   },
   {
-    "answer": "A",
+    "answer": "A, flip",
     "id": 8,
-    "prompt": "Flip triangle 3 top to bottom across the dashed horizontal line. Which option matches? __",
+    "prompt": "Flip triangle 3 top to bottom across the dashed horizontal line. Which option matches? __ Is this a flip or a turn? __",
     "shapeTransformation": {
       "guide": "horizontal",
       "name": "triangle 3",
@@ -231,9 +231,9 @@ exports[`shape transformations — deterministic worksheets > continues one seed
     "type": "transformations",
   },
   {
-    "answer": "C",
+    "answer": "C, flip",
     "id": 9,
-    "prompt": "Flip triangle 4 top to bottom across the dashed horizontal line. Which option matches? __",
+    "prompt": "Flip triangle 4 top to bottom across the dashed horizontal line. Which option matches? __ Is this a flip or a turn? __",
     "shapeTransformation": {
       "guide": "horizontal",
       "name": "triangle 4",
@@ -325,9 +325,9 @@ exports[`shape transformations — deterministic worksheets > continues one seed
     "type": "transformations",
   },
   {
-    "answer": "A",
+    "answer": "A, turn",
     "id": 10,
-    "prompt": "Rotate L-shape 2 90° clockwise (a quarter turn right) around the dot. Which option matches? __",
+    "prompt": "Rotate L-shape 2 90° clockwise (a quarter turn right) around the dot. Which option matches? __ Is this a flip or a turn? __",
     "shapeTransformation": {
       "guide": "centre",
       "name": "L-shape 2",
@@ -479,9 +479,9 @@ exports[`shape transformations — deterministic worksheets > continues one seed
     "type": "transformations",
   },
   {
-    "answer": "C",
+    "answer": "C, flip",
     "id": 11,
-    "prompt": "Flip triangle 4 left to right across the dashed vertical line. Which option matches? __",
+    "prompt": "Flip triangle 4 left to right across the dashed vertical line. Which option matches? __ Is this a flip or a turn? __",
     "shapeTransformation": {
       "guide": "vertical",
       "name": "triangle 4",
@@ -573,9 +573,9 @@ exports[`shape transformations — deterministic worksheets > continues one seed
     "type": "transformations",
   },
   {
-    "answer": "A",
+    "answer": "A, flip",
     "id": 12,
-    "prompt": "Flip triangle 2 left to right across the dashed vertical line. Which option matches? __",
+    "prompt": "Flip triangle 2 left to right across the dashed vertical line. Which option matches? __ Is this a flip or a turn? __",
     "shapeTransformation": {
       "guide": "vertical",
       "name": "triangle 2",
@@ -672,9 +672,9 @@ exports[`shape transformations — deterministic worksheets > continues one seed
 exports[`shape transformations — deterministic worksheets > pins a new refresh while leaving count and zero-count behavior deterministic 1`] = `
 [
   {
-    "answer": "B",
+    "answer": "B, flip",
     "id": 1,
-    "prompt": "Flip L-shape 3 left to right across the dashed vertical line. Which option matches? __",
+    "prompt": "Flip L-shape 3 left to right across the dashed vertical line. Which option matches? __ Is this a flip or a turn? __",
     "shapeTransformation": {
       "guide": "vertical",
       "name": "L-shape 3",
@@ -826,9 +826,9 @@ exports[`shape transformations — deterministic worksheets > pins a new refresh
     "type": "transformations",
   },
   {
-    "answer": "D",
+    "answer": "D, turn",
     "id": 2,
-    "prompt": "Rotate pentagon 2 90° clockwise (a quarter turn right) around the dot. Which option matches? __",
+    "prompt": "Rotate pentagon 2 90° clockwise (a quarter turn right) around the dot. Which option matches? __ Is this a flip or a turn? __",
     "shapeTransformation": {
       "guide": "centre",
       "name": "pentagon 2",
@@ -960,9 +960,9 @@ exports[`shape transformations — deterministic worksheets > pins a new refresh
     "type": "transformations",
   },
   {
-    "answer": "D",
+    "answer": "D, turn",
     "id": 3,
-    "prompt": "Rotate L-shape 3 90° anticlockwise (a quarter turn left) around the dot. Which option matches? __",
+    "prompt": "Rotate L-shape 3 90° anticlockwise (a quarter turn left) around the dot. Which option matches? __ Is this a flip or a turn? __",
     "shapeTransformation": {
       "guide": "centre",
       "name": "L-shape 3",
@@ -1114,9 +1114,9 @@ exports[`shape transformations — deterministic worksheets > pins a new refresh
     "type": "transformations",
   },
   {
-    "answer": "C",
+    "answer": "C, turn",
     "id": 4,
-    "prompt": "Rotate L-shape 1 90° clockwise (a quarter turn right) around the dot. Which option matches? __",
+    "prompt": "Rotate L-shape 1 90° clockwise (a quarter turn right) around the dot. Which option matches? __ Is this a flip or a turn? __",
     "shapeTransformation": {
       "guide": "centre",
       "name": "L-shape 1",
@@ -1268,9 +1268,9 @@ exports[`shape transformations — deterministic worksheets > pins a new refresh
     "type": "transformations",
   },
   {
-    "answer": "D",
+    "answer": "D, turn",
     "id": 5,
-    "prompt": "Rotate L-shape 1 90° anticlockwise (a quarter turn left) around the dot. Which option matches? __",
+    "prompt": "Rotate L-shape 1 90° anticlockwise (a quarter turn left) around the dot. Which option matches? __ Is this a flip or a turn? __",
     "shapeTransformation": {
       "guide": "centre",
       "name": "L-shape 1",
@@ -1422,9 +1422,9 @@ exports[`shape transformations — deterministic worksheets > pins a new refresh
     "type": "transformations",
   },
   {
-    "answer": "C",
+    "answer": "C, flip",
     "id": 6,
-    "prompt": "Flip pentagon 4 left to right across the dashed vertical line. Which option matches? __",
+    "prompt": "Flip pentagon 4 left to right across the dashed vertical line. Which option matches? __ Is this a flip or a turn? __",
     "shapeTransformation": {
       "guide": "vertical",
       "name": "pentagon 4",
@@ -1561,9 +1561,9 @@ exports[`shape transformations — deterministic worksheets > pins a new refresh
 exports[`shape transformations — deterministic worksheets > pins every prompt, answer, guide and option vertex on the first sheet 1`] = `
 [
   {
-    "answer": "C",
+    "answer": "C, flip",
     "id": 1,
-    "prompt": "Flip pentagon 4 left to right across the dashed vertical line. Which option matches? __",
+    "prompt": "Flip pentagon 4 left to right across the dashed vertical line. Which option matches? __ Is this a flip or a turn? __",
     "shapeTransformation": {
       "guide": "vertical",
       "name": "pentagon 4",
@@ -1695,9 +1695,9 @@ exports[`shape transformations — deterministic worksheets > pins every prompt,
     "type": "transformations",
   },
   {
-    "answer": "B",
+    "answer": "B, flip",
     "id": 2,
-    "prompt": "Flip triangle 1 top to bottom across the dashed horizontal line. Which option matches? __",
+    "prompt": "Flip triangle 1 top to bottom across the dashed horizontal line. Which option matches? __ Is this a flip or a turn? __",
     "shapeTransformation": {
       "guide": "horizontal",
       "name": "triangle 1",
@@ -1789,9 +1789,9 @@ exports[`shape transformations — deterministic worksheets > pins every prompt,
     "type": "transformations",
   },
   {
-    "answer": "D",
+    "answer": "D, turn",
     "id": 3,
-    "prompt": "Rotate L-shape 1 90° anticlockwise (a quarter turn left) around the dot. Which option matches? __",
+    "prompt": "Rotate L-shape 1 90° anticlockwise (a quarter turn left) around the dot. Which option matches? __ Is this a flip or a turn? __",
     "shapeTransformation": {
       "guide": "centre",
       "name": "L-shape 1",
@@ -1943,9 +1943,9 @@ exports[`shape transformations — deterministic worksheets > pins every prompt,
     "type": "transformations",
   },
   {
-    "answer": "B",
+    "answer": "B, flip",
     "id": 4,
-    "prompt": "Flip pentagon 1 top to bottom across the dashed horizontal line. Which option matches? __",
+    "prompt": "Flip pentagon 1 top to bottom across the dashed horizontal line. Which option matches? __ Is this a flip or a turn? __",
     "shapeTransformation": {
       "guide": "horizontal",
       "name": "pentagon 1",
@@ -2077,9 +2077,9 @@ exports[`shape transformations — deterministic worksheets > pins every prompt,
     "type": "transformations",
   },
   {
-    "answer": "B",
+    "answer": "B, flip",
     "id": 5,
-    "prompt": "Flip L-shape 4 top to bottom across the dashed horizontal line. Which option matches? __",
+    "prompt": "Flip L-shape 4 top to bottom across the dashed horizontal line. Which option matches? __ Is this a flip or a turn? __",
     "shapeTransformation": {
       "guide": "horizontal",
       "name": "L-shape 4",
@@ -2231,9 +2231,9 @@ exports[`shape transformations — deterministic worksheets > pins every prompt,
     "type": "transformations",
   },
   {
-    "answer": "A",
+    "answer": "A, flip",
     "id": 6,
-    "prompt": "Flip pentagon 4 top to bottom across the dashed horizontal line. Which option matches? __",
+    "prompt": "Flip pentagon 4 top to bottom across the dashed horizontal line. Which option matches? __ Is this a flip or a turn? __",
     "shapeTransformation": {
       "guide": "horizontal",
       "name": "pentagon 4",

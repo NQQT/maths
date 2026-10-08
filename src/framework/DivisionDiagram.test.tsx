@@ -14,12 +14,13 @@ afterEach(cleanup);
 describe('DivisionDiagram — share model', () => {
     it('prints friends buckets each holding total ÷ friends dots', () => {
         // 12 crayons shared between 2 friends: 2 buckets × 6 dots. Buckets are
-        // 20×26px with 6px gaps → 46px wide; the quotient (6) is never text.
+        // 20×26 units with 6-unit gaps (46 wide) displayed 1.5x → 69×39px; the
+        // quotient (6) is never text.
         const { container } = render(<DivisionDiagram figure={Object.freeze({ kind: 'share', friends: 2, total: 12 })} />);
         const svg = container.querySelector('svg')!;
         expect(svg.getAttribute('viewBox')).toBe('0 0 46 26');
-        expect(svg.getAttribute('width')).toBe('46px');
-        expect(svg.getAttribute('height')).toBe('26px');
+        expect(svg.getAttribute('width')).toBe('69px');
+        expect(svg.getAttribute('height')).toBe('39px');
         expect(svg.getAttribute('aria-label')).toBe('equal groups of objects');
         const rects = svg.querySelectorAll('rect');
         expect(rects).toHaveLength(2);

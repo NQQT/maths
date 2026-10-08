@@ -10,6 +10,21 @@
 //     the generator below — shows in the content area via the framework's
 //     standard worksheet recipe (dashboard.createWorksheet).
 //
+// QUALITY-OVER-QUANTITY REDESIGN (T2V): SIX large single-column items instead
+// of ten cramped two-column ones, and every item is a CONNECTED task —
+// observe the printed figure, then justify what it means:
+//   - tally:  count the marks, THEN split the total into tens and ones;
+//   - picture: read the "1 star = u things" scale, count the SVG stars, THEN
+//     judge whether the amount beats 10 (a real comparison, not a trick —
+//     the product is exact, so Yes/No is checkable);
+//   - column: read the two given bar heights, name the winner, THEN compute
+//     the difference (the difference is never drawn on the figure).
+// The pictorial ASCII runs the old prompts printed ("||||/", "★★★★") are
+// GONE from the question text — the SVG figure (framework/DataDiagram.tsx,
+// enlarged by the framework) is now the only picture, and the prompts refer
+// to "the tallies/stars below". Multi-part answers are comma-separated in
+// printed blank order and cover every blank.
+//
 // Fully self-contained: the story vocabulary lives IN this plugin (duplicated
 // deliberately — plugins never import from each other). Deleting this file
 // and its line in plugins/index.ts removes the Data worksheet without
@@ -26,14 +41,24 @@ const NAMES = ['Sam', 'Mia', 'Leo', 'Zoe', 'Tom', 'Max', 'Rae', 'Kai'] as const;
 const THINGS = ['apples', 'toys', 'stickers', 'balloons', 'cookies', 'crayons', 'flowers', 'cars'] as const;
 const THINGS_SING = ['apple', 'toy', 'sticker', 'balloon', 'cookie', 'crayon', 'flower', 'car'] as const;
 
+// Grammatical "1 ten / 2 tens" and "1 one / 3 ones" for the tally breakdown.
+function tensWord(tens: number): string {
+    return tens === 1 ? '1 ten' : `${tens} tens`;
+}
+function onesWord(ones: number): string {
+    return ones === 1 ? '1 one' : `${ones} ones`;
+}
+
 // Data & tally (V8 ACMMG157-158 era; V9 AC9M1ST01/AC9M2ST01): count a classic
-// five-tally (4 strokes + slash) in groups of five, scale a picture graph (1
-// star = u things), or read the difference between two column-graph bars.
+// five-tally (4 strokes + slash) in groups of five and decompose the total,
+// scale a picture graph (1 star = u things) and compare it to 10, or read a
+// column graph's winner AND the difference between the two bars.
 //
 // NON-REPEATING SAMPLING: names and thing pairs are dealt from decks and the
-// whole question passes through sampleUnique keyed on the printed prompt, so
-// the same tally total with a different child/thing (or the same graph with
-// different counts) is a fresh question.
+// whole question passes through sampleUnique keyed on the printed prompt
+// PLUS the figure's counts — the observe-then-justify prompts are deliberately
+// IDENTICAL sentences (the figure is the question), so the figure data is
+// what makes two tallies of different totals distinct sampling keys.
 function generateData(rng: Rng, caps: Caps, count: number): RawProblem[] {
     const cap = Math.max(5, caps.dataCap);
     const nameDeck = createDeck(rng, NAMES);
@@ -42,45 +67,44 @@ function generateData(rng: Rng, caps: Caps, count: number): RawProblem[] {
         count,
         () => {
             const r = rng.next();
-            if (r < 0.45) {
-                // Tally: groups of five (|||/) plus a remainder of single strokes.
-                // The figure (framework/DataDiagram.tsx) draws the SAME marks as
-                // a crisp SVG grid of strokes + slashes; the prompt keeps the ASCII
-                // so the question stays distinct per total (sampling key) while the
-                // printed sheet reads visually.
+            if (r < 0.4) {
+                // Tally, then decompose: groups of five (drawn by the figure)
+                // plus the remainder; the student counts them and states the
+                // tens/ones split of the SAME total.
                 const total = rng.int(3, cap);
-                const marks: string[] = [];
-                const fives = Math.floor(total / 5);
-                for (let f = 0; f < fives; f++) marks.push('||||/');
-                const rest = total % 5;
-                for (let d = 0; d < rest; d++) marks.push('|');
                 return {
-                    prompt: `Count the tallies: ${marks.join(' ')} — how many in all?`,
-                    answer: `${total}`,
+                    prompt: `Count the tallies below. There are __ in all. That is __ tens and __ ones.`,
+                    // Answer covers BOTH blanks: total, then its split.
+                    answer: `${total}, ${tensWord(Math.floor(total / 10))} and ${onesWord(total % 10)}`,
                     // The figure owns the marks (tally groups of five).
                     data: { kind: 'tally', total }
                 };
             }
-            if (r < 0.75) {
+            if (r < 0.7) {
                 // Picture graph: each star counts for u things. Pick by index so we
                 // can pair the plural (the sentence) with the singular ("1 star =
-                // 1 apple") for grammatical counting language.
+                // 1 apple") for grammatical counting language. The stars themselves
+                // are the SVG figure — no Unicode run in the prompt.
                 const u = rng.int(1, 3);
                 const k = rng.int(1, 6);
                 const idx = thingDeck.take();
                 const plural = THINGS[idx];
                 const singular = THINGS_SING[idx];
                 const unit = u === 1 ? `1 ${singular}` : `${u} ${plural}`;
+                const shown = k * u;
                 return {
-                    prompt: `In a picture graph, 1 star = ${unit}. How many ${plural} do ${'★'.repeat(k)} show?`,
-                    answer: `${k * u}`,
-                    // The figure draws exactly k stars (the ★ runs are its data).
+                    prompt: `In a picture graph, 1 star = ${unit}. Count the stars below. How many ${plural} do they show? __ Is that more than 10 ${plural}? Yes or No: __`,
+                    // Both blanks: the scaled count, then the exact comparison.
+                    answer: `${shown}, ${shown > 10 ? 'Yes' : 'No'}`,
+                    // The figure draws exactly k stars (the scale lives in the
+                    // prompt text, the total stays the student's job).
                     data: { kind: 'picture', stars: k }
                 };
             }
-            // Column graph: each square is 1 vote; compare two bars. a >= 2 and
-            // b in [1, a-1] keep the "how many more" difference strictly
-            // positive (never a 0-difference trick question).
+            // Column graph: each square is 1 vote; name the winner THEN work
+            // the difference. a >= 2 and b in [1, a-1] keep the "how many
+            // more" difference strictly positive (never a 0-difference trick
+            // question) and make n1 the unique "more votes" answer.
             const a = rng.int(2, Math.max(3, Math.floor(cap / 2)));
             const b = rng.int(1, a - 1);
             const squares = (n: number) => (n === 1 ? 'square' : 'squares');
@@ -90,14 +114,17 @@ function generateData(rng: Rng, caps: Caps, count: number): RawProblem[] {
             if (n2 === n1) n2 = nameDeck.take();
             if (n2 === n1) n2 = NAMES.find((n) => n !== n1)!;
             return {
-                prompt: `In a column graph, each square is 1 vote. ${n1}'s bar is ${a} ${squares(a)} tall and ${n2}'s bar is ${b} ${squares(b)} tall. How many more votes did ${n1} get?`,
-                answer: `${a - b}`,
-                // The figure draws the two named bars at 2px/vote (values stay
-                // in the prompt; the "how many more" difference is never drawn).
+                prompt: `In a column graph, each square is 1 vote. ${n1}'s bar is ${a} ${squares(a)} tall and ${n2}'s bar is ${b} ${squares(b)} tall. Who got MORE votes? __ How many more votes did ${n1} get? __`,
+                // Both blanks: the winner, then the exact difference.
+                answer: `${n1}, ${a - b}`,
+                // The figure draws the two named bars (values stay in the
+                // prompt; the difference is never drawn).
                 data: { kind: 'column', leftName: n1, rightName: n2, left: a, right: b }
             };
         },
-        (p) => p.prompt
+        // Composite key: identical sentences over different figures are
+        // different questions (the figure carries the data).
+        (p) => `${p.prompt}|${JSON.stringify(p.data)}`
     );
 }
 
@@ -106,13 +133,12 @@ export const dataSpec: WorksheetSpec = {
     id: 'data',
     label: 'Data & Tally',
     icon: '▥',
-    // Ten per A4: each item now carries a real diagram (tally marks /
-    // picture stars / two named bars, framework/DataDiagram.tsx), and the
-    // column-graph prose runs ~4 lines in the compact two-column layout —
-    // ten items (five two-column rows) is the densest page that keeps the
-    // ~80px-tall column bars inside a fixed A4 sheet even on the worst deal
-    // (T3 audit: twelve items clipped up to 145px on some refresh seeds).
-    perPage: 10,
+    // SIX per A4 single-column (was ten two-column): each item prints its
+    // diagram (tally marks / picture stars / two named bars,
+    // framework/DataDiagram.tsx) at full size with the two-part question and
+    // its writing blanks on the same roomy row.
+    perPage: 6,
+    singleColumn: true,
     offered: (grade: GradeConfig) => grade.available.includes('data'),
     scope: () => 'tallies & simple graphs',
     generate: generateData

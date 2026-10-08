@@ -9,13 +9,18 @@ import type { ShapeFigure } from './types';
 
 // Spans keep this valid inside PrintableSheet's illustrated ProblemText
 // (the same nesting constraint ShapeTransformationDiagram.tsx works under).
-// Cards are 56px wide; three candidates + gaps fit a two-column sheet width.
+//
+// SIZE (R2): cards are 72px wide — the outline is large enough to shade/label
+// by hand, and three candidates + gaps (3×72 + 2×10 = 236px) still fit the
+// ~335px two-column sheet, so the 16-per-page density never wraps a row.
+// The 40-unit viewBox is unchanged: every stroke renders at ~2.7px and every
+// proportion is resolution-independent.
 const DiagramRoot = styledComponent('span', {
     display: 'flex',
     width: 'fit-content',
     maxWidth: '100%',
-    gap: '8px',
-    marginTop: '4px',
+    gap: '10px',
+    marginTop: '6px',
     alignItems: 'flex-start',
     whiteSpace: 'normal'
 });
@@ -24,15 +29,15 @@ const DiagramCard = styledComponent('span', {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    width: '56px',
-    flex: '0 0 56px',
-    gap: '2px'
+    width: '72px',
+    flex: '0 0 72px',
+    gap: '3px'
 });
 
-// Explicit 16px label line so inherited worksheet line heights can't enlarge it.
+// Explicit 17px label line so inherited worksheet line heights can't enlarge it.
 const CardLabel = styledComponent('span', {
-    fontSize: '12px',
-    lineHeight: '16px',
+    fontSize: '13px',
+    lineHeight: '17px',
     fontWeight: 600
 });
 
@@ -143,8 +148,8 @@ export function ShapeFigures({ shapes }: { shapes: readonly ShapeFigure[] }) {
             {shapes.map((shape, index) => (
                 <DiagramCard key={`${shape.name}-${index}`}>
                     <svg
-                        width="40px"
-                        height="40px"
+                        width="72px"
+                        height="72px"
                         viewBox="0 0 40 40"
                         role="img"
                         // The label is the option's name (printed under the

@@ -8,28 +8,39 @@ import { arrayCreate } from '@presource/core';
 import { styledComponent } from '@presource/react';
 import type { ColumnFigure } from './types';
 
-// Block-level span inside the illustrated ProblemText. 10px digits, 12px row
-// pitch: a two-term three-digit pair prints ~30 × 32px, so a 24-item
-// two-column sheet keeps fitting A4 (see plugins/AdditionWorksheet.ts).
+// Block-level span inside the illustrated ProblemText.
+//
+// SIZE (R2): the 10-unit digits render at 1.5x (15px) so the columns line up
+// under a pencil, and the viewBox now reserves an 18-unit strip BELOW the
+// result rule (WORKING_SPACE) — the student writes the sum inside the figure,
+// not in the page margin. A two-term three-digit pair prints ~60×75px, so the
+// Year 3 sheets must run at ≤10 per page two-column (the deeper-task density)
+// to keep figure + prompt inside one row.
 const DiagramRoot = styledComponent('span', {
     display: 'block',
     width: 'fit-content',
-    marginTop: '4px'
+    marginTop: '6px'
 });
 
 const ROW_PITCH = 12;
 const TOP = 10;
 const DIGIT_WIDTH = 6;
+// Clear writing room under the result rule (viewBox units, 1.5x on screen).
+const WORKING_SPACE = 18;
+// Display scale: viewBox units render 1.5x larger for print readability.
+const SCALE = 1.5;
 
 export function ColumnDiagram({ figure }: { figure: ColumnFigure }) {
     const digits = Math.max(...figure.terms.map((term) => String(term).length));
     const width = digits * DIGIT_WIDTH + 12; // operator + right margin
-    const height = TOP + (figure.terms.length - 1) * ROW_PITCH + 10;
+    // Rows stack from TOP; the rule sits 4 below the last row and the
+    // WORKING_SPACE strip (plus the old 10-unit bottom pad) stays empty.
+    const height = TOP + (figure.terms.length - 1) * ROW_PITCH + 10 + WORKING_SPACE;
     return (
         <DiagramRoot>
             <svg
-                width={`${width}px`}
-                height={`${height}px`}
+                width={`${width * SCALE}px`}
+                height={`${height * SCALE}px`}
                 viewBox={`0 0 ${width} ${height}`}
                 role="img"
                 // Neutral: the rows are the GIVEN operands only; no result.
