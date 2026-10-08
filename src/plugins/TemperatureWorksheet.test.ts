@@ -1,7 +1,8 @@
 // Unit tests for the TEMPERATURE worksheet plugin.
 //
 // Deterministic pins from seedFrom([grade.id, 'temperature', 0]). Depth
-// design: eight connected items per page (was twelve) — chained day stories,
+// design: four connected items per page (was twelve, then eight — T3M3
+// layout capacity) — chained day stories,
 // comparison-with-difference, error analysis, freezing-point reasoning,
 // warmest-of-three with spread, an ordering write-on line, everyday contexts
 // and thermometer facts. The correctness suite re-derives every answer from
@@ -90,8 +91,10 @@ describe('temperature plugin — declarative spec', () => {
         expect(temperatureSpec.label).toBe('Temperature');
         expect(temperatureSpec.icon).toBe('♨');
         expect(temperatureSpec.singleColumn).toBe(true);
-        // Density regression: eight connected items per page (was 12).
-        expect(temperatureSpec.perPage).toBe(8);
+        // Density regression: four connected items per page (was 12, then 8)
+        // — five wrapped prompt lines clip an 8-row page (T3M3 — see
+        // plugins/layout-capacity.test.ts).
+        expect(temperatureSpec.perPage).toBe(4);
     });
 
     it('describes its scope from the grade temperature cap', () => {
@@ -113,10 +116,6 @@ describe('temperature — Year 1', () => {
             { prompt: 'Is an icy winter night more likely to be 14°C or 3°C? __', answer: '3°C', id: 2, type: 'temperature' },
             { prompt: 'Which season has the hottest days in Australia? __', answer: 'summer', id: 3, type: 'temperature' },
             { prompt: '(a) Which is the warmest: 12°C, 8°C or 18°C? __\n(b) What is the difference between the warmest and the coldest? __', answer: '18°C, 10 degrees', id: 4, type: 'temperature' },
-            { prompt: 'What do we measure temperature with? __', answer: 'a thermometer', id: 5, type: 'temperature' },
-            { prompt: "On Monday the temperature is 4°C. Tuesday is 4 degrees warmer than Monday. Wednesday is 5 degrees colder than Tuesday.\n(a) What is Tuesday's temperature? __\n(b) What is Wednesday's temperature? __", answer: '8°C, 3°C', id: 6, type: 'temperature' },
-            { prompt: '(a) Which is colder: 18°C or 14°C? __\n(b) How many degrees colder is it? __', answer: '14°C, 4 degrees', id: 7, type: 'temperature' },
-            { prompt: 'Put these temperatures in order from coldest to warmest: 19°C, 15°C, 6°C', answer: '6°C, 15°C, 19°C', answerLine: true, id: 8, type: 'temperature' },
         ]);
     });
 });
@@ -128,10 +127,6 @@ describe('temperature — Year 2', () => {
             { prompt: '(a) Which is colder: 31°C or 6°C? __\n(b) How many degrees colder is it? __', answer: '6°C, 25 degrees', id: 2, type: 'temperature' },
             { prompt: 'It is 6°C now. The temperature rises by 2 degrees.\n(a) What is the temperature now? __\n(b) Is the new temperature closer to or further from freezing (0°C) than before? __', answer: '8°C, further', id: 3, type: 'temperature' },
             { prompt: '(a) Which is colder: 4°C or 29°C? __\n(b) How many degrees colder is it? __', answer: '4°C, 25 degrees', id: 4, type: 'temperature' },
-            { prompt: '(a) Which is warmer: 3°C or 15°C? __\n(b) How many degrees warmer is it? __', answer: '15°C, 12 degrees', id: 5, type: 'temperature' },
-            { prompt: 'It is 34°C now. The temperature rises by 5 degrees.\n(a) What is the temperature now? __\n(b) Is the new temperature closer to or further from freezing (0°C) than before? __', answer: '39°C, further', id: 6, type: 'temperature' },
-            { prompt: 'It is 25°C now. The temperature rises by 2 degrees.\n(a) What is the temperature now? __\n(b) Is the new temperature closer to or further from freezing (0°C) than before? __', answer: '27°C, further', id: 7, type: 'temperature' },
-            { prompt: "On Monday the temperature is 18°C. Tuesday is 3 degrees warmer than Monday. Wednesday is 4 degrees colder than Tuesday.\n(a) What is Tuesday's temperature? __\n(b) What is Wednesday's temperature? __", answer: '21°C, 17°C', id: 8, type: 'temperature' },
         ]);
     });
 });

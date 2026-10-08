@@ -3,6 +3,140 @@
 exports[`shape transformations — deterministic worksheets > continues one seeded stream across pages and preserves the first page 1`] = `
 [
   {
+    "answer": "A, flip",
+    "id": 6,
+    "prompt": "Flip pentagon 4 top to bottom across the dashed horizontal line. Which option matches? __ Is this a flip or a turn? __",
+    "shapeTransformation": {
+      "guide": "horizontal",
+      "name": "pentagon 4",
+      "options": [
+        {
+          "label": "A",
+          "points": [
+            [
+              -2,
+              -3,
+            ],
+            [
+              -2,
+              1,
+            ],
+            [
+              0,
+              3,
+            ],
+            [
+              3,
+              1,
+            ],
+            [
+              1,
+              -3,
+            ],
+          ],
+        },
+        {
+          "label": "B",
+          "points": [
+            [
+              -3,
+              -2,
+            ],
+            [
+              1,
+              -2,
+            ],
+            [
+              3,
+              0,
+            ],
+            [
+              1,
+              3,
+            ],
+            [
+              -3,
+              1,
+            ],
+          ],
+        },
+        {
+          "label": "C",
+          "points": [
+            [
+              -2,
+              3,
+            ],
+            [
+              -2,
+              -1,
+            ],
+            [
+              0,
+              -3,
+            ],
+            [
+              3,
+              -1,
+            ],
+            [
+              1,
+              3,
+            ],
+          ],
+        },
+        {
+          "label": "D",
+          "points": [
+            [
+              2,
+              3,
+            ],
+            [
+              2,
+              -1,
+            ],
+            [
+              0,
+              -3,
+            ],
+            [
+              -3,
+              -1,
+            ],
+            [
+              -1,
+              3,
+            ],
+          ],
+        },
+      ],
+      "original": [
+        [
+          -2,
+          3,
+        ],
+        [
+          -2,
+          -1,
+        ],
+        [
+          0,
+          -3,
+        ],
+        [
+          3,
+          -1,
+        ],
+        [
+          1,
+          3,
+        ],
+      ],
+    },
+    "type": "transformations",
+  },
+  {
     "answer": "B, turn",
     "id": 7,
     "prompt": "Rotate pentagon 2 90° clockwise (a quarter turn right) around the dot. Which option matches? __ Is this a flip or a turn? __",
@@ -473,194 +607,6 @@ exports[`shape transformations — deterministic worksheets > continues one seed
         [
           -3,
           -2,
-        ],
-      ],
-    },
-    "type": "transformations",
-  },
-  {
-    "answer": "C, flip",
-    "id": 11,
-    "prompt": "Flip triangle 4 left to right across the dashed vertical line. Which option matches? __ Is this a flip or a turn? __",
-    "shapeTransformation": {
-      "guide": "vertical",
-      "name": "triangle 4",
-      "options": [
-        {
-          "label": "A",
-          "points": [
-            [
-              -2,
-              3,
-            ],
-            [
-              -2,
-              -2,
-            ],
-            [
-              1,
-              3,
-            ],
-          ],
-        },
-        {
-          "label": "B",
-          "points": [
-            [
-              3,
-              2,
-            ],
-            [
-              -2,
-              2,
-            ],
-            [
-              3,
-              -1,
-            ],
-          ],
-        },
-        {
-          "label": "C",
-          "points": [
-            [
-              2,
-              3,
-            ],
-            [
-              2,
-              -2,
-            ],
-            [
-              -1,
-              3,
-            ],
-          ],
-        },
-        {
-          "label": "D",
-          "points": [
-            [
-              -3,
-              -2,
-            ],
-            [
-              2,
-              -2,
-            ],
-            [
-              -3,
-              1,
-            ],
-          ],
-        },
-      ],
-      "original": [
-        [
-          -2,
-          3,
-        ],
-        [
-          -2,
-          -2,
-        ],
-        [
-          1,
-          3,
-        ],
-      ],
-    },
-    "type": "transformations",
-  },
-  {
-    "answer": "A, flip",
-    "id": 12,
-    "prompt": "Flip triangle 2 left to right across the dashed vertical line. Which option matches? __ Is this a flip or a turn? __",
-    "shapeTransformation": {
-      "guide": "vertical",
-      "name": "triangle 2",
-      "options": [
-        {
-          "label": "A",
-          "points": [
-            [
-              -2,
-              -3,
-            ],
-            [
-              -2,
-              2,
-            ],
-            [
-              1,
-              -3,
-            ],
-          ],
-        },
-        {
-          "label": "B",
-          "points": [
-            [
-              2,
-              -3,
-            ],
-            [
-              2,
-              2,
-            ],
-            [
-              -1,
-              -3,
-            ],
-          ],
-        },
-        {
-          "label": "C",
-          "points": [
-            [
-              2,
-              3,
-            ],
-            [
-              2,
-              -2,
-            ],
-            [
-              -1,
-              3,
-            ],
-          ],
-        },
-        {
-          "label": "D",
-          "points": [
-            [
-              -3,
-              -2,
-            ],
-            [
-              2,
-              -2,
-            ],
-            [
-              -3,
-              1,
-            ],
-          ],
-        },
-      ],
-      "original": [
-        [
-          2,
-          -3,
-        ],
-        [
-          2,
-          2,
-        ],
-        [
-          -1,
-          -3,
         ],
       ],
     },
@@ -1421,140 +1367,6 @@ exports[`shape transformations — deterministic worksheets > pins a new refresh
     },
     "type": "transformations",
   },
-  {
-    "answer": "C, flip",
-    "id": 6,
-    "prompt": "Flip pentagon 4 left to right across the dashed vertical line. Which option matches? __ Is this a flip or a turn? __",
-    "shapeTransformation": {
-      "guide": "vertical",
-      "name": "pentagon 4",
-      "options": [
-        {
-          "label": "A",
-          "points": [
-            [
-              -2,
-              3,
-            ],
-            [
-              -2,
-              -1,
-            ],
-            [
-              0,
-              -3,
-            ],
-            [
-              3,
-              -1,
-            ],
-            [
-              1,
-              3,
-            ],
-          ],
-        },
-        {
-          "label": "B",
-          "points": [
-            [
-              -3,
-              -2,
-            ],
-            [
-              1,
-              -2,
-            ],
-            [
-              3,
-              0,
-            ],
-            [
-              1,
-              3,
-            ],
-            [
-              -3,
-              1,
-            ],
-          ],
-        },
-        {
-          "label": "C",
-          "points": [
-            [
-              2,
-              3,
-            ],
-            [
-              2,
-              -1,
-            ],
-            [
-              0,
-              -3,
-            ],
-            [
-              -3,
-              -1,
-            ],
-            [
-              -1,
-              3,
-            ],
-          ],
-        },
-        {
-          "label": "D",
-          "points": [
-            [
-              -2,
-              -3,
-            ],
-            [
-              -2,
-              1,
-            ],
-            [
-              0,
-              3,
-            ],
-            [
-              3,
-              1,
-            ],
-            [
-              1,
-              -3,
-            ],
-          ],
-        },
-      ],
-      "original": [
-        [
-          -2,
-          3,
-        ],
-        [
-          -2,
-          -1,
-        ],
-        [
-          0,
-          -3,
-        ],
-        [
-          3,
-          -1,
-        ],
-        [
-          1,
-          3,
-        ],
-      ],
-    },
-    "type": "transformations",
-  },
 ]
 `;
 
@@ -2225,140 +2037,6 @@ exports[`shape transformations — deterministic worksheets > pins every prompt,
         [
           3,
           2,
-        ],
-      ],
-    },
-    "type": "transformations",
-  },
-  {
-    "answer": "A, flip",
-    "id": 6,
-    "prompt": "Flip pentagon 4 top to bottom across the dashed horizontal line. Which option matches? __ Is this a flip or a turn? __",
-    "shapeTransformation": {
-      "guide": "horizontal",
-      "name": "pentagon 4",
-      "options": [
-        {
-          "label": "A",
-          "points": [
-            [
-              -2,
-              -3,
-            ],
-            [
-              -2,
-              1,
-            ],
-            [
-              0,
-              3,
-            ],
-            [
-              3,
-              1,
-            ],
-            [
-              1,
-              -3,
-            ],
-          ],
-        },
-        {
-          "label": "B",
-          "points": [
-            [
-              -3,
-              -2,
-            ],
-            [
-              1,
-              -2,
-            ],
-            [
-              3,
-              0,
-            ],
-            [
-              1,
-              3,
-            ],
-            [
-              -3,
-              1,
-            ],
-          ],
-        },
-        {
-          "label": "C",
-          "points": [
-            [
-              -2,
-              3,
-            ],
-            [
-              -2,
-              -1,
-            ],
-            [
-              0,
-              -3,
-            ],
-            [
-              3,
-              -1,
-            ],
-            [
-              1,
-              3,
-            ],
-          ],
-        },
-        {
-          "label": "D",
-          "points": [
-            [
-              2,
-              3,
-            ],
-            [
-              2,
-              -1,
-            ],
-            [
-              0,
-              -3,
-            ],
-            [
-              -3,
-              -1,
-            ],
-            [
-              -1,
-              3,
-            ],
-          ],
-        },
-      ],
-      "original": [
-        [
-          -2,
-          3,
-        ],
-        [
-          -2,
-          -1,
-        ],
-        [
-          0,
-          -3,
-        ],
-        [
-          3,
-          -1,
-        ],
-        [
-          1,
-          3,
         ],
       ],
     },

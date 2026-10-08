@@ -52,11 +52,12 @@ const PAIRS: [WorksheetSpec, number][] = [
     [moneySpec, 2]
 ];
 
-// Data's printed question is prompt + figure (the figure carries the data),
-// matching the generator's own sampleUnique key — prompt alone collapses
-// distinct tallies/graphs into one sentence.
-const keyOf = (p: { prompt: string; data?: unknown }): string =>
-    p.data === undefined ? p.prompt : `${p.prompt}|${JSON.stringify(p.data)}`;
+// Question identity = printed prompt + the figure data the prompt does not
+// already carry (data/clock/rowsColumns figures carry the question's numbers
+// for the Data, Clock, Time and Multiplication sheets — matching those
+// generators' own sampleUnique keys).
+const keyOf = (p: Record<string, any>): string =>
+    `${p.prompt}|${JSON.stringify([p.data ?? null, p.clock ?? null, p.rowsColumns ?? null])}`;
 
 for (const [spec, gradeId] of PAIRS) {
     const grade = getGradeConfig(gradeId);

@@ -36,7 +36,9 @@ describe('shapes plugin — declarative spec', () => {
         expect(shapesSpec.id).toBe('shapes');
         expect(shapesSpec.label).toBe('Shapes & Attributes');
         expect(shapesSpec.icon).toBe('△');
-        expect(shapesSpec.perPage).toBe(6);
+        // Five single-column items: three shape cards + wrapped prose need
+        // the room (T3M3 — see plugins/layout-capacity.test.ts).
+        expect(shapesSpec.perPage).toBe(5);
         expect(shapesSpec.singleColumn).toBe(true);
     });
 
@@ -48,7 +50,7 @@ describe('shapes plugin — declarative spec', () => {
 describe('shapes — availability gating', () => {
     it('Prep does not offer the extension type (empty sheet); Year 1 does', () => {
         expect(sheet(g0)).toEqual([]);
-        expect(sheet(g1)).toHaveLength(6);
+        expect(sheet(g1)).toHaveLength(5);
     });
 });
 
@@ -58,12 +60,11 @@ describe('shapes — Year 1 (everyday 2-D + 3-D set)', () => {
         // Every problem carries its figure list (framework/ShapeFigure.tsx
         // draws each named 2-D/3-D shape; option order stays the prompt order).
         expect(s).toEqual([
-            { "prompt": "Which of these 3-D objects has only flat faces? (cube, cylinder, sphere) __", "answer": "cube", "shapes": [{ "name": "cube", "kind": "3d" }, { "name": "cylinder", "kind": "3d" }, { "name": "sphere", "kind": "3d" }], "id": 1, "type": "shapes" },
-            { "prompt": "Which of these 3-D objects has only flat faces? (cube, sphere, cylinder) __", "answer": "cube", "shapes": [{ "name": "cube", "kind": "3d" }, { "name": "sphere", "kind": "3d" }, { "name": "cylinder", "kind": "3d" }], "id": 2, "type": "shapes" },
-            { "prompt": "Count the sides on the shape. How many sides does a triangle have? __", "answer": "3", "shapes": [{ "name": "triangle", "kind": "2d" }], "id": 3, "type": "shapes" },
-            { "prompt": "Count the corners. How many corners does a rectangle have? __", "answer": "4", "shapes": [{ "name": "rectangle", "kind": "2d" }], "id": 4, "type": "shapes" },
-            { "prompt": "Look at the solid. How many flat faces does a sphere have? __", "answer": "0", "shapes": [{ "name": "sphere", "kind": "3d" }], "id": 5, "type": "shapes" },
-            { "prompt": "Look at the solid. How many flat faces does a cylinder have? __", "answer": "2", "shapes": [{ "name": "cylinder", "kind": "3d" }], "id": 6, "type": "shapes" },
+            {"prompt":"Which of these 3-D objects has only flat faces? (cube, cylinder, sphere) __","answer":"cube","shapes":[{"name":"cube","kind":"3d"},{"name":"cylinder","kind":"3d"},{"name":"sphere","kind":"3d"}],"id":1,"type":"shapes"},
+            {"prompt":"Which of these 3-D objects has only flat faces? (cube, sphere, cylinder) __","answer":"cube","shapes":[{"name":"cube","kind":"3d"},{"name":"sphere","kind":"3d"},{"name":"cylinder","kind":"3d"}],"id":2,"type":"shapes"},
+            {"prompt":"Count the sides on the shape. How many sides does a triangle have? __","answer":"3","shapes":[{"name":"triangle","kind":"2d"}],"id":3,"type":"shapes"},
+            {"prompt":"Count the corners. How many corners does a rectangle have? __","answer":"4","shapes":[{"name":"rectangle","kind":"2d"}],"id":4,"type":"shapes"},
+            {"prompt":"Look at the solid. How many flat faces does a sphere have? __","answer":"0","shapes":[{"name":"sphere","kind":"3d"}],"id":5,"type":"shapes"},
         ]);
         // Year 1's shape set has exactly one all-flat 3-D object (the cube), so
         // every "only flat faces" answer in a Y1 sheet must be the cube.
@@ -77,12 +78,11 @@ describe('shapes — Year 2 (adds hexagon, prism, pyramid, cone)', () => {
     it('matches the exact sheet (including the shade act and the justify item)', () => {
         const s = sheet(g2);
         expect(s).toEqual([
-            { "prompt": "Count the sides on the shape. How many sides does a rectangle have? __", "answer": "4", "shapes": [{ "name": "rectangle", "kind": "2d" }], "id": 1, "type": "shapes" },
-            { "prompt": "Which of these 3-D objects has only flat faces? (pyramid, cylinder, cone) __", "answer": "pyramid", "shapes": [{ "name": "pyramid", "kind": "3d" }, { "name": "cylinder", "kind": "3d" }, { "name": "cone", "kind": "3d" }], "id": 2, "type": "shapes" },
-            { "prompt": "Shade the sphere.", "answer": "sphere", "shapes": [{ "name": "sphere", "kind": "3d" }, { "name": "cube", "kind": "3d" }, { "name": "cone", "kind": "3d" }], "id": 3, "type": "shapes" },
-            { "prompt": "Tick Yes or No: \"Oval has 0 corners.\" __ Now count: how many corners does a rectangle have? __", "answer": "Yes, 4", "shapes": [{ "name": "oval", "kind": "2d" }, { "name": "rectangle", "kind": "2d" }], "id": 4, "type": "shapes" },
-            { "prompt": "Which 2-D shape has 0 corners? (triangle, oval, rectangle) __", "answer": "oval", "shapes": [{ "name": "triangle", "kind": "2d" }, { "name": "oval", "kind": "2d" }, { "name": "rectangle", "kind": "2d" }], "id": 5, "type": "shapes" },
-            { "prompt": "Count the corners. How many corners does an oval have? __", "answer": "0", "shapes": [{ "name": "oval", "kind": "2d" }], "id": 6, "type": "shapes" },
+            {"prompt":"Count the sides on the shape. How many sides does a rectangle have? __","answer":"4","shapes":[{"name":"rectangle","kind":"2d"}],"id":1,"type":"shapes"},
+            {"prompt":"Which of these 3-D objects has only flat faces? (pyramid, cylinder, cone) __","answer":"pyramid","shapes":[{"name":"pyramid","kind":"3d"},{"name":"cylinder","kind":"3d"},{"name":"cone","kind":"3d"}],"id":2,"type":"shapes"},
+            {"prompt":"Shade the sphere.","answer":"sphere","shapes":[{"name":"sphere","kind":"3d"},{"name":"cube","kind":"3d"},{"name":"cone","kind":"3d"}],"id":3,"type":"shapes"},
+            {"prompt":"Tick Yes or No: \"Oval has 0 corners.\" __ Now count: how many corners does a rectangle have? __","answer":"Yes, 4","shapes":[{"name":"oval","kind":"2d"},{"name":"rectangle","kind":"2d"}],"id":4,"type":"shapes"},
+            {"prompt":"Which 2-D shape has 0 corners? (triangle, oval, rectangle) __","answer":"oval","shapes":[{"name":"triangle","kind":"2d"},{"name":"oval","kind":"2d"},{"name":"rectangle","kind":"2d"}],"id":5,"type":"shapes"},
         ]);
         // "Only flat faces" answers are exactly the non-curved 3-D solids, and
         // the printed distractors never repeat the property: exactly ONE

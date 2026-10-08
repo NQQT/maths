@@ -11,8 +11,9 @@ import type { ShapeFigure } from './types';
 // (the same nesting constraint ShapeTransformationDiagram.tsx works under).
 //
 // SIZE (R2): cards are 72px wide — the outline is large enough to shade/label
-// by hand, and three candidates + gaps (3×72 + 2×10 = 236px) still fit the
-// ~335px two-column sheet, so the 16-per-page density never wraps a row.
+// by hand, and three candidates + gaps (3×72 + 2×10 = 236px) fit the 665px
+// single-column sheet, so the current 5-per-page density never wraps a row
+// (figure + two wrapped prompt lines ≈ 141.2px in a 163.6px row).
 // The 40-unit viewBox is unchanged: every stroke renders at ~2.7px and every
 // proportion is resolution-independent.
 const DiagramRoot = styledComponent('span', {

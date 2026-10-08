@@ -20,9 +20,9 @@
 //
 // USABLE PRINTED AREA (T2V): every item now prints a full-width answer LINE
 // under its prose (`answerLine`) — the direction is handwritten on its own
-// line, not in thin air after the sentence — and the page carries SIX roomy
-// items (was nine) so each rose/map figure and its answer line get real
-// space. The question space itself (the curated 62-prompt N/S/E/W set) and
+// line, not in thin air after the sentence — and the page carries FOUR roomy
+// items (was nine, then six) so each rose/map figure and its answer line get
+// real space. The question space itself (the curated 62-prompt N/S/E/W set) and
 // the seeded deal order are deliberately UNCHANGED: they are pinned by the
 // shared capacity suite and the dashboard's Year-3 first-row pin.
 //
@@ -196,11 +196,15 @@ export const compassSpec: WorksheetSpec = {
     id: 'compass',
     label: 'Compass Directions',
     icon: '✥',
-    // SIX per A4 single-column (was nine): each item carries its compass
-    // rose / map reference (framework/CompassDiagram.tsx) AND a full-width
-    // handwritten answer line, so the prose, figure and writing space all get
-    // usable room on the fixed page.
-    perPage: 6,
+    // FOUR per A4 single-column (was nine, then six): each item carries its
+    // compass rose / map reference (framework/CompassDiagram.tsx) AND a
+    // full-width handwritten answer line, so the prose, figure and writing
+    // space all get usable room on the fixed page.
+    // LAYOUT CAPACITY (T3M3): worst row = two wrapped 16px prompt lines
+    // (2×21.6px) + 90px rose + 40.5px answer line = 173.7px; at 6/page the
+    // 1fr row is 132.3px (overflow), at 4/page 210.5px (margin 36.8).
+    // See plugins/layout-capacity.test.ts for the model.
+    perPage: 4,
     // Two-sentence turn/position items — prints single-column like the
     // measurement sheet.
     singleColumn: true,

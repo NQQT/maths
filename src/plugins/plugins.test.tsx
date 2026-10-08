@@ -333,8 +333,8 @@ describe('the real worksheet plugins — register through the same pipeline', ()
         expect(probeStore!.session).toEqual({ gradeId: 1, pageCount: 1, zoom: 'fit', refresh: 0 });
 
         // Default selection: the first plugin (Addition) — its page renders
-        // the Year 1 addition preview (pinned first row "10 + 9 =").
-        expect(screen.getByTestId('sheet-preview-page1').textContent).toContain('1.10 + 9 =');
+        // the Year 1 addition preview (pinned first row "4 + 16 =").
+        expect(screen.getByTestId('sheet-preview-page1').textContent).toContain('1.4 + 16 =');
     });
 
     it('grade-gates the rail: Year 1 hides Multiplication, Year 2 shows it', () => {
@@ -399,17 +399,16 @@ describe('the real worksheet plugins — register through the same pipeline', ()
         const images = page.querySelectorAll('svg');
         // Exact names identify geometry, not which letter is correct. The
         // plugin's full vertex/answer pins live in its adjacent unit tests.
-        expect(images.length).toBe(30);
+        expect(images.length).toBe(25);
         expect(arrayCreate(({ index }) => images[index]?.getAttribute('aria-label'))).toEqual([
             'Original pentagon 4', 'Option A', 'Option B', 'Option C', 'Option D',
             'Original triangle 1', 'Option A', 'Option B', 'Option C', 'Option D',
             'Original L-shape 1', 'Option A', 'Option B', 'Option C', 'Option D',
             'Original pentagon 1', 'Option A', 'Option B', 'Option C', 'Option D',
-            'Original L-shape 4', 'Option A', 'Option B', 'Option C', 'Option D',
-            'Original pentagon 4', 'Option A', 'Option B', 'Option C', 'Option D'
+            'Original L-shape 4', 'Option A', 'Option B', 'Option C', 'Option D'
         ]);
         const guides = page.querySelectorAll('line, circle');
-        expect(arrayCreate(({ index }) => guides[index]?.tagName)).toEqual(['line', 'line', 'circle', 'line', 'line', 'line']);
+        expect(arrayCreate(({ index }) => guides[index]?.tagName)).toEqual(['line', 'line', 'circle', 'line', 'line']);
     });
 
     it('worksheet plugins share the dashboard session (page count persists across worksheets)', () => {
@@ -466,16 +465,17 @@ describe('the real worksheet plugins — register through the same pipeline', ()
         });
         fireEvent.click(screen.getByRole('button', { name: 'Clock Faces' }));
 
-        // The pinned Year 2 sheet has 10 problems, 4 of which carry a clock
-        // figure (2 reading + 2 drawing; the 6 conversions are pure text).
-        // Every face carries 12 tick <line>s; hands add 2 more (hour hand
-        // strokeWidth 3.5) — so exactly 2 drawn faces + 2 blank draw faces.
+        // The pinned Year 2 sheet has 6 problems, 2 of which carry a clock
+        // figure (both READING items — the seed deals no draw item on page 1;
+        // the 4 conversions are pure text). Every face carries 12 tick
+        // <line>s; hands add 2 more (hour hand strokeWidth 3.5) — so exactly
+        // 2 drawn faces and no blank faces.
         const page = screen.getByTestId('sheet-preview-page1');
         const svgs = Array.from(page.querySelectorAll('svg'));
-        expect(svgs).toHaveLength(4);
+        expect(svgs).toHaveLength(2);
         const hasHourHand = (svg: Element) =>
             Array.from(svg.querySelectorAll('line')).some((l) => l.getAttribute('stroke-width') === '3.5');
-        expect(svgs.filter((svg) => !hasHourHand(svg))).toHaveLength(2);
+        expect(svgs.filter((svg) => !hasHourHand(svg))).toHaveLength(0);
         expect(svgs.filter(hasHourHand)).toHaveLength(2);
     });
 });

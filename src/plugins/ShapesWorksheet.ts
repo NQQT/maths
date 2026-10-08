@@ -243,10 +243,14 @@ export const shapesSpec: WorksheetSpec = {
     id: 'shapes',
     label: 'Shapes & Attributes',
     icon: '△',
-    // Six large single-column items: each prints its shape figure(s) at full
+    // Five large single-column items: each prints its shape figure(s) at full
     // size with room to count, shade and write — the old sixteen-up two-column
     // page left no usable area for any of that.
-    perPage: 6,
+    // LAYOUT CAPACITY (T3M3): worst row = two prompt lines (2×21.6px) +
+    // three 72px ShapeFigure cards (6+72+3+17px) = 141.2px; at 6/page the 1fr
+    // row is 132.4px (overflow), at 5/page 163.6px (margin 22.4).
+    // See plugins/layout-capacity.test.ts for the model.
+    perPage: 5,
     singleColumn: true,
     offered: (grade: GradeConfig) => grade.available.includes('shapes'),
     scope: () => '2-D & 3-D shapes',

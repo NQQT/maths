@@ -111,9 +111,9 @@ export function DataDiagram({ figure }: { figure: DataFigure }) {
     // Column graph: two named bars, 2px per square in the 76×80 viewBox,
     // rendered at 1.25x (95×100px) so the bars are readable and the names
     // print at ~11px. The figure + the long prose prompt stay inside one row
-    // even at the old 10-per-page two-column density, and comfortably so at
-    // the sheet's current single-column layout. No heights-in-numbers, no
-    // difference label (the difference is the PRIVATE answer).
+    // at the sheet's current 4-per-page single-column layout (figure + three
+    // wrapped prompt lines ≈ 170.8px in a 210.5px row). No heights-in-numbers,
+    // no difference label (the difference is the PRIVATE answer).
     const leftHeight = figure.left * 2;
     const rightHeight = figure.right * 2;
     return (

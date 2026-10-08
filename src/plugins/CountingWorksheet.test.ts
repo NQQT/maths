@@ -44,14 +44,14 @@ describe('counting plugin — declarative spec', () => {
 describe('counting — Prep (within 10)', () => {
     it('matches the exact sheet', () => {
         expect(sheet(g0)).toEqual([
-            { "prompt": "4, __, 6", "answer": "5", "id": 1, "type": "counting" },
-            { "prompt": "Count the squares in this 3 × 2 grid. There are __ squares. The number just after it is __.", "answer": "6, 7", "rowsColumns": { "rows": 3, "cols": 2 }, "id": 2, "type": "counting" },
-            { "prompt": "0, __, 2", "answer": "1", "id": 3, "type": "counting" },
-            { "prompt": "Which is bigger: 1 or 10? __ It is __ more than the other.", "answer": "10, 9", "id": 4, "type": "counting" },
-            { "prompt": "1, __, __, 4", "answer": "2, 3", "id": 5, "type": "counting" },
-            { "prompt": "6, 7, __, 9", "answer": "8", "id": 6, "type": "counting" },
-            { "prompt": "8, 7, __, 5", "answer": "6", "id": 7, "type": "counting" },
-            { "prompt": "Count the squares in this 3 × 3 grid. There are __ squares. The number just after it is __.", "answer": "9, 10", "rowsColumns": { "rows": 3, "cols": 3 }, "id": 8, "type": "counting" },
+            {"prompt":"4, __, 6","answer":"5","id":1,"type":"counting"},
+            {"prompt":"Count the squares in this 3 × 2 grid. There are __ squares. The number just after it is __.","answer":"6, 7","rowsColumns":{"rows":3,"cols":2},"id":2,"type":"counting"},
+            {"prompt":"0, __, 2","answer":"1","id":3,"type":"counting"},
+            {"prompt":"Which is bigger: 1 or 10? __ It is __ more than the other.","answer":"10, 9","id":4,"type":"counting"},
+            {"prompt":"1, __, __, 4","answer":"2, 3","id":5,"type":"counting"},
+            {"prompt":"6, 7, __, 9","answer":"8","id":6,"type":"counting"},
+            {"prompt":"8, 7, __, 5","answer":"6","id":7,"type":"counting"},
+            {"prompt":"Count the squares in this 3 × 3 grid. There are __ squares. The number just after it is __.","answer":"9, 10","rowsColumns":{"rows":3,"cols":3},"id":8,"type":"counting"},
         ]);
     });
 });
@@ -59,14 +59,14 @@ describe('counting — Prep (within 10)', () => {
 describe('counting — Year 1 (within 20)', () => {
     it('matches the exact sheet', () => {
         expect(sheet(g1)).toEqual([
-            { "prompt": "15, __, 17", "answer": "16", "id": 1, "type": "counting" },
-            { "prompt": "0, 1, __, 3", "answer": "2", "id": 2, "type": "counting" },
-            { "prompt": "14, 15, __, 17", "answer": "16", "id": 3, "type": "counting" },
-            { "prompt": "Which is bigger: 10 or 8? __ It is __ more than the other.", "answer": "10, 2", "id": 4, "type": "counting" },
-            { "prompt": "Count the squares in this 5 × 3 grid. There are __ squares. The number just after it is __.", "answer": "15, 16", "rowsColumns": { "rows": 5, "cols": 3 }, "id": 5, "type": "counting" },
-            { "prompt": "16, 15, __, 13", "answer": "14", "id": 6, "type": "counting" },
-            { "prompt": "13, 14, __, 16", "answer": "15", "id": 7, "type": "counting" },
-            { "prompt": "18, 17, __, 15", "answer": "16", "id": 8, "type": "counting" },
+            {"prompt":"15, __, 17","answer":"16","id":1,"type":"counting"},
+            {"prompt":"0, 1, __, 3","answer":"2","id":2,"type":"counting"},
+            {"prompt":"14, 15, __, 17","answer":"16","id":3,"type":"counting"},
+            {"prompt":"Which is bigger: 10 or 8? __ It is __ more than the other.","answer":"10, 2","id":4,"type":"counting"},
+            {"prompt":"Count the squares in this 5 × 3 grid. There are __ squares. The number just after it is __.","answer":"15, 16","rowsColumns":{"rows":5,"cols":3},"id":5,"type":"counting"},
+            {"prompt":"16, 15, __, 13","answer":"14","id":6,"type":"counting"},
+            {"prompt":"13, 14, __, 16","answer":"15","id":7,"type":"counting"},
+            {"prompt":"18, 17, __, 15","answer":"16","id":8,"type":"counting"},
         ]);
     });
 });
@@ -74,14 +74,14 @@ describe('counting — Year 1 (within 20)', () => {
 describe('counting — Year 2 (within 100)', () => {
     it('matches the exact sheet', () => {
         expect(sheet(g2)).toEqual([
-            { "prompt": "Count the squares in this 2 × 8 grid. There are __ squares. The number just after it is __.", "answer": "16, 17", "rowsColumns": { "rows": 2, "cols": 8 }, "id": 1, "type": "counting" },
-            { "prompt": "Count the squares in this 5 × 7 grid. There are __ squares. The number just after it is __.", "answer": "35, 36", "rowsColumns": { "rows": 5, "cols": 7 }, "id": 2, "type": "counting" },
-            { "prompt": "83, 82, __, 80", "answer": "81", "id": 3, "type": "counting" },
-            { "prompt": "Count the squares in this 5 × 2 grid. There are __ squares. The number just after it is __.", "answer": "10, 11", "rowsColumns": { "rows": 5, "cols": 2 }, "id": 4, "type": "counting" },
-            { "prompt": "28, 29, __, 31", "answer": "30", "id": 5, "type": "counting" },
-            { "prompt": "19, __, __, 22", "answer": "20, 21", "id": 6, "type": "counting" },
-            { "prompt": "74, 73, __, 71", "answer": "72", "id": 7, "type": "counting" },
-            { "prompt": "Count the squares in this 4 × 6 grid. There are __ squares. The number just after it is __.", "answer": "24, 25", "rowsColumns": { "rows": 4, "cols": 6 }, "id": 8, "type": "counting" },
+            {"prompt":"Count the squares in this 2 × 8 grid. There are __ squares. The number just after it is __.","answer":"16, 17","rowsColumns":{"rows":2,"cols":8},"id":1,"type":"counting"},
+            {"prompt":"Count the squares in this 5 × 7 grid. There are __ squares. The number just after it is __.","answer":"35, 36","rowsColumns":{"rows":5,"cols":7},"id":2,"type":"counting"},
+            {"prompt":"83, 82, __, 80","answer":"81","id":3,"type":"counting"},
+            {"prompt":"Count the squares in this 5 × 2 grid. There are __ squares. The number just after it is __.","answer":"10, 11","rowsColumns":{"rows":5,"cols":2},"id":4,"type":"counting"},
+            {"prompt":"28, 29, __, 31","answer":"30","id":5,"type":"counting"},
+            {"prompt":"19, __, __, 22","answer":"20, 21","id":6,"type":"counting"},
+            {"prompt":"74, 73, __, 71","answer":"72","id":7,"type":"counting"},
+            {"prompt":"Count the squares in this 4 × 6 grid. There are __ squares. The number just after it is __.","answer":"24, 25","rowsColumns":{"rows":4,"cols":6},"id":8,"type":"counting"},
         ]);
     });
 });

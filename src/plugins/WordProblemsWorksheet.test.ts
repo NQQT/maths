@@ -90,16 +90,16 @@ describe('word problems — Year 1', () => {
     it('matches the exact sheet (two-part connected stories, both answers correct)', () => {
         const s = sheet(g1);
         expect(s).toEqual([
-            { prompt: 'Tom has 2 toys. Kai has 16 more toys than Tom.\n(a) How many toys does Kai have? __\n(b) How many toys do they have in total? __', answer: '18, 20', id: 1, type: 'word' },
-            { prompt: 'Leo had 20 cookies. Leo gave 1 cookie to Sam and 13 cookies to Rae.\n(a) How many cookies did Leo give away? __\n(b) How many cookies does Leo have left? __', answer: '14, 6', id: 2, type: 'word' },
-            { prompt: 'Zoe had 10 apples. Zoe gave 1 apple to Mia and 4 apples to Max.\n(a) How many apples did Zoe give away? __\n(b) How many apples does Zoe have left? __', answer: '5, 5', id: 3, type: 'word' },
-            { prompt: 'Kai has 18 flowers. Tom has 1 flower.\n(a) How many more flowers does Kai have than Tom? __\n(b) How many flowers do they have in total? __', answer: '17, 19', id: 4, type: 'word' },
+            {"prompt":"Tom has 2 toys. Kai has 16 more toys than Tom.\n(a) How many toys does Kai have? __\n(b) How many toys do they have in total? __","answer":"18, 20","id":1,"type":"word"},
+            {"prompt":"Leo had 20 cookies. Leo gave 1 cookie to Sam and 13 cookies to Rae.\n(a) How many cookies did Leo give away? __\n(b) How many cookies does Leo have left? __","answer":"14, 6","id":2,"type":"word"},
+            {"prompt":"Zoe had 10 apples. Zoe gave 1 apple to Mia and 4 apples to Max.\n(a) How many apples did Zoe give away? __\n(b) How many apples does Zoe have left? __","answer":"5, 5","id":3,"type":"word"},
+            {"prompt":"Kai has 18 flowers. Tom has 1 flower.\n(a) How many more flowers does Kai have than Tom? __\n(b) How many flowers do they have in total? __","answer":"17, 19","id":4,"type":"word"},
         ]);
     });
 
     it('page 2 continues the exact stream', () => {
         const doc = generateDocument(wordSpec, g1, seedFrom([1, 'word', 0]), 2);
-        expect(doc.pages[1][0]).toEqual({ id: 5, type: 'word', prompt: 'Zoe has 6 balloons. Rae has 8 balloons.\n(a) How many more balloons does Rae have than Zoe? __\n(b) How many balloons do they have in total? __', answer: '2, 14' });
+        expect(doc.pages[1][0]).toEqual({ id: 5, type: "word", prompt: "Zoe has 6 balloons. Rae has 8 balloons.\n(a) How many more balloons does Rae have than Zoe? __\n(b) How many balloons do they have in total? __", answer: "2, 14" });
     });
 });
 
@@ -107,10 +107,10 @@ describe('word problems — Year 2', () => {
     it('matches the exact sheet', () => {
         const s = sheet(g2);
         expect(s).toEqual([
-            { prompt: 'Sam says 7 - 5 = 1.\n(a) Is Sam correct? __\n(b) What is the correct answer? __', answer: 'no, 2', id: 1, type: 'word' },
-            { prompt: 'Tom says 14 + 6 = 19.\n(a) Is Tom correct? __\n(b) What is the correct answer? __', answer: 'no, 20', id: 2, type: 'word' },
-            { prompt: 'Some cars were in a box. 4 of them were taken out. Now there are 16 cars.\n(a) How many cars were in the box at first? __\n(b) How many will there be after adding 7 more cars? __', answer: '20, 27', id: 3, type: 'word' },
-            { prompt: 'Kai has 8 flowers. Zoe has 8 more flowers than Kai.\n(a) How many flowers does Zoe have? __\n(b) How many flowers do they have in total? __', answer: '16, 24', id: 4, type: 'word' },
+            {"prompt":"Sam says 7 - 5 = 1.\n(a) Is Sam correct? __\n(b) What is the correct answer? __","answer":"no, 2","id":1,"type":"word"},
+            {"prompt":"Tom says 14 + 6 = 19.\n(a) Is Tom correct? __\n(b) What is the correct answer? __","answer":"no, 20","id":2,"type":"word"},
+            {"prompt":"Some cars were in a box. 4 of them were taken out. Now there are 16 cars.\n(a) How many cars were in the box at first? __\n(b) How many will there be after adding 7 more cars? __","answer":"20, 27","id":3,"type":"word"},
+            {"prompt":"Kai has 8 flowers. Zoe has 8 more flowers than Kai.\n(a) How many flowers does Zoe have? __\n(b) How many flowers do they have in total? __","answer":"16, 24","id":4,"type":"word"},
         ]);
     });
 });

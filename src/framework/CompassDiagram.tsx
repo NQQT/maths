@@ -14,7 +14,9 @@ import type { CompassFigure, CompassCardinal } from './types';
 // four cardinals beside the rose or mark a route on the map square. The 48-unit
 // viewBox is untouched (all pinned geometry in CompassDiagram.test.tsx), so the
 // display scale simply thickens every stroke (~3.5px) and numeral (~14px).
-// Capacity: 84px + a two-line prompt fits single-column sheets at ≤7/page.
+// Capacity: 6px margin + 84px rose + two wrapped 16px prompt lines + a 40.5px
+// answer line ≈ 173.7px, which fits single-column sheets at ≤4/page (210.5px
+// rows) — see plugins/layout-capacity.test.ts.
 const DiagramRoot = styledComponent('span', {
     display: 'block',
     width: 'fit-content',

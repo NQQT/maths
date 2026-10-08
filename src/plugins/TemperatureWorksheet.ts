@@ -251,9 +251,13 @@ export const temperatureSpec: WorksheetSpec = {
     id: 'temperature',
     label: 'Temperature',
     icon: '♨',
-    // Eight connected items per page — the multi-part stories and ordering
-    // line need the space the old density of 12 did not leave.
-    perPage: 8,
+    // FOUR items per page — the multi-part stories and ordering line need
+    // the space the old densities did not leave.
+    // LAYOUT CAPACITY (T3M3): worst row = the Mon/Tue/Wed story, five
+    // wrapped 22px prompt lines (5×33px) = 165.0px; at 8/page the 1fr row
+    // is 93.3px (overflow), at 4/page 210.5px (margin 45.5).
+    // See plugins/layout-capacity.test.ts for the model.
+    perPage: 4,
     // Mixes short comparisons with worded items — prints single-column.
     singleColumn: true,
     offered: (grade: GradeConfig) => grade.available.includes('temperature'),

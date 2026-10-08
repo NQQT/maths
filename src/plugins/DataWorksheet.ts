@@ -133,11 +133,15 @@ export const dataSpec: WorksheetSpec = {
     id: 'data',
     label: 'Data & Tally',
     icon: '▥',
-    // SIX per A4 single-column (was ten two-column): each item prints its
-    // diagram (tally marks / picture stars / two named bars,
+    // FOUR per A4 single-column (was ten two-column, then six): each item
+    // prints its diagram (tally marks / picture stars / two named bars,
     // framework/DataDiagram.tsx) at full size with the two-part question and
     // its writing blanks on the same roomy row.
-    perPage: 6,
+    // LAYOUT CAPACITY (T3M3): worst row = three prompt lines (3×21.6px) +
+    // column-graph DataDiagram (6+100px) = 170.8px; at 6/page the 1fr row is
+    // 132.4px and at 5/page 163.6px (both overflow), at 4/page 210.5px
+    // (margin 39.7). See plugins/layout-capacity.test.ts for the model.
+    perPage: 4,
     singleColumn: true,
     offered: (grade: GradeConfig) => grade.available.includes('data'),
     scope: () => 'tallies & simple graphs',

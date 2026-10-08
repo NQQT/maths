@@ -13,9 +13,9 @@ import type { ColumnFigure } from './types';
 // SIZE (R2): the 10-unit digits render at 1.5x (15px) so the columns line up
 // under a pencil, and the viewBox now reserves an 18-unit strip BELOW the
 // result rule (WORKING_SPACE) — the student writes the sum inside the figure,
-// not in the page margin. A two-term three-digit pair prints ~60×75px, so the
-// Year 3 sheets must run at ≤10 per page two-column (the deeper-task density)
-// to keep figure + prompt inside one row.
+// not in the page margin. A two-term three-digit pair prints ~60×81px, so the
+// Year 3 sheets run single-column at ≤7 per page (the deeper-task density) to
+// keep figure + wrapped prompt inside one row (≈102.6px in a 110px row).
 const DiagramRoot = styledComponent('span', {
     display: 'block',
     width: 'fit-content',

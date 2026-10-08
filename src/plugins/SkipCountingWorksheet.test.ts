@@ -2,7 +2,9 @@
 //
 // The plugin's generator is DETERMINISTIC: the entire sheet is pinned to exact
 // expected values from the same seed the framework uses
-// (seedFrom([grade.id, spec.id, 0])), plus the exact page-2 continuation row.
+// (seedFrom([grade.id, spec.id, 0])), plus the exact page-2 continuation.
+// DEPTH-FIRST SHEET: eight CONNECTED multi-part tasks per page; answers list
+// the blank values IN PRINTED ORDER, comma separated.
 
 import { describe, it, expect } from 'vitest';
 import { seedFrom, getGradeConfig, generateSheet, generateDocument } from '../framework';
@@ -19,7 +21,8 @@ describe('skip counting plugin — declarative spec', () => {
         expect(skipSpec.id).toBe('skip');
         expect(skipSpec.label).toBe('Skip Counting');
         expect(skipSpec.icon).toBe('»');
-        expect(skipSpec.perPage).toBe(16);
+        // Depth-first: eight connected tasks per A4 page.
+        expect(skipSpec.perPage).toBe(8);
     });
 
     it('describes its numeric scope from the grade caps', () => {
@@ -31,49 +34,57 @@ describe('skip counting — Year 1', () => {
     it('matches the exact sheet (every run is a consistent skip)', () => {
         const s = sheet(g1);
         expect(s).toEqual([
-            {"prompt":"43, 33, 23, __","answer":"13","id":1,"type":"skip"},
-            {"prompt":"24, 29, __, 39","answer":"34","id":2,"type":"skip"},
-            {"prompt":"11, 13, 15, __","answer":"17","id":3,"type":"skip"},
-            {"prompt":"13, 23, 33, __","answer":"43","id":4,"type":"skip"},
-            {"prompt":"16, 21, 26, __","answer":"31","id":5,"type":"skip"},
-            {"prompt":"8, 10, __, 14","answer":"12","id":6,"type":"skip"},
-            {"prompt":"34, 39, __, 49","answer":"44","id":7,"type":"skip"},
-            {"prompt":"34, 24, 14, __","answer":"4","id":8,"type":"skip"},
-            {"prompt":"21, 23, __, 27","answer":"25","id":9,"type":"skip"},
-            {"prompt":"3, 13, 23, __","answer":"33","id":10,"type":"skip"},
-            {"prompt":"25, 30, 35, __","answer":"40","id":11,"type":"skip"},
-            {"prompt":"36, 38, 40, __","answer":"42","id":12,"type":"skip"},
-            {"prompt":"1, 11, __, 31","answer":"21","id":13,"type":"skip"},
-            {"prompt":"23, 18, 13, __","answer":"8","id":14,"type":"skip"},
-            {"prompt":"4, 6, __, 10","answer":"8","id":15,"type":"skip"},
-            {"prompt":"16, 26, __, 46","answer":"36","id":16,"type":"skip"},
+            {"prompt":"Start at 2 and count on by 10: 2, __, __","answer":"12, 22","id":1,"type":"skip"},
+            {"prompt":"27, 22, 17, __, __","answer":"12, 7","id":2,"type":"skip"},
+            {"prompt":"32, 34, 36, 38, __; it counts by __","answer":"40, 2","id":3,"type":"skip"},
+            {"prompt":"Does counting by 5 from 32 land on 42? __","answer":"Correct","wideBlanks":true,"id":4,"type":"skip"},
+            {"prompt":"17, 19, __, 23, __","answer":"21, 25","id":5,"type":"skip"},
+            {"prompt":"Does counting by 10 from 47 land on 50? __","answer":"Wrong","wideBlanks":true,"id":6,"type":"skip"},
+            {"prompt":"20, 22, 24, 26, __; it counts by __","answer":"28, 2","id":7,"type":"skip"},
+            {"prompt":"Start at 24 and count on by 10: 24, __, __","answer":"34, 44","id":8,"type":"skip"},
         ]);
-        // Semantic check across ALL three procedural forms: the blank is the
-        // missing term of a consistent skip run — end blank (form 0: the 4th
-        // term = 3rd shown + interval), middle blank (form 1: the missing
-        // term = the shown step continuing between its neighbours), or
-        // backward run (form 2: a negative interval run ending at the blank).
+        // Semantic check across the plain numeric run rows (those starting with
+        // a digit): the run keeps a constant step; each blank resolves to the
+        // term at its position, and a trailing "it counts by __" blank takes
+        // the step itself.
         for (const p of s) {
-            const parts = p.prompt.split(', ');
-            const nums = parts.slice(0, 3).map((t) => Number(t.replace('__', '')));
-            if (parts[3] === '__') {
-                // End blank: forward or backward run — the answer continues
-                // the SAME interval from the last shown term.
-                const interval = nums[1] - nums[0];
-                expect(nums[2] - nums[1]).toBe(interval);
-                expect(Number(p.answer)).toBe(nums[2] + interval);
-            } else {
-                // Middle blank: "a, b, __, d" — the answer sits midway on the
-                // consistent run a -> b -> ? -> d.
-                const interval = nums[1] - nums[0];
-                expect(Number(parts[3]) - nums[1]).toBe(2 * interval);
-                expect(Number(p.answer)).toBe(nums[1] + interval);
+            if (!/^\d/.test(p.prompt)) continue;
+            // Only the "; it counts by __" suffix may follow the run.
+            const [run, tail] = p.prompt.split('; ');
+            expect(tail === undefined || tail === 'it counts by __').toBe(true);
+            const terms = run.split(', ').map((t) => (t === '__' ? NaN : Number(t)));
+            const step = terms[1] - terms[0];
+            // Every shown term sits on the same arithmetic run.
+            // `shown` tracks the run's value AT index i before advancing.
+            let shown = terms[0];
+            const answers = p.answer.split(', ').map(Number);
+            let ai = 0;
+            for (let i = 0; i < terms.length; i++) {
+                if (Number.isNaN(terms[i])) expect(answers[ai++]).toBe(shown);
+                else expect(terms[i]).toBe(shown);
+                shown += step;
             }
+            // "it counts by __" rows carry the step as the final answer part.
+            if (p.prompt.includes('it counts by')) expect(answers[ai]).toBe(step);
         }
+        // Land-on claims: counting by 5 from 32 hits 37, 42 — Correct; by 10
+        // from 47 hits 57 — never 50, so Wrong (both pinned above).
+        expect(s[3].answer).toBe('Correct');
+        expect(s[5].answer).toBe('Wrong');
     });
 
     it('page 2 continues the exact stream', () => {
         const doc = generateDocument(skipSpec, g1, seedFrom([1, 'skip', 0]), 2);
-        expect(doc.pages[1][0]).toEqual({ id: 17, type: "skip", prompt: "18, 23, 28, __", answer: "33" });
+        expect(doc.total).toBe(16);
+        expect(doc.pages[1]).toEqual([
+            {"prompt":"46, 41, 36, __, __","answer":"31, 26","id":9,"type":"skip"},
+            {"prompt":"1, 3, __, 7, __","answer":"5, 9","id":10,"type":"skip"},
+            {"prompt":"Start at 29 and count on by 10: 29, __, __","answer":"39, 49","id":11,"type":"skip"},
+            {"prompt":"20, 25, __, 35, __","answer":"30, 40","id":12,"type":"skip"},
+            {"prompt":"18, 16, 14, __, __","answer":"12, 10","id":13,"type":"skip"},
+            {"prompt":"18, 23, 28, 33, __; it counts by __","answer":"38, 5","id":14,"type":"skip"},
+            {"prompt":"Does counting by 10 from 4 land on 35? __","answer":"Wrong","wideBlanks":true,"id":15,"type":"skip"},
+            {"prompt":"30, 35, 40, 45, __; it counts by __","answer":"50, 5","id":16,"type":"skip"},
+        ]);
     });
 });

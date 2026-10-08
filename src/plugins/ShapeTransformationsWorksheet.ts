@@ -123,15 +123,18 @@ function generateShapeTransformations(rng: Rng, _caps: Caps, count: number): Raw
     return [...firstPass, ...arrayCreate(({ index }) => index < count - firstPass.length ? questions.take() : undefined)];
 }
 
-// Six single-column items leave space for prose, an original, four options and
+// Five single-column items leave space for prose, an original, four options and
 // a handwriting blank on fixed A4 pages (PrintableSheet.tsx / PageStack.tsx).
+// LAYOUT CAPACITY (T3M3): worst row = two prompt lines (2×21.6px) + the five
+// 88px cards block (6+17+3+88px) = 157.2px; at 6/page the 1fr row is 132.4px
+// (overflow), at 5/page 163.6px (margin 6.4). layout-capacity.test.ts.
 // Grade gating remains catalogue-owned; no numeric/shape-recognition cap is
 // needed for this fixed spatial bank and later grades stay unchanged.
 export const shapeTransformationsSpec: WorksheetSpec = {
     id: 'transformations',
     label: 'Shape Transformations',
     icon: '↻',
-    perPage: 6,
+    perPage: 5,
     singleColumn: true,
     offered: (grade) => grade.available.includes('transformations'),
     scope: () => 'flips & 90° turns',

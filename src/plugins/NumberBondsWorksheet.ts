@@ -124,11 +124,14 @@ export const bondsSpec: WorksheetSpec = {
     id: 'bonds',
     label: 'Number Bonds',
     icon: '∨',
-    // SIX bond tasks per A4: every row carries a part-part-whole diagram
+    // FIVE bond tasks per A4: every row carries a part-part-whole diagram
     // (framework/BondDiagram.tsx) AND a multi-part prompt, printed in ONE
     // column so each task owns a generous band of the sheet — the diagrams
     // stay hand-sizeable and the writing space is real.
-    perPage: 6,
+    // LAYOUT CAPACITY (T3M3): worst row = two prompt lines (2×21.6px) +
+    // BondDiagram block (6+85px) = 134.2px; at 6/page the 1fr row is 132.4px
+    // (overflow), at 5/page 163.6px (margin 29.4). layout-capacity.test.ts.
+    perPage: 5,
     singleColumn: true,
     offered: (grade: GradeConfig) => grade.available.includes('bonds'),
     scope: (grade: GradeConfig) =>

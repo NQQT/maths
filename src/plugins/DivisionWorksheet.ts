@@ -189,9 +189,13 @@ export const divisionSpec: WorksheetSpec = {
     id: 'division',
     label: 'Division',
     icon: '÷',
-    // Five items per page: sharing stories carry equal-group diagrams and
-    // multi-part questions need real working space (density 12 → 5).
-    perPage: 5,
+    // FOUR items per page: sharing stories carry equal-group diagrams and
+    // multi-part questions need real working space (density 12 → 5 → 4).
+    // LAYOUT CAPACITY (T3M3): worst row = the three-part story form that
+    // prints NO figure — five wrapped 22px prompt lines (5×33px) = 165.0px;
+    // at 5/page the 1fr row is 163.6px (overflow), at 4/page 210.5px
+    // (margin 45.5). See plugins/layout-capacity.test.ts for the model.
+    perPage: 4,
     // Sharing stories are worded — prints single-column.
     singleColumn: true,
     offered: (grade: GradeConfig) => grade.available.includes('division'),

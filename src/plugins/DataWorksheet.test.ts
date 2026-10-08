@@ -30,8 +30,9 @@ describe('data plugin — declarative spec', () => {
         expect(dataSpec.id).toBe('data');
         expect(dataSpec.label).toBe('Data & Tally');
         expect(dataSpec.icon).toBe('▥');
-        // Six single-column items: full-size diagram + two-part question.
-        expect(dataSpec.perPage).toBe(6);
+        // Four single-column items: full-size diagram + two-part question
+        // (T3M3 — see plugins/layout-capacity.test.ts).
+        expect(dataSpec.perPage).toBe(4);
         expect(dataSpec.singleColumn).toBe(true);
     });
 
@@ -43,7 +44,7 @@ describe('data plugin — declarative spec', () => {
 describe('data — availability gating', () => {
     it('Prep does not offer the extension type (empty sheet); Year 1 does', () => {
         expect(sheet(g0)).toEqual([]);
-        expect(sheet(g1)).toHaveLength(6);
+        expect(sheet(g1)).toHaveLength(4);
     });
 });
 
@@ -57,8 +58,6 @@ describe('data — Year 1 (tallies, picture & column graphs)', () => {
             {"prompt":"In a column graph, each square is 1 vote. Kai's bar is 9 squares tall and Mia's bar is 8 squares tall. Who got MORE votes? __ How many more votes did Kai get? __","answer":"Kai, 1","data":{"kind":"column","leftName":"Kai","rightName":"Mia","left":9,"right":8},"id":2,"type":"data"},
             {"prompt":"In a picture graph, 1 star = 2 cookies. Count the stars below. How many cookies do they show? __ Is that more than 10 cookies? Yes or No: __","answer":"12, Yes","data":{"kind":"picture","stars":6},"id":3,"type":"data"},
             {"prompt":"In a picture graph, 1 star = 1 crayon. Count the stars below. How many crayons do they show? __ Is that more than 10 crayons? Yes or No: __","answer":"6, No","data":{"kind":"picture","stars":6},"id":4,"type":"data"},
-            {"prompt":"In a column graph, each square is 1 vote. Tom's bar is 7 squares tall and Sam's bar is 2 squares tall. Who got MORE votes? __ How many more votes did Tom get? __","answer":"Tom, 5","data":{"kind":"column","leftName":"Tom","rightName":"Sam","left":7,"right":2},"id":5,"type":"data"},
-            {"prompt":"Count the tallies below. There are __ in all. That is __ tens and __ ones.","answer":"13, 1 ten and 3 ones","data":{"kind":"tally","total":13},"id":6,"type":"data"},
         ]);
     });
 });
@@ -71,8 +70,6 @@ describe('data — Year 2 (bigger counts to 40)', () => {
             {"prompt":"Count the tallies below. There are __ in all. That is __ tens and __ ones.","answer":"7, 0 tens and 7 ones","data":{"kind":"tally","total":7},"id":2,"type":"data"},
             {"prompt":"In a column graph, each square is 1 vote. Mia's bar is 6 squares tall and Leo's bar is 5 squares tall. Who got MORE votes? __ How many more votes did Mia get? __","answer":"Mia, 1","data":{"kind":"column","leftName":"Mia","rightName":"Leo","left":6,"right":5},"id":3,"type":"data"},
             {"prompt":"Count the tallies below. There are __ in all. That is __ tens and __ ones.","answer":"39, 3 tens and 9 ones","data":{"kind":"tally","total":39},"id":4,"type":"data"},
-            {"prompt":"In a picture graph, 1 star = 3 crayons. Count the stars below. How many crayons do they show? __ Is that more than 10 crayons? Yes or No: __","answer":"9, No","data":{"kind":"picture","stars":3},"id":5,"type":"data"},
-            {"prompt":"In a column graph, each square is 1 vote. Max's bar is 13 squares tall and Rae's bar is 1 square tall. Who got MORE votes? __ How many more votes did Max get? __","answer":"Max, 12","data":{"kind":"column","leftName":"Max","rightName":"Rae","left":13,"right":1},"id":6,"type":"data"},
         ]);
     });
 });

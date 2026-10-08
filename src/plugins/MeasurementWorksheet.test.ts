@@ -95,8 +95,10 @@ describe('measurement plugin — declarative spec', () => {
         expect(measureSpec.label).toBe('Measurement');
         expect(measureSpec.icon).toBe('↔');
         expect(measureSpec.singleColumn).toBe(true);
-        // Density regression: six connected items per page (was 12).
-        expect(measureSpec.perPage).toBe(6);
+        // Density regression: four connected items per page (was 12, then 6)
+        // — six wrapped prompt lines clip a 6-row page (T3M3 — see
+        // plugins/layout-capacity.test.ts).
+        expect(measureSpec.perPage).toBe(4);
     });
 
     it('describes its scope from the metric capability', () => {
@@ -122,12 +124,10 @@ describe('measurement — availability gating', () => {
 describe('measurement — Year 1', () => {
     it('matches the exact sheet (answers correct against the value table)', () => {
         expect(sheet(g1)).toEqual([
-            { prompt: 'Which is longer: the notebook or the door?', answer: 'door', id: 1, type: 'measure' },
-            { prompt: 'You empty the full tank using a bucket or a cup.\n(a) Which needs MORE trips: the bucket or the cup? __\n(b) Which holds more: the cup or the bucket? __', answer: 'cup, bucket', id: 2, type: 'measure' },
-            { prompt: 'Which is heavier: the apple or the door?', answer: 'door', id: 3, type: 'measure' },
-            { prompt: 'A ruler is about 30 cm long. A crayon is about 10 cm long.\n(a) Which is longer: the crayon or the ruler? __\n(b) About how many crayons long is a ruler? __', answer: 'ruler, 3', id: 4, type: 'measure' },
-            { prompt: 'Which is longer: the finger or the table?', answer: 'table', id: 5, type: 'measure' },
-            { prompt: 'You empty the full bucket using a cup or a spoon.\n(a) Which needs MORE trips: the cup or the spoon? __\n(b) Which holds more: the spoon or the cup? __', answer: 'spoon, cup', id: 6, type: 'measure' },
+            {"prompt":"Which is longer: the notebook or the door?","answer":"door","id":1,"type":"measure"},
+            {"prompt":"You empty the full tank using a bucket or a cup.\n(a) Which needs MORE trips: the bucket or the cup? __\n(b) Which holds more: the cup or the bucket? __","answer":"cup, bucket","id":2,"type":"measure"},
+            {"prompt":"Which is heavier: the apple or the door?","answer":"door","id":3,"type":"measure"},
+            {"prompt":"A ruler is about 30 cm long. A crayon is about 10 cm long.\n(a) Which is longer: the crayon or the ruler? __\n(b) About how many crayons long is a ruler? __","answer":"ruler, 3","id":4,"type":"measure"},
         ]);
     });
 });
@@ -135,12 +135,10 @@ describe('measurement — Year 1', () => {
 describe('measurement — Year 2', () => {
     it('matches the exact sheet (ordering grammar is complete)', () => {
         expect(sheet(g2)).toEqual([
-            { prompt: 'Which is heavier: the door or the crayon?', answer: 'door', id: 1, type: 'measure' },
-            { prompt: 'A pencil is about 15 cm long. A finger is about 5 cm long.\n(a) Which is longer: the finger or the pencil? __\n(b) About how many fingers long is a pencil? __', answer: 'pencil, 3', id: 2, type: 'measure' },
-            { prompt: 'Which holds more: the tank or the cup?', answer: 'tank', id: 3, type: 'measure' },
-            { prompt: 'The pencil, the notebook and the crayon are compared by length.\n(a) Which is the shortest? __\n(b) Which is the longest? __', answer: 'crayon, notebook', id: 4, type: 'measure' },
-            { prompt: 'The tank, the cup and the bucket are compared by capacity.\n(a) Which holds the least? __\n(b) Which holds the most? __', answer: 'cup, tank', id: 5, type: 'measure' },
-            { prompt: 'You empty the full water bottle using a cup or a spoon.\n(a) Which needs MORE trips: the cup or the spoon? __\n(b) Which holds more: the spoon or the cup? __', answer: 'spoon, cup', id: 6, type: 'measure' },
+            {"prompt":"Which is heavier: the door or the crayon?","answer":"door","id":1,"type":"measure"},
+            {"prompt":"A pencil is about 15 cm long. A finger is about 5 cm long.\n(a) Which is longer: the finger or the pencil? __\n(b) About how many fingers long is a pencil? __","answer":"pencil, 3","id":2,"type":"measure"},
+            {"prompt":"Which holds more: the tank or the cup?","answer":"tank","id":3,"type":"measure"},
+            {"prompt":"The pencil, the notebook and the crayon are compared by length.\n(a) Which is the shortest? __\n(b) Which is the longest? __","answer":"crayon, notebook","id":4,"type":"measure"},
         ]);
     });
 });

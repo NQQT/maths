@@ -11,10 +11,10 @@
 //     canvas state;
 //   - the unified plugin rail (left) switches the generated sheet; it shows
 //     icon + label only — NO per-type "questions per page" count badges;
-//   - page-count STEPPER (toolbar, −/n/+) is an unbounded number: type or
+//   - page-count STEPPER (toolbar, −/n/+ is an unbounded number: type or
 //     increment to 3, 4, 12... pages — generated A4 sheets are numbered
-//     continuously (Year 1 addition: page 2 starts "12 + 2 =", page 3 starts
-//     "17 + 2 =" — values pinned in AdditionWorksheet.test.ts);
+//     continuously (Year 1 addition: page 2 starts "18 + 2 =", page 3 starts
+//     "2 + 15 =" — values pinned in AdditionWorksheet.test.ts);
 //   - "Randomize" re-rolls the seed in place: same page count, new problems
 //     (pinned refresh=1/refresh=2 streams below);
 //   - zoom control switches the preview between Fit / 50% / 75% / 100%;
@@ -116,8 +116,9 @@ describe('MathsDashboard — layout', () => {
     });
 
     it('shows the exact first problem of the Year 1 addition sheet in the preview', () => {
-        // Year 1 addition, problem 1 is "10 + 9 = __" (see AdditionWorksheet.test.ts).
-        expect(text(screen.getByTestId('sheet-preview-page1'))).toContain('1.10 + 9 =');
+        // Year 1 addition, problem 1 is the switch family "4 + 16 = __ and
+        // 16 + 4 = __; the sums differ by __" (see AdditionWorksheet.test.ts).
+        expect(text(screen.getByTestId('sheet-preview-page1'))).toContain('1.4 + 16 =');
     });
 
     it('the type rail lists icon + label only (no per-type count badges)', async () => {
@@ -143,15 +144,16 @@ describe('MathsDashboard — layout', () => {
 describe('MathsDashboard — math type selection (left)', () => {
     it('switches the sheet when a different math type is chosen', async () => {
         // Start on Addition.
-        expect(text(screen.getByTestId('sheet-preview-page1'))).toContain('1.10 + 9 =');
+        expect(text(screen.getByTestId('sheet-preview-page1'))).toContain('1.4 + 16 =');
 
         // Pick Subtraction (awaited — plugins load one by one after mount).
         fireEvent.click(
             await screen.findByRole('button', { name: 'Subtraction' }, { timeout: 20_000 })
         );
 
-        // Preview now reflects the (Year 1, Subtraction) sheet; first row "6 - 4 =".
-        expect(text(screen.getByTestId('sheet-preview-page1'))).toContain('1.6 - 4 =');
+        // Preview now reflects the (Year 1, Subtraction) sheet; first row is
+        // the partner family "3 - 1 = __ and __ + 1 = 3".
+        expect(text(screen.getByTestId('sheet-preview-page1'))).toContain('1.3 - 1 =');
         // Toolbar title updates to the new type.
         expect(screen.getByTestId('toolbar-title').textContent).toBe('Year 1 — Subtraction');
     });
@@ -163,7 +165,7 @@ describe('MathsDashboard — math type selection (left)', () => {
         );
         const pageText = text(screen.getByTestId('sheet-preview-page1'));
         // Year 1 word, problem 1 (see WordProblemsWorksheet.test.ts).
-        expect(pageText).toContain('Tom has 4 toys. Kai has 16 toys');
+        expect(pageText).toContain('Tom has 2 toys. Kai has 16 more toys than Tom.');
     });
 
     it('Grade 2 offers the Multiplication (times tables) worksheet', async () => {
@@ -178,15 +180,17 @@ describe('MathsDashboard — math type selection (left)', () => {
         );
 
         // Pick it; the sheet matches the pinned Grade 2 times-tables stream
-        // (first row "5 × 10 =").
+        // (first row "__ × 6 = 54 and 7 × __ = 42" — the leading blank renders
+        // empty, so the row text opens "× 6 = 54").
         fireEvent.click(multiplication);
         expect(screen.getByTestId('toolbar-title').textContent).toBe('Year 2 — Multiplication');
-        expect(text(screen.getByTestId('sheet-preview-page1'))).toContain('1.5 ×');
+        expect(text(screen.getByTestId('sheet-preview-page1'))).toContain('1. × 6 = 54');
     });
 
     // Year 3 reuses the tables-to-10 plugin. plugins/MultiplicationWorksheet.test.ts
-    // pins "7 × __ = 35"; PrintableSheet's empty blank must retain both spaces,
-    // rather than turning this missing-factor question into a product question.
+    // pins the diff-family first row "6 × 3 = __ and 6 × 1 = __; the products
+    // differ by __"; PrintableSheet's empty blank must retain both spaces
+    // around each removed "__", keeping the multi-part line readable.
     it('Year 3 activates Multiplication with the exact missing-factor first row', async () => {
         fireEvent.click(gradeRadio('3'));
         fireEvent.click(
@@ -195,7 +199,7 @@ describe('MathsDashboard — math type selection (left)', () => {
 
         const page = screen.getByTestId('sheet-preview-page1');
         expect(screen.getByTestId('toolbar-title').textContent).toBe('Year 3 \u2014 Multiplication');
-        expect(text(within(page).getByText('1.').parentElement)).toBe('1.7 ×  = 35');
+        expect(text(within(page).getByText('1.').parentElement)).toBe('1.6 × 3 =  and 6 × 1 = ; the products differ by ');
     });
 
     // NSWE uses the existing Compass plugin, not a second directions entry.
@@ -214,24 +218,26 @@ describe('MathsDashboard — math type selection (left)', () => {
         // reference letters are the only figure text (the answer direction is
         // never labelled — pinned in CompassDiagram.test.tsx).
         expect(text(row)).toBe('1.You are facing West. What direction is on your left?NESW');
-        // The prompt has no fill-in blank, so the row's text container now
-        // carries exactly one element child: the compass figure root span.
-        expect(row.lastElementChild!.children.length).toBe(1);
+        // The prompt has no fill-in blank; the row's text container now
+        // carries TWO element children: the compass figure root span and the
+        // full-width handwritten answer line (CompassWorksheet T2V pass).
+        expect(row.lastElementChild!.children.length).toBe(2);
     });
 });
 
 describe('MathsDashboard — grade selection (top-right)', () => {
     it('switches to Year 2 and reflects the bigger-number sheet', () => {
         fireEvent.click(gradeRadio('2'));
-        // Year 2 addition first row is "45 + 41 =" (within 100).
-        expect(text(screen.getByTestId('sheet-preview-page1'))).toContain('1.45 + 41 =');
+        // Year 2 addition first row is the diff family "99 + 1 = __ and
+        // 97 + 2 = __; the sums differ by __" (within 100).
+        expect(text(screen.getByTestId('sheet-preview-page1'))).toContain('1.99 + 1 =');
         expect(screen.getByTestId('toolbar-title').textContent).toBe('Year 2 — Addition');
     });
 
     it('switches to Prep (grade 0)', () => {
         fireEvent.click(gradeRadio('P'));
-        // Prep addition first row is "2 + 7 =".
-        expect(text(screen.getByTestId('sheet-preview-page1'))).toContain('1.2 + 7 =');
+        // Prep addition first row is the switch family "3 + 5 = __ and 5 + 3 = __".
+        expect(text(screen.getByTestId('sheet-preview-page1'))).toContain('1.3 + 5 =');
     });
 
     it('shows a coming-soon placeholder for an unimplemented grade (Year 7)', () => {
@@ -260,17 +266,17 @@ describe('MathsDashboard — grade selection (top-right)', () => {
         // New spatial entries must not alter the arithmetic seeds. The exact
         // first rows remain pinned in plugins/AdditionWorksheet.test.ts and
         // plugins/SubtractionWorksheet.test.ts, including the rendered blank.
-        // Year 3 is the vertical-column grade: the printed column figure
-        // repeats its right-aligned terms (ColumnDiagram.tsx), so the row text
-        // carries the operands a second time — never the answer.
+        // Year 3 is the vertical-column grade: the COLUMN-family subtraction
+        // row prints a column figure whose right-aligned terms repeat the
+        // operands (ColumnDiagram.tsx) — never the answer.
         const page = screen.getByTestId('sheet-preview-page1');
-        expect(text(within(page).getByText('1.').parentElement)).toBe('1.53 + 942 = 53+942');
+        expect(text(within(page).getByText('1.').parentElement)).toBe('1.152 + 212 =  and 212 + 152 = ');
         expect(screen.getByTestId('toolbar-title').textContent).toBe('Year 3 \u2014 Addition');
         fireEvent.click(
             await within(rail).findByRole('button', { name: 'Subtraction' }, { timeout: 20_000 })
         );
         expect(text(within(screen.getByTestId('sheet-preview-page1')).getByText('1.').parentElement))
-            .toBe('1.990 - 175 = 990−175');
+            .toBe('1.Subtract, then check: 149 - 141 = ; check: 8 + 141 = 149−141');
         expect(screen.getByTestId('toolbar-title').textContent).toBe('Year 3 \u2014 Subtraction');
     });
 
@@ -278,9 +284,9 @@ describe('MathsDashboard — grade selection (top-right)', () => {
     // then loaded, so missing later-grade buttons prove gating, not a race.
     // See plugins/index.ts and the unchanged pins in AdditionWorksheet.test.ts.
     it.each([
-        { grade: '4', firstRow: '1.790 + 1541 + 2805 = ' },
-        { grade: '5', firstRow: '1.32798 + 52862 + 1006 = ' },
-        { grade: '6', firstRow: '1.536401 + 83342 = ' }
+        { grade: '4', firstRow: '1.7123 + 1057 = ; check: 8180 - 1057 = ' },
+        { grade: '5', firstRow: '1.3370 + 1240 + 10833 = ; check: 15443 - 10833 = ' },
+        { grade: '6', firstRow: '1.543082 + 101316 =  and 101316 + 543082 = ' }
     ])('Year $grade remains arithmetic-only', async ({ grade, firstRow }) => {
         await allVisiblePluginsLoaded();
         fireEvent.click(gradeRadio(grade));
@@ -313,7 +319,7 @@ describe('MathsDashboard — grade selection (top-right)', () => {
         expect(within(rail).queryByRole('button', { name: 'Shape Transformations' })).toBe(null);
         expect(screen.getByTestId('toolbar-title').textContent).toBe('Year 2 \u2014 Addition');
         expect(text(within(screen.getByTestId('sheet-preview-page1')).getByText('1.').parentElement))
-            .toBe('1.45 + 41 = ');
+            .toBe('1.99 + 1 =  and 97 + 2 = ; the sums differ by ');
         expect((screen.getByTestId('page-count') as HTMLInputElement).value).toBe('2');
         expect(screen.getByTestId('sheet-preview').querySelectorAll('[data-testid^="sheet-preview-page"]').length)
             .toBe(2);
@@ -329,7 +335,7 @@ describe('MathsDashboard — grade selection (top-right)', () => {
             .toEqual(['Addition', 'Subtraction']);
         expect(screen.getByTestId('toolbar-title').textContent).toBe('Year 4 \u2014 Addition');
         expect(text(within(screen.getByTestId('sheet-preview-page1')).getByText('1.').parentElement))
-            .toBe('1.790 + 1541 + 2805 = ');
+            .toBe('1.7123 + 1057 = ; check: 8180 - 1057 = ');
         expect((screen.getByTestId('page-count') as HTMLInputElement).value).toBe('2');
         expect(screen.getByTestId('sheet-preview').querySelectorAll('[data-testid^="sheet-preview-page"]').length)
             .toBe(2);
@@ -374,10 +380,11 @@ describe('MathsDashboard — page count (unbounded −/n/+ stepper)', () => {
 
         // Page 1 keeps the original first rows; pages 2 and 3 continue the
         // exact deterministic stream pinned in AdditionWorksheet.test.ts (the
-        // page is now 24 rows, so page 2 starts at id 25 and page 3 at id 49).
-        expect(text(screen.getByTestId('sheet-preview-page1'))).toContain('1.10 + 9 =');
-        expect(text(screen.getByTestId('sheet-preview-page2'))).toContain('25.17 + 2 =');
-        expect(text(screen.getByTestId('sheet-preview-page3'))).toContain('49.11 + 8 =');
+        // page is now 7 connected tasks, so page 2 starts at id 8 and page 3
+        // at id 15; the '18 + 2 =' row is id 9, second on page 2).
+        expect(text(screen.getByTestId('sheet-preview-page1'))).toContain('1.4 + 16 =');
+        expect(text(screen.getByTestId('sheet-preview-page2'))).toContain('9.18 + 2 =');
+        expect(text(screen.getByTestId('sheet-preview-page3'))).toContain('17.2 + 15 =');
         // Multi-page documents label every page (badge on screen, footer in print).
         expect(preview.textContent).toContain('Page 1 of 3');
         expect(preview.textContent).toContain('Page 3 of 3');
@@ -402,7 +409,7 @@ describe('MathsDashboard — page count (unbounded −/n/+ stepper)', () => {
         expect(screen.getByTestId('sheet-preview-page3')).toBeDefined();
         fireEvent.change(screen.getByTestId('page-count'), { target: { value: '1' } });
         expect(screen.queryByTestId('sheet-preview-page2')).toBeNull();
-        expect(text(screen.getByTestId('sheet-preview-page1'))).toContain('1.10 + 9 =');
+        expect(text(screen.getByTestId('sheet-preview-page1'))).toContain('1.4 + 16 =');
     });
 });
 
@@ -410,8 +417,8 @@ describe('MathsDashboard — randomize (re-roll the seed in place)', () => {
     it('regenerates the sheet with a new seed, preserving the page count', () => {
         // Initial (refresh 0) deterministic sheet pinned in AdditionWorksheet.test.ts.
         const page1 = () => text(screen.getByTestId('sheet-preview-page1'));
-        expect(page1()).toContain('1.10 + 9 =');
-        expect(page1()).toContain('2.12 + 2 =');
+        expect(page1()).toContain('1.4 + 16 =');
+        expect(page1()).toContain('2.True or false: 17 + 1 = 17.');
         const before = page1();
 
         // Pin 4 pages first so we can prove Randomize preserves the count.
@@ -421,16 +428,17 @@ describe('MathsDashboard — randomize (re-roll the seed in place)', () => {
         fireEvent.click(randomizeButton());
 
         // refresh=1 stream, pinned via the deterministic generator: page 1 now
-        // opens "19 + 1 =" and continues "1 + 10 =" (neither is the row-1/row-2
-        // of the refresh=0 sheet).
-        expect(page1()).toContain('1.19 + 1 =');
-        expect(page1()).toContain('2.1 + 10 =');
+        // opens with the bond family ("The whole is 10 and one part is 5...")
+        // and continues "10 + 9 =" (neither is the row-1/row-2 of the
+        // refresh=0 sheet).
+        expect(page1()).toContain('1.The whole is 10 and one part is 5.');
+        expect(page1()).toContain('2.10 + 9 =');
         // The document was actually regenerated, not re-rendered unchanged.
         expect(page1()).not.toBe(before);
 
         // A second roll lands on yet another stream (refresh=2, row 2 pinned).
         fireEvent.click(randomizeButton());
-        expect(page1()).toContain('2.5 + 15 =');
+        expect(page1()).toContain('2.True or false: 11 + 6 = 19.');
 
         // The page count chosen on the stepper survives both re-rolls.
         expect((screen.getByTestId('page-count') as HTMLInputElement).value).toBe('4');
@@ -457,7 +465,7 @@ describe('MathsDashboard — zoom control', () => {
 
 describe('MathsDashboard — print flow (native dialog, preview IS the preview)', () => {
     // The plugin snapshot pins the seeded prose/figures; this host pin guards
-    // activation, six original-plus-four-choice rows and the separate native
+    // activation, five original-plus-four-choice rows and the separate native
     // print mount (plugins/ShapeTransformationsWorksheet.test.ts and
     // framework/ShapeTransformationDiagram.test.tsx own the underlying maths).
     it('Year 3 Shape Transformations keeps exact text and geometry identical across two printed pages', async () => {
@@ -474,13 +482,15 @@ describe('MathsDashboard — print flow (native dialog, preview IS the preview)'
         expect(text(screen.getByTestId('toolbar-title').nextElementSibling)).toBe(subtitle);
         expect(within(page).getByRole('heading', { level: 1 }).textContent).toBe(title);
         expect(text(page.querySelector('p'))).toBe(subtitle);
+        // T2V pass: every prompt now also asks "Is this a flip or a turn?"
+        // (second inline blank — rendered empty, both spaces retained).
         expect(text(grid.children[0])).toBe(
-            '1.Flip pentagon 4 left to right across the dashed vertical line. Which option matches? OriginalABCD'
+            '1.Flip pentagon 4 left to right across the dashed vertical line. Which option matches?  Is this a flip or a turn? OriginalABCD'
         );
-        expect(grid.children.length).toBe(6);
-        expect(page.querySelectorAll('svg').length).toBe(30);
+        expect(grid.children.length).toBe(5);
+        expect(page.querySelectorAll('svg').length).toBe(25);
         expect(arrayCreate(({ index }) => grid.children[index]?.querySelectorAll('svg').length))
-            .toEqual([5, 5, 5, 5, 5, 5]);
+            .toEqual([5, 5, 5, 5, 5]);
 
         // Pin the original and candidate order independently of preview/print
         // equality: two equally wrong surfaces must not pass. These vertices
@@ -494,25 +504,23 @@ describe('MathsDashboard — print flow (native dialog, preview IS the preview)'
             '-3,-2 1,-2 3,0 1,3 -3,1'
         ]);
 
-        // Page 2 continues ids 7..12, not a second copy of page 1. Exact row
+        // Page 2 continues ids 6..10, not a second copy of page 1. Exact row
         // arrays mirror both snapshots in ShapeTransformationsWorksheet.test.ts;
         // the empty answer span disappears from textContent, not the diagrams.
         const expectedRows = [
             [
-                '1.Flip pentagon 4 left to right across the dashed vertical line. Which option matches? OriginalABCD',
-                '2.Flip triangle 1 top to bottom across the dashed horizontal line. Which option matches? OriginalABCD',
-                '3.Rotate L-shape 1 90\u00b0 anticlockwise (a quarter turn left) around the dot. Which option matches? OriginalABCD',
-                '4.Flip pentagon 1 top to bottom across the dashed horizontal line. Which option matches? OriginalABCD',
-                '5.Flip L-shape 4 top to bottom across the dashed horizontal line. Which option matches? OriginalABCD',
-                '6.Flip pentagon 4 top to bottom across the dashed horizontal line. Which option matches? OriginalABCD'
+                '1.Flip pentagon 4 left to right across the dashed vertical line. Which option matches?  Is this a flip or a turn? OriginalABCD',
+                '2.Flip triangle 1 top to bottom across the dashed horizontal line. Which option matches?  Is this a flip or a turn? OriginalABCD',
+                '3.Rotate L-shape 1 90\u00b0 anticlockwise (a quarter turn left) around the dot. Which option matches?  Is this a flip or a turn? OriginalABCD',
+                '4.Flip pentagon 1 top to bottom across the dashed horizontal line. Which option matches?  Is this a flip or a turn? OriginalABCD',
+                '5.Flip L-shape 4 top to bottom across the dashed horizontal line. Which option matches?  Is this a flip or a turn? OriginalABCD'
             ],
             [
-                '7.Rotate pentagon 2 90\u00b0 clockwise (a quarter turn right) around the dot. Which option matches? OriginalABCD',
-                '8.Flip triangle 3 top to bottom across the dashed horizontal line. Which option matches? OriginalABCD',
-                '9.Flip triangle 4 top to bottom across the dashed horizontal line. Which option matches? OriginalABCD',
-                '10.Rotate L-shape 2 90\u00b0 clockwise (a quarter turn right) around the dot. Which option matches? OriginalABCD',
-                '11.Flip triangle 4 left to right across the dashed vertical line. Which option matches? OriginalABCD',
-                '12.Flip triangle 2 left to right across the dashed vertical line. Which option matches? OriginalABCD'
+                '6.Flip pentagon 4 top to bottom across the dashed horizontal line. Which option matches?  Is this a flip or a turn? OriginalABCD',
+                '7.Rotate pentagon 2 90\u00b0 clockwise (a quarter turn right) around the dot. Which option matches?  Is this a flip or a turn? OriginalABCD',
+                '8.Flip triangle 3 top to bottom across the dashed horizontal line. Which option matches?  Is this a flip or a turn? OriginalABCD',
+                '9.Flip triangle 4 top to bottom across the dashed horizontal line. Which option matches?  Is this a flip or a turn? OriginalABCD',
+                '10.Rotate L-shape 2 90\u00b0 clockwise (a quarter turn right) around the dot. Which option matches?  Is this a flip or a turn? OriginalABCD'
             ]
         ];
         fireEvent.change(screen.getByTestId('page-count'), { target: { value: '2' } });
@@ -528,7 +536,7 @@ describe('MathsDashboard — print flow (native dialog, preview IS the preview)'
             const rows = sheet.children[2].children;
             expect(arrayCreate(({ index: rowIndex }) => rows[rowIndex]?.textContent)).toEqual(expectedRows[index]);
             expect(arrayCreate(({ index: rowIndex }) => rows[rowIndex]?.querySelectorAll('svg').length))
-                .toEqual([5, 5, 5, 5, 5, 5]);
+                .toEqual([5, 5, 5, 5, 5]);
         });
 
         // Compare worksheet roots, not PageStack's screen-only page badges.
@@ -554,13 +562,13 @@ describe('MathsDashboard — print flow (native dialog, preview IS the preview)'
             `${header}${expectedRows[0].join('')}Maths SheetsPage 1 of 2`,
             `${header}${expectedRows[1].join('')}Maths SheetsPage 2 of 2`
         ]);
-        expect(arrayCreate(({ index }) => previewContent[index]?.polygons.length)).toEqual([30, 30]);
+        expect(arrayCreate(({ index }) => previewContent[index]?.polygons.length)).toEqual([25, 25]);
         const vertical = '<line x1="0" y1="-4" x2="0" y2="4" stroke="#1a1a1a" stroke-width="0.12" stroke-dasharray="0.4 0.3"></line>';
         const horizontal = '<line x1="-4" y1="0" x2="4" y2="0" stroke="#1a1a1a" stroke-width="0.12" stroke-dasharray="0.4 0.3"></line>';
         const centre = '<circle cx="0" cy="0" r="0.2" fill="#1a1a1a"></circle>';
         expect(arrayCreate(({ index }) => previewContent[index]?.guides)).toEqual([
-            [vertical, horizontal, centre, horizontal, horizontal, horizontal],
-            [centre, horizontal, horizontal, centre, vertical, vertical]
+            [vertical, horizontal, centre, horizontal, horizontal],
+            [horizontal, centre, horizontal, horizontal, centre]
         ]);
 
         // worksheet-kit.tsx marks the native print tree screen-hidden. It must
@@ -634,8 +642,8 @@ describe('MathsDashboard — print flow (native dialog, preview IS the preview)'
         const printPages = document.querySelectorAll('.print-page');
         expect(printPages.length).toBe(5);
         // Each block carries its worksheet page; page 2 is the pinned
-        // continuation row ("17 + 2 =" first, id 25 at the 24-per-page count).
-        expect(printPages[1].textContent).toContain('17 + 2 =');
+        // continuation row ("18 + 2 =" present, id 9 at the 7-per-page count).
+        expect(printPages[1].textContent).toContain('18 + 2 =');
         expect(printPages[1].textContent).toContain('Page 2 of 5');
         // The on-screen preview (the print preview) shows the same 5 pages.
         expect(screen.getByTestId('sheet-preview-page5')).toBeDefined();

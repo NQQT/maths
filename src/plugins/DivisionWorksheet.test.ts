@@ -75,9 +75,10 @@ describe('division plugin — declarative spec', () => {
         expect(divisionSpec.label).toBe('Division');
         expect(divisionSpec.icon).toBe('÷');
         expect(divisionSpec.singleColumn).toBe(true);
-        // Density regression: five items per page (was 12) — diagrams and
-        // multi-part stories need the working space.
-        expect(divisionSpec.perPage).toBe(5);
+        // Density regression: four items per page (was 12, then 5) — diagrams
+        // and multi-part stories need the working space (T3M3 — see
+        // plugins/layout-capacity.test.ts).
+        expect(divisionSpec.perPage).toBe(4);
     });
 
     it('describes its numeric scope', () => {
@@ -95,11 +96,10 @@ describe('division — availability gating', () => {
 describe('division — Year 2', () => {
     it('matches the exact sheet (fact-family and reverse answers re-checkable)', () => {
         expect(sheet(g2)).toEqual([
-            { prompt: 'Kai gives 4 balloons to each of 6 children, and there are none left over.\n(a) How many balloons are there altogether? __\n(b) If they were shared equally between 4 children instead, how many would each child get? __', answer: '24, 6', id: 1, type: 'division' },
-            { prompt: 'Max had 90 flowers. Max shared them equally between 9 friends. How many flowers does each friend get? __', answer: '10', id: 2, type: 'division' },
-            { prompt: '32 ÷ __ = 4', answer: '8', id: 3, type: 'division' },
-            { prompt: 'Sam gives 3 cars to each of 4 children, and there are none left over.\n(a) How many cars are there altogether? __\n(b) If they were shared equally between 3 children instead, how many would each child get? __', answer: '12, 4', id: 4, type: 'division' },
-            { prompt: '8 × 9 = 72.\n(a) 72 ÷ 8 = __\n(b) 72 ÷ 9 = __', answer: '9, 8', id: 5, type: 'division' },
+            {"prompt":"Kai gives 4 balloons to each of 6 children, and there are none left over.\n(a) How many balloons are there altogether? __\n(b) If they were shared equally between 4 children instead, how many would each child get? __","answer":"24, 6","id":1,"type":"division"},
+            {"prompt":"Max had 90 flowers. Max shared them equally between 9 friends. How many flowers does each friend get? __","answer":"10","id":2,"type":"division"},
+            {"prompt":"32 ÷ __ = 4","answer":"8","id":3,"type":"division"},
+            {"prompt":"Sam gives 3 cars to each of 4 children, and there are none left over.\n(a) How many cars are there altogether? __\n(b) If they were shared equally between 3 children instead, how many would each child get? __","answer":"12, 4","id":4,"type":"division"},
         ]);
     });
 });

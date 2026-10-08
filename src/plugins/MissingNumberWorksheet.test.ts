@@ -2,8 +2,10 @@
 //
 // The plugin's generator is DETERMINISTIC: the entire sheet is pinned to exact
 // expected values from the same seed the framework uses
-// (seedFrom([grade.id, spec.id, 0])). Missing numbers start at Year 1, so Prep
-// must produce an empty sheet.
+// (seedFrom([grade.id, spec.id, 0])). DEPTH-FIRST SHEET: eight CONNECTED
+// multi-part tasks per page; answers list the blank values IN PRINTED ORDER,
+// comma separated. Missing numbers start at Year 1, so Prep must produce an
+// empty sheet.
 
 import { describe, it, expect } from 'vitest';
 import { seedFrom, getGradeConfig, generateSheet } from '../framework';
@@ -21,7 +23,8 @@ describe('missing number plugin — declarative spec', () => {
         expect(missingSpec.id).toBe('missing');
         expect(missingSpec.label).toBe('Missing Number');
         expect(missingSpec.icon).toBe('?');
-        expect(missingSpec.perPage).toBe(16);
+        // Depth-first: eight connected tasks per A4 page.
+        expect(missingSpec.perPage).toBe(8);
     });
 
     it('describes its numeric scope from the grade caps', () => {
@@ -36,26 +39,16 @@ describe('missing number — availability gating', () => {
 });
 
 describe('missing number — Year 1', () => {
-    it('matches the exact sheet (hidden addend always >= 0)', () => {
-        const s = sheet(g1);
-        expect(s).toEqual([
-            {"prompt":"1 + __ = 5","answer":"4","id":1,"type":"missing"},
-            {"prompt":"2 + __ = 3","answer":"1","id":2,"type":"missing"},
-            {"prompt":"__ + 3 = 7","answer":"4","id":3,"type":"missing"},
-            {"prompt":"10 + __ = 19","answer":"9","id":4,"type":"missing"},
-            {"prompt":"__ + 16 = 19","answer":"3","id":5,"type":"missing"},
-            {"prompt":"14 + __ = 18","answer":"4","id":6,"type":"missing"},
-            {"prompt":"9 + __ = 18","answer":"9","id":7,"type":"missing"},
-            {"prompt":"1 + __ = 12","answer":"11","id":8,"type":"missing"},
-            {"prompt":"0 + __ = 6","answer":"6","id":9,"type":"missing"},
-            {"prompt":"__ + 12 = 14","answer":"2","id":10,"type":"missing"},
-            {"prompt":"12 + __ = 18","answer":"6","id":11,"type":"missing"},
-            {"prompt":"7 + __ = 13","answer":"6","id":12,"type":"missing"},
-            {"prompt":"9 + __ = 17","answer":"8","id":13,"type":"missing"},
-            {"prompt":"8 + __ = 14","answer":"6","id":14,"type":"missing"},
-            {"prompt":"1 + __ = 1","answer":"0","id":15,"type":"missing"},
-            {"prompt":"__ + 11 = 15","answer":"4","id":16,"type":"missing"},
+    it('matches the exact sheet (hidden addends always within the cap)', () => {
+        expect(sheet(g1)).toEqual([
+            {"prompt":"14 + 3 = 17, so 17 - 14 = __ and 17 - 3 = __","answer":"3, 14","id":1,"type":"missing"},
+            {"prompt":"7 - __ = 4 and __ + 4 = 7","answer":"3, 3","id":2,"type":"missing"},
+            {"prompt":"13 + 7 = 10 + __","answer":"10","id":3,"type":"missing"},
+            {"prompt":"2 + __ = 3 and 3 + __ = 18","answer":"1, 15","id":4,"type":"missing"},
+            {"prompt":"The same number goes in both blanks: __ + __ = 20","answer":"10, 10","id":5,"type":"missing"},
+            {"prompt":"11 - __ = 6 and __ + 6 = 11","answer":"5, 5","id":6,"type":"missing"},
+            {"prompt":"The same number goes in both blanks: __ + __ = 12","answer":"6, 6","id":7,"type":"missing"},
+            {"prompt":"1 + __ = 4 and 4 + __ = 9","answer":"3, 5","id":8,"type":"missing"},
         ]);
-        for (const p of s) expect(Number(p.answer)).toBeGreaterThanOrEqual(0);
     });
 });

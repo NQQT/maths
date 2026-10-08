@@ -172,10 +172,14 @@ export const subtractionSpec: WorksheetSpec = {
     id: 'subtraction',
     label: 'Subtraction',
     icon: '−',
-    // Eight connected multi-part tasks per A4, printed in ONE column so every
+    // SEVEN connected multi-part tasks per A4, printed in ONE column so every
     // line has the full page width and the rows stretch to fill the sheet —
     // fewer questions, far more thinking and writing space each.
-    perPage: 8,
+    // LAYOUT CAPACITY (T3M3): the Year-3 vertical-column form is the tallest
+    // row — one prompt line (21.6px) + ColumnDiagram block (6+81px) = 102.6px.
+    // At 8/page the fixed 1fr row is only 93.3px (overflow); at 7/page it is
+    // 110.0px (margin 7.4). See plugins/layout-capacity.test.ts for the model.
+    perPage: 7,
     singleColumn: true,
     offered: (grade: GradeConfig) => grade.available.includes('subtraction'),
     // "within 20" for the pair grades; the multi-subtrahend grades (Year 4+)

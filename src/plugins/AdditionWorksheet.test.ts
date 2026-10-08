@@ -7,9 +7,14 @@
 // these exact assertions fail — which is what we want, so a silent change to
 // the worksheet can't slip through.
 //
+// DEPTH-FIRST SHEET: eight CONNECTED multi-part tasks per page (single column)
+// — switch / diff / verify / bond / column / multi families. Answers list the
+// blank values IN PRINTED ORDER, comma separated (RawProblem contract), so the
+// numeric sanity helpers below parse EVERY part, not a single number.
+//
 // The DIFFICULTY LADDER is pinned here too: grades 0..6 each get their own
 // sheet (operand cap scaling one digit per year — see framework/grades.ts,
-// additionLadderGrade), multi-addend questions join from Year 4, and grade 7
+// arithmeticLadderGrade), multi-addend questions join from Year 4, and grade 7
 // upwards offers no addition at all.
 
 import { describe, it, expect } from 'vitest';
@@ -29,12 +34,27 @@ function sheet(grade: ReturnType<typeof getGradeConfig>) {
     return generateSheet(additionSpec, grade, seedFrom([grade.id, additionSpec.id, 0]));
 }
 
+// Every NUMERIC part of a comma-separated multi-part answer (word parts like
+// "Wrong"/"Correct" and sentence parts like "7 + 3 = 10" are skipped — the
+// exact pins below already cover them).
+function numericParts(answer: string): number[] {
+    return answer
+        .split(',')
+        .map((part) => part.trim())
+        .filter((part) => /^-?\d+$/.test(part))
+        .map(Number);
+}
+
 describe('addition plugin — declarative spec', () => {
     it('declares its sidebar label, glyph and page size', () => {
         expect(additionSpec.id).toBe('addition');
         expect(additionSpec.label).toBe('Addition');
         expect(additionSpec.icon).toBe('+');
-        expect(additionSpec.perPage).toBe(24);
+        // Depth-first: seven connected tasks, one column, full-page rows
+        // (T3M3: 8 rows clipped the column-figure worst case — see
+        // plugins/layout-capacity.test.ts).
+        expect(additionSpec.perPage).toBe(7);
+        expect(additionSpec.singleColumn).toBe(true);
     });
 
     it('describes its numeric scope from the grade caps', () => {
@@ -67,74 +87,41 @@ describe('addition plugin — declarative spec', () => {
 describe('addition — Prep (grade 0)', () => {
     it('matches the exact sheet', () => {
         expect(sheet(g0)).toEqual([
-            {"prompt":"2 + 7 = __","answer":"9","id":1,"type":"addition"},
-            {"prompt":"4 + 2 = __","answer":"6","id":2,"type":"addition"},
-            {"prompt":"6 + 2 = __","answer":"8","id":3,"type":"addition"},
-            {"prompt":"9 + 1 = __","answer":"10","id":4,"type":"addition"},
-            {"prompt":"3 + 6 = __","answer":"9","id":5,"type":"addition"},
-            {"prompt":"4 + 3 = __","answer":"7","id":6,"type":"addition"},
-            {"prompt":"4 + 5 = __","answer":"9","id":7,"type":"addition"},
-            {"prompt":"6 + 4 = __","answer":"10","id":8,"type":"addition"},
-            {"prompt":"4 + 6 = __","answer":"10","id":9,"type":"addition"},
-            {"prompt":"1 + 8 = __","answer":"9","id":10,"type":"addition"},
-            {"prompt":"6 + 1 = __","answer":"7","id":11,"type":"addition"},
-            {"prompt":"5 + 5 = __","answer":"10","id":12,"type":"addition"},
-            {"prompt":"3 + 3 = __","answer":"6","id":13,"type":"addition"},
-            {"prompt":"6 + 3 = __","answer":"9","id":14,"type":"addition"},
-            {"prompt":"5 + 1 = __","answer":"6","id":15,"type":"addition"},
-            {"prompt":"5 + 2 = __","answer":"7","id":16,"type":"addition"},
-            {"prompt":"1 + 5 = __","answer":"6","id":17,"type":"addition"},
-            {"prompt":"1 + 6 = __","answer":"7","id":18,"type":"addition"},
-            {"prompt":"8 + 1 = __","answer":"9","id":19,"type":"addition"},
-            {"prompt":"4 + 1 = __","answer":"5","id":20,"type":"addition"},
-            {"prompt":"7 + 2 = __","answer":"9","id":21,"type":"addition"},
-            {"prompt":"8 + 2 = __","answer":"10","id":22,"type":"addition"},
-            {"prompt":"2 + 2 = __","answer":"4","id":23,"type":"addition"},
-            {"prompt":"3 + 4 = __","answer":"7","id":24,"type":"addition"},
+            {"prompt":"3 + 5 = __ and 5 + 3 = __","answer":"8, 8","id":1,"type":"addition"},
+            {"prompt":"True or false: 3 + 7 = 9. __; if it is wrong, fix it: 3 + 7 = __","answer":"Wrong, 10","wideBlanks":true,"id":2,"type":"addition"},
+            {"prompt":"The whole is 10 and one part is 7. The other part is __; the addition sentence is __","answer":"3, 7 + 3 = 10","wideBlanks":true,"id":3,"type":"addition"},
+            {"prompt":"4 + 3 = __ and 4 + 5 = __; the sums differ by __","answer":"7, 9, 2","id":4,"type":"addition"},
+            {"prompt":"True or false: 9 + 1 = 9. __; if it is wrong, fix it: 9 + 1 = __","answer":"Wrong, 10","wideBlanks":true,"id":5,"type":"addition"},
+            {"prompt":"The whole is 10 and one part is 8. The other part is __; the addition sentence is __","answer":"2, 8 + 2 = 10","wideBlanks":true,"id":6,"type":"addition"},
+            {"prompt":"6 + 1 = __ and 1 + 6 = __","answer":"7, 7","id":7,"type":"addition"},
         ]);
     });
 });
 
 describe('addition — Year 1', () => {
-    it('matches the exact sheet (within 20, sum never exceeds 20)', () => {
+    it('matches the exact sheet (within 20, every sum stays within the cap)', () => {
         const s = sheet(g1);
         expect(s).toEqual([
-            {"prompt":"10 + 9 = __","answer":"19","id":1,"type":"addition"},
-            {"prompt":"12 + 2 = __","answer":"14","id":2,"type":"addition"},
-            {"prompt":"19 + 1 = __","answer":"20","id":3,"type":"addition"},
-            {"prompt":"16 + 4 = __","answer":"20","id":4,"type":"addition"},
-            {"prompt":"2 + 12 = __","answer":"14","id":5,"type":"addition"},
-            {"prompt":"4 + 11 = __","answer":"15","id":6,"type":"addition"},
-            {"prompt":"10 + 4 = __","answer":"14","id":7,"type":"addition"},
-            {"prompt":"18 + 2 = __","answer":"20","id":8,"type":"addition"},
-            {"prompt":"9 + 2 = __","answer":"11","id":9,"type":"addition"},
-            {"prompt":"11 + 5 = __","answer":"16","id":10,"type":"addition"},
-            {"prompt":"14 + 5 = __","answer":"19","id":11,"type":"addition"},
-            {"prompt":"9 + 3 = __","answer":"12","id":12,"type":"addition"},
-            {"prompt":"14 + 1 = __","answer":"15","id":13,"type":"addition"},
-            {"prompt":"7 + 10 = __","answer":"17","id":14,"type":"addition"},
-            {"prompt":"16 + 2 = __","answer":"18","id":15,"type":"addition"},
-            {"prompt":"10 + 7 = __","answer":"17","id":16,"type":"addition"},
-            {"prompt":"1 + 18 = __","answer":"19","id":17,"type":"addition"},
-            {"prompt":"5 + 11 = __","answer":"16","id":18,"type":"addition"},
-            {"prompt":"9 + 5 = __","answer":"14","id":19,"type":"addition"},
-            {"prompt":"18 + 1 = __","answer":"19","id":20,"type":"addition"},
-            {"prompt":"12 + 1 = __","answer":"13","id":21,"type":"addition"},
-            {"prompt":"7 + 13 = __","answer":"20","id":22,"type":"addition"},
-            {"prompt":"7 + 11 = __","answer":"18","id":23,"type":"addition"},
-            {"prompt":"11 + 3 = __","answer":"14","id":24,"type":"addition"},
+            {"prompt":"4 + 16 = __ and 16 + 4 = __; the sums differ by __","answer":"20, 20, 0","id":1,"type":"addition"},
+            {"prompt":"True or false: 17 + 1 = 17. __; if it is wrong, fix it: 17 + 1 = __","answer":"Wrong, 18","wideBlanks":true,"id":2,"type":"addition"},
+            {"prompt":"The whole is 10 and one part is 5. The other part is __; the addition sentence is __","answer":"5, 5 + 5 = 10","wideBlanks":true,"id":3,"type":"addition"},
+            {"prompt":"7 + 12 = __ and 12 + 7 = __","answer":"19, 19","id":4,"type":"addition"},
+            {"prompt":"9 + 8 = __ and 16 + 2 = __; the sums differ by __","answer":"17, 18, 1","id":5,"type":"addition"},
+            {"prompt":"5 + 11 = __ and 11 + 5 = __","answer":"16, 16","id":6,"type":"addition"},
+            {"prompt":"True or false: 2 + 7 = 9. __; if it is wrong, fix it: 2 + 7 = __","answer":"Correct, 9","wideBlanks":true,"id":7,"type":"addition"},
         ]);
-        // Sanity: no sum exceeds the within-20 cap.
-        for (const p of s) expect(Number(p.answer)).toBeLessThanOrEqual(20);
+        // Sanity: no numeric answer part exceeds the within-20 cap (the bond
+        // family's sentence parts are covered by the exact pins above).
+        for (const p of s) for (const n of numericParts(p.answer)) expect(n).toBeLessThanOrEqual(20);
     });
 });
 
 describe('addition — Year 2 (bigger numbers)', () => {
     it('stays within the within-100 cap', () => {
         const s = sheet(g2);
-        expect(s).toHaveLength(24);
-        for (const p of s) expect(Number(p.answer)).toBeLessThanOrEqual(100);
-        expect(s[0]).toEqual({ id: 1, type: "addition", prompt: "45 + 41 = __", answer: "86" });
+        expect(s).toHaveLength(7);
+        for (const p of s) for (const n of numericParts(p.answer)) expect(n).toBeLessThanOrEqual(100);
+        expect(s[0]).toEqual({ id: 1, type: "addition", prompt: "99 + 1 = __ and 97 + 2 = __; the sums differ by __", answer: "100, 99, 1" });
     });
 
     it('returns an empty sheet for an unimplemented grade (Year 7+)', () => {
@@ -146,45 +133,32 @@ describe('addition — Year 2 (bigger numbers)', () => {
 // Each year below pins the exact refresh-0 sheet, so the difficulty scaling
 // (one more digit per year, multi-addend from Year 4) cannot silently drift.
 describe('addition — Year 3 (three-digit pairs)', () => {
-    it('matches the exact sheet (within 1000, still classic pairs)', () => {
+    it('matches the exact sheet (within 1000, column tasks carry the figure)', () => {
         const s = sheet(g3);
-        // Year 3 is the vertical-column grade (caps.opCap === 1000): every
-        // pair prints a right-aligned column figure (framework/ColumnDiagram.tsx)
-        // so kids line up digits. The figure repeats the printed terms — the
-        // answer is never drawn.
+        // Year 3 is the vertical-column grade (caps.opCap === 1000): its
+        // COLUMN-family tasks print a right-aligned column figure
+        // (framework/ColumnDiagram.tsx) so kids line up digits. The figure
+        // repeats the printed terms — the answer is never drawn. The other
+        // families (switch/diff/verify) print plain inline prompts.
         expect(s).toEqual([
-            {"prompt":"53 + 942 = __","answer":"995","column":{"terms":[53,942],"op":"+"},"id":1,"type":"addition"},
-            {"prompt":"412 + 90 = __","answer":"502","column":{"terms":[412,90],"op":"+"},"id":2,"type":"addition"},
-            {"prompt":"250 + 648 = __","answer":"898","column":{"terms":[250,648],"op":"+"},"id":3,"type":"addition"},
-            {"prompt":"836 + 10 = __","answer":"846","column":{"terms":[836,10],"op":"+"},"id":4,"type":"addition"},
-            {"prompt":"5 + 7 = __","answer":"12","column":{"terms":[5,7],"op":"+"},"id":5,"type":"addition"},
-            {"prompt":"707 + 28 = __","answer":"735","column":{"terms":[707,28],"op":"+"},"id":6,"type":"addition"},
-            {"prompt":"713 + 41 = __","answer":"754","column":{"terms":[713,41],"op":"+"},"id":7,"type":"addition"},
-            {"prompt":"950 + 37 = __","answer":"987","column":{"terms":[950,37],"op":"+"},"id":8,"type":"addition"},
-            {"prompt":"591 + 352 = __","answer":"943","column":{"terms":[591,352],"op":"+"},"id":9,"type":"addition"},
-            {"prompt":"486 + 215 = __","answer":"701","column":{"terms":[486,215],"op":"+"},"id":10,"type":"addition"},
-            {"prompt":"951 + 12 = __","answer":"963","column":{"terms":[951,12],"op":"+"},"id":11,"type":"addition"},
-            {"prompt":"256 + 530 = __","answer":"786","column":{"terms":[256,530],"op":"+"},"id":12,"type":"addition"},
-            {"prompt":"717 + 4 = __","answer":"721","column":{"terms":[717,4],"op":"+"},"id":13,"type":"addition"},
-            {"prompt":"619 + 367 = __","answer":"986","column":{"terms":[619,367],"op":"+"},"id":14,"type":"addition"},
-            {"prompt":"548 + 4 = __","answer":"552","column":{"terms":[548,4],"op":"+"},"id":15,"type":"addition"},
-            {"prompt":"855 + 89 = __","answer":"944","column":{"terms":[855,89],"op":"+"},"id":16,"type":"addition"},
-            {"prompt":"927 + 62 = __","answer":"989","column":{"terms":[927,62],"op":"+"},"id":17,"type":"addition"},
-            {"prompt":"903 + 29 = __","answer":"932","column":{"terms":[903,29],"op":"+"},"id":18,"type":"addition"},
-            {"prompt":"792 + 177 = __","answer":"969","column":{"terms":[792,177],"op":"+"},"id":19,"type":"addition"},
-            {"prompt":"482 + 492 = __","answer":"974","column":{"terms":[482,492],"op":"+"},"id":20,"type":"addition"},
-            {"prompt":"91 + 785 = __","answer":"876","column":{"terms":[91,785],"op":"+"},"id":21,"type":"addition"},
-            {"prompt":"997 + 1 = __","answer":"998","column":{"terms":[997,1],"op":"+"},"id":22,"type":"addition"},
-            {"prompt":"402 + 120 = __","answer":"522","column":{"terms":[402,120],"op":"+"},"id":23,"type":"addition"},
-            {"prompt":"948 + 36 = __","answer":"984","column":{"terms":[948,36],"op":"+"},"id":24,"type":"addition"},
+            {"prompt":"152 + 212 = __ and 212 + 152 = __","answer":"364, 364","id":1,"type":"addition"},
+            {"prompt":"True or false: 863 + 115 = 979. __; if it is wrong, fix it: 863 + 115 = __","answer":"Wrong, 978","wideBlanks":true,"id":2,"type":"addition"},
+            {"prompt":"Add, then check: 707 + 28 = __; check: 735 - 28 = __","answer":"735, 707","column":{"terms":[707,28],"op":"+"},"id":3,"type":"addition"},
+            {"prompt":"713 + 41 = __ and 950 + 37 = __; the sums differ by __","answer":"754, 987, 233","id":4,"type":"addition"},
+            {"prompt":"True or false: 418 + 554 = 971. __; if it is wrong, fix it: 418 + 554 = __","answer":"Wrong, 972","wideBlanks":true,"id":5,"type":"addition"},
+            {"prompt":"Add, then check: 717 + 4 = __; check: 721 - 4 = __","answer":"721, 717","column":{"terms":[717,4],"op":"+"},"id":6,"type":"addition"},
+            {"prompt":"619 + 367 = __ and 367 + 619 = __","answer":"986, 986","id":7,"type":"addition"},
         ]);
-        // Sanity: within 1000, every question is still a pair, and (the
-        // Year-3-only gate) every pair carries its column figure.
+        // Sanity: within 1000, and (the Year-3-only gate) every "Add, then
+        // check" row carries its column figure with the printed terms.
         for (const p of s) {
-            expect(Number(p.answer)).toBeLessThanOrEqual(1000);
-            expect(p.prompt.match(/\+/g)).toHaveLength(1);
-            expect(p.column).toBeDefined();
+            for (const n of numericParts(p.answer)) expect(n).toBeLessThanOrEqual(1000);
+            if (p.prompt.startsWith('Add, then check:')) {
+                expect(p.column).toEqual({ terms: expect.any(Array), op: '+' });
+            }
         }
+        // The column family appears on the Year-3 sheet (deck deals it).
+        expect(s.filter((p) => p.column).length).toBeGreaterThan(0);
     });
 });
 
@@ -192,36 +166,21 @@ describe('addition — Year 4 (four digits + multi-addend joins)', () => {
     it('matches the exact sheet (within 10000, 2-3 addends)', () => {
         const s = sheet(g4);
         expect(s).toEqual([
-            {"prompt":"790 + 1541 + 2805 = __","answer":"5136","id":1,"type":"addition"},
-            {"prompt":"580 + 4264 + 3866 = __","answer":"8710","id":2,"type":"addition"},
-            {"prompt":"3118 + 6737 = __","answer":"9855","id":3,"type":"addition"},
-            {"prompt":"948 + 1571 + 3313 = __","answer":"5832","id":4,"type":"addition"},
-            {"prompt":"7786 + 610 + 67 = __","answer":"8463","id":5,"type":"addition"},
-            {"prompt":"4281 + 2215 = __","answer":"6496","id":6,"type":"addition"},
-            {"prompt":"2232 + 141 + 130 = __","answer":"2503","id":7,"type":"addition"},
-            {"prompt":"3628 + 499 + 894 = __","answer":"5021","id":8,"type":"addition"},
-            {"prompt":"7830 + 68 = __","answer":"7898","id":9,"type":"addition"},
-            {"prompt":"8357 + 421 = __","answer":"8778","id":10,"type":"addition"},
-            {"prompt":"6369 + 1238 = __","answer":"7607","id":11,"type":"addition"},
-            {"prompt":"6662 + 1109 = __","answer":"7771","id":12,"type":"addition"},
-            {"prompt":"543 + 5476 = __","answer":"6019","id":13,"type":"addition"},
-            {"prompt":"473 + 536 + 7339 = __","answer":"8348","id":14,"type":"addition"},
-            {"prompt":"1325 + 7513 = __","answer":"8838","id":15,"type":"addition"},
-            {"prompt":"164 + 1652 + 6946 = __","answer":"8762","id":16,"type":"addition"},
-            {"prompt":"735 + 3 + 31 = __","answer":"769","id":17,"type":"addition"},
-            {"prompt":"3465 + 502 + 2534 = __","answer":"6501","id":18,"type":"addition"},
-            {"prompt":"6012 + 14 + 6 = __","answer":"6032","id":19,"type":"addition"},
-            {"prompt":"3288 + 6267 = __","answer":"9555","id":20,"type":"addition"},
-            {"prompt":"3724 + 5223 + 562 = __","answer":"9509","id":21,"type":"addition"},
-            {"prompt":"6436 + 1843 = __","answer":"8279","id":22,"type":"addition"},
-            {"prompt":"1768 + 2053 + 1519 = __","answer":"5340","id":23,"type":"addition"},
-            {"prompt":"8514 + 490 + 111 = __","answer":"9115","id":24,"type":"addition"},
+            {"prompt":"7123 + 1057 = __; check: 8180 - 1057 = __","answer":"8180, 7123","id":1,"type":"addition"},
+            {"prompt":"666 + 4895 = __ and 4404 + 1745 = __; the sums differ by __","answer":"5561, 6149, 588","id":2,"type":"addition"},
+            {"prompt":"9789 + 129 = __ and 129 + 9789 = __","answer":"9918, 9918","id":3,"type":"addition"},
+            {"prompt":"True or false: 5830 + 679 = 6507. __; if it is wrong, fix it: 5830 + 679 = __","answer":"Wrong, 6509","wideBlanks":true,"id":4,"type":"addition"},
+            {"prompt":"2411 + 1462 = __; check: 3873 - 1462 = __","answer":"3873, 2411","id":5,"type":"addition"},
+            {"prompt":"True or false: 2501 + 6692 = 9191. __; if it is wrong, fix it: 2501 + 6692 = __","answer":"Wrong, 9193","wideBlanks":true,"id":6,"type":"addition"},
+            {"prompt":"7227 + 993 = __ and 993 + 7227 = __","answer":"8220, 8220","id":7,"type":"addition"},
         ]);
-        // Sanity: within 10000 and addend counts stay inside [2, 3].
+        // Sanity: within 10000 and addend counts stay inside [2, 3] (the
+        // check clause never adds an addend to the printed sum).
         for (const p of s) {
-            expect(Number(p.answer)).toBeLessThanOrEqual(10000);
-            expect(p.prompt.match(/\+/g)!.length + 1).toBeGreaterThanOrEqual(2);
-            expect(p.prompt.match(/\+/g)!.length + 1).toBeLessThanOrEqual(3);
+            for (const n of numericParts(p.answer)) expect(n).toBeLessThanOrEqual(10000);
+            const sumSide = p.prompt.split(';')[0];
+            expect(sumSide.match(/\+/g)!.length + 1).toBeGreaterThanOrEqual(2);
+            expect(sumSide.match(/\+/g)!.length + 1).toBeLessThanOrEqual(3);
         }
     });
 });
@@ -230,32 +189,15 @@ describe('addition — Year 5 (five digits)', () => {
     it('matches the exact sheet (within 100000, 2-3 addends)', () => {
         const s = sheet(g5);
         expect(s).toEqual([
-            {"prompt":"32798 + 52862 + 1006 = __","answer":"86666","id":1,"type":"addition"},
-            {"prompt":"21825 + 8026 = __","answer":"29851","id":2,"type":"addition"},
-            {"prompt":"4623 + 66698 = __","answer":"71321","id":3,"type":"addition"},
-            {"prompt":"627 + 68762 = __","answer":"69389","id":4,"type":"addition"},
-            {"prompt":"92464 + 4408 = __","answer":"96872","id":5,"type":"addition"},
-            {"prompt":"23429 + 4547 + 48517 = __","answer":"76493","id":6,"type":"addition"},
-            {"prompt":"63082 + 13562 = __","answer":"76644","id":7,"type":"addition"},
-            {"prompt":"8317 + 78798 = __","answer":"87115","id":8,"type":"addition"},
-            {"prompt":"90927 + 8266 = __","answer":"99193","id":9,"type":"addition"},
-            {"prompt":"14279 + 47229 + 33011 = __","answer":"94519","id":10,"type":"addition"},
-            {"prompt":"87106 + 116 = __","answer":"87222","id":11,"type":"addition"},
-            {"prompt":"2260 + 26602 + 16501 = __","answer":"45363","id":12,"type":"addition"},
-            {"prompt":"49698 + 12630 = __","answer":"62328","id":13,"type":"addition"},
-            {"prompt":"52769 + 46326 = __","answer":"99095","id":14,"type":"addition"},
-            {"prompt":"13781 + 23496 + 42545 = __","answer":"79822","id":15,"type":"addition"},
-            {"prompt":"73463 + 6914 + 13060 = __","answer":"93437","id":16,"type":"addition"},
-            {"prompt":"86129 + 11210 = __","answer":"97339","id":17,"type":"addition"},
-            {"prompt":"1422 + 166 + 27 = __","answer":"1615","id":18,"type":"addition"},
-            {"prompt":"9803 + 15852 + 8125 = __","answer":"33780","id":19,"type":"addition"},
-            {"prompt":"7805 + 5043 + 9498 = __","answer":"22346","id":20,"type":"addition"},
-            {"prompt":"8004 + 32744 + 1910 = __","answer":"42658","id":21,"type":"addition"},
-            {"prompt":"53532 + 794 + 33095 = __","answer":"87421","id":22,"type":"addition"},
-            {"prompt":"95895 + 696 = __","answer":"96591","id":23,"type":"addition"},
-            {"prompt":"53129 + 507 + 11777 = __","answer":"65413","id":24,"type":"addition"},
+            {"prompt":"3370 + 1240 + 10833 = __; check: 15443 - 10833 = __","answer":"15443, 4610","id":1,"type":"addition"},
+            {"prompt":"True or false: 26092 + 3417 = 29509. __; if it is wrong, fix it: 26092 + 3417 = __","answer":"Correct, 29509","wideBlanks":true,"id":2,"type":"addition"},
+            {"prompt":"37452 + 392 = __ and 392 + 37452 = __","answer":"37844, 37844","id":3,"type":"addition"},
+            {"prompt":"69195 + 13578 = __ and 92464 + 4408 = __; the sums differ by __","answer":"82773, 96872, 14099","id":4,"type":"addition"},
+            {"prompt":"23715 + 13879 = __; check: 37594 - 13879 = __","answer":"37594, 23715","id":5,"type":"addition"},
+            {"prompt":"True or false: 36733 + 27752 = 64487. __; if it is wrong, fix it: 36733 + 27752 = __","answer":"Wrong, 64485","wideBlanks":true,"id":6,"type":"addition"},
+            {"prompt":"90927 + 8266 = __ and 8266 + 90927 = __","answer":"99193, 99193","id":7,"type":"addition"},
         ]);
-        for (const p of s) expect(Number(p.answer)).toBeLessThanOrEqual(100000);
+        for (const p of s) for (const n of numericParts(p.answer)) expect(n).toBeLessThanOrEqual(100000);
     });
 });
 
@@ -263,36 +205,20 @@ describe('addition — Year 6 (six digits, up to 4 addends)', () => {
     it('matches the exact sheet (within 1000000, 2-4 addends)', () => {
         const s = sheet(g6);
         expect(s).toEqual([
-            {"prompt":"536401 + 83342 = __","answer":"619743","id":1,"type":"addition"},
-            {"prompt":"127460 + 91908 + 2370 = __","answer":"221738","id":2,"type":"addition"},
-            {"prompt":"132831 + 699137 = __","answer":"831968","id":3,"type":"addition"},
-            {"prompt":"127584 + 20908 = __","answer":"148492","id":4,"type":"addition"},
-            {"prompt":"11781 + 321932 = __","answer":"333713","id":5,"type":"addition"},
-            {"prompt":"805837 + 9185 = __","answer":"815022","id":6,"type":"addition"},
-            {"prompt":"128668 + 145047 = __","answer":"273715","id":7,"type":"addition"},
-            {"prompt":"71449 + 731154 = __","answer":"802603","id":8,"type":"addition"},
-            {"prompt":"1171 + 116 + 50 + 155 = __","answer":"1492","id":9,"type":"addition"},
-            {"prompt":"155601 + 99205 = __","answer":"254806","id":10,"type":"addition"},
-            {"prompt":"689479 + 54065 = __","answer":"743544","id":11,"type":"addition"},
-            {"prompt":"644387 + 165202 = __","answer":"809589","id":12,"type":"addition"},
-            {"prompt":"145524 + 6348 + 322758 = __","answer":"474630","id":13,"type":"addition"},
-            {"prompt":"235570 + 26704 + 11312 + 45390 = __","answer":"318976","id":14,"type":"addition"},
-            {"prompt":"268542 + 181950 = __","answer":"450492","id":15,"type":"addition"},
-            {"prompt":"40777 + 240996 + 302960 = __","answer":"584733","id":16,"type":"addition"},
-            {"prompt":"180623 + 95849 + 515591 = __","answer":"792063","id":17,"type":"addition"},
-            {"prompt":"854212 + 46573 = __","answer":"900785","id":18,"type":"addition"},
-            {"prompt":"238701 + 231950 + 14450 + 112982 = __","answer":"598083","id":19,"type":"addition"},
-            {"prompt":"220800 + 33212 + 15257 + 9194 = __","answer":"278463","id":20,"type":"addition"},
-            {"prompt":"879490 + 26626 = __","answer":"906116","id":21,"type":"addition"},
-            {"prompt":"207556 + 160277 = __","answer":"367833","id":22,"type":"addition"},
-            {"prompt":"49635 + 147634 + 17571 = __","answer":"214840","id":23,"type":"addition"},
-            {"prompt":"627243 + 8416 + 339146 = __","answer":"974805","id":24,"type":"addition"},
+            {"prompt":"543082 + 101316 = __ and 101316 + 543082 = __","answer":"644398, 644398","id":1,"type":"addition"},
+            {"prompt":"574826 + 414491 = __ and 128334 + 115784 = __; the sums differ by __","answer":"989317, 244118, 745199","id":2,"type":"addition"},
+            {"prompt":"12544 + 2056 + 474 + 83245 = __; check: 98319 - 83245 = __","answer":"98319, 15074","id":3,"type":"addition"},
+            {"prompt":"True or false: 11781 + 321932 = 333715. __; if it is wrong, fix it: 11781 + 321932 = __","answer":"Wrong, 333713","wideBlanks":true,"id":4,"type":"addition"},
+            {"prompt":"243088 + 54081 = __ and 787413 + 177506 = __; the sums differ by __","answer":"297169, 964919, 667750","id":5,"type":"addition"},
+            {"prompt":"1489 + 784942 = __ and 784942 + 1489 = __","answer":"786431, 786431","id":6,"type":"addition"},
+            {"prompt":"True or false: 361838 + 154744 = 516583. __; if it is wrong, fix it: 361838 + 154744 = __","answer":"Wrong, 516582","wideBlanks":true,"id":7,"type":"addition"},
         ]);
         // Sanity: within one million and addend counts stay inside [2, 4].
         for (const p of s) {
-            expect(Number(p.answer)).toBeLessThanOrEqual(1000000);
-            expect(p.prompt.match(/\+/g)!.length + 1).toBeGreaterThanOrEqual(2);
-            expect(p.prompt.match(/\+/g)!.length + 1).toBeLessThanOrEqual(4);
+            for (const n of numericParts(p.answer)) expect(n).toBeLessThanOrEqual(1000000);
+            const sumSide = p.prompt.split(';')[0];
+            expect(sumSide.match(/\+/g)!.length + 1).toBeGreaterThanOrEqual(2);
+            expect(sumSide.match(/\+/g)!.length + 1).toBeLessThanOrEqual(4);
         }
     });
 });
@@ -303,32 +229,15 @@ describe('addition — multi-page documents', () => {
     // caps, or chunking fails these pins.
     it('Year 1 addition, 2 pages, matches the exact page-2 sheet', () => {
         const doc = generateDocument(additionSpec, g1, seedFrom([1, 'addition', 0]), 2);
-        expect(doc.pages[0][0]).toEqual({ id: 1, type: "addition", prompt: "10 + 9 = __", answer: "19" });
+        expect(doc.pages[0][0]).toEqual({ id: 1, type: "addition", prompt: "4 + 16 = __ and 16 + 4 = __; the sums differ by __", answer: "20, 20, 0" });
         expect(doc.pages[1]).toEqual([
-            {"prompt":"17 + 2 = __","answer":"19","id":25,"type":"addition"},
-            {"prompt":"2 + 1 = __","answer":"3","id":26,"type":"addition"},
-            {"prompt":"12 + 4 = __","answer":"16","id":27,"type":"addition"},
-            {"prompt":"2 + 15 = __","answer":"17","id":28,"type":"addition"},
-            {"prompt":"3 + 6 = __","answer":"9","id":29,"type":"addition"},
-            {"prompt":"3 + 7 = __","answer":"10","id":30,"type":"addition"},
-            {"prompt":"3 + 15 = __","answer":"18","id":31,"type":"addition"},
-            {"prompt":"13 + 4 = __","answer":"17","id":32,"type":"addition"},
-            {"prompt":"1 + 8 = __","answer":"9","id":33,"type":"addition"},
-            {"prompt":"15 + 4 = __","answer":"19","id":34,"type":"addition"},
-            {"prompt":"11 + 2 = __","answer":"13","id":35,"type":"addition"},
-            {"prompt":"2 + 8 = __","answer":"10","id":36,"type":"addition"},
-            {"prompt":"7 + 12 = __","answer":"19","id":37,"type":"addition"},
-            {"prompt":"7 + 3 = __","answer":"10","id":38,"type":"addition"},
-            {"prompt":"15 + 1 = __","answer":"16","id":39,"type":"addition"},
-            {"prompt":"6 + 3 = __","answer":"9","id":40,"type":"addition"},
-            {"prompt":"9 + 7 = __","answer":"16","id":41,"type":"addition"},
-            {"prompt":"8 + 12 = __","answer":"20","id":42,"type":"addition"},
-            {"prompt":"8 + 11 = __","answer":"19","id":43,"type":"addition"},
-            {"prompt":"5 + 14 = __","answer":"19","id":44,"type":"addition"},
-            {"prompt":"8 + 4 = __","answer":"12","id":45,"type":"addition"},
-            {"prompt":"15 + 5 = __","answer":"20","id":46,"type":"addition"},
-            {"prompt":"11 + 7 = __","answer":"18","id":47,"type":"addition"},
-            {"prompt":"11 + 4 = __","answer":"15","id":48,"type":"addition"},
+            {"prompt":"The whole is 10 and one part is 6. The other part is __; the addition sentence is __","answer":"4, 6 + 4 = 10","wideBlanks":true,"id":8,"type":"addition"},
+            {"prompt":"18 + 2 = __ and 1 + 18 = __; the sums differ by __","answer":"20, 19, 1","id":9,"type":"addition"},
+            {"prompt":"True or false: 19 + 1 = 18. __; if it is wrong, fix it: 19 + 1 = __","answer":"Wrong, 20","wideBlanks":true,"id":10,"type":"addition"},
+            {"prompt":"9 + 5 = __ and 5 + 9 = __","answer":"14, 14","id":11,"type":"addition"},
+            {"prompt":"The whole is 10 and one part is 2. The other part is __; the addition sentence is __","answer":"8, 2 + 8 = 10","wideBlanks":true,"id":12,"type":"addition"},
+            {"prompt":"7 + 13 = __ and 13 + 7 = __","answer":"20, 20","id":13,"type":"addition"},
+            {"prompt":"12 + 2 = __ and 7 + 11 = __; the sums differ by __","answer":"14, 18, 4","id":14,"type":"addition"},
         ]);
     });
 
@@ -336,42 +245,26 @@ describe('addition — multi-page documents', () => {
         const doc = generateDocument(additionSpec, g2, seedFrom([2, 'addition', 0]), 2);
         // Pinned head of the page-2 stream.
         expect(doc.pages[1].slice(0, 3)).toEqual([
-            {"prompt":"96 + 2 = __","answer":"98","id":25,"type":"addition"},
-            {"prompt":"28 + 6 = __","answer":"34","id":26,"type":"addition"},
-            {"prompt":"2 + 14 = __","answer":"16","id":27,"type":"addition"},
+            {"prompt":"The whole is 20 and one part is 6. The other part is __; the addition sentence is __","answer":"14, 6 + 14 = 20","wideBlanks":true,"id":8,"type":"addition"},
+            {"prompt":"84 + 11 = __ and 19 + 11 = __; the sums differ by __","answer":"95, 30, 65","id":9,"type":"addition"},
+            {"prompt":"True or false: 48 + 50 = 100. __; if it is wrong, fix it: 48 + 50 = __","answer":"Wrong, 98","wideBlanks":true,"id":10,"type":"addition"},
         ]);
-        for (const p of doc.pages.flat()) expect(Number(p.answer)).toBeLessThanOrEqual(100);
+        for (const p of doc.pages.flat()) for (const n of numericParts(p.answer)) expect(n).toBeLessThanOrEqual(100);
     });
 
     // The ladder's top grade also paginates: page 2 continues the SAME stream
-    // (multi-addend included) with continuous ids — pinned head of 24 rows.
+    // (multi-addend included) with continuous ids — the full 7-row page at the
+    // T3M3 density.
     it('Year 6 addition page 2 continues the exact stream', () => {
         const doc = generateDocument(additionSpec, g6, seedFrom([6, 'addition', 0]), 2);
         expect(doc.pages[1]).toEqual([
-            {"prompt":"251956 + 24139 + 1822 = __","answer":"277917","id":25,"type":"addition"},
-            {"prompt":"18918 + 166508 + 67081 + 196843 = __","answer":"449350","id":26,"type":"addition"},
-            {"prompt":"265374 + 33600 + 20701 = __","answer":"319675","id":27,"type":"addition"},
-            {"prompt":"223295 + 146831 + 173621 = __","answer":"543747","id":28,"type":"addition"},
-            {"prompt":"19608 + 656 + 6564 = __","answer":"26828","id":29,"type":"addition"},
-            {"prompt":"68623 + 946 + 3072 = __","answer":"72641","id":30,"type":"addition"},
-            {"prompt":"36416 + 370336 + 2423 + 76622 = __","answer":"485797","id":31,"type":"addition"},
-            {"prompt":"21902 + 357315 = __","answer":"379217","id":32,"type":"addition"},
-            {"prompt":"95040 + 621074 = __","answer":"716114","id":33,"type":"addition"},
-            {"prompt":"48503 + 663071 = __","answer":"711574","id":34,"type":"addition"},
-            {"prompt":"9210 + 1252 + 42853 + 12937 = __","answer":"66252","id":35,"type":"addition"},
-            {"prompt":"352002 + 78551 = __","answer":"430553","id":36,"type":"addition"},
-            {"prompt":"169727 + 74160 + 216297 = __","answer":"460184","id":37,"type":"addition"},
-            {"prompt":"350056 + 22463 + 123844 + 117985 = __","answer":"614348","id":38,"type":"addition"},
-            {"prompt":"602520 + 30374 + 165948 = __","answer":"798842","id":39,"type":"addition"},
-            {"prompt":"314451 + 192651 + 2489 + 1613 = __","answer":"511204","id":40,"type":"addition"},
-            {"prompt":"363686 + 422785 + 203825 = __","answer":"990296","id":41,"type":"addition"},
-            {"prompt":"110984 + 20795 = __","answer":"131779","id":42,"type":"addition"},
-            {"prompt":"310946 + 359307 = __","answer":"670253","id":43,"type":"addition"},
-            {"prompt":"15347 + 74851 + 104310 + 101136 = __","answer":"295644","id":44,"type":"addition"},
-            {"prompt":"48484 + 12476 + 17449 = __","answer":"78409","id":45,"type":"addition"},
-            {"prompt":"5554 + 5484 + 6618 = __","answer":"17656","id":46,"type":"addition"},
-            {"prompt":"304781 + 115329 + 14301 + 10992 = __","answer":"445403","id":47,"type":"addition"},
-            {"prompt":"14972 + 2037 + 122 + 384 = __","answer":"17515","id":48,"type":"addition"},
+            {"prompt":"120045 + 569435 = __; check: 689480 - 569435 = __","answer":"689480, 120045","id":8,"type":"addition"},
+            {"prompt":"614372 + 183031 = __ and 183031 + 614372 = __","answer":"797403, 797403","id":9,"type":"addition"},
+            {"prompt":"306605 + 13374 = __ and 855963 + 45945 = __; the sums differ by __","answer":"319979, 901908, 581929","id":10,"type":"addition"},
+            {"prompt":"63872 + 30563 + 60619 + 165114 = __; check: 320168 - 165114 = __","answer":"320168, 155054","id":11,"type":"addition"},
+            {"prompt":"True or false: 248749 + 399252 = 648002. __; if it is wrong, fix it: 248749 + 399252 = __","answer":"Wrong, 648001","wideBlanks":true,"id":12,"type":"addition"},
+            {"prompt":"156760 + 33082 = __ and 854212 + 46573 = __; the sums differ by __","answer":"189842, 900785, 710943","id":13,"type":"addition"},
+            {"prompt":"True or false: 821058 + 107022 = 928082. __; if it is wrong, fix it: 821058 + 107022 = __","answer":"Wrong, 928080","wideBlanks":true,"id":14,"type":"addition"},
         ]);
     });
 });

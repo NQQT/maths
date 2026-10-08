@@ -165,8 +165,15 @@ export const placeValueSpec: WorksheetSpec = {
     id: 'placevalue',
     label: 'Place Value',
     icon: '⊞',
-    // Eight connected two-part items instead of sixteen one-blank recalls.
-    perPage: 8,
+    // FOUR connected two-part items instead of sixteen one-blank recalls.
+    // LAYOUT CAPACITY (T3M3): worst row = the "I am thinking of a 2-digit
+    // number" story, five wrapped 22px prompt lines (5×33px) = 165.0px;
+    // two-column rows would clip it (297.0px worst), so the sheet prints
+    // single-column at 4/page (row 210.5px, margin 45.5).
+    // See plugins/layout-capacity.test.ts for the model.
+    perPage: 4,
+    // Multi-part stories wrap badly in 297px columns — print single-column.
+    singleColumn: true,
     offered: (grade: GradeConfig) => grade.available.includes('placevalue'),
     scope: (grade: GradeConfig) => `tens & ones to ${Math.max(10, grade.caps.pvCap)}`,
     generate: generatePlaceValue

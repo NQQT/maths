@@ -233,9 +233,13 @@ export const measureSpec: WorksheetSpec = {
     id: 'measure',
     label: 'Measurement',
     icon: '↔',
-    // Six connected items per page: multi-part prompts need the working space
-    // the density reduction frees up.
-    perPage: 6,
+    // FOUR items per page: multi-part prompts need the working space the
+    // density reduction frees up.
+    // LAYOUT CAPACITY (T3M3): worst row = the three-part tank/bucket story,
+    // six wrapped 22px prompt lines (6×33px) = 198.0px; at 6/page the 1fr
+    // row is 132.3px (overflow), at 4/page 210.5px (margin 12.5).
+    // See plugins/layout-capacity.test.ts for the model.
+    perPage: 4,
     // Mixes short comparisons with worded items — prints single-column.
     singleColumn: true,
     offered: (grade: GradeConfig) => grade.available.includes('measure'),

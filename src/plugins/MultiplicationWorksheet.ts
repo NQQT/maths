@@ -151,10 +151,14 @@ export const multiplicationSpec: WorksheetSpec = {
     id: 'mult',
     label: 'Multiplication',
     icon: '×',
-    // Eight connected multi-part tasks per A4, printed in ONE column so every
+    // SIX connected multi-part tasks per A4, printed in ONE column so every
     // line (and the array figure) has room — fewer questions, deeper recall
     // and reasoning each.
-    perPage: 8,
+    // LAYOUT CAPACITY (T3M3): the array-form row is the tallest — one prompt
+    // line (21.6px) + worst 5×5 RowsColumnsDiagram (6+100px) = 127.6px. At
+    // 8/page the 1fr row is 93.3px (overflow); at 6/page it is 132.4px
+    // (margin 4.8). See plugins/layout-capacity.test.ts for the model.
+    perPage: 6,
     singleColumn: true,
     offered: (grade: GradeConfig) => grade.available.includes('mult'),
     scope: (grade: GradeConfig) => `times tables to ${grade.caps.multCap}`,

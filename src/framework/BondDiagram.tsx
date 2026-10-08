@@ -13,8 +13,9 @@ import type { BondFigure } from './types';
 // SIZE (R2): the 96×68 viewBox renders at 1.25x (120×85px — a binary-exact
 // scale, so the width/height attributes stay clean numbers). The blank
 // (requested-part) circle grows to ~35px across, room for a child's digit,
-// while a two-column row at the sheet's current 16-per-page density (figure
-// + one prompt line ≈ 107px in a ~114px row) still fits without overlap.
+// while a single-column row at the sheet's current 5-per-page density (figure
+// + two wrapped prompt lines ≈ 134.2px in a 163.6px row) fits without
+// overlap — see plugins/layout-capacity.test.ts for the model.
 const DiagramRoot = styledComponent('span', {
     display: 'block',
     width: 'fit-content',

@@ -49,7 +49,7 @@ describe('shape transformations — integer geometry', () => {
 });
 
 describe('shape transformations — plugin contract and grade gate', () => {
-    it('declares one spatial entry and six single-column diagram questions', () => {
+    it('declares one spatial entry and five single-column diagram questions', () => {
         const plugin = ShapeTransformationsWorksheet(DASHBOARD_FRAMEWORK);
         expect({
             id: plugin.id,
@@ -62,7 +62,7 @@ describe('shape transformations — plugin contract and grade gate', () => {
             id: 'transformations',
             name: 'Shape Transformations Worksheet',
             entries: [{ id: 'transformations', label: 'Shape Transformations', icon: '↻', ariaLabel: 'Shape Transformations' }],
-            perPage: 6,
+            perPage: 5,
             singleColumn: true,
             scope: 'flips & 90° turns'
         });
@@ -90,23 +90,24 @@ describe('shape transformations — deterministic worksheets', () => {
 
     it('continues one seeded stream across pages and preserves the first page', () => {
         const doc = generateDocument(shapeTransformationsSpec, grade, seed, 2);
-        expect(doc.total).toBe(12);
-        expect(doc.pages.map((page) => page.length)).toEqual([6, 6]);
+        expect(doc.total).toBe(10);
+        expect(doc.pages.map((page) => page.length)).toEqual([5, 5]);
         expect(doc.pages[0]).toEqual(generateSheet(shapeTransformationsSpec, grade, seed));
-        expect(doc.pages.flat().map((problem) => problem.id)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+        expect(doc.pages.flat().map((problem) => problem.id)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
         expect(doc.pages[1]).toMatchSnapshot();
         expect(generateDocument(shapeTransformationsSpec, grade, seed, 3).pages.slice(0, 2)).toEqual(doc.pages);
     });
 
     it('preserves earlier pages even when an extended document exhausts the finite bank', () => {
-        // Forty-eight questions fit eight pages; page nine is the repeat tail.
+        // Forty-eight questions fit nine pages (45) plus three of page ten;
+        // page ten is the repeat tail.
         // A count-dependent sampling budget must not consume extra RNG draws
         // and change already-previewed repeats when a teacher adds page ten.
         // document.ts promises one continuous stream, not just a unique prefix.
         const nine = generateDocument(shapeTransformationsSpec, grade, seed, 9);
         const ten = generateDocument(shapeTransformationsSpec, grade, seed, 10);
-        expect(nine.total).toBe(54);
-        expect(ten.total).toBe(60);
+        expect(nine.total).toBe(45);
+        expect(ten.total).toBe(50);
         expect(ten.pages.slice(0, 9)).toEqual(nine.pages);
     });
 

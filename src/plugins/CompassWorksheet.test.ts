@@ -8,11 +8,11 @@
 //
 // The question space is the curated N/S/E/W space (62 distinct prompts:
 // 6 turn/side kinds x 4 facings + 3 map edges + 8 walk names x 4 facings + 3
-// facts) — deliberately UNCHANGED by the T2V pass. What changed: SIX roomy
-// items per page (was nine) and EVERY item now prints a full-width answer
-// LINE (`answerLine`) so the handwritten direction has usable space — pinned
-// below for every item, together with "no inline blank" (the answer line is
-// the only writing surface).
+// facts) — deliberately UNCHANGED by the T2V pass. What changed: FOUR roomy
+// items per page (was nine, then six — T3M3 layout capacity) and EVERY item
+// now prints a full-width answer LINE (`answerLine`) so the handwritten
+// direction has usable space — pinned below for every item, together with
+// "no inline blank" (the answer line is the only writing surface).
 
 import { createElement, useEffect } from 'react';
 import { cleanup, render } from '@testing-library/react';
@@ -41,9 +41,10 @@ describe('compass plugin — declarative spec', () => {
         expect(compassSpec.label).toBe('Compass Directions');
         expect(compassSpec.icon).toBe('✥');
         expect(compassSpec.singleColumn).toBe(true);
-        // Six per A4 (was nine): each item carries a compass-rose figure
-        // (framework/CompassDiagram.tsx) AND a full-width answer line.
-        expect(compassSpec.perPage).toBe(6);
+        // Four per A4 (was nine, then six): each item carries a compass-rose
+        // figure (framework/CompassDiagram.tsx) AND a full-width answer line
+        // (T3M3 — see plugins/layout-capacity.test.ts).
+        expect(compassSpec.perPage).toBe(4);
     });
 
     it('describes its scope from the grade caps (identical at every offered grade)', () => {
@@ -78,7 +79,7 @@ describe('compass plugin — declarative spec', () => {
 describe('compass — availability gating', () => {
     it('Prep does not offer the extension type (empty sheet); Year 1 does', () => {
         expect(sheet(g0)).toEqual([]);
-        expect(sheet(g1)).toHaveLength(6);
+        expect(sheet(g1)).toHaveLength(4);
     });
 
     it('offers Years 1..3 through the sidebar gate without enabling later grades', () => {
@@ -131,27 +132,23 @@ describe('compass - Year 3 (existing cardinal NSWE space)', () => {
             {"prompt":"You are facing South. What direction is on your left?","answer":"East","answerLine":true,"compass":{"map":false,"facing":"South"},"id":2,"type":"compass"},
             {"prompt":"Leo walks to school towards the East. On the way home, what direction is Leo walking?","answer":"West","answerLine":true,"compass":{"map":false,"facing":"East"},"id":3,"type":"compass"},
             {"prompt":"You are facing North. What direction is on your left?","answer":"West","answerLine":true,"compass":{"map":false,"facing":"North"},"id":4,"type":"compass"},
-            {"prompt":"You are facing East. You make a half turn. What direction are you facing now?","answer":"West","answerLine":true,"compass":{"map":false,"facing":"East","turn":"half"},"id":5,"type":"compass"},
-            {"prompt":"You are facing North. You make a quarter turn to the left. What direction are you facing now?","answer":"West","answerLine":true,"compass":{"map":false,"facing":"North","turn":"left"},"id":6,"type":"compass"},
         ]);
     });
 
     it('continues the exact stream on page 2 with unique prompts and continuous ids', () => {
         const seed = seedFrom([3, 'compass', 0]);
         const doc = generateDocument(compassSpec, g3, seed, 2);
-        expect(doc.total).toBe(12);
-        expect(doc.pages.map((page) => page.length)).toEqual([6, 6]);
+        expect(doc.total).toBe(8);
+        expect(doc.pages.map((page) => page.length)).toEqual([4, 4]);
         expect(doc.pages[0]).toEqual(sheet(g3));
         expect(doc.pages[1]).toEqual([
+            {"prompt":"You are facing East. You make a half turn. What direction are you facing now?","answer":"West","answerLine":true,"compass":{"map":false,"facing":"East","turn":"half"},"id":5,"type":"compass"},
+            {"prompt":"You are facing North. You make a quarter turn to the left. What direction are you facing now?","answer":"West","answerLine":true,"compass":{"map":false,"facing":"North","turn":"left"},"id":6,"type":"compass"},
             {"prompt":"On a map, North is at the top. What direction is at the right of the map?","answer":"East","answerLine":true,"compass":{"map":true},"id":7,"type":"compass"},
             {"prompt":"You are facing West. You make a quarter turn to the left. What direction are you facing now?","answer":"South","answerLine":true,"compass":{"map":false,"facing":"West","turn":"left"},"id":8,"type":"compass"},
-            {"prompt":"On a map, North is at the top. What direction is at the bottom of the map?","answer":"South","answerLine":true,"compass":{"map":true},"id":9,"type":"compass"},
-            {"prompt":"What direction is the opposite of South?","answer":"North","answerLine":true,"compass":{"map":false,"facing":"South"},"id":10,"type":"compass"},
-            {"prompt":"You are facing North. You make a quarter turn to the right. What direction are you facing now?","answer":"East","answerLine":true,"compass":{"map":false,"facing":"North","turn":"right"},"id":11,"type":"compass"},
-            {"prompt":"You are facing East. What direction is on your left?","answer":"North","answerLine":true,"compass":{"map":false,"facing":"East"},"id":12,"type":"compass"},
         ]);
-        expect(doc.pages.flat().map((p) => p.id)).toEqual(arrayCreate(({ index }) => index < 12 ? index + 1 : undefined));
-        expect(new Set(doc.pages.flat().map((p) => p.prompt)).size).toBe(12);
+        expect(doc.pages.flat().map((p) => p.id)).toEqual(arrayCreate(({ index }) => index < 8 ? index + 1 : undefined));
+        expect(new Set(doc.pages.flat().map((p) => p.prompt)).size).toBe(8);
         expect(generateDocument(compassSpec, g3, seed, 3).pages.slice(0, 2)).toEqual(doc.pages);
     });
 
@@ -166,7 +163,7 @@ describe('compass - Year 3 (existing cardinal NSWE space)', () => {
             {"prompt":"Leo walks to school towards the South. On the way home, what direction is Leo walking?","answer":"North","answerLine":true,"compass":{"map":false,"facing":"South"},"id":2,"type":"compass"},
             {"prompt":"Which direction does a compass needle always point?","answer":"North","answerLine":true,"compass":{"map":false},"id":3,"type":"compass"},
         ]);
-        expect(refreshed.total).toBe(12);
+        expect(refreshed.total).toBe(8);
         expect(refreshed).not.toEqual(doc);
         expect(generateDocument(compassSpec, g3, refreshedSeed, 2)).toEqual(refreshed);
         // The existing generator ignores numeric caps. Reusing Year 2 with
@@ -183,8 +180,6 @@ describe('compass — Year 1 (quarter/half turns, opposites, sides, walks)', () 
             {"prompt":"You are facing East. You make a half turn. What direction are you facing now?","answer":"West","answerLine":true,"compass":{"map":false,"facing":"East","turn":"half"},"id":2,"type":"compass"},
             {"prompt":"What direction is the opposite of North?","answer":"South","answerLine":true,"compass":{"map":false,"facing":"North"},"id":3,"type":"compass"},
             {"prompt":"You are facing South. You make a quarter turn to the left. What direction are you facing now?","answer":"East","answerLine":true,"compass":{"map":false,"facing":"South","turn":"left"},"id":4,"type":"compass"},
-            {"prompt":"You are facing West. What direction is on your left?","answer":"South","answerLine":true,"compass":{"map":false,"facing":"West"},"id":5,"type":"compass"},
-            {"prompt":"You are facing North. What direction is on your right?","answer":"East","answerLine":true,"compass":{"map":false,"facing":"North"},"id":6,"type":"compass"},
         ]);
         // Soundness pin: every answer is one of the four cardinal points
         // (never an intercardinal like "North-East" on the grade-1 sheet).
@@ -202,8 +197,6 @@ describe('compass — Year 2 (same N/S/E/W space, freshly dealt sheet)', () => {
             {"prompt":"In which direction does the sun set?","answer":"West","answerLine":true,"compass":{"map":false},"id":2,"type":"compass"},
             {"prompt":"What direction is the opposite of North?","answer":"South","answerLine":true,"compass":{"map":false,"facing":"North"},"id":3,"type":"compass"},
             {"prompt":"On a map, North is at the top. What direction is at the bottom of the map?","answer":"South","answerLine":true,"compass":{"map":true},"id":4,"type":"compass"},
-            {"prompt":"On a map, North is at the top. What direction is at the left of the map?","answer":"West","answerLine":true,"compass":{"map":true},"id":5,"type":"compass"},
-            {"prompt":"You are facing East. You make a quarter turn to the right. What direction are you facing now?","answer":"South","answerLine":true,"compass":{"map":false,"facing":"East","turn":"right"},"id":6,"type":"compass"},
         ]);
         for (const p of s) {
             expect(['North', 'East', 'South', 'West']).toContain(p.answer);

@@ -71,8 +71,11 @@ describe('place value plugin — declarative spec', () => {
         expect(placeValueSpec.id).toBe('placevalue');
         expect(placeValueSpec.label).toBe('Place Value');
         expect(placeValueSpec.icon).toBe('⊞');
-        // Density regression: eight connected items per page (was 16).
-        expect(placeValueSpec.perPage).toBe(8);
+        // Density regression: four connected items per page (was 16, then 8)
+        // — multi-part stories print single-column (T3M3 — see
+        // plugins/layout-capacity.test.ts).
+        expect(placeValueSpec.perPage).toBe(4);
+        expect(placeValueSpec.singleColumn).toBe(true);
     });
 
     it('describes its numeric scope', () => {
@@ -98,14 +101,10 @@ describe('place value — availability gating', () => {
 describe('place value — Year 1', () => {
     it('matches the exact sheet (two-part items, both answers correct)', () => {
         expect(sheet(g1)).toEqual([
-            { prompt: '(a) What is 1 more than 9? __\n(b) How many tens are in your answer? __', answer: '10, 1', id: 1, type: 'placevalue' },
-            { prompt: 'I am thinking of a 2-digit number. Its tens digit is 1. Its ones digit is 1 more than its tens digit.\n(a) What is my ones digit? __\n(b) What is my number? __', answer: '2, 12', id: 2, type: 'placevalue' },
-            { prompt: '(a) Which is greater, 10 or 19? __\n(b) How many more? __', answer: '19, 9', id: 3, type: 'placevalue' },
-            { prompt: '(a) Which is greater, 19 or 14? __\n(b) How many more? __', answer: '19, 5', id: 4, type: 'placevalue' },
-            { prompt: '(a) Which is greater, 14 or 17? __\n(b) How many more? __', answer: '17, 3', id: 5, type: 'placevalue' },
-            { prompt: '(a) What is 1 more than 19? __\n(b) How many tens are in your answer? __', answer: '20, 2', id: 6, type: 'placevalue' },
-            { prompt: 'I am thinking of a 2-digit number. Its tens digit is 1. Its ones digit is 8 more than its tens digit.\n(a) What is my ones digit? __\n(b) What is my number? __', answer: '9, 19', id: 7, type: 'placevalue' },
-            { prompt: '(a) Which is greater, 12 or 11? __\n(b) How many more? __', answer: '12, 1', id: 8, type: 'placevalue' },
+            {"prompt":"(a) What is 1 more than 9? __\n(b) How many tens are in your answer? __","answer":"10, 1","id":1,"type":"placevalue"},
+            {"prompt":"I am thinking of a 2-digit number. Its tens digit is 1. Its ones digit is 1 more than its tens digit.\n(a) What is my ones digit? __\n(b) What is my number? __","answer":"2, 12","id":2,"type":"placevalue"},
+            {"prompt":"(a) Which is greater, 10 or 19? __\n(b) How many more? __","answer":"19, 9","id":3,"type":"placevalue"},
+            {"prompt":"(a) Which is greater, 19 or 14? __\n(b) How many more? __","answer":"19, 5","id":4,"type":"placevalue"},
         ]);
     });
 });
@@ -113,14 +112,10 @@ describe('place value — Year 1', () => {
 describe('place value — Year 2', () => {
     it('matches the exact sheet', () => {
         expect(sheet(g2)).toEqual([
-            { prompt: 'Look at the number 45.\n(a) How many tens are in 45? __\n(b) How many ones are left over? __', answer: '4 tens, 5 ones', id: 1, type: 'placevalue' },
-            { prompt: 'Think about the number 42.\n(a) What is 10 more than 42? __\n(b) What is 10 less than 42? __', answer: '52, 32', id: 2, type: 'placevalue' },
-            { prompt: '(a) What is 1 more than 59? __\n(b) How many tens are in your answer? __', answer: '60, 6', id: 3, type: 'placevalue' },
-            { prompt: '(a) What is 1 more than 69? __\n(b) How many tens are in your answer? __', answer: '70, 7', id: 4, type: 'placevalue' },
-            { prompt: '(a) Which is greater, 95 or 85? __\n(b) How many more? __', answer: '95, 10', id: 5, type: 'placevalue' },
-            { prompt: 'You have two digit cards: 6 and 1.\n(a) What is the greatest 2-digit number you can make? __\n(b) What is the smallest 2-digit number you can make? __', answer: '61, 16', id: 6, type: 'placevalue' },
-            { prompt: 'Think about the number 55.\n(a) What is 10 more than 55? __\n(b) What is 10 less than 55? __', answer: '65, 45', id: 7, type: 'placevalue' },
-            { prompt: 'Look at the number 69.\n(a) How many tens are in 69? __\n(b) How many ones are left over? __', answer: '6 tens, 9 ones', id: 8, type: 'placevalue' },
+            {"prompt":"Look at the number 45.\n(a) How many tens are in 45? __\n(b) How many ones are left over? __","answer":"4 tens, 5 ones","id":1,"type":"placevalue"},
+            {"prompt":"Think about the number 42.\n(a) What is 10 more than 42? __\n(b) What is 10 less than 42? __","answer":"52, 32","id":2,"type":"placevalue"},
+            {"prompt":"(a) What is 1 more than 59? __\n(b) How many tens are in your answer? __","answer":"60, 6","id":3,"type":"placevalue"},
+            {"prompt":"(a) What is 1 more than 69? __\n(b) How many tens are in your answer? __","answer":"70, 7","id":4,"type":"placevalue"},
         ]);
     });
 });

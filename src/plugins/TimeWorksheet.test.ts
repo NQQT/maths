@@ -86,8 +86,11 @@ describe('time plugin — declarative spec', () => {
         expect(timeSpec.id).toBe('time');
         expect(timeSpec.label).toBe('Time & Calendar');
         expect(timeSpec.icon).toBe('◷');
-        // Density regression: eight connected items per page (was 16).
-        expect(timeSpec.perPage).toBe(8);
+        // Density regression: six connected items per page (was 16, then 8)
+        // — day stories print single-column (T3M3 — see
+        // plugins/layout-capacity.test.ts).
+        expect(timeSpec.perPage).toBe(6);
+        expect(timeSpec.singleColumn).toBe(true);
     });
 
     it('describes its scope from the clock capability', () => {
@@ -115,14 +118,12 @@ describe('time — availability gating', () => {
 describe('time — Year 1', () => {
     it('matches the exact sheet (two-part calendar reasoning, answers correct)', () => {
         expect(sheet(g1)).toEqual([
-            { prompt: 'Today is Wednesday.\n(a) What day was yesterday? __\n(b) Was yesterday a weekday or a weekend day? __', answer: 'Tuesday, weekday', id: 1, type: 'time' },
-            { prompt: 'It is autumn in Australia.\n(a) What season comes after autumn? __\n(b) Which is colder there, autumn or winter? __', answer: 'winter, winter', id: 2, type: 'time' },
-            { prompt: 'Today is Tuesday.\n(a) What day was yesterday? __\n(b) Was yesterday a weekday or a weekend day? __', answer: 'Monday, weekday', id: 3, type: 'time' },
-            { prompt: 'My birthday is in May.\n(a) What month comes just BEFORE May? __\n(b) What month comes just AFTER May? __', answer: 'April, June', id: 4, type: 'time' },
-            { prompt: 'How many days are in a year? __', answer: '365', id: 5, type: 'time' },
-            { prompt: 'Today is Monday.\n(a) What day was yesterday? __\n(b) What day will it be tomorrow? __', answer: 'Sunday, Tuesday', id: 6, type: 'time' },
-            { prompt: '(a) How many days are in a week? __\n(b) How many days are in 2 weeks? __', answer: '7, 14', id: 7, type: 'time' },
-            { prompt: 'My birthday is in November.\n(a) What month comes just BEFORE November? __\n(b) What month comes just AFTER November? __', answer: 'October, December', id: 8, type: 'time' },
+            {"prompt":"Today is Wednesday.\n(a) What day was yesterday? __\n(b) Was yesterday a weekday or a weekend day? __","answer":"Tuesday, weekday","id":1,"type":"time"},
+            {"prompt":"It is autumn in Australia.\n(a) What season comes after autumn? __\n(b) Which is colder there, autumn or winter? __","answer":"winter, winter","id":2,"type":"time"},
+            {"prompt":"Today is Tuesday.\n(a) What day was yesterday? __\n(b) Was yesterday a weekday or a weekend day? __","answer":"Monday, weekday","id":3,"type":"time"},
+            {"prompt":"My birthday is in May.\n(a) What month comes just BEFORE May? __\n(b) What month comes just AFTER May? __","answer":"April, June","id":4,"type":"time"},
+            {"prompt":"How many days are in a year? __","answer":"365","id":5,"type":"time"},
+            {"prompt":"Today is Monday.\n(a) What day was yesterday? __\n(b) What day will it be tomorrow? __","answer":"Sunday, Tuesday","id":6,"type":"time"},
         ]);
     });
 });
@@ -130,14 +131,12 @@ describe('time — Year 1', () => {
 describe('time — Year 2', () => {
     it('matches the exact sheet (clock answers follow the drawn face)', () => {
         expect(sheet(g2)).toEqual([
-            { prompt: 'How many days are in a year? __', answer: '365', id: 1, type: 'time' },
-            { prompt: '(a) What time is showing on the clock? __\n(b) What time will it be 2 hours later? __', answer: "9 o'clock, 11 o'clock", clock: { hour: 9, minute: 0 }, id: 2, type: 'time' },
-            { prompt: 'It is summer in Australia.\n(a) What season comes after summer? __\n(b) Which is colder there, summer or autumn? __', answer: 'autumn, autumn', id: 3, type: 'time' },
-            { prompt: 'Today is Monday. Grandma arrives on Thursday.\n(a) How many days is it until Grandma arrives? __\n(b) What day is the day BEFORE she arrives? __', answer: '3, Wednesday', id: 4, type: 'time' },
-            { prompt: 'My birthday is in January.\n(a) What month comes just BEFORE January? __\n(b) What month comes just AFTER January? __', answer: 'December, February', id: 5, type: 'time' },
-            { prompt: 'We are in July now.\n(a) What month comes after July? __\n(b) What season is August in Australia? __', answer: 'August, winter', id: 6, type: 'time' },
-            { prompt: '(a) What time is showing on the clock? __\n(b) What time will it be one hour later? __', answer: 'half past 11, half past 12', clock: { hour: 11, minute: 30 }, id: 7, type: 'time' },
-            { prompt: '(a) How many days are in a week? __\n(b) How many days are in 2 weeks? __', answer: '7, 14', id: 8, type: 'time' },
+            {"prompt":"How many days are in a year? __","answer":"365","id":1,"type":"time"},
+            {"prompt":"(a) What time is showing on the clock? __\n(b) What time will it be 2 hours later? __","answer":"9 o'clock, 11 o'clock","clock":{"hour":9,"minute":0},"id":2,"type":"time"},
+            {"prompt":"It is summer in Australia.\n(a) What season comes after summer? __\n(b) Which is colder there, summer or autumn? __","answer":"autumn, autumn","id":3,"type":"time"},
+            {"prompt":"Today is Monday. Grandma arrives on Thursday.\n(a) How many days is it until Grandma arrives? __\n(b) What day is the day BEFORE she arrives? __","answer":"3, Wednesday","id":4,"type":"time"},
+            {"prompt":"My birthday is in January.\n(a) What month comes just BEFORE January? __\n(b) What month comes just AFTER January? __","answer":"December, February","id":5,"type":"time"},
+            {"prompt":"We are in July now.\n(a) What month comes after July? __\n(b) What season is August in Australia? __","answer":"August, winter","id":6,"type":"time"},
         ]);
     });
 });

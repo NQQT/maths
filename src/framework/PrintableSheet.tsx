@@ -129,10 +129,12 @@ const Rule = styledComponent('hr', {
 // always lands at the bottom of the page: there is never a blank band between
 // the questions and the page foot (screen preview and print share this layout).
 //
-// DEEPER-TASK SPACING (R3): the gaps are sized for the roomy 4..10-per-page
-// densities the illustrated sheets target — at 10/page two-column each row is
-// ~180px, and the 32/24px gutters keep figures (max ~130px tall) and their
-// prompts visually separated without pushing the last row off the sheet.
+// DEEPER-TASK SPACING (R3, retuned T3M3): the gaps are sized for the roomy
+// 4..8-per-page densities the illustrated sheets target — at the tightest
+// single-column 4/page each row is 210.5px, and the 32/24px gutters keep
+// figures (max ~114px tall) and their prompts visually separated without
+// pushing the last row off the sheet. plugins/layout-capacity.test.ts pins
+// the worst-row-vs-row-height contract for every spec.
 const ProblemGrid = styledComponent<{ single: boolean }>('div', {
     display: 'grid',
     gridTemplateColumns: ({ single }) => (single ? '1fr' : '1fr 1fr'),

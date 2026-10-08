@@ -69,9 +69,10 @@ const COLD_RANK: Record<string, number> = { winter: 0, autumn: 1, spring: 2, sum
 //
 // NON-REPEATING SAMPLING: days, months and seasons are dealt from decks (the
 // finite calendar vocabularies each appear once per cycle) and every question
-// passes through sampleUnique keyed on the printed prompt. The clock kinds are
-// PROCEDURAL (12 faces × 2 offsets × 3 kinds), so Year 2's space stays deep
-// even though the calendar vocabulary itself is finite and curated.
+// passes through sampleUnique keyed on the printed prompt PLUS the clock
+// figure (the clock kinds' sentences are fixed — the face carries the time).
+// The clock kinds are PROCEDURAL (12 faces × 2 offsets × 3 kinds), so Year 2's
+// space stays deep even though the calendar vocabulary is finite and curated.
 function generateTime(rng: Rng, caps: Caps, count: number): RawProblem[] {
     const clock = caps.clockCap > 0;
     const dayDeck = createDeck(rng, DAYS);
@@ -239,10 +240,17 @@ export const timeSpec: WorksheetSpec = {
     id: 'time',
     label: 'Time & Calendar',
     icon: '◷',
-    // Eight connected items instead of sixteen one-word answers: every row
-    // now carries a two-part situation with real thinking (and a clock face
+    // SIX connected items instead of sixteen one-word answers: every row
+    // carries a two-part situation with real thinking (and a clock face
     // where the grade has one).
-    perPage: 8,
+    // LAYOUT CAPACITY (T3M3): worst row = the Grandma day story, four
+    // wrapped 22px prompt lines (4×33px) = 120.0px single-column; two-column
+    // rows clip it (264.0px worst), so the sheet prints single-column at
+    // 6/page (row 132.3px, margin 12.3).
+    // See plugins/layout-capacity.test.ts for the model.
+    perPage: 6,
+    // Multi-part day stories wrap badly in 297px columns — print single-column.
+    singleColumn: true,
     offered: (grade: GradeConfig) => grade.available.includes('time'),
     scope: (grade: GradeConfig) => (grade.caps.clockCap > 0 ? 'calendar & time to the half hour' : 'days, months & seasons'),
     generate: generateTime

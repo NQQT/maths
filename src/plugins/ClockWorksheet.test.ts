@@ -69,7 +69,7 @@ describe('clock — Year 2 (reading, drawing and conversions, quarter scale)', (
             {"prompt":"Write the digital time the clock shows:__","answer":"11:45","clock":{"hour":11,"minute":45},"wideBlanks":true,"id":3,"type":"clock"},
             {"prompt":"Quarter to 2 is the same time in digital:","answer":"1:45","answerLine":true,"id":4,"type":"clock"},
             {"prompt":"Quarter past 12 is the same time in digital:","answer":"12:15","answerLine":true,"id":5,"type":"clock"},
-            {"prompt":"10:00 is the same time in words:","answer":"10 o'clock","answerLine":true,"id":6,"type":"clock"},
+            {"prompt":"Write the digital time the clock shows:__","answer":"5:45","clock":{"hour":5,"minute":45},"wideBlanks":true,"id":6,"type":"clock"},
         ]);
     });
 
@@ -160,12 +160,16 @@ describe('clock — Year 2 (reading, drawing and conversions, quarter scale)', (
     });
 
     it('the 48-face × 5-mode space stays at 146 distinct prompts', () => {
-        // read-words and read-digital each share ONE prompt across all 48
-        // faces; draw / words→digital / digital→words carry 48 distinct
-        // prompts each: 1 + 1 + 48 + 48 + 48 = 146.
+        // read-words and read-digital each print ONE fixed sentence whose
+        // question is the drawn face; draw / words→digital / digital→words
+        // carry 48 distinct prompts each: 1 + 1 + 48 + 48 + 48 = 146.
         const s = clockSpec.generate(createRng(seedFrom([2, 'clock', 0])), g2.caps, 600);
         expect(new Set(s.map((p) => p.prompt)).size).toBe(146);
-        expect(new Set(s.slice(0, 146).map((p) => p.prompt)).size).toBe(146);
+        // The sampling key is prompt + figure, so the first 146 DEALS are 146
+        // distinct tasks (the two read-mode sentences repeat only because
+        // their faces differ — the old prompt-only coverage claim no longer
+        // holds and is replaced by the key it actually samples on).
+        expect(new Set(s.slice(0, 146).map((p) => `${p.prompt}|${JSON.stringify(p.clock ?? null)}`)).size).toBe(146);
     });
 });
 

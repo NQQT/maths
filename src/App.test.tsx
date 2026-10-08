@@ -23,7 +23,8 @@ describe('App (MathsDashboard)', () => {
         render(<App />);
         // Year 1 grade pill is selected by default.
         expect(screen.getByRole('radio', { name: '1' }).getAttribute('aria-checked')).toBe('true');
-        // Preview is present and shows the first addition problem for Year 1.
-        expect((screen.getByTestId('sheet-preview').textContent ?? '')).toContain('10 + 9 =');
+        // Preview is present and shows the first addition problem for Year 1
+        // (the connected switch-family row pinned in AdditionWorksheet.test.ts).
+        expect((screen.getByTestId('sheet-preview').textContent ?? '')).toContain('4 + 16 =');
     });
 });
