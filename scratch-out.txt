@@ -1,4 +1,0 @@
-1|4, No|In a picture graph, 1 star = 1 car. Count the stars below. How many cars do they show? __ Is that more than 10 cars? Yes or No: __
-2|7, 0 tens and 7 ones|Count the tallies below. There are __ in all. That is __ tens and __ ones.
-3|Mia, 1|In a column graph, each square is 1 vote. Mia's bar is 6 squares tall and Leo's bar is 5 squares tall. Who got MORE votes? __ How many more votes did Mia get? __
-4|39, 3 tens and 9 ones|Count the tallies below. There are __ in all. That is __ tens and __ ones.
