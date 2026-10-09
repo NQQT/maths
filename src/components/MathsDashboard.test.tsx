@@ -102,8 +102,9 @@ describe('MathsDashboard — layout', () => {
         // full rail (the first plugin — Addition — is available immediately;
         // the rest stream in one by one).
         await allVisiblePluginsLoaded();
-        // App title in the header.
-        expect(screen.getByText('Maths Sheets')).toBeDefined();
+        // App title in the header — "Math Worksheets v{package.version}"
+        // (R4; __APP_VERSION__ is the vitest define read from package.json).
+        expect(screen.getByText(`Math Worksheets v${__APP_VERSION__}`)).toBeDefined();
         // Grade selector present (P + 1..12 = 13 radios; 1 is selected by default).
         expect(gradeRadio('1').getAttribute('aria-checked')).toBe('true');
         // Left rail offers the grade-1 catalogue of math types (no multiplication
@@ -559,8 +560,8 @@ describe('MathsDashboard — print flow (native dialog, preview IS the preview)'
         expect(content(printSheets)).toEqual(previewContent);
         const header = `${title}${subtitle}Name: Date: `;
         expect(arrayCreate(({ index }) => previewContent[index]?.text)).toEqual([
-            `${header}${expectedRows[0].join('')}Maths SheetsPage 1 of 2`,
-            `${header}${expectedRows[1].join('')}Maths SheetsPage 2 of 2`
+            `${header}${expectedRows[0].join('')}Math WorksheetsPage 1 of 2`,
+            `${header}${expectedRows[1].join('')}Math WorksheetsPage 2 of 2`
         ]);
         expect(arrayCreate(({ index }) => previewContent[index]?.polygons.length)).toEqual([25, 25]);
         const vertical = '<line x1="0" y1="-4" x2="0" y2="4" stroke="#1a1a1a" stroke-width="0.12" stroke-dasharray="0.4 0.3"></line>';

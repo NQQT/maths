@@ -55,9 +55,11 @@ const StackViewport = styledComponent('div', {
     // Match the canvas frame's corners (the canvas no longer clips its
     // content with overflow:hidden, so the grid background must round itself).
     borderRadius: 'inherit',
-    // Pale slate with a subtle dot grid (PDF-viewer vibe).
-    background: '#eef1f7',
-    backgroundImage: 'radial-gradient(circle, #d9dfe9 1px, transparent 1px)',
+    // Pale slate with a subtle dot grid (PDF-viewer vibe) — themed via the
+    // canvas tokens so dark mode darkens the FIELD; the paper (PageShell +
+    // PrintableSheet) stays white on purpose (see app.css job 2 note).
+    background: 'var(--canvas-bg)',
+    backgroundImage: 'radial-gradient(circle, var(--canvas-dot) 1px, transparent 1px)',
     backgroundSize: '22px 22px'
 }) as unknown as React.ForwardRefExoticComponent<
     React.RefAttributes<HTMLDivElement> &
@@ -114,9 +116,9 @@ const PageBadge = styledComponent('div', {
     bottom: '10px',
     padding: '3px 10px',
     borderRadius: '999px',
-    border: '1px solid #e4e9f2',
-    background: 'rgba(255,255,255,0.92)',
-    color: '#64748b',
+    border: '1px solid var(--border)',
+    background: 'var(--badge-bg)',
+    color: 'var(--text-muted)',
     fontSize: '11px',
     fontWeight: 600
 });

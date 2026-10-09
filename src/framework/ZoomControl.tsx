@@ -20,9 +20,9 @@ const ZoomGroup = styledComponent('div', {
     gap: '2px',
     padding: '3px',
     borderRadius: '10px',
-    border: '1px solid #e4e9f2',
+    border: '1px solid var(--border)',
     flexShrink: 0,
-    background: '#eef1f7'
+    background: 'var(--surface-alt)'
 });
 
 // One zoom segment; the selected one lifts to a solid chip.
@@ -35,8 +35,8 @@ const ZoomSegment = styledComponent<{ active: boolean }>('button', {
     lineHeight: 1,
     cursor: 'pointer',
     flexShrink: 0,
-    background: ({ active }) => (active ? '#ffffff' : 'transparent'),
-    color: ({ active }) => (active ? '#0f172a' : '#64748b'),
+    background: ({ active }) => (active ? 'var(--surface)' : 'transparent'),
+    color: ({ active }) => (active ? 'var(--text)' : 'var(--text-muted)'),
     boxShadow: ({ active }) => (active ? '0 1px 2px rgba(15,23,42,0.16)' : 'none'),
     transition: 'background 0.12s ease, color 0.12s ease'
 });

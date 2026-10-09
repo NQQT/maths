@@ -89,8 +89,18 @@ describe('PrintableSheet', () => {
 
         expect(page.textContent).toBe(
             'Year 3 - Shape TransformationsFlips and quarter turnsName: Date: ' +
-            '7.Choose , then .8.Write the time in words: .9.Explain your answer:Maths SheetsPage 2 of 3'
+            '7.Choose , then .8.Write the time in words: .9.Explain your answer:Math WorksheetsPage 2 of 3'
         );
+        // PAPER SAFEGUARD (R5): the sheet keeps HARDCODED white/dark-ink
+        // colours (not theme vars) so the on-screen preview equals the print
+        // under every theme; app.css @media print re-forces them (pinned in
+        // src/theme/theme.test.ts source pins). jsdom's CSSOM serialises the
+        // source hex (#ffffff / #1a1a1a in PrintableSheet.tsx) back as rgb(),
+        // so the pin asserts that exact serialisation — a var(--...) value
+        // would come through verbatim and fail this pin.
+        expect(declarations(page, ['background-color', 'color'])).toEqual({
+            'background-color': 'rgb(255, 255, 255)', color: 'rgb(26, 26, 26)'
+        });
         expect(screen.getByRole('heading', { level: 1 }).textContent).toBe(heading.title);
         expect(screen.getByText(heading.subtitle).tagName).toBe('P');
         expect(arrayCreate(({ index }) => grid.children[index]?.firstElementChild?.textContent)).toEqual(['7.', '8.', '9.']);
@@ -153,7 +163,7 @@ describe('PrintableSheet', () => {
         const grid = page.children[2];
 
         expect(page.children[0].textContent).toBe('Year 3 - Shape TransformationsFlips and quarter turnsName: Date: ');
-        expect(page.lastElementChild!.textContent).toBe('Maths SheetsPage 2 of 3');
+        expect(page.lastElementChild!.textContent).toBe('Math WorksheetsPage 2 of 3');
         expect(declarations(grid, ['grid-template-columns'])).toEqual({ 'grid-template-columns': '1fr' });
         expect(arrayCreate(({ index }) => grid.children[index]?.firstElementChild?.textContent)).toEqual([
             '7.', '8.', '9.', '10.', '11.', '12.'

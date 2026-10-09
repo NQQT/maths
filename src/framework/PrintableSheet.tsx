@@ -55,6 +55,14 @@ export type PrintableSheetProps = {
 // Page root: white sheet that fills its A4 frame (794×1123px on screen,
 // 210×297mm in the print tree). Flex column so the footer pins to the page
 // bottom regardless of how much problem content is above it.
+//
+// PAPER COLOURS ARE DELIBERATELY HARDCODED (not var(--...) theme tokens):
+// the sheet IS the printout — on screen it previews exactly what lands on
+// paper (white sheet, dark ink), in Light AND Dark mode alike (the themed
+// canvas frames it; see app.css job 2). The figure SVGs below also hardcode
+// ink colours (#1a1a1a/#ffffff) pinned by their renderer tests, so theming
+// the paper would desynchronise screen from print. The @media print block in
+// app.css re-forces white/dark-ink as a safeguard for every theme.
 const SheetRoot = styledComponent('div', {
     width: '100%',
     height: '100%',
@@ -426,7 +434,10 @@ export function PrintableSheet({ title, subtitle, problems, pageLabel, single, t
                 class set of copies can be reordered physically. */}
             {pageLabel && (
                 <SheetFooter>
-                    <FooterText>Maths Sheets</FooterText>
+                    {/* Paper brand — matches the app name WITHOUT the version
+                        (the version lives in the on-screen header only; the
+                        printed sheet stays clean). */}
+                    <FooterText>Math Worksheets</FooterText>
                     <FooterText>{pageLabel}</FooterText>
                 </SheetFooter>
             )}

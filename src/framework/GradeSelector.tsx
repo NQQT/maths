@@ -30,14 +30,14 @@ const GradePill = styledComponent<{ active: boolean }>('button', {
     padding: '0 12px',
     height: '32px',
     flexShrink: 0,
-    border: ({ active }) => (active ? '1px solid #c7d2fe' : '1px solid #e4e9f2'),
+    border: ({ active }) => (active ? '1px solid var(--chip-active-border)' : '1px solid var(--border)'),
     borderRadius: '999px',
     cursor: 'pointer',
     fontSize: '13px',
     fontWeight: ({ active }) => (active ? 700 : 600),
     lineHeight: 1,
-    background: ({ active }) => (active ? '#eef2ff' : '#ffffff'),
-    color: ({ active }) => (active ? '#4338ca' : '#475569'),
+    background: ({ active }) => (active ? 'var(--chip-active-bg)' : 'var(--surface)'),
+    color: ({ active }) => (active ? 'var(--chip-active-text)' : 'var(--text-secondary)'),
     boxShadow: ({ active }) => (active ? '0 1px 3px rgba(79,70,229,0.2)' : 'none'),
     transition: 'background 0.15s ease, color 0.15s ease, border-color 0.15s ease'
 });

@@ -346,7 +346,7 @@ const ToolbarId = styledComponent('div', {
 const ToolbarTitle = styledComponent('div', {
     fontSize: '15px',
     fontWeight: 700,
-    color: '#0f172a',
+    color: 'var(--text)',
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis'
@@ -354,7 +354,7 @@ const ToolbarTitle = styledComponent('div', {
 
 const ToolbarSub = styledComponent('div', {
     fontSize: '12px',
-    color: '#64748b',
+    color: 'var(--text-muted)',
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis'
@@ -373,7 +373,7 @@ const PagesLabel = styledComponent('span', {
     fontWeight: 700,
     textTransform: 'uppercase',
     letterSpacing: '0.07em',
-    color: '#94a3b8'
+    color: 'var(--text-faint)'
 });
 
 // − / + stepper pill holding the two arrows and the value between them.
@@ -383,8 +383,8 @@ const PageStepper = styledComponent('div', {
     gap: '2px',
     padding: '3px',
     borderRadius: '10px',
-    background: '#eef1f7',
-    border: '1px solid #e4e9f2',
+    background: 'var(--surface-alt)',
+    border: '1px solid var(--border)',
     flexShrink: 0
 });
 
@@ -401,7 +401,7 @@ const PageStepButton = styledComponent<{ dimmed: boolean; atMin: boolean }>('but
     flexShrink: 0,
     cursor: ({ dimmed, atMin }) => (dimmed || atMin ? 'default' : 'pointer'),
     background: 'transparent',
-    color: ({ dimmed }) => (dimmed ? '#cbd5e1' : '#334155'),
+    color: ({ dimmed }) => (dimmed ? 'var(--dim)' : 'var(--text-secondary)'),
     opacity: ({ dimmed, atMin }) => (dimmed || atMin ? 0.5 : 1)
 });
 
@@ -413,8 +413,8 @@ const PageInput = styledComponent('input', {
     height: '28px',
     border: 'none',
     borderRadius: '8px',
-    background: '#ffffff',
-    color: '#0f172a',
+    background: 'var(--input-bg)',
+    color: 'var(--text)',
     fontSize: '13px',
     fontWeight: 700,
     textAlign: 'center',
@@ -432,9 +432,9 @@ const PageInput = styledComponent('input', {
 const GhostButton = styledComponent<{ dimmed: boolean }>('button', {
     padding: '7px 14px',
     borderRadius: '9px',
-    border: '1px solid #e4e9f2',
-    background: '#ffffff',
-    color: '#334155',
+    border: '1px solid var(--border)',
+    background: 'var(--surface)',
+    color: 'var(--text-secondary)',
     fontSize: '13px',
     fontWeight: 600,
     cursor: ({ dimmed }) => (dimmed ? 'default' : 'pointer'),
@@ -475,8 +475,8 @@ const EmptyCard = styledComponent('div', {
     alignItems: 'center',
     gap: '8px',
     padding: '32px 40px',
-    background: '#ffffff',
-    border: '1px solid #e4e9f2',
+    background: 'var(--surface)',
+    border: '1px solid var(--border)',
     borderRadius: '16px',
     boxShadow: '0 4px 16px rgba(15,23,42,0.06)',
     textAlign: 'center'
@@ -489,8 +489,8 @@ const EmptyIcon = styledComponent('div', {
     width: '48px',
     height: '48px',
     borderRadius: '14px',
-    background: '#eef2ff',
-    color: '#4f46e5',
+    background: 'var(--chip-active-bg)',
+    color: 'var(--icon-accent)',
     fontSize: '24px',
     marginBottom: '6px'
 });
@@ -498,12 +498,12 @@ const EmptyIcon = styledComponent('div', {
 const EmptyTitle = styledComponent('div', {
     fontSize: '16px',
     fontWeight: 700,
-    color: '#0f172a'
+    color: 'var(--text)'
 });
 
 const EmptyHint = styledComponent('div', {
     fontSize: '13px',
-    color: '#64748b'
+    color: 'var(--text-muted)'
 });
 
 // The zoom dock is pinned to the WINDOW (position:fixed), not to the canvas:

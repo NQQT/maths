@@ -1,8 +1,19 @@
 // Vitest config scoped to this maths distribution.
 // Uses jsdom environment for React component testing with global APIs.
+import { readFileSync } from 'node:fs';
 import { defineConfig } from 'vitest/config';
 
+// Same define as vite.config.ts: vitest.config.ts takes precedence over
+// vite.config.ts, so without this the __APP_VERSION__ constant (header
+// version display) would be undefined inside tests.
+const pkg = JSON.parse(
+    readFileSync(new URL('./package.json', import.meta.url), 'utf-8'),
+) as { version: string };
+
 export default defineConfig({
+    define: {
+        __APP_VERSION__: JSON.stringify(pkg.version),
+    },
     test: {
         environment: 'jsdom',
         globals: true,

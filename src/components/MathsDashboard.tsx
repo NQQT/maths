@@ -23,7 +23,7 @@
 // Layout (top-to-bottom, left-to-right) — unchanged from the original:
 //
 //   +------------------------------------------------------------------+
-//   | (∑) Maths Sheets            [grade selector] [plugin header slot]|
+//   | (∑) Math Worksheets v{ver}  [grade selector] [Theme] [plug hdr] |
 //   +----------------+-------------------------------------------------+
 //   |  PLUGIN LIST    |  toolbar card: [plugin toolbar slot]           |
 //   |  (left rail,    |  canvas: [plugin page slot]                    |
@@ -44,6 +44,7 @@
 import React from 'react';
 import { styledComponent } from '@presource/react';
 import { PLUGINS } from '../plugins';
+import { ThemeControl } from '../theme';
 import {
     DASHBOARD_FRAMEWORK,
     DashboardContextProvider,
@@ -63,18 +64,20 @@ import {
 
 // App root: a normal document box that grows with its content (see app.css).
 // The `app-root` class exists so the @media print rules in app.css can target
-// exactly this box (defensive un-clip on print).
+// exactly this box (defensive un-clip on print). Colours are theme tokens
+// (app.css) so the whole shell follows Light/Dark/System (R5).
 const AppRoot = styledComponent('div', {
     position: 'relative',
     width: '100%',
     height: 'auto',
     overflow: 'visible',
-    background: '#f4f6fb',
-    color: '#0f172a'
+    background: 'var(--app-bg)',
+    color: 'var(--text)'
 });
 
-// White top bar: brand mark + title on the left; the framework grade selector
-// (shared configuration) and the active plugin's optional header on the right.
+// Top bar: brand mark + title on the left; the framework grade selector and
+// Theme select (shared configuration) and the active plugin's optional header
+// on the right.
 const HeaderBar = styledComponent('div', {
     position: 'sticky',
     top: 0,
@@ -85,8 +88,8 @@ const HeaderBar = styledComponent('div', {
     height: () => ({ xs: 'auto', sm: '64px' }),
     padding: () => ({ xs: '10px 20px', sm: '0 20px' }),
     boxSizing: 'border-box',
-    background: '#ffffff',
-    borderBottom: '1px solid #e4e9f2'
+    background: 'var(--surface)',
+    borderBottom: '1px solid var(--border)'
 });
 
 const BrandMark = styledComponent('div', {
@@ -108,7 +111,7 @@ const AppTitle = styledComponent('h1', {
     fontSize: '17px',
     fontWeight: 800,
     margin: 0,
-    color: '#0f172a',
+    color: 'var(--text)',
     whiteSpace: 'nowrap',
     letterSpacing: '-0.01em'
 });
@@ -152,8 +155,8 @@ const ToolbarCard = styledComponent('div', {
     padding: '10px 14px',
     flexShrink: 0,
     boxSizing: 'border-box',
-    background: '#ffffff',
-    border: '1px solid #e4e9f2',
+    background: 'var(--surface)',
+    border: '1px solid var(--border)',
     borderRadius: '12px',
     boxShadow: '0 1px 2px rgba(15,23,42,0.04)'
 });
@@ -167,7 +170,7 @@ const Sidebar = styledComponent('div', {
     gap: '6px',
     padding: '16px',
     boxSizing: 'border-box',
-    background: '#ffffff',
+    background: 'var(--surface)',
     overflowY: 'auto',
     flexDirection: () => ({ xs: 'row', sm: 'column' }),
     flexWrap: () => ({ xs: 'wrap', sm: 'nowrap' }),
@@ -179,8 +182,8 @@ const Sidebar = styledComponent('div', {
     zIndex: 10,
     flexShrink: 0,
     overflowX: () => ({ xs: 'auto', sm: 'hidden' }),
-    borderRight: () => ({ xs: 'none', sm: '1px solid #e4e9f2' }),
-    borderBottom: () => ({ xs: '1px solid #e4e9f2', sm: 'none' })
+    borderRight: () => ({ xs: 'none', sm: '1px solid var(--border)' }),
+    borderBottom: () => ({ xs: '1px solid var(--border)', sm: 'none' })
 });
 
 const SidebarHeading = styledComponent('h2', {
@@ -191,7 +194,7 @@ const SidebarHeading = styledComponent('h2', {
     fontWeight: 700,
     textTransform: 'uppercase',
     letterSpacing: '0.08em',
-    color: '#94a3b8',
+    color: 'var(--text-faint)',
     margin: '0 0 6px 0',
     flexShrink: 0
 });
@@ -204,8 +207,8 @@ const Canvas = styledComponent('div', {
     width: '100%',
     boxSizing: 'border-box',
     borderRadius: '12px',
-    border: '1px solid #e4e9f2',
-    background: '#eef1f7'
+    border: '1px solid var(--border)',
+    background: 'var(--canvas-bg)'
 });
 
 // Framework-level empty state: shown when NO plugin is registered at all (all
@@ -227,8 +230,8 @@ const HostEmptyCard = styledComponent('div', {
     alignItems: 'center',
     gap: '8px',
     padding: '32px 40px',
-    background: '#ffffff',
-    border: '1px solid #e4e9f2',
+    background: 'var(--surface)',
+    border: '1px solid var(--border)',
     borderRadius: '16px',
     boxShadow: '0 4px 16px rgba(15,23,42,0.06)',
     textAlign: 'center'
@@ -277,12 +280,23 @@ function MathsDashboardBody() {
             <div className="app-chrome">
                 <HeaderBar>
                     <BrandMark aria-hidden="true">∑</BrandMark>
-                    <AppTitle>Maths Sheets</AppTitle>
+                    {/* R4: the brand is "Math Worksheets" with the package
+                        version from package.json — injected at build time as
+                        the __APP_VERSION__ define (vite.config.ts /
+                        vitest.config.ts read package.json via readFileSync;
+                        ambient declaration in src/vite-env.d.ts). No
+                        hardcoded version string anywhere in the app. */}
+                    <AppTitle>Math Worksheets v{__APP_VERSION__}</AppTitle>
                     <HeaderSpacer />
                     {/* Framework grade selector: shared dashboard configuration
                         that re-gates every plugin's rail entry and re-caps
                         every plugin's generator. */}
                     <GradeSelector />
+                    {/* R5: Light/Dark/System theme select — dashboard-wide
+                        configuration like the grade (src/theme/: preference
+                        persisted under the package key, System follows the OS
+                        via matchMedia, print stays paper-white). */}
+                    <ThemeControl />
                     {/* Plugin header slot (unused by the worksheet plugins;
                         any plugin may still contribute header UI here). */}
                     <PluginHeaderHost plugins={plugins} />
@@ -356,10 +370,10 @@ function MathsDashboardBody() {
 // card.
 const SidebarNoticeCard = styledComponent('div', {
     padding: '14px',
-    background: '#f8fafc',
-    border: '1px solid #e4e9f2',
+    background: 'var(--surface-soft)',
+    border: '1px solid var(--border)',
     borderRadius: '12px',
-    color: '#475569',
+    color: 'var(--text-secondary)',
     fontSize: '14px',
     lineHeight: 1.5,
     width: () => ({ xs: '100%', sm: 'auto' })
@@ -383,7 +397,7 @@ const SidebarLoading = styledComponent('div', {
     fontWeight: 700,
     textTransform: 'uppercase',
     letterSpacing: '0.08em',
-    color: '#94a3b8',
+    color: 'var(--text-faint)',
     padding: '6px 2px',
     flexShrink: 0,
     width: () => ({ xs: '100%', sm: 'auto' })

@@ -4,7 +4,7 @@
    The app is a PLUGIN HOST (see src/plugins/): the dashboard chrome renders
    header/rail/toolbar/canvas slots, and each exercise is a self-contained
    plugin that fills them (src/plugins/index.ts is the registration list).
-   This stylesheet only carries the two cross-cutting concerns:
+   This stylesheet carries three cross-cutting concerns:
 
    1. CONTINUOUS DOCUMENT FLOW
       The app is a normal, vertically-growing web page: nothing in the
@@ -16,7 +16,25 @@
       header, toolbar and math-type rail are position:sticky so they stay
       reachable while scrolling, and the zoom dock is position:fixed.
 
-   2. PRINT RULES
+   2. THEME TOKENS (R5 — Light / Dark / System)
+      Every shell colour lives in a CSS custom property defined ONCE here.
+      :root carries the LIGHT set; [data-theme='dark'] overrides the same
+      names with the dark set. src/theme/* resolves the user's preference
+      (System follows the OS via matchMedia) and publishes data-theme on
+      <html>; every styledComponent in the shell references var(--...)
+      instead of hardcoded hex, so a theme switch is a single attribute
+      flip — no React re-render of styles needed. `color-scheme` makes
+      native controls (the Theme select, number input, scrollbars) follow
+      the palette too.
+
+      The worksheet PAPER is deliberately NOT tokenised: PrintableSheet
+      keeps hardcoded white/dark-ink colours so the on-screen preview is
+      always the real printed sheet (the diagram SVGs also hardcode ink
+      colours pinned by their tests), and the @media print block below
+      re-forces paper colours as a safeguard regardless of the active
+      theme. The themed canvas around the paper is what dark mode affects.
+
+   3. PRINT RULES
       Printing is a plain window.print() call (fired by a plugin's toolbar).
       Under @media print the app UI (`.app-chrome`) is hidden and the active
       plugin's hidden `.print-doc` tree is revealed — the host mounts that
@@ -26,13 +44,63 @@
       actual print job.
    ───────────────────────────────────────────────────────────────────────────── */
 
+/* ── Light token set (default; also what [data-theme='light'] selects) ──────
+   Contrast notes: text on surface ≥ 7:1, secondary/muted/faint labels ≥ 4.5:1
+   (WCAG AA for the small uppercase chrome labels). */
+:root {
+    color-scheme: light;
+    --app-bg: #f4f6fb;          /* page canvas behind the sticky chrome */
+    --surface: #ffffff;         /* header bar, sidebar, cards, inputs */
+    --surface-alt: #eef1f7;     /* stepper/zoom wells, preview canvas */
+    --surface-soft: #f8fafc;    /* quiet notice cards */
+    --border: #e4e9f2;          /* hairline borders everywhere */
+    --text: #0f172a;            /* primary ink */
+    --text-secondary: #475569;  /* inactive pills, notice text */
+    --text-muted: #64748b;      /* subtitles, badges */
+    --text-faint: #94a3b8;      /* small uppercase rail/toolbar labels */
+    --input-bg: #ffffff;        /* page-count input well */
+    --chip-active-bg: #eef2ff;  /* selected grade pill */
+    --chip-active-border: #c7d2fe;
+    --chip-active-text: #4338ca;
+    --canvas-bg: #eef1f7;       /* A4 preview field backdrop */
+    --canvas-dot: #d9dfe9;      /* preview dot grid */
+    --badge-bg: rgba(255, 255, 255, 0.92); /* screen-only page badge */
+    --dim: #cbd5e1;             /* inert stepper glyphs */
+    --icon-accent: #4f46e5;     /* empty-state ∑ glyph */
+}
+
+/* ── Dark token set — applied when the resolved theme is dark (System mode
+   following the OS, or a manual Dark choice). Same names, darker values;
+   ink/label contrasts held at the same WCAG AA ratios as light. ────────── */
+[data-theme='dark'] {
+    color-scheme: dark;
+    --app-bg: #0b1120;
+    --surface: #151f33;
+    --surface-alt: #1e2a44;
+    --surface-soft: #1a2540;
+    --border: #2c3a58;
+    --text: #e8edf7;
+    --text-secondary: #b6c2d9;
+    --text-muted: #a9b6cc;
+    --text-faint: #94a3b8;
+    --input-bg: #101a2e;
+    --chip-active-bg: #26335a;
+    --chip-active-border: #5b6fae;
+    --chip-active-text: #c7d2fe;
+    --canvas-bg: #0e1626;
+    --canvas-dot: #263452;
+    --badge-bg: rgba(21, 31, 51, 0.92);
+    --dim: #55648a;
+    --icon-accent: #a5b4fc;
+}
+
 body {
     margin: 0;
     /* No `height: 100%` / `overflow: hidden` here: the document is allowed to
        grow vertically and the window-level vertical scrollbar handles
        scrolling (job 1). */
-    background: #f4f6fb;
-    color: #0f172a;
+    background: var(--app-bg);
+    color: var(--text);
     font-family: 'Inter', system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
@@ -77,7 +145,39 @@ body {
     body {
         height: auto !important;
         overflow: visible !important;
+        /* PRINT COLOUR SAFEGUARD (R5): paper is ALWAYS white with dark ink,
+           no matter which theme is active on screen. The explicit !important
+           values below plus the token re-forcing keep a Dark-mode user's
+           print job identical to a Light-mode one. */
         background: #ffffff !important;
+        color: #1a1a1a !important;
+    }
+
+    /* Re-force every theme token to its paper value for the print media,
+       regardless of the data-theme attribute — anything still reading a
+       var(--...) on the printed tree resolves to white/dark-ink. */
+    :root,
+    [data-theme='light'],
+    [data-theme='dark'] {
+        color-scheme: light;
+        --app-bg: #ffffff;
+        --surface: #ffffff;
+        --surface-alt: #ffffff;
+        --surface-soft: #ffffff;
+        --border: #e4e9f2;
+        --text: #1a1a1a;
+        --text-secondary: #1a1a1a;
+        --text-muted: #1a1a1a;
+        --text-faint: #4b5563;
+        --input-bg: #ffffff;
+        --chip-active-bg: #ffffff;
+        --chip-active-border: #1a1a1a;
+        --chip-active-text: #1a1a1a;
+        --canvas-bg: #ffffff;
+        --canvas-dot: #ffffff;
+        --badge-bg: #ffffff;
+        --dim: #4b5563;
+        --icon-accent: #1a1a1a;
     }
 
     /* Defensive un-clip of the app shell for printing: on screen the shell is
