@@ -1,7 +1,33 @@
+// Standalone tsconfig — the compiler options previously inherited from the
+// monorepo root tsconfig.json via `extends: "../../tsconfig.json"` are
+// inlined here so this distribution builds and typechecks as a self-contained
+// repository (required for the GitHub Pages CI, where no parent tsconfig
+// exists). Keep in sync with the monorepo root tsconfig.json.
+//
+// CI failure being fixed: NQQT/maths is checked out standalone at
+// /home/runner/work/maths/maths, so `extends: "../../tsconfig.json"` resolved
+// to /home/runner/work/tsconfig.json — nonexistent — and builtin:vite-transform
+// aborted the build. Inlining removes the outside-checkout dependency.
+//
+// Deltas from the root tsconfig (same as distribution/story-generator):
+// - jsx: "react-jsx" kept (this package's previous local override; the app
+//   uses the automatic JSX runtime via @vitejs/plugin-react).
+// - declaration/outDir dropped: monorepo library-build options, unused by a
+//   Vite app build.
 {
-    "extends": "../../tsconfig.json",
     "compilerOptions": {
-        "jsx": "react-jsx"
+        "module": "ESNext",
+        "target": "ESNext",
+        "moduleResolution": "bundler",
+        "jsx": "react-jsx",
+        "skipLibCheck": true,
+        "allowJs": true,
+        "experimentalDecorators": true,
+        "esModuleInterop": true,
+        "strict": true,
+        "lib": ["decorators", "dom", "es5", "scripthost", "es2015.collection"],
+        "types": ["node", "vitest/globals"]
     },
+    "exclude": ["node_modules", "**/*.test.ts", "**/dist/*", "**/lib/*"],
     "include": ["src/**/*", "vite.config.ts", "vitest.config.ts"]
 }
