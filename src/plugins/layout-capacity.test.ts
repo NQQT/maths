@@ -53,6 +53,16 @@ import { placeValueSpec } from './PlaceValueWorksheet';
 import { dataSpec } from './DataWorksheet';
 import { divisionSpec } from './DivisionWorksheet';
 import { moneySpec } from './MoneyWorksheet';
+// T4 expansion specs (nine upper-primary strands, Years 3..6).
+import { fractionsSpec } from './FractionsWorksheet';
+import { decimalsSpec } from './DecimalsWorksheet';
+import { percentSpec } from './PercentWorksheet';
+import { multiDivSpec } from './MultiplyDivideWorksheet';
+import { perimeterAreaSpec } from './PerimeterAreaWorksheet';
+import { metricConvSpec } from './MetricConversionWorksheet';
+import { statisticsSpec } from './StatisticsWorksheet';
+import { probabilitySpec } from './ProbabilityWorksheet';
+import { algebraSpec } from './AlgebraReasoningWorksheet';
 
 // ── PrintableSheet.tsx chrome (px at 96dpi; 1mm = 96/25.4) ──────────────────
 const MM = 96 / 25.4;
@@ -172,7 +182,11 @@ const SPECS: WorksheetSpec[] = [
     additionSpec, subtractionSpec, multiplicationSpec, missingSpec, comparisonSpec,
     skipSpec, wordSpec, countingSpec, rowsColumnsSpec, doublesSpec, bondsSpec, patternsSpec,
     shapesSpec, shapeTransformationsSpec, compassSpec, timeSpec, clockSpec, measureSpec,
-    temperatureSpec, placeValueSpec, dataSpec, divisionSpec, moneySpec
+    temperatureSpec, placeValueSpec, dataSpec, divisionSpec, moneySpec,
+    // T4 expansion cluster (Years 3..6 only — worstRowHeight skips grades
+    // where the spec is not offered).
+    fractionsSpec, decimalsSpec, percentSpec, multiDivSpec, perimeterAreaSpec,
+    metricConvSpec, statisticsSpec, probabilitySpec, algebraSpec
 ];
 
 // Exact worst-case row heights (px, 1dp) measured by the model above at each
@@ -202,7 +216,21 @@ const WORST_PX: Record<string, number> = {
     placevalue: 165.0,        // "thinking of a number" story, five wrapped lines
     data: 170.8,              // column graph + three wrapped prompt lines
     division: 165.0,          // three-part story, five wrapped 22px lines
-    money: 125.7              // money figure + two wrapped lines + answer line
+    money: 125.7,             // money figure + two wrapped lines + answer line
+    // T4 expansion — measured by the model at each spec's current density
+    // (decimals/percent/algebra: 10 per page two-column; the other five:
+    // 8 per page two-column — fractions/multidiv were retuned 10→8 because
+    // their 165px sentence rows only clear the 1fr row at that density;
+    // statistics Y3 tally rows are the only figure-bearing ones).
+    fractions: 165,           // five wrapped 22px lines (8/page two-column)
+    decimals: 99,             // three wrapped 22px lines
+    percent: 99,              // three wrapped 22px lines
+    multidiv: 165,            // five wrapped 22px lines (8/page two-column)
+    perimeterarea: 165,       // five wrapped 22px lines (measurement prose, shortened in T4)
+    metricconv: 165,          // five wrapped 22px lines (ordering items, wide blanks)
+    statistics: 198,          // six wrapped 22px lines (table-in-sentence items)
+    probability: 198,         // six wrapped 22px lines (two-bag comparisons)
+    algebra: 99               // three wrapped 22px lines
 };
 
 describe('A4 print-layout capacity — worst row must fit its 1fr row', () => {

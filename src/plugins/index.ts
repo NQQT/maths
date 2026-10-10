@@ -63,6 +63,17 @@ import { PlaceValueWorksheet } from './PlaceValueWorksheet';
 import { DataWorksheet } from './DataWorksheet';
 import { DivisionWorksheet } from './DivisionWorksheet';
 import { MoneyWorksheet } from './MoneyWorksheet';
+// T4 expansion cluster — appended at the END so every existing rail order and
+// loading-order pin stays byte-identical (plugins.test.tsx pins the prefix).
+import { FractionsWorksheet } from './FractionsWorksheet';
+import { DecimalsWorksheet } from './DecimalsWorksheet';
+import { PercentWorksheet } from './PercentWorksheet';
+import { MultiplyDivideWorksheet } from './MultiplyDivideWorksheet';
+import { PerimeterAreaWorksheet } from './PerimeterAreaWorksheet';
+import { MetricConversionWorksheet } from './MetricConversionWorksheet';
+import { StatisticsWorksheet } from './StatisticsWorksheet';
+import { ProbabilityWorksheet } from './ProbabilityWorksheet';
+import { AlgebraReasoningWorksheet } from './AlgebraReasoningWorksheet';
 
 // All installed worksheet plugins, in display/loading order. UNINVOKED
 // factories — the dashboard loads each one by calling it with its framework
@@ -96,5 +107,16 @@ export const PLUGINS: PluginFactory[] = [
     PlaceValueWorksheet,
     DataWorksheet,
     DivisionWorksheet,
-    MoneyWorksheet
+    MoneyWorksheet,
+    // T4 expansion: the nine new strands append AFTER Money so the Year 1 rail
+    // still ends at Data & Tally and every earlier position is unchanged.
+    FractionsWorksheet,
+    DecimalsWorksheet,
+    PercentWorksheet,
+    MultiplyDivideWorksheet,
+    PerimeterAreaWorksheet,
+    MetricConversionWorksheet,
+    StatisticsWorksheet,
+    ProbabilityWorksheet,
+    AlgebraReasoningWorksheet
 ];

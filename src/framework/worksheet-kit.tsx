@@ -26,9 +26,10 @@ import { definePlugin, type DashboardPlugin, type WorksheetSpec } from './types'
 import { useDashboardStore } from './store';
 import { getGradeConfig, type GradeConfig } from './grades';
 import { seedFrom } from './rng';
-import { buildDocument } from './document';
+import { buildDocument, type Problem, type WorksheetDocument } from './document';
 import { PageStack, type PageSpec } from './PageStack';
 import { PrintableSheet } from './PrintableSheet';
+import { AnswerKeySheet, KEY_PER_PAGE } from './AnswerKeySheet';
 import { ZoomControl } from './ZoomControl';
 import type { ZoomMode } from './page-scale';
 
@@ -46,6 +47,11 @@ function useWorksheetDocument(spec: WorksheetSpec) {
     const gradeId = session.gradeId ?? 1;
     const refresh: number = session.refresh ?? 0;
     const pageCount: number = session.pageCount ?? 1;
+    // Teacher answer key (T4 flag, T8 rendering): framework session flag,
+    // default-off. It does NOT change the seed or the document — it only
+    // appends separate AnswerKeySheet pages (preview + print, always in sync
+    // because both surfaces read this one derivation and buildPageSpecs).
+    const answerKey = session.answerKey === true;
 
     return useMemo(() => {
         const grade = getGradeConfig(gradeId);
@@ -58,9 +64,36 @@ function useWorksheetDocument(spec: WorksheetSpec) {
             offered: grade.implemented && spec.offered(grade),
             doc,
             title,
-            subtitle
+            subtitle,
+            answerKey
         };
-    }, [spec, gradeId, refresh, pageCount]);
+    }, [spec, gradeId, refresh, pageCount, answerKey]);
+}
+
+// ── Page assembly shared by preview AND print (T8 answer key) ───────────────
+// Builds the full page list — worksheet pages first, then (when the teacher
+// key is on) AnswerKeySheet pages chunked at KEY_PER_PAGE. Page labels count
+// EVERY page of the print job ("Page i of n" with n = worksheet + key pages)
+// so the physical sheets can be ordered. Both surfaces call this ONE helper,
+// so preview and print can never disagree about whether the key exists.
+function buildPageSpecs(doc: WorksheetDocument, answerKey: boolean): PageSpec[] {
+    const worksheetPages = doc.pages;
+    // Flatten document-wide ids and chunk the answers onto key pages.
+    const keyPages: Problem[][] = [];
+    if (answerKey) {
+        const flat = worksheetPages.flat();
+        for (let i = 0; i < flat.length; i += KEY_PER_PAGE) keyPages.push(flat.slice(i, i + KEY_PER_PAGE));
+    }
+    const total = worksheetPages.length + keyPages.length;
+    const label = (i: number) => (total > 1 ? `Page ${i + 1} of ${total}` : undefined);
+    return [
+        ...worksheetPages.map((problems, i) => ({ problems, pageLabel: label(i) })),
+        ...keyPages.map((problems, j) => ({
+            problems,
+            kind: 'key' as const,
+            pageLabel: label(worksheetPages.length + j)
+        }))
+    ];
 }
 
 // ── Toolbar surface ──────────────────────────────────────────────────────────
@@ -106,6 +139,18 @@ function createToolbar(spec: WorksheetSpec) {
             document.title = title;
             window.print(); // native print dialog
             document.title = previous;
+        };
+
+        // "Answers" toggle (T4 teacher answer key, T8 separate-page model):
+        // flips the framework session flag that appends the AnswerKeySheet
+        // pages to preview AND print. Default-off — a fresh sheet is always
+        // the student version (no answer text anywhere in the document), and
+        // the toggle is dashboard-wide session state (like grade/pages), not
+        // per-plugin state.
+        const answerKeyOn = session.answerKey === true;
+        const toggleAnswers = () => {
+            if (!hasProblems) return;
+            session.answerKey = !answerKeyOn;
         };
 
         // Stepper handlers: decrement never drops below MIN_PAGES; increment
@@ -183,6 +228,18 @@ function createToolbar(spec: WorksheetSpec) {
                     >
                         Randomize
                     </GhostButton>
+                    {/* Teacher answer-key toggle (T4): aria-pressed mirrors the
+                        session flag; label states the current mode so the
+                        student-default (Off) is obvious at a glance. */}
+                    <GhostButton
+                        dimmed={!hasProblems}
+                        aria-disabled={!hasProblems || undefined}
+                        aria-pressed={answerKeyOn}
+                        data-testid="toolbar-answers"
+                        onClick={toggleAnswers}
+                    >
+                        {answerKeyOn ? 'Answers: On' : 'Answers: Off'}
+                    </GhostButton>
                     <PrimaryButton
                         dimmed={!hasProblems}
                         aria-disabled={!hasProblems || undefined}
@@ -209,18 +266,14 @@ function createToolbar(spec: WorksheetSpec) {
 // framework mounts the plugin's print surface OUTSIDE that shell instead.
 function createPage(spec: WorksheetSpec) {
     function WorksheetPage() {
-        const { grade, offered, doc, title, subtitle } = useWorksheetDocument(spec);
+        const { grade, offered, doc, title, subtitle, answerKey } = useWorksheetDocument(spec);
         const session = useDashboardStore().session;
 
-        // Page list annotated with "Page i of n" labels (multi-page only). One
-        // PageSpec object is consumed by every rendering surface.
-        const total = doc.pages.length;
-        const pageSpecs: PageSpec[] = doc.pages.map((problems, i) => ({
-            problems,
-            pageLabel: total > 1 ? `Page ${i + 1} of ${total}` : undefined
-        }));
-
-        const hasProblems = total > 0;
+        // Page list annotated with "Page i of n" labels (multi-page only),
+        // plus the T8 teacher-key pages when the flag is on. One PageSpec
+        // list is consumed by every rendering surface (preview + print).
+        const pageSpecs = buildPageSpecs(doc, answerKey);
+        const hasProblems = doc.pages.length > 0;
         const zoom: ZoomMode = session.zoom ?? 'fit';
 
         // The "coming soon" notice for unimplemented grades (7..12) vs the
@@ -285,28 +338,35 @@ function createPage(spec: WorksheetSpec) {
 // byte-identical to the preview.
 function createPrint(spec: WorksheetSpec) {
     function WorksheetPrint() {
-        const { doc, title, subtitle } = useWorksheetDocument(spec);
+        const { doc, title, subtitle, answerKey } = useWorksheetDocument(spec);
 
-        const total = doc.pages.length;
+        // T8: the SAME page list the preview shows — worksheet pages plus the
+        // teacher-key pages when the flag is on — so the native dialog emits
+        // exactly what is on screen (one .print-page block per sheet).
+        const pageSpecs = buildPageSpecs(doc, answerKey);
 
         // Empty selection => nothing to print (the preview shows the empty
         // state; the toolbar's Print button is dimmed and inert for the same
         // reason).
-        if (total === 0) return null;
+        if (pageSpecs.length === 0) return null;
 
         return (
             // Screen-hidden print tree: the ONLY thing window.print() emits
             // (@media print hides .app-chrome, reveals this — app.css).
             <div className="print-doc" aria-hidden="true">
-                {doc.pages.map((problems, i) => (
+                {pageSpecs.map((page, i) => (
                     <div className="print-page" key={i}>
-                        <PrintableSheet
-                            title={title}
-                            subtitle={subtitle}
-                            problems={problems}
-                            pageLabel={total > 1 ? `Page ${i + 1} of ${total}` : undefined}
-                            single={spec.singleColumn}
-                        />
+                        {page.kind === 'key' ? (
+                            <AnswerKeySheet title={title} entries={page.problems} pageLabel={page.pageLabel} />
+                        ) : (
+                            <PrintableSheet
+                                title={title}
+                                subtitle={subtitle}
+                                problems={page.problems}
+                                pageLabel={page.pageLabel}
+                                single={spec.singleColumn}
+                            />
+                        )}
                     </div>
                 ))}
             </div>

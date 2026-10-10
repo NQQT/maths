@@ -18,6 +18,7 @@ import React, { useRef } from 'react';
 import { styledComponent } from '@presource/react';
 import { A4_H, A4_W, usePageScale, type ZoomMode } from './page-scale';
 import { PrintableSheet } from './PrintableSheet';
+import { AnswerKeySheet } from './AnswerKeySheet';
 import type { Problem } from './document';
 
 export type PageSpec = {
@@ -26,6 +27,9 @@ export type PageSpec = {
     // Optional "Page i of n" label — drives BOTH the on-screen badge and the
     // in-sheet print footer. Omitted for single-page documents.
     pageLabel?: string;
+    // T8 teacher answer key: 'key' pages render the AnswerKeySheet (id +
+    // answer only) instead of the worksheet grid. Default = worksheet page.
+    kind?: 'worksheet' | 'key';
 };
 
 export type PageStackProps = {
@@ -137,15 +141,25 @@ export function PageStack({ title, subtitle, pages, zoom, single, testId, pageTe
                         scale={scale}
                         data-testid={pageTestId ? `${pageTestId}${i + 1}` : undefined}
                     >
-                        {/* Full A4 sheet, scaled to fit the shell above. */}
+                        {/* Full A4 sheet, scaled to fit the shell above. T8:
+                            'key' pages render the AnswerKeySheet (answers
+                            only) instead of the worksheet grid. */}
                         <PageScaleBox scale={scale}>
-                            <PrintableSheet
-                                title={title}
-                                subtitle={subtitle}
-                                problems={page.problems}
-                                pageLabel={page.pageLabel}
-                                single={single}
-                            />
+                            {page.kind === 'key' ? (
+                                <AnswerKeySheet
+                                    title={title}
+                                    entries={page.problems}
+                                    pageLabel={page.pageLabel}
+                                />
+                            ) : (
+                                <PrintableSheet
+                                    title={title}
+                                    subtitle={subtitle}
+                                    problems={page.problems}
+                                    pageLabel={page.pageLabel}
+                                    single={single}
+                                />
+                            )}
                         </PageScaleBox>
                         {/* On-screen multi-page position badge. */}
                         {page.pageLabel && (

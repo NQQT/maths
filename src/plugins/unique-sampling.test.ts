@@ -56,6 +56,16 @@ import { placeValueSpec } from './PlaceValueWorksheet';
 import { dataSpec } from './DataWorksheet';
 import { divisionSpec } from './DivisionWorksheet';
 import { moneySpec } from './MoneyWorksheet';
+// T4 expansion specs (nine upper-primary strands, Years 3..6).
+import { fractionsSpec } from './FractionsWorksheet';
+import { decimalsSpec } from './DecimalsWorksheet';
+import { percentSpec } from './PercentWorksheet';
+import { multiDivSpec } from './MultiplyDivideWorksheet';
+import { perimeterAreaSpec } from './PerimeterAreaWorksheet';
+import { metricConvSpec } from './MetricConversionWorksheet';
+import { statisticsSpec } from './StatisticsWorksheet';
+import { probabilitySpec } from './ProbabilityWorksheet';
+import { algebraSpec } from './AlgebraReasoningWorksheet';
 
 // Question identity used by every measurement below — see the header note.
 // The JSON triple mirrors the figure-carrying fields the generators key on
@@ -151,8 +161,70 @@ const CAPACITIES: { spec: WorksheetSpec; gradeId: number; capacity: number }[] =
     { spec: measureSpec, gradeId: 2, capacity: 400 },
     { spec: placeValueSpec, gradeId: 1, capacity: 141 },
     { spec: placeValueSpec, gradeId: 2, capacity: 400 },
-    { spec: moneySpec, gradeId: 2, capacity: 76 }
+    { spec: moneySpec, gradeId: 2, capacity: 76 },
+    // ── T4 upper-primary strands (Years 3..6) ───────────────────────────────
+    // Procedural generators (drawn operands/counts), so the spaces are large
+    // but finite; none reaches the 100-page bar at EVERY offered grade (the
+    // scaffold/core/stretch tier blocks cap each tier's space per page ask).
+    { spec: fractionsSpec, gradeId: 3, capacity: 96 },
+    { spec: fractionsSpec, gradeId: 4, capacity: 544 },
+    { spec: fractionsSpec, gradeId: 5, capacity: 638 },
+    { spec: fractionsSpec, gradeId: 6, capacity: 800 },
+    { spec: decimalsSpec, gradeId: 4, capacity: 854 },
+    { spec: decimalsSpec, gradeId: 5, capacity: 1000 },
+    { spec: decimalsSpec, gradeId: 6, capacity: 1000 },
+    // Percentages: benchmark/flip families over a small exact-percent space —
+    // Year 5 is the narrowest (76), Year 6 widens with the fraction forms.
+    { spec: percentSpec, gradeId: 5, capacity: 76 },
+    { spec: percentSpec, gradeId: 6, capacity: 263 },
+    { spec: multiDivSpec, gradeId: 4, capacity: 496 },
+    { spec: multiDivSpec, gradeId: 5, capacity: 763 },
+    { spec: multiDivSpec, gradeId: 6, capacity: 800 },
+    { spec: perimeterAreaSpec, gradeId: 4, capacity: 527 },
+    { spec: perimeterAreaSpec, gradeId: 5, capacity: 800 },
+    { spec: perimeterAreaSpec, gradeId: 6, capacity: 577 },
+    { spec: metricConvSpec, gradeId: 3, capacity: 82 },
+    // T8: Year 4 small→big values are restricted to multiples of 10 (answers
+    // must stay within two decimal places — Year 5 level), shrinking this
+    // space from 515 to 471. Still ~59× the 8-per-page sheet.
+    { spec: metricConvSpec, gradeId: 4, capacity: 471 },
+    { spec: metricConvSpec, gradeId: 5, capacity: 505 },
+    { spec: metricConvSpec, gradeId: 6, capacity: 759 },
+    { spec: statisticsSpec, gradeId: 3, capacity: 800 },
+    { spec: statisticsSpec, gradeId: 4, capacity: 800 },
+    { spec: statisticsSpec, gradeId: 5, capacity: 800 },
+    // Year 6 statistics' challenge tier is the 26-item mean↔total family,
+    // capping the whole document below the 800-question ask.
+    { spec: statisticsSpec, gradeId: 6, capacity: 626 },
+    // Probability: word/compare families are deliberately small (the chance
+    // vocabulary is fixed); every space still beats a page many times over.
+    { spec: probabilitySpec, gradeId: 3, capacity: 38 },
+    { spec: probabilitySpec, gradeId: 4, capacity: 67 },
+    { spec: probabilitySpec, gradeId: 5, capacity: 76 },
+    // T8: the drawn ratio is reduced to simplest form before scaling, so
+    // scaled duplicates ("2/4" vs "1/2") collapse — 143 -> 141.
+    { spec: probabilitySpec, gradeId: 6, capacity: 141 },
+    // T8: Year 3 equivalent-expression practice now SPLITS the drawn sum
+    // (a + b = c + □ with a,b >= 2), instead of freely drawing a and c —
+    // fewer distinct combinations, 721 -> 665 (still 83× the page).
+    { spec: algebraSpec, gradeId: 3, capacity: 665 },
+    { spec: algebraSpec, gradeId: 4, capacity: 664 },
+    { spec: algebraSpec, gradeId: 5, capacity: 800 },
+    { spec: algebraSpec, gradeId: 6, capacity: 800 }
 ];
+
+// TIERED GENERATORS (T4 strands): the nine upper-primary worksheets sample
+// EACH tier (starter / practice / challenge) with its own sampleUnique call
+// and interleave the blocks page by page (scaffold→core→stretch per page).
+// The document-level PREFIX property therefore only holds PER TIER BLOCK:
+// once one tier's finite space runs dry, its repeats spread across later
+// pages while the other tiers are still fresh. The per-tier prefix check
+// below is the equivalent guarantee for these generators; single-call
+// generators keep the stronger document-level prefix pin.
+const TIERED = new Set([
+    'fractions', 'decimals', 'percent', 'multidiv', 'perimeterarea',
+    'metricconv', 'statistics', 'probability', 'algebra'
+]);
 
 describe('unique sampling — per-worksheet question capacity', () => {
     for (const { spec, gradeId, capacity } of CAPACITIES) {
@@ -165,11 +237,22 @@ describe('unique sampling — per-worksheet question capacity', () => {
             const keys = problems.map(questionKey);
             const unique = new Set(keys);
             expect(unique.size).toBe(capacity);
-            // Uniqueness is a PREFIX property: sampleUnique only releases a
-            // question after checking its key, so the first `capacity`
-            // questions are pairwise distinct — repeats can only sit in the
-            // fallback tail after the space was fully dealt.
-            expect(new Set(keys.slice(0, capacity)).size).toBe(capacity);
+            if (!TIERED.has(spec.id)) {
+                // Uniqueness is a PREFIX property: sampleUnique only releases a
+                // question after checking its key, so the first `capacity`
+                // questions are pairwise distinct — repeats can only sit in the
+                // fallback tail after the space was fully dealt.
+                expect(new Set(keys.slice(0, capacity)).size).toBe(capacity);
+            } else {
+                // Tiered generator: the same guarantee per tier block (the
+                // printed "Starter:/Practice:/Challenge:" prefix identifies the
+                // block; the key's figure JSON follows the first '|').
+                for (const tier of ['Starter:', 'Practice:', 'Challenge:']) {
+                    const block = keys.filter((k) => (k.split('|')[0] as string).startsWith(tier));
+                    const uniq = new Set(block).size;
+                    expect(new Set(block.slice(0, uniq)).size).toBe(uniq);
+                }
+            }
         });
     }
 
@@ -183,7 +266,11 @@ describe('unique sampling — per-worksheet question capacity', () => {
             [
                 'addition', 'subtraction', 'comparison', 'counting', 'data',
                 'division', 'measure', 'missing', 'mult', 'patterns',
-                'placevalue', 'skip', 'temperature', 'word'
+                'placevalue', 'skip', 'temperature', 'word',
+                // T4 strands that print a full 100-page repeat-free document
+                // at least at one offered grade (fractions/decimals/multidiv
+                // in Y6, perimeterarea/statistics/algebra in Y5).
+                'algebra', 'decimals', 'fractions', 'multidiv', 'perimeterarea', 'statistics'
             ].sort()
         );
         // The depth-first arithmetic ladder clears the bar at EVERY grade
@@ -219,6 +306,10 @@ describe('unique sampling — per-worksheet question capacity', () => {
         for (const { spec, gradeId, capacity } of CAPACITIES) {
             const ten = spec.perPage * 10;
             if (capacity < ten) continue;
+            // Tiered generators may repeat within a tier block before 10
+            // pages (see the TIERED note above) — the per-tier prefix check
+            // in the capacity loop is their guarantee.
+            if (TIERED.has(spec.id)) continue;
             const grade = getGradeConfig(gradeId);
             const problems = spec.generate(createRng(seedFrom([gradeId, spec.id, 0])), grade.caps, ten);
             expect(new Set(problems.map(questionKey)).size).toBe(ten);

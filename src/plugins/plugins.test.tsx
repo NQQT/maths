@@ -16,12 +16,12 @@
 //      line is safe by construction.
 //   4. SELECTION FALLBACK: a stale selection pointing at a deleted plugin
 //      snaps back to the first remaining plugin.
-//   5. THE REAL WORKSHEETS: the 23 per-type plugins (AdditionWorksheet,
-//      SubtractionWorksheet, ...) load through the same pipeline the
-//      framework uses (the PLUGINS factory list, loaded one by one by
-//      usePluginLoader after the dashboard renders), share the dashboard
-//      session, and their rail entries are grade-gated (Year 1 hides
-//      Multiplication).
+//   5. THE REAL WORKSHEETS: the 32 per-type plugins (AdditionWorksheet,
+//      SubtractionWorksheet, ... plus the nine T4 upper-primary strands)
+//      load through the same pipeline the framework uses (the PLUGINS
+//      factory list, loaded one by one by usePluginLoader after the
+//      dashboard renders), share the dashboard session, and their rail
+//      entries are grade-gated (Year 1 hides Multiplication).
 //
 // The fixtures are throwaway plugins defined inline here — by design, adding
 // a plugin is just "a function that satisfies DashboardPlugin".
@@ -304,7 +304,18 @@ const EXPECTED_WORKSHEET_IDS = [
     'placevalue',
     'data',
     'division',
-    'money'
+    'money',
+    // T4 expansion cluster — appended after Money so every earlier position
+    // (and the Year 1 rail's Data-last invariant) is unchanged.
+    'fractions',
+    'decimals',
+    'percent',
+    'multidiv',
+    'perimeterarea',
+    'metricconv',
+    'statistics',
+    'probability',
+    'algebra'
 ];
 
 // The plugin list, built through the same pipeline usePluginLoader uses.
@@ -364,27 +375,31 @@ describe('the real worksheet plugins — register through the same pipeline', ()
         expect(screen.getByTestId('sheet-preview-page1')).toBeDefined();
     });
 
-    it('Year 3 offers exactly the requested arithmetic and spatial plugins; Year 4 stays arithmetic-only', () => {
+    it('Year 3 offers the arithmetic/spatial rail plus five T4 strands; Year 4 gets its own ten', () => {
         mountHost(WORKSHEETS);
         act(() => {
             probeStore!.session.gradeId = 3;
         });
         // Registry order remains addition first, transformations beside shapes,
-        // compass last among Year-3 entries (plugins/index.ts / grades.test.ts).
+        // compass before the appended T4 cluster (plugins/index.ts / grades.test.ts).
         const rail = screen.getByTestId('rail-slot');
         expect(arrayCreate(({ index }) => rail.querySelectorAll('button')[index]?.getAttribute('aria-label')))
-            .toEqual(['Addition', 'Subtraction', 'Multiplication', 'Shape Transformations', 'Compass Directions']);
+            .toEqual(['Addition', 'Subtraction', 'Multiplication', 'Shape Transformations', 'Compass Directions',
+                'Fractions', 'Metric Measurement', 'Statistics', 'Probability', 'Algebra & Reasoning']);
         fireEvent.click(screen.getByRole('button', { name: 'Shape Transformations' }));
         expect(probeStore!.active).toEqual({ pluginId: 'transformations', entryId: 'transformations' });
         expect(screen.getByTestId('toolbar-title').textContent).toBe('Year 3 — Shape Transformations');
 
-        // A now-hidden selection must reconcile to Addition rather than leave
-        // stale Year-3 diagrams on an arithmetic-only grade (host.tsx).
+        // A now-hidden selection (transformations is Year-3-only) must
+        // reconcile to Addition rather than leave stale Year-3 diagrams on a
+        // different catalogue (host.tsx). Year 4 keeps addition/subtraction and
+        // gains the numeric strands, but NOT mult/transformations/compass.
         act(() => {
             probeStore!.session.gradeId = 4;
         });
         expect(arrayCreate(({ index }) => rail.querySelectorAll('button')[index]?.getAttribute('aria-label')))
-            .toEqual(['Addition', 'Subtraction']);
+            .toEqual(['Addition', 'Subtraction', 'Fractions', 'Decimals', 'Multiplication & Division',
+                'Perimeter & Area', 'Metric Measurement', 'Statistics', 'Probability', 'Algebra & Reasoning']);
         expect(probeStore!.active).toEqual({ pluginId: 'addition', entryId: 'addition' });
         expect(screen.getByTestId('toolbar-title').textContent).toBe('Year 4 — Addition');
     });

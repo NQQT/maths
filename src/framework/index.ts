@@ -17,6 +17,9 @@ export * from './document';
 export * from './page-scale';
 export * from './PageStack';
 export * from './PrintableSheet';
+// T8 teacher answer key: the separate spacious key page appended when the
+// session answerKey flag is on (capacity constants exported for its tests).
+export * from './AnswerKeySheet';
 // Data-only shape figures are shared by preview/print, not coupled to a plugin.
 export * from './ShapeTransformationDiagram';
 // The rows/columns grid figure is data the generators own (dimensions only);

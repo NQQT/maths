@@ -100,6 +100,13 @@ export type DashboardSession = {
     zoom: ZoomMode;
     // Bump = "Randomize" → new seed, same page count.
     refresh: number;
+    // Teacher answer key (T4 flag; T8 separate-page model): true = preview
+    // AND print append dedicated AnswerKeySheet pages after the worksheet
+    // pages (framework/AnswerKeySheet.tsx). OPTIONAL and default-off — an
+    // absent (or false) value keeps the student sheet exactly as before, so
+    // the INITIAL_STORE session shape (pinned in plugins.test.tsx) is
+    // unchanged and answers never leak into default printouts.
+    answerKey?: boolean;
 };
 
 // ── The plugin definition itself ─────────────────────────────────────────────

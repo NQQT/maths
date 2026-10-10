@@ -24,3 +24,13 @@ export { placeValueSpec } from './PlaceValueWorksheet';
 export { dataSpec } from './DataWorksheet';
 export { divisionSpec } from './DivisionWorksheet';
 export { moneySpec } from './MoneyWorksheet';
+// T4 expansion specs (also imported directly by their own tests).
+export { fractionsSpec } from './FractionsWorksheet';
+export { decimalsSpec } from './DecimalsWorksheet';
+export { percentSpec } from './PercentWorksheet';
+export { multiDivSpec } from './MultiplyDivideWorksheet';
+export { perimeterAreaSpec } from './PerimeterAreaWorksheet';
+export { metricConvSpec } from './MetricConversionWorksheet';
+export { statisticsSpec } from './StatisticsWorksheet';
+export { probabilitySpec } from './ProbabilityWorksheet';
+export { algebraSpec } from './AlgebraReasoningWorksheet';

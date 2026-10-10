@@ -252,16 +252,18 @@ describe('MathsDashboard — grade selection (top-right)', () => {
         expect(screen.queryByTestId('sheet-preview')).toBeNull();
     });
 
-    it('Year 3 offers its exact five-entry rail without changing the arithmetic streams', async () => {
-        // Compass is the LAST Year 3 entry in plugins/index.ts. Await it before
-        // pinning the whole rail: framework/loader.test.tsx covers the chained
-        // loading, while plugin tests pin each entry's own grade gate.
+    it('Year 3 offers its exact ten-entry rail without changing the arithmetic streams', async () => {
+        // Algebra & Reasoning is the LAST Year 3 entry in plugins/index.ts
+        // (the T4 cluster appends after Money). Await it before pinning the
+        // whole rail: framework/loader.test.tsx covers the chained loading,
+        // while plugin tests pin each entry's own grade gate.
         fireEvent.click(gradeRadio('3'));
         const rail = screen.getByRole('heading', { name: 'Math Type' }).parentElement!;
-        await within(rail).findByRole('button', { name: 'Compass Directions' }, { timeout: 20_000 });
+        await within(rail).findByRole('button', { name: 'Algebra & Reasoning' }, { timeout: 20_000 });
         const buttons = within(rail).getAllByRole('button');
         expect(arrayCreate(({ index }) => buttons[index]?.lastElementChild?.textContent)).toEqual([
-            'Addition', 'Subtraction', 'Multiplication', 'Shape Transformations', 'Compass Directions'
+            'Addition', 'Subtraction', 'Multiplication', 'Shape Transformations', 'Compass Directions',
+            'Fractions', 'Metric Measurement', 'Statistics', 'Probability', 'Algebra & Reasoning'
         ]);
 
         // New spatial entries must not alter the arithmetic seeds. The exact
@@ -288,30 +290,35 @@ describe('MathsDashboard — grade selection (top-right)', () => {
         { grade: '4', firstRow: '1.7123 + 1057 = ; check: 8180 - 1057 = ' },
         { grade: '5', firstRow: '1.3370 + 1240 + 10833 = ; check: 15443 - 10833 = ' },
         { grade: '6', firstRow: '1.543082 + 101316 =  and 101316 + 543082 = ' }
-    ])('Year $grade remains arithmetic-only', async ({ grade, firstRow }) => {
+    ])('Year $grade offers its exact T4-expanded rail with unchanged arithmetic streams', async ({ grade, firstRow }) => {
         await allVisiblePluginsLoaded();
         fireEvent.click(gradeRadio(grade));
         const rail = screen.getByRole('heading', { name: 'Math Type' }).parentElement!;
-        await within(rail).findByRole('button', { name: 'Subtraction' }, { timeout: 20_000 });
+        // Algebra & Reasoning is the LAST entry on every Year 4..6 rail.
+        await within(rail).findByRole('button', { name: 'Algebra & Reasoning' }, { timeout: 20_000 });
         const buttons = within(rail).getAllByRole('button');
         expect(arrayCreate(({ index }) => buttons[index]?.lastElementChild?.textContent))
-            .toEqual(['Addition', 'Subtraction']);
+            .toEqual(grade === '4'
+                ? ['Addition', 'Subtraction', 'Fractions', 'Decimals', 'Multiplication & Division',
+                    'Perimeter & Area', 'Metric Measurement', 'Statistics', 'Probability', 'Algebra & Reasoning']
+                : ['Addition', 'Subtraction', 'Fractions', 'Decimals', 'Percentages', 'Multiplication & Division',
+                    'Perimeter & Area', 'Metric Measurement', 'Statistics', 'Probability', 'Algebra & Reasoning']);
         expect(screen.getByTestId('toolbar-title').textContent).toBe(`Year ${grade} \u2014 Addition`);
         expect(text(within(screen.getByTestId('sheet-preview-page1')).getByText('1.').parentElement))
             .toBe(firstRow);
     });
 
-    // ShapeTransformationsWorksheet.test.ts excludes Year 2. Await Compass,
-    // the last Year 3 entry in plugins/index.ts, so the later rail pin tests
-    // gating, not loading. The host must fall back to Addition without resetting
-    // the shared page count (framework/host.tsx and worksheet-kit.tsx).
+    // ShapeTransformationsWorksheet.test.ts excludes Year 2. Await Algebra &
+    // Reasoning, the last Year 3 entry in plugins/index.ts, so the later rail
+    // pin tests gate, not load. The host must fall back to Addition without
+    // resetting the shared page count (framework/host.tsx and worksheet-kit.tsx).
     it('falls back from transformations to Year 2 Addition, preserving pages into Year 4', async () => {
         fireEvent.click(gradeRadio('3'));
         const rail = screen.getByRole('heading', { name: 'Math Type' }).parentElement!;
         fireEvent.click(
             await within(rail).findByRole('button', { name: 'Shape Transformations' }, { timeout: 20_000 })
         );
-        await within(rail).findByRole('button', { name: 'Compass Directions' }, { timeout: 20_000 });
+        await within(rail).findByRole('button', { name: 'Algebra & Reasoning' }, { timeout: 20_000 });
         fireEvent.change(screen.getByTestId('page-count'), { target: { value: '2' } });
         expect(screen.getByTestId('toolbar-title').textContent).toBe('Year 3 \u2014 Shape Transformations');
 
@@ -330,10 +337,11 @@ describe('MathsDashboard — grade selection (top-right)', () => {
         // valid arithmetic controls after fallback. AdditionWorksheet.test.ts
         // pins this multi-addend first row; both pages must still be printable.
         fireEvent.click(gradeRadio('4'));
-        await within(rail).findByRole('button', { name: 'Subtraction' }, { timeout: 20_000 });
+        await within(rail).findByRole('button', { name: 'Algebra & Reasoning' }, { timeout: 20_000 });
         const buttons = within(rail).getAllByRole('button');
         expect(arrayCreate(({ index }) => buttons[index]?.lastElementChild?.textContent))
-            .toEqual(['Addition', 'Subtraction']);
+            .toEqual(['Addition', 'Subtraction', 'Fractions', 'Decimals', 'Multiplication & Division',
+                'Perimeter & Area', 'Metric Measurement', 'Statistics', 'Probability', 'Algebra & Reasoning']);
         expect(screen.getByTestId('toolbar-title').textContent).toBe('Year 4 \u2014 Addition');
         expect(text(within(screen.getByTestId('sheet-preview-page1')).getByText('1.').parentElement))
             .toBe('1.7123 + 1057 = ; check: 8180 - 1057 = ');
@@ -699,5 +707,83 @@ describe('MathsDashboard — print flow (native dialog, preview IS the preview)'
         // Even a forced click cannot start a print job for an empty document.
         fireEvent.click(toolbarPrint());
         expect(printSpy).not.toHaveBeenCalled();
+    });
+});
+
+// ── T8: TEACHER ANSWER KEY ───────────────────────────────────────────────────
+// The key is OFF by default (student-safe: answers never appear in the
+// worksheet rows), and when ON it renders as SEPARATE AnswerKeySheet pages
+// APPENDED after the worksheet pages — in the preview AND the print tree,
+// with page labels counting every page of the job.
+describe('MathsDashboard — teacher answer key', () => {
+    function answersToggle() {
+        return screen.getByTestId('toolbar-answers');
+    }
+
+    it('is OFF by default: no key page, and no answers on the worksheet page', () => {
+        expect(answersToggle().getAttribute('aria-pressed')).toBe('false');
+        expect(text(answersToggle())).toBe('Answers: Off');
+
+        // One worksheet page only — nothing appended.
+        expect(screen.queryByTestId('sheet-preview-page2')).toBeNull();
+        expect(document.querySelectorAll('.print-page').length).toBe(1);
+        // The worksheet page carries no key chrome and no inline answers.
+        const page1 = text(screen.getByTestId('sheet-preview-page1'));
+        expect(page1).not.toContain('Answer key');
+        expect(page1).not.toContain('Answer:');
+    });
+
+    it('toggling ON appends a key page to preview AND print, with counted labels', () => {
+        fireEvent.click(answersToggle());
+        expect(answersToggle().getAttribute('aria-pressed')).toBe('true');
+        expect(text(answersToggle())).toBe('Answers: On');
+
+        // Preview: worksheet page 1 + key page 2.
+        expect(screen.getByTestId('sheet-preview-page2')).toBeDefined();
+        const keyPage = text(screen.getByTestId('sheet-preview-page2'));
+        expect(keyPage).toContain('Answer key');
+        // Year 1 addition problem 1 is "4 + 16 = __ and 16 + 4 = __; the sums
+        // differ by __" with answer "20, 20, 0" (pinned in
+        // AdditionWorksheet.test.ts) — the key row is "1.20, 20, 0".
+        expect(keyPage).toContain('1.20, 20, 0');
+        // Page labels count EVERY page of the job so sheets order correctly.
+        expect(text(screen.getByTestId('sheet-preview-page1'))).toContain('Page 1 of 2');
+        expect(keyPage).toContain('Page 2 of 2');
+
+        // Print tree mirrors the preview exactly (same buildPageSpecs call).
+        const printPages = document.querySelectorAll('.print-page');
+        expect(printPages.length).toBe(2);
+        expect(printPages[0].textContent).not.toContain('Answer key');
+        expect(printPages[1].textContent).toContain('Answer key');
+        expect(printPages[1].textContent).toContain('1.20');
+    });
+
+    it('toggling OFF removes the key page again (single unlabelled page)', () => {
+        fireEvent.click(answersToggle());
+        expect(screen.getByTestId('sheet-preview-page2')).toBeDefined();
+
+        fireEvent.click(answersToggle());
+        expect(answersToggle().getAttribute('aria-pressed')).toBe('false');
+        expect(screen.queryByTestId('sheet-preview-page2')).toBeNull();
+        expect(document.querySelectorAll('.print-page').length).toBe(1);
+        // Single page => no "Page i of n" label (unchanged default behaviour).
+        expect(text(screen.getByTestId('sheet-preview-page1'))).not.toContain('Page 1 of');
+    });
+
+    it('key pages chunk at KEY_PER_PAGE and follow the page stepper', () => {
+        // 2 worksheet pages (14 problems) + 1 key page = 3 pages in the job.
+        fireEvent.change(screen.getByTestId('page-count'), { target: { value: '2' } });
+        fireEvent.click(answersToggle());
+
+        const printPages = document.querySelectorAll('.print-page');
+        expect(printPages.length).toBe(3);
+        expect(printPages[0].textContent).toContain('Page 1 of 3');
+        expect(printPages[1].textContent).toContain('Page 2 of 3');
+        expect(printPages[2].textContent).toContain('Page 3 of 3');
+        expect(printPages[2].textContent).toContain('Answer key');
+
+        // Shrinking the worksheet re-chunks the key with it (1 + 1 = 2).
+        fireEvent.change(screen.getByTestId('page-count'), { target: { value: '1' } });
+        expect(document.querySelectorAll('.print-page').length).toBe(2);
     });
 });

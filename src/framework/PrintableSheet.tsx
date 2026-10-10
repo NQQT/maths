@@ -48,6 +48,11 @@ export type PrintableSheetProps = {
     // Prose-style sheets (word problems etc.) render in a SINGLE column so
     // every sentence has the full page width. Default: two-column grid.
     single?: boolean;
+    // TEACHER ANSWER KEY (T8): worksheet sheets NEVER print answers — the
+    // model answers live on the separate AnswerKeySheet pages appended when
+    // the session answerKey flag is on (see AnswerKeySheet.tsx for why the
+    // T4 inline note was replaced: its height was outside the pinned row
+    // budget and risked print overflow).
     // Stable test id for the root element.
     testId?: string;
 };
@@ -197,6 +202,12 @@ const AnswerLine = styledComponent('span', {
     marginTop: '14px',
     borderBottom: '2.5px solid #1a1a1a'
 });
+
+// Teacher answer-key note (T4, REMOVED in T8): the inline "Answer: …" line
+// under each prompt used to print here when showAnswers was on. Its ~20px
+// height was NOT part of the plugins/layout-capacity.test.ts row budget, so
+// the worst 198px rows overflowed their 210.5px grid row with the key on.
+// Answers now live on the separate AnswerKeySheet pages (framework).
 
 // A fill-in blank. Big blanks (name/date lines, and problems flagged
 // `wideBlanks` — e.g. handwritten "quarter past 11" answers) are wide;
@@ -424,7 +435,10 @@ export function PrintableSheet({ title, subtitle, problems, pageLabel, single, t
                             {p.division && <DivisionDiagram figure={p.division} />}
                             {p.column && <ColumnDiagram figure={p.column} />}
                             {/* Bottom writing space for answerLine prompts
-                                (their prompts carry no inline "__" blanks). */}
+                                (their prompts carry no inline "__" blanks).
+                                T8: the inline answer note is gone — model
+                                answers print on the separate AnswerKeySheet
+                                pages appended by the worksheet kit. */}
                             {p.answerLine && <AnswerLine />}
                         </ProblemText>
                     </ProblemRow>

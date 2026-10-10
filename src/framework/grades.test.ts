@@ -28,16 +28,19 @@ describe('grade catalogue', () => {
         expect(getGradeConfig(12).implemented).toBe(false);
     });
 
-    it('grade 3 offers the exact ordered arithmetic and spatial catalogue', () => {
+    it('grade 3 offers the exact ordered arithmetic, spatial and T4-strand catalogue', () => {
         // Reuse MultiplicationWorksheet and CompassWorksheet; 'transformations'
         // is the separate shape-flip / 90-degree rotation plugin, not 'shapes'.
         // CompassWorksheet.test.ts pins the existing clockwise N/E/S/W turns.
+        // T4 expansion: five upper-primary strands append AFTER the original
+        // five-entry rail (catalogue order is the rail order).
         expect(g3).toEqual({
             id: 3,
             short: '3',
             label: 'Year 3',
             implemented: true,
-            available: ['addition', 'subtraction', 'mult', 'transformations', 'compass'],
+            available: ['addition', 'subtraction', 'mult', 'transformations', 'compass',
+                'fractions', 'metricconv', 'statistics', 'probability', 'algebra'],
             caps: {
                 opCap: 1000,
                 addendCap: 2,
@@ -55,24 +58,36 @@ describe('grade catalogue', () => {
                 pvCap: 0,
                 dataCap: 0,
                 coinCap: 0,
-                tempCap: 0
+                tempCap: 0,
+                // T4 upper-primary caps: Y3 gets unit fractions halves..tenths
+                // and no decimals/area work yet (see plugins/FractionsWorksheet.ts).
+                yearLevel: 3,
+                denSet: [2, 3, 4, 5, 10],
+                decPlaces: 0,
+                areaSideCap: 0
             }
         });
     });
 
     it.each([
-        [4, 10000, 3],
-        [5, 100000, 3],
-        [6, 1000000, 4]
-    ])('grade %i preserves its complete arithmetic-only configuration', (id, opCap, addendCap) => {
-        // Year 3's extra ids and multCap must not leak through the shared
-        // arithmeticLadderGrade helper; every later-grade cap stays pinned.
+        // [id, opCap, addendCap, available, decPlaces, areaSideCap]
+        [4, 10000, 3, ['addition', 'subtraction', 'fractions', 'decimals', 'multidiv',
+            'perimeterarea', 'metricconv', 'statistics', 'probability', 'algebra'], 2, 20],
+        [5, 100000, 3, ['addition', 'subtraction', 'fractions', 'decimals', 'percent',
+            'multidiv', 'perimeterarea', 'metricconv', 'statistics', 'probability', 'algebra'], 3, 100],
+        [6, 1000000, 4, ['addition', 'subtraction', 'fractions', 'decimals', 'percent',
+            'multidiv', 'perimeterarea', 'metricconv', 'statistics', 'probability', 'algebra'], 3, 1000]
+    ])('grade %i preserves its complete T4-expanded configuration', (id, opCap, addendCap, available, decPlaces, areaSideCap) => {
+        // Year 3's extra ids (mult/transformations/compass) must not leak
+        // through the shared arithmeticLadderGrade helper; percent joins at
+        // Year 5 (AC9M5N04). multCap 100 is the MULTIDIV operand ceiling for
+        // Years 4..6 (plugins/MultiplyDivideWorksheet.ts).
         expect(getGradeConfig(id)).toEqual({
             id,
             short: String(id),
             label: `Year ${id}`,
             implemented: true,
-            available: ['addition', 'subtraction'],
+            available,
             caps: {
                 opCap,
                 addendCap,
@@ -80,7 +95,7 @@ describe('grade catalogue', () => {
                 wordCap: 0,
                 skipCap: 0,
                 skipSet: [],
-                multCap: 0,
+                multCap: 100,
                 doubleCap: 0,
                 bondCap: 0,
                 patSet: [],
@@ -90,7 +105,11 @@ describe('grade catalogue', () => {
                 pvCap: 0,
                 dataCap: 0,
                 coinCap: 0,
-                tempCap: 0
+                tempCap: 0,
+                yearLevel: id,
+                denSet: [2, 3, 4, 5, 6, 8, 10, 12],
+                decPlaces,
+                areaSideCap
             }
         });
     });
